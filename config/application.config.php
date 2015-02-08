@@ -5,6 +5,8 @@ return array(
 
         'ZfcBase',
         'ZfcUser',
+        'BjyAuthorize',
+        'RoleUserBridge',
 
         'Application',
     ),
