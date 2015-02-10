@@ -13,7 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
-class IndexController extends AbstractActionController
+class IndexController extends MyAbstractController
 {
     public function indexAction()
     {

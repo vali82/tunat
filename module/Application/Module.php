@@ -36,4 +36,14 @@ class Module
             ),
         );
     }
+
+    public function getServiceConfig()
+    {
+        return include __DIR__ . '/config/services.config.php';
+    }
+
+    public function getViewHelperConfig()
+    {
+        return include __DIR__ . '/config/viewhelper.config.php';
+    }
 }

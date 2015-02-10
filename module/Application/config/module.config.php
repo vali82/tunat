@@ -60,9 +60,12 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
+        'invokables' => array(
+            'Zend\Session\SessionManager' => 'Zend\Session\SessionManager',
+        ),
     ),
     'translator' => array(
-        'locale' => 'en_US',
+        'locale' => 'ro_RO',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',
@@ -98,5 +101,22 @@ return array(
             'routes' => array(
             ),
         ),
+    ),
+    'bjyauthorize' =>array(
+    	'guards' => array(
+    	'BjyAuthorize\Guard\Route' => array_merge ( array(
+    		// Below is the default index action used by the ZendSkeletonApplication
+
+		        array('route' => 'home', 'roles' => array('guest', 'user', 'parcauto')),
+//
+		        array('route' => 'zfcuser/login', 'roles' => array('guest')),
+		        array('route' => 'zfcuser', 'roles' => array('parcauto','user')),
+		        array('route' => 'zfcuser/logout', 'roles' => array('parcauto','user')),
+		        array('route' => 'zfcuser/register', 'roles' => array('guest')),
+
+    	    )
+		    , []
+	    )
+    	),
     ),
 );

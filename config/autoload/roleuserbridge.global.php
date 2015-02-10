@@ -8,6 +8,6 @@ return array(
 		/**
          * Default role for new user
          */
-        'user_role_id'     => 2
+        'user_role_id'     => 'parcauto'
 	)
 );
