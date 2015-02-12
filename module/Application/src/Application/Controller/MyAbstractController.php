@@ -16,15 +16,11 @@ class MyAbstractController extends AbstractActionController
     {
         if($this->zfcUserAuthentication()->hasIdentity()) {
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
-
         } else {
             $this->myUser = null;
         }
-
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
-
         $this->layout()->myUser = $this->myUser;
-
         parent::onDispatch($e);
     }
 

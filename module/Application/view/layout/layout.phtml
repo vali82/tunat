@@ -1,6 +1,7 @@
 <?php echo $this->doctype();
 
 $role = $this->AuthenticatedUserRole();
+$user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
 ?>
 <html lang="en">
@@ -43,7 +44,7 @@ $role = $this->AuthenticatedUserRole();
                     <div class="navbar-collapse collapse" id="navbar">
                         <ul class="nav navbar-nav">
                             <?php if ($role == 'parcauto') { ?>
-                                <li><a href="#">Adauga Anunt</a></li>
+                                <li><a href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
                                 <li><a href="#">Anunturile mele</a></li>
                             <?php } ?>
 
@@ -53,7 +54,7 @@ $role = $this->AuthenticatedUserRole();
                             <li class="pull-right"><a href="<?php echo $this->url('zfcuser/login') ?>"><?php echo $this->translate('Login') ?></a></li>
                         <?php } else { ?>
                             <li class="dropdown">
-                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><?=$this->myUser->getEmail()?><span class="caret"></span></a>
+                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><?=($user !== null ? $user->getEmail() : '')?><span class="caret"></span></a>
                                 <ul role="menu" class="dropdown-menu">
                                     <li><a href="#">Action</a></li>
                                     <li><a href="#">Another action</a></li>

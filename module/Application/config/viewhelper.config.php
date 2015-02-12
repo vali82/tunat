@@ -2,6 +2,7 @@
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\View\Helper\UserRole as UserRoleViewHelper;
+use Application\View\Helper\User as UserViewHelper;
 
 
 return array(

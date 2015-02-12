@@ -11,7 +11,7 @@ return array(
     'router' => array(
         'routes' => array(
             'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Literal',
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
@@ -19,12 +19,74 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
+                'may_terminate' => true,
+                'child_routes' => [
+                    'ad' => [
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route'    => 'ad',
+                            'defaults' => array(
+                                'controller' => 'Application\Controller\Ad',
+                                'action'     => 'index',
+                            ),
+                        ),
+                        'may_terminate' => false,
+                        'child_routes' => [
+                            'create' => [
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route'    => '/create',
+                                    'defaults' => array(
+                                        'controller' => 'Application\Controller\Ad',
+                                        'action'     => 'create',
+                                    ),
+                                ),
+                                'may_terminate' => true,
+                            ]
+                        ]
+                    ],
+                ]
             ),
+
+
+
+            /*'parcaccount' => [
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/parcaccount',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+                'child_routes' => [
+                    'ad' => [
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route'    => '/ad',
+                            'defaults' => array(
+                                'controller' => 'Application\Controller\Index',
+                                'action'     => 'index',
+                            ),
+                        ),
+                        'child_routes' => [
+                            'type' => 'Literal',
+                            'options' => array(
+                                'route'    => '/create',
+                                'defaults' => array(
+                                    'controller' => 'Application\Controller\Ad',
+                                    'action'     => 'create',
+                                ),
+                            ),
+                        ]
+                    ]
+                ]
+            ],*/
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
-            'application' => array(
+            /*'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/application',
@@ -49,7 +111,7 @@ return array(
                         ),
                     ),
                 ),
-            ),
+            ),*/
         ),
     ),
     'service_manager' => array(
@@ -76,7 +138,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Ad' => 'Application\Controller\AdController'
         ),
     ),
     'view_manager' => array(
@@ -94,6 +157,9 @@ return array(
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
+        /*'strategies' => array(
+            'ViewJsonStrategy',
+        ),*/
     ),
     // Placeholder for console routes
     'console' => array(
@@ -110,9 +176,12 @@ return array(
 		        array('route' => 'home', 'roles' => array('guest', 'user', 'parcauto')),
 //
 		        array('route' => 'zfcuser/login', 'roles' => array('guest')),
-		        array('route' => 'zfcuser', 'roles' => array('parcauto','user')),
-		        array('route' => 'zfcuser/logout', 'roles' => array('parcauto','user')),
 		        array('route' => 'zfcuser/register', 'roles' => array('guest')),
+
+		        array('route' => 'zfcuser', 'roles'                             => array('parcauto','user')),
+		        array('route' => 'zfcuser/logout', 'roles'                      => array('parcauto','user')),
+		        array('route' => 'home/ad/create', 'roles'                      => array('parcauto')),
+
 
     	    )
 		    , []
