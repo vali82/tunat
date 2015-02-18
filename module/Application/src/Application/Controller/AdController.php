@@ -9,6 +9,7 @@
 
 namespace Application\Controller;
 
+use Application\Forms\AdForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
@@ -18,15 +19,27 @@ class AdController extends MyAbstractController
 {
     public function indexAction()
     {
-
-        var_dump($this->myUser);
-        die();
         return new ViewModel();
     }
 
     public function createAction()
     {
-        return [];
+        $form = new AdForm();
+//        $form->setEavEntity('educational_resources', $this->eav, $resourceObj);  // EAV
+        $form->setCancelRoute('back');
+        $form->create();
+
+        $request = $this->getRequest();
+
+//        $form->bind($resourceObj);
+
+        if ($request->isPost()) {
+
+        }
+
+        return [
+            'form' => $form
+        ];
     }
 
 }

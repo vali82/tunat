@@ -35,3 +35,23 @@ div.container a.brand {
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 3em;
+    background-color: #f5f5f5;
+    text-align: left;
+    padding-top: 1em;
+}
+/*.footer {
+    background-color: #f5f5f5;
+    bottom: 0;
+    height: 60px;
+    position: absolute;
+    width: 100%;
+    padding: 20px;
+}*/
+

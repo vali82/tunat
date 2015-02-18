@@ -74,10 +74,17 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         <div class="container">
             <?php echo $this->content; ?>
             <hr>
-            <footer>
-                <p>&copy; 2005 - <?php echo date('Y') ?> by <a href="<?php echo $this->url('home') ?>">tunat.ro</a>. <?php echo $this->translate('All rights reserved.') ?></p>
-            </footer>
+
         </div> <!-- /container -->
+
+        <div id="footer">
+            <div class="container">
+                <p class="text-muted">
+                    &copy; <?php echo date('Y') ?> by <a href="<?php echo $this->url('home') ?>">tunat.ro</a>. <?php echo $this->translate('All rights reserved.') ?>
+                </p>
+            </div>
+        </div>
+
         <?php echo $this->inlineScript() ?>
     </body>
 </html>
