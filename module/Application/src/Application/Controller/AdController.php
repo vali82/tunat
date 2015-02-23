@@ -10,6 +10,10 @@
 namespace Application\Controller;
 
 use Application\Forms\AdForm;
+use Application\Forms\Filters\AdFilter;
+use Application\libs\General;
+use Application\Models\Ads\Ad;
+use Application\Models\Ads\AdDM;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\ViewModel;
@@ -24,17 +28,44 @@ class AdController extends MyAbstractController
 
     public function createAction()
     {
+        $cars = $this->cars;
+
+        $this->layout()->js_call .= ' generalObj.cars = '.json_encode($cars).'; ';
+        $make = $this->cars['make'];
+        $partsMain = $this->cars['partsMain'];
+
+        $carburant = General::getConfigs($this, 'consts|carburant');
+        $cilindree = General::getConfigs($this, 'consts|cilindree');
+
+        $resourceObj = new Ad();
         $form = new AdForm();
-//        $form->setEavEntity('educational_resources', $this->eav, $resourceObj);  // EAV
         $form->setCancelRoute('back');
-        $form->create();
+        $form->create($resourceObj, $make, $carburant, $cilindree, $partsMain);
+
 
         $request = $this->getRequest();
 
-//        $form->bind($resourceObj);
+        General::echop($this->myUser->getId());
+        $resourceObj->setUserId($this->myUser->getId());
+        General::echop($resourceObj);
 
         if ($request->isPost()) {
+            $filter = new AdFilter();
+            $form->setInputFilter($filter->getInputFilter());
 
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+
+                $resourceObj
+                    ->setCarModel($form->get('car_model')->getValue())
+                    ->setUserId($this->myUser->getId())
+                    ->setStatus('pending')
+                ;
+                $adDM = new AdDM($this->adapter);
+                $adDM->createRow($resourceObj);
+
+                $this->redirect()->toRoute('home');
+            }
         }
 
         return [

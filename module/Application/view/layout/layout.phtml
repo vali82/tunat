@@ -15,17 +15,27 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         ?>
 
         <!-- Le styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath() . '/css/style.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
+        <?php
+        echo $this
+            ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+            ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
+            ->prependStylesheet($this->basePath() . '/css/style.css')
+            ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
+            ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+            ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+
+        ;
+        ?>
 
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath() . '/js/general.js')
+            ->prependFile($this->basePath() . '/js/select2/select2.full.js')
             ->prependFile($this->basePath() . '/js/bootstrap.min.js')
             ->prependFile($this->basePath() . '/js/jquery.min.js')
-            ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-            ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+
+//            ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+//            ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
         ; ?>
 
     </head>
@@ -38,7 +48,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('TUNAT.RO') ?></a>
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('TUNAT.RO') ?></a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <div class="navbar-collapse collapse" id="navbar">
@@ -73,8 +83,6 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         </nav>
         <div class="container">
             <?php echo $this->content; ?>
-            <hr>
-
         </div> <!-- /container -->
 
         <div id="footer">
@@ -85,6 +93,12 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
             </div>
         </div>
 
-        <?php echo $this->inlineScript() ?>
+        <?php echo $this->inlineScript()->prependScript(
+            ' $(document).ready(function() { '.
+                $this->js_call.
+                ' generalObj.onLoad(); '.
+            ' ;});'
+        );
+        ?>
     </body>
 </html>

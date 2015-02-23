@@ -8,16 +8,19 @@ class Forms extends AbstractHelper
 
     private static $_label_size;
     private static $_input_size;
+    private static $elementClass;
 
     public static function render($view, $form, $url, $options = array())
     {
-        self::$_label_size = isset($options['label_size']) ? $options['label_size'] : 'col-sm-2';
-        self::$_input_size = isset($options['input_size']) ? $options['input_size'] : 'col-sm-10';
+        self::$_label_size = isset($options['label_size']) ? $options['label_size'] : 'col-md-2 col-sm-4';
+        self::$_input_size = isset($options['input_size']) ? $options['input_size'] : 'col-md-10 col-sm-8';
+        self::$elementClass = isset($options['element_class']) ? $options['element_class'] : 'form-control';
 
         $form->setAttribute('action', $url);
         $form->setAttribute('method', 'post');
         $form->setAttribute('role', 'form');
         $form->setAttribute('class', 'form-horizontal');
+
 
         $form->prepare();
 
@@ -45,35 +48,23 @@ class Forms extends AbstractHelper
                 $container = $element->getAttribute('container');
 
                 if ($element->getAttribute('name') == 'custom_form_spacer') {
-
                     self::customSpacerElement($element);
 
                 } else {
-
                     if ($element->getAttribute('class')) {
+                        self::$elementClass .= ' '.$element->getAttribute('class');
+                    }
+                    if ($element->getAttribute('type') != 'submit') {
+                        $element->setAttribute('class', self::$elementClass);
 
                     } else {
-                        if ($element->getAttribute('type') != 'submit') {
-
-
-                            $element->setAttribute('class', "form-control");
-                            if ($element->getAttribute('type') == 'checkbox') {
-                                //$element->setAttribute('style', 'width:0px');
-                            }
-
+                        if ($element->getAttribute('id') == 'cancelbutton') {
+                            $element->setAttribute('class', "btn btn-default");
                         } else {
-                            if ($element->getAttribute('id') == 'cancelbutton') {
-
-                                $element->setAttribute('class', "btn btn-default");
-                            } else {
-                                $element->setAttribute('class', "btn btn-success");
-                            }
-
-                            $found_submit_element = $element;
-
-                            continue;
-
+                            $element->setAttribute('class', "btn btn-success");
                         }
+                        $found_submit_element = $element;
+                        continue;
                     }
 
 
@@ -99,8 +90,13 @@ class Forms extends AbstractHelper
                     } ?>
 
                     <?php if ($element->getAttribute('type') != 'hidden' && !$element->getAttribute('noLabel')) { ?>
-                        <label
-                            class="<?= self::$_label_size ?> <?= (isset($options['labelClass']) ? $options['labelClass'] : 'control-label') ?>"><?= $view->translate($element->getLabel()); ?></label>
+                        <label class="<?= ($group != null ?
+                                (
+                                    (isset($group['sizeLabel']) ? $group['sizeLabel'] : self::$_label_size) .
+                                    ($view->formElementErrors($element) ? ' has-error' : '')
+                                ) :
+                                self::$_label_size).' control-label'
+                            ?>"><?= $view->translate($element->getLabel()); ?></label>
                     <?php } ?>
 
                     <?php //if (!isset($options['label_above_input'])) { ?>
@@ -124,6 +120,9 @@ class Forms extends AbstractHelper
 
                             } elseif ($element->getAttribute('switcher')) {
                                 echo self::showSwitcher($view, $element, $options);
+
+                            } elseif ($element->getAttribute('justText')) {
+                                echo $view->translate($element->getLabel());
 
                             } else {
                                 echo $view->formElement($element);

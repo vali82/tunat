@@ -7,6 +7,8 @@ return array(
         'ZfcUser',
         'BjyAuthorize',
         'RoleUserBridge',
+        'ZendDeveloperTools',
+        'BjyProfiler',
 
         'Application',
     ),

@@ -17,7 +17,7 @@ if (!isset($_GET['page'])) {
 // PENTRU o MAsisa in parte
 } else {
 
-    die('verifica sa fie ok baza de date...');
+//    die('verifica sa fie ok baza de date...');
 
     $dsn = 'mysql:dbname=tunat;host=localhost;charset=utf8';
     $user = 'tunat';
@@ -41,16 +41,27 @@ if (!isset($_GET['page'])) {
         $nodelist = $xpath->query( "//div[@class='box']/table/tr" );
 
         foreach ($nodelist as $n) {
-            if (strpos($n->childNodes->item(0)->nodeValue, 'Övrigt') === false) {
-                $categoryName = (
-                    ($n->childNodes->item(0)->nodeValue)
-                );
+            $categoryName = $n->childNodes->item(0)->nodeValue;
+            if (
+                strpos($categoryName, 'Övrigt') === false &&
+                strpos($categoryName, 'Lastbilar') === false &&
+                strpos($categoryName, 'Övriga') === false
+            ) {
                 echo "Model Category: ".$categoryName.'<br />';
                 for ($i = 0; $i<$n->childNodes->item(1)->childNodes->item(0)->childNodes->length; $i++) {
                     $cnt++;
                     $ex = explode("(", $n->childNodes->item(1)->childNodes->item(0)->childNodes->item($i)->nodeValue);
-                    $modelCar = trim(str_replace(strtoupper($carMake), "", $ex[0]));
-                    $ex2 = explode("-", $ex[1]);
+
+                    if (count($ex)>2) {
+                        $name = $ex[0].'('.$ex[1];
+                        $years = $ex[2];
+                    } else {
+                        $name = $ex[0];
+                        $years = $ex[1];
+                    }
+
+                    $modelCar = trim(str_replace(strtoupper($carMake), "", $name));
+                    $ex2 = explode("-", $years);
                     if (count($ex2) > 1) {
                         $yearStart = trim($ex2[0]);
                         $yearEnd = trim(str_replace(')', '', $ex2[1]));
