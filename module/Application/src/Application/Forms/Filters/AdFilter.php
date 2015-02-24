@@ -22,7 +22,7 @@ class AdFilter extends AbstractFilter
 			),
 			array(
 				'name'       => 'part_name',
-				'required'   => false,
+				'required'   => true,
 				'validators' => array(
 					array(
 						'name'    => 'StringLength',

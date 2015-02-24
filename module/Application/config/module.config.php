@@ -42,6 +42,17 @@ return array(
                                     ),
                                 ),
                                 'may_terminate' => true,
+                            ],
+                            'upload' => [
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route'    => '/upload[/:option]',
+                                    'defaults' => array(
+                                        'controller' => 'Application\Controller\Ad',
+                                        'action'     => 'upload',
+                                    ),
+                                ),
+                                'may_terminate' => true,
                             ]
                         ]
                     ],
@@ -129,10 +140,15 @@ return array(
     'translator' => array(
         'locale' => 'ro_RO',
         'translation_file_patterns' => array(
-            array(
+            /*array(
                 'type'     => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
                 'pattern'  => '%s.mo',
+            ),*/
+            array( // Add data/language dir as phpArray translation file
+                'type' => 'phpArray',
+                'base_dir' => 'data/language',
+                'pattern' => '%s.php',
             ),
         ),
     ),
@@ -181,6 +197,7 @@ return array(
 		        array('route' => 'zfcuser', 'roles'                             => array('parcauto','user')),
 		        array('route' => 'zfcuser/logout', 'roles'                      => array('parcauto','user')),
 		        array('route' => 'home/ad/create', 'roles'                      => array('parcauto')),
+                array('route' => 'home/ad/upload', 'roles'                      => array('parcauto')),
 
 
     	    )

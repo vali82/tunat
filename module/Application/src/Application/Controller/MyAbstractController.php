@@ -36,7 +36,7 @@ class MyAbstractController extends AbstractActionController
 
         // get cars make and models into session
         $cars = General::getFromSession('cars');
-        if ($cars === null || 1==1) {
+        if ($cars === null) {
             $carMake = [];
             $carsMakeDM = new CarsMakeDM($this->adapter);
             foreach($carsMakeDM->fetchResultsArray() as $k=>$r) {
@@ -56,17 +56,17 @@ class MyAbstractController extends AbstractActionController
             foreach($partsMainDM->fetchResultsArray() as $k=>$r) {
                 $partsMain[$r['id']] = $r['category'];
             }
-            $partsSub = [];
+            /*$partsSub = [];
             $partsSubDM = new CarsPartsSubDM($this->adapter);
             foreach($partsSubDM->fetchResultsArray() as $k=>$r) {
                 $partsSub[$r['categ_id']][] = $r['category'];
-            }
+            }*/
 
             $cars = [
                 'make' => $carMake,
                 'model' => $carModel,
                 'partsMain' => $partsMain,
-                'partsSub' => $partsSub,
+                //'partsSub' => $partsSub,
             ];
             General::addToSession('cars', $cars);
         }
@@ -81,5 +81,90 @@ class MyAbstractController extends AbstractActionController
         parent::onDispatch($e);
     }
 
+    protected function upload($user_id, $email, $path)
+    {
+        if ($user_id && $email) {
+            $adapter = new \Zend\File\Transfer\Adapter\Http();
+            $user_path = $path;
 
+            if (!is_dir($user_path)) {
+                mkdir($user_path);
+                chmod($user_path, '0777');
+            }
+            foreach ($adapter->getFileInfo() as $file => $info) {
+                $error = '';
+
+                /*if ($info['size'] > 10000000) {
+                    $error = 'size';
+                }*/
+
+                if ($error == '') {
+                    $name =  rand(100, 999).md5($info['name']).'.jpg';
+                    rename($info['tmp_name'], $user_path.$name);
+
+                    $files = array(
+                        'deleteType' => "DELETE",
+                        'deleteUrl' => $this->url()->fromRoute('home/ad/upload', ['option'=>'delete']),
+                        'name' => $info['name'],
+                        "size" => $info['size'],
+                        "type" => $info['type'],
+                        "url" => '/images/1/'.$name,
+                        "thumbnailUrl" => '/images/1/'.$name,
+                    );
+
+                    $return = [
+                        'error' => 0,
+                        'message' => ''
+                    ];
+                } else {
+                    $return = [
+                        'error' => 1,
+                        'message' => ($error == 'size' ? 'Poza prea mare' : 'Eroare')
+                    ];
+                    $view = new ViewModel();
+                    return $view->setTerminal(true);
+
+                }
+
+            }
+
+            header('Pragma: no-cache');
+            header('Cache-Control: private, no-cache');
+            header('Content-Disposition: inline; filename="files.json"');
+            header('X-Content-Type-Options: nosniff');
+            header('Vary: Accept');
+            echo json_encode(['files'=>[$files]]);
+
+        }
+    }
+
+    private function delete($user_id, $email) {
+        if ($user_id && $email) {
+            $file_name = $this->getRequest()->getParam('files');
+            // this has been customized to remove only specific images in certain user_id folders
+            // you should modify that to your needs
+            $file_path = PUBLIC_PATH . $user_id. '/'. $file_name;
+            $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
+        }
+        echo json_encode($success);
+    }
+
+    public function uploadAction()
+    {
+        $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
+
+        if ($option == '' && $this->getRequest()->isPost()) {
+            // we're using user_id and email here as a way to verify the upload and store the file in a specific directory,
+            // you can strip that out for your purposes.
+            $this->upload( $this->myUser->getId(), $this->myUser->getEmail() );
+        }
+
+        if ($this->getRequest()->isGet()) {
+            $this->upload( $this->session->user['id'], $this->session->user['email'] );
+        }
+        if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+            $this->delete( $this->myUser->getId(), $this->myUser->getEmail() );
+        }
+        exit;
+    }
 }

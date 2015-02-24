@@ -13,7 +13,9 @@ class AdForm extends AbstractForm
             ->setObject($resourceObj);
 
         $this->setAttribute('method', 'post');
-        $this->setName('createAd');
+        $this->setName('fileupload');
+        $this->setAttribute('id', 'fileupload');
+
 
         //--------------------------------------------------------- DETALII PIESA--------------
 
@@ -144,7 +146,27 @@ class AdForm extends AbstractForm
                 'group' => array('size' => 'col-sm-4 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
             ),
         ));
+//--------------------------------------------------------- POZE ANUNT--------------
 
+        $this->add(array(
+            'name' => 'custom_form_spacer',
+            'type' => 'hidden',
+            'attributes' => array(
+                'textAbove' => 'Poze',
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'photosMultiUpload',
+            'type' => 'text',
+            'options' => [
+                'label' => '',
+            ],
+            'attributes' => array(
+//                'noLabel' => true,
+                //'textAbove' => 'Detalii Anunt',
+            )
+        ));
 
 //--------------------------------------------------------- DETALII ANUNT--------------
 

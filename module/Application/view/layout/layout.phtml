@@ -30,6 +30,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         <!-- Scripts -->
         <?php echo $this->headScript()
             ->prependFile($this->basePath() . '/js/general.js')
+            ->prependFile($this->basePath() . '/js/bootbox/bootbox.min.js')
             ->prependFile($this->basePath() . '/js/select2/select2.full.js')
             ->prependFile($this->basePath() . '/js/bootstrap.min.js')
             ->prependFile($this->basePath() . '/js/jquery.min.js')
@@ -81,7 +82,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-        <div class="container">
+        <div class="container" style="padding-bottom: 50px">
             <?php echo $this->content; ?>
         </div> <!-- /container -->
 
@@ -95,8 +96,9 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
         <?php echo $this->inlineScript()->prependScript(
             ' $(document).ready(function() { '.
-                $this->js_call.
                 ' generalObj.onLoad(); '.
+                $this->js_call.
+
             ' ;});'
         );
         ?>

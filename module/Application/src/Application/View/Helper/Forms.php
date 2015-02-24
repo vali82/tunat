@@ -26,171 +26,341 @@ class Forms extends AbstractHelper
 
         $formButtonsAlign = isset($options['formButtonsAlign']) ? $options['formButtonsAlign'] : '';
 
-        if (!isset($options['onlyForm'])) { ?>
-
-            <div class="portlet box red">
-            <div class="portlet-title">
-                <div class="caption"><?= (isset($options['titlePanel']) ? $options['titlePanel'] : '&nbsp;') ?></div>
-            </div>
-            <div class="portlet-body form">
-        <?php
-        }
         echo $view->form()->openTag($form);
 
-        ?>
-        <div class="form-body">
-            <?php
-            $found_submit_element = false;
+        $found_submit_element = false;
 
-            foreach ($form as $element) {
+        foreach ($form as $element) {
 
-                $group = $element->getAttribute('group');
-                $container = $element->getAttribute('container');
+            $group = $element->getAttribute('group');
+            $container = $element->getAttribute('container');
 
-                if ($element->getAttribute('name') == 'custom_form_spacer') {
-                    self::customSpacerElement($element);
+            if ($element->getAttribute('name') == 'custom_form_spacer') {
+                self::customSpacerElement($element);
+
+            } else {
+                if ($element->getAttribute('class')) {
+                    self::$elementClass .= ' '.$element->getAttribute('class');
+                }
+                if ($element->getAttribute('type') != 'submit') {
+                    $element->setAttribute('class', self::$elementClass);
 
                 } else {
-                    if ($element->getAttribute('class')) {
-                        self::$elementClass .= ' '.$element->getAttribute('class');
-                    }
-                    if ($element->getAttribute('type') != 'submit') {
-                        $element->setAttribute('class', self::$elementClass);
-
+                    if ($element->getAttribute('id') == 'cancelbutton') {
+                        $element->setAttribute('class', "btn btn-default");
                     } else {
-                        if ($element->getAttribute('id') == 'cancelbutton') {
-                            $element->setAttribute('class', "btn btn-default");
-                        } else {
-                            $element->setAttribute('class', "btn btn-success");
-                        }
-                        $found_submit_element = $element;
-                        continue;
+                        $element->setAttribute('class', "btn btn-success");
                     }
+                    $found_submit_element = $element;
+                    continue;
+                }
 
 
-                    if ($element->getAttribute('placeholder') == null) {
-                        $element->setAttribute('placeholder', $element->getLabel());
+                if ($element->getAttribute('placeholder') == null) {
+                    $element->setAttribute('placeholder', $element->getLabel());
+                }
+
+                if ($group !== null) {
+                    if ($group['type'] == 'start') { ?>
+                        <div class="form-group row<?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>"><?php
                     }
+                } else {
 
-                    if ($group !== null) {
-                        if ($group['type'] == 'start') { ?>
-                            <div class="form-group row<?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>"><?php
+                    if ($container !== null) {
+                        if ($container['type'] == 'start' || $container['type'] == 'enclose') {
+                            ?>
+                            <div class="<?php echo $container['class'] ?>">
+                        <?php
                         }
-                    } else {
-
-                        if ($container !== null) {
-                            if ($container['type'] == 'start' || $container['type'] == 'enclose') {
-                                ?>
-                                <div class="<?php echo $container['class'] ?>">
-                            <?php
-                            }
-                        } ?>
-
-                        <div class="form-group <?php if ($view->formElementErrors($element)) echo "has-error" ?><?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>"><?php
                     } ?>
 
-                    <?php if ($element->getAttribute('type') != 'hidden' && !$element->getAttribute('noLabel')) { ?>
-                        <label class="<?= ($group != null ?
-                                (
-                                    (isset($group['sizeLabel']) ? $group['sizeLabel'] : self::$_label_size) .
-                                    ($view->formElementErrors($element) ? ' has-error' : '')
-                                ) :
-                                self::$_label_size).' control-label'
-                            ?>"><?= $view->translate($element->getLabel()); ?></label>
+                    <div class="form-group <?php if ($view->formElementErrors($element)) echo "has-error" ?><?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>"><?php
+                } ?>
+
+                <?php if ($element->getAttribute('type') != 'hidden' && !$element->getAttribute('noLabel')) { ?>
+                    <label class="<?= ($group != null ?
+                            (
+                                (isset($group['sizeLabel']) ? $group['sizeLabel'] : self::$_label_size) .
+                                ($view->formElementErrors($element) ? ' has-error' : '')
+                            ) :
+                            self::$_label_size).' control-label'
+                        ?>"><?= $view->translate($element->getLabel()); ?></label>
+                <?php } ?>
+
+                <?php //if (!isset($options['label_above_input'])) { ?>
+                <div
+                    class="<?= ($group != null ? ($group['size'] . ($view->formElementErrors($element) ? ' has-error' : '')) : self::$_input_size) ?>">
+
+                    <?php if ($element->getName() == 'no_element') { ?>
+                        &nbsp;
+                    <?php } else { ?>
+
+                        <?php if ($element->getAttribute('type') == 'file') { ?>
+                            <?= (isset($element->getValue()['name']) ? $element->getValue()['name'] : $element->getValue()) ?>
+                        <?php }
+
+                        if ($element->getAttribute('datePicker')) {
+                            $setTime = $element->getAttribute('setTime') ? true : false;
+                            echo self::showDatePicker($view, $element, $setTime);
+
+                        } elseif ($element->getAttribute('buttonRight')) {
+                            echo self::showButtonRight($view, $element);
+
+                        } elseif ($element->getAttribute('switcher')) {
+                            echo self::showSwitcher($view, $element, $options);
+
+                        } elseif ($element->getAttribute('justText')) {
+                            echo $view->translate($element->getLabel());
+
+                        } elseif ($element->getAttribute('name') == 'photosMultiUpload') {
+                            self::photosMultiUpload($view);
+
+                        } else {
+                            echo $view->formElement($element);
+                        }
+                        ?>
+
+                        <?php if ($element->getAttribute('extraInfo')) { ?>
+                            <span
+                                class="help-block"><?= $view->translate($element->getAttribute('extraInfo')) ?></span>
+                        <?php } ?>
+
+                        <?php if ($view->formElementErrors($element)) { ?>
+                            <span class="help-block"><?php echo $view->formElementErrors($element) ?></span>
+                        <?php } ?>
+
                     <?php } ?>
 
-                    <?php //if (!isset($options['label_above_input'])) { ?>
-                    <div
-                        class="<?= ($group != null ? ($group['size'] . ($view->formElementErrors($element) ? ' has-error' : '')) : self::$_input_size) ?>">
+                </div>
 
-                        <?php if ($element->getName() == 'no_element') { ?>
-                            &nbsp;
-                        <?php } else { ?>
-
-                            <?php if ($element->getAttribute('type') == 'file') { ?>
-                                <?= (isset($element->getValue()['name']) ? $element->getValue()['name'] : $element->getValue()) ?>
-                            <?php }
-
-                            if ($element->getAttribute('datePicker')) {
-                                $setTime = $element->getAttribute('setTime') ? true : false;
-                                echo self::showDatePicker($view, $element, $setTime);
-
-                            } elseif ($element->getAttribute('buttonRight')) {
-                                echo self::showButtonRight($view, $element);
-
-                            } elseif ($element->getAttribute('switcher')) {
-                                echo self::showSwitcher($view, $element, $options);
-
-                            } elseif ($element->getAttribute('justText')) {
-                                echo $view->translate($element->getLabel());
-
-                            } else {
-                                echo $view->formElement($element);
-                            }
-                            ?>
-
-                            <?php if ($element->getAttribute('extraInfo')) { ?>
-                                <span
-                                    class="help-block"><?= $view->translate($element->getAttribute('extraInfo')) ?></span>
-                            <?php } ?>
-
-                            <?php if ($view->formElementErrors($element)) { ?>
-                                <span class="help-block"><?php echo $view->formElementErrors($element) ?></span>
-                            <?php } ?>
-
-                        <?php } ?>
-
-                    </div>
-
-                    <?php
-                if ($container !== null) {
-                if ($container['type'] == 'end' || $container['type'] == 'enclose') { ?>
-                    </div><?php
-                }
-                }
-                    if ($group !== null) {
-                        if ($group['type'] == 'end') { ?>
-                            </div><?php
-                        }
-                    } else { ?>
+                <?php
+            if ($container !== null) {
+            if ($container['type'] == 'end' || $container['type'] == 'enclose') { ?>
+                </div><?php
+            }
+            }
+                if ($group !== null) {
+                    if ($group['type'] == 'end') { ?>
                         </div><?php
                     }
+                } else { ?>
+                    </div><?php
                 }
             }
+        }
 
-            ?>
-        </div>
-        <?php
         if ($found_submit_element) { ?>
-            <div class="form-actions fluid">
-                <div
-                    class="col-md-offset-<?= str_replace('col-sm-', '', self::$_label_size) ?> <?= self::$_input_size ?>">
-                    <div class="<?= $formButtonsAlign ?>">
-                        <?php echo $view->formElement($found_submit_element); ?>
-                        <?php if ($found_submit_element->getAttribute('cancelLink')) { ?>
-                            <input type="button" value="<?= $view->translate('Anuleaza') ?>" class="btn btn-default"
-                                   onclick="<?php
-                                   if ($found_submit_element->getAttribute('cancelLink') == 'back') {
-                                       echo 'window.history.back()';
-                                   } elseif (strpos($found_submit_element->getAttribute('cancelLink'), 'js::') === 0) {
-                                       echo str_replace('js::', '', $found_submit_element->getAttribute('cancelLink'));
-                                   } else {
-                                       echo 'self.location.href=\'' . $view->url($found_submit_element->getAttribute('cancelLink')) . '\' ';
-                                   }
-                                   ?>">
-                        <?php } ?>
-                    </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 <?= self::$_input_size ?><?= $formButtonsAlign ?>">
+                    <?php echo $view->formElement($found_submit_element); ?>
+                    <?php if ($found_submit_element->getAttribute('cancelLink')) { ?>
+                        <input type="button" value="<?= $view->translate('Anuleaza') ?>" class="btn btn-default"
+                           onclick="<?php
+                           if ($found_submit_element->getAttribute('cancelLink') == 'back') {
+                               echo 'window.history.back()';
+                           } elseif (strpos($found_submit_element->getAttribute('cancelLink'), 'js::') === 0) {
+                               echo str_replace('js::', '', $found_submit_element->getAttribute('cancelLink'));
+                           } else {
+                               echo 'self.location.href=\'' . $view->url($found_submit_element->getAttribute('cancelLink')) . '\' ';
+                           }
+                           ?>">
+                    <?php } ?>
                 </div>
             </div>
         <?php }
 
         echo $view->form()->closeTag($form);
+    }
 
-        if (!isset($options['onlyForm'])) { ?>
+    private static function photosMultiUpload($view)
+    {
+        $view->headLink()
+            ->prependStylesheet('/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
+            ->prependStylesheet('/jquery-file-upload/css/jquery.fileupload.css')
+            ->appendStylesheet('/jquery-file-upload/css/jquery.fileupload-ui.css');
+
+        $view->headScript()
+            //->appendFile('/js/media.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/vendor/jquery.ui.widget.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/vendor/tmpl.min.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/vendor/load-image.min.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/vendor/canvas-to-blob.min.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/jquery.iframe-transport.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/jquery.fileupload.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/jquery.fileupload-process.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/jquery.fileupload-image.js', 'text/javascript')
+//    ->appendFile('/jquery-file-upload/js/jquery.fileupload-audio.js', 'text/javascript')
+//    ->appendFile('/jquery-file-upload/js/jquery.fileupload-video.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/jquery.fileupload-validate.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/jquery.fileupload-ui.js', 'text/javascript')
+            ->appendFile('/jquery-file-upload/js/cors/jquery.xdr-transport.js', 'text/javascript')
+        ;
+
+        ?>
+            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+            <div class="row fileupload-buttonbar">
+                <div class="col-lg-7">
+                    <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Add files...</span>
+                    <input type="file" multiple="" name="files[]">
+                </span>
+                    <button class="btn btn-primary start" type="submit">
+                        <i class="glyphicon glyphicon-upload"></i>
+                        <span>Start upload</span>
+                    </button>
+                    <button class="btn btn-warning cancel" type="reset">
+                        <i class="glyphicon glyphicon-ban-circle"></i>
+                        <span>Cancel upload</span>
+                    </button>
+                    <button class="btn btn-danger delete" type="button">
+                        <i class="glyphicon glyphicon-trash"></i>
+                        <span>Delete</span>
+                    </button>
+                    <input type="checkbox" class="toggle">
+                    <!-- The global file processing state -->
+                    <span class="fileupload-process"></span>
+                </div>
+                <!-- The global progress information -->
+                <div class="col-lg-5 fileupload-progress fade">
+                    <!-- The global progress bar -->
+                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
+                         aria-valuemax="100">
+                        <div class="progress-bar progress-bar-success" style="width:0%;">
+                        </div>
+                    </div>
+                    <!-- The extended global progress information -->
+                    <div class="progress-extended">
+                        &nbsp;
+                    </div>
+                </div>
             </div>
+            <!-- The table listing the files available for upload/download -->
+            <table role="presentation" class="table table-striped clearfix">
+                <tbody class="files">
+                </tbody>
+            </table>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Note</h3>
             </div>
+            <div class="panel-body">
+                <ul>
+                    <li>
+                        Pozele trebuie sa aiba maximum <strong>5 MB</strong>.
+                    </li>
+                    <li>
+                        Sunt admise doar fisiere (<strong>JPG, PNG</strong>).
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+        <script id="template-upload" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+            {% if (file.error) { %}
+            <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <p class="size">{%=o.formatFileSize(file.size)%}</p>
+            {% if (!o.files.error) { %}
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                 aria-valuenow="0">
+                <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+            {% } %}
+        </td>
+        <td>
+            {% if (!o.files.error && !i && !o.options.autoUpload) { %}
+            <button class="btn btn-primary start">
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+            {% } %}
+            {% if (!i) { %}
+            <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {% } %}
+        </td>
+    </tr>
+    {% } %}
+</script>
+        <!-- The template to display files available for download -->
+        <script id="template-download" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+                    <span class="preview">
+                        {% if (file.thumbnailUrl) { %}
+                            <a href="{%=file.url%}" type="{%=file.type%}" title="{%=file.name%}"
+                               download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                        {% } %}
+                    </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}"
+                {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                {% } else { %}
+                <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+            <div><span class="label label-danger">Error</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+            <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"
+            {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+            <i class="fa fa-trash-o"></i>
+            <span>Sterge</span>
+            </button>
+            {% } else { %}
+            <button class="btn btn-warning cancel">
+                <i class="fa fa-ban"></i>
+                <span>Anuleaza</span>
+            </button>
+            {% } %}
+        </td>
+    </tr>
+    {% } %}
+</script>
+        <!-- The blueimp Gallery widget -->
+        <div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+            <div class="slides">
+            </div>
+            <h3 class="title"></h3>
+            <a class="prev">
+                ‹
+            </a>
+            <a class="next">
+                ›
+            </a>
+            <a class="close white">
+            </a>
+            <a class="play-pause">
+            </a>
+            <ol class="indicator">
+            </ol>
+        </div>
         <?php
-        }
     }
 
     protected static function showSwitcher($view, $element, $options)
