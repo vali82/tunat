@@ -10,3 +10,5 @@ composer.lock
 #vendor/bin
 vendor
 composer.phar
+
+public/images
