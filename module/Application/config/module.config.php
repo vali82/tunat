@@ -13,86 +13,16 @@ return array(
             'home' => array(
                 'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/',
+                    'route' => '/',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Index',
-                        'action'     => 'index',
+                        'action' => 'index',
                     ),
                 ),
                 'may_terminate' => true,
-                'child_routes' => [
-                    'ad' => [
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route'    => 'ad',
-                            'defaults' => array(
-                                'controller' => 'Application\Controller\Ad',
-                                'action'     => 'index',
-                            ),
-                        ),
-                        'may_terminate' => false,
-                        'child_routes' => [
-                            'create' => [
-                                'type' => 'Segment',
-                                'options' => array(
-                                    'route'    => '/create',
-                                    'defaults' => array(
-                                        'controller' => 'Application\Controller\Ad',
-                                        'action'     => 'create',
-                                    ),
-                                ),
-                                'may_terminate' => true,
-                            ],
-                            'upload' => [
-                                'type' => 'Segment',
-                                'options' => array(
-                                    'route'    => '/upload[/:option]',
-                                    'defaults' => array(
-                                        'controller' => 'Application\Controller\Ad',
-                                        'action'     => 'upload',
-                                    ),
-                                ),
-                                'may_terminate' => true,
-                            ]
-                        ]
-                    ],
-                ]
+                'child_routes' => include __DIR__ . '/routes/home.php'
             ),
 
-
-
-            /*'parcaccount' => [
-                'type' => 'Literal',
-                'options' => array(
-                    'route'    => '/parcaccount',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-                'child_routes' => [
-                    'ad' => [
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route'    => '/ad',
-                            'defaults' => array(
-                                'controller' => 'Application\Controller\Index',
-                                'action'     => 'index',
-                            ),
-                        ),
-                        'child_routes' => [
-                            'type' => 'Literal',
-                            'options' => array(
-                                'route'    => '/create',
-                                'defaults' => array(
-                                    'controller' => 'Application\Controller\Ad',
-                                    'action'     => 'create',
-                                ),
-                            ),
-                        ]
-                    ]
-                ]
-            ],*/
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -155,54 +85,43 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Simple' => 'Application\Controller\SimpleController',
             'Application\Controller\Ad' => 'Application\Controller\AdController'
         ),
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
+        'display_exceptions' => true,
+        'doctype' => 'HTML5',
+        'not_found_template' => 'error/404',
+        'exception_template' => 'error/index',
         'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
-        /*'strategies' => array(
+        'strategies' => array(
             'ViewJsonStrategy',
-        ),*/
+        ),
     ),
     // Placeholder for console routes
     'console' => array(
         'router' => array(
-            'routes' => array(
-            ),
+            'routes' => array(),
         ),
     ),
-    'bjyauthorize' =>array(
-    	'guards' => array(
-    	'BjyAuthorize\Guard\Route' => array_merge ( array(
-    		// Below is the default index action used by the ZendSkeletonApplication
+    'bjyauthorize' => array(
+        'guards' => array(
+            'BjyAuthorize\Guard\Route' => array_merge(
 
-		        array('route' => 'home', 'roles' => array('guest', 'user', 'parcauto')),
-//
-		        array('route' => 'zfcuser/login', 'roles' => array('guest')),
-		        array('route' => 'zfcuser/register', 'roles' => array('guest')),
-
-		        array('route' => 'zfcuser', 'roles'                             => array('parcauto','user')),
-		        array('route' => 'zfcuser/logout', 'roles'                      => array('parcauto','user')),
-		        array('route' => 'home/ad/create', 'roles'                      => array('parcauto')),
-                array('route' => 'home/ad/upload', 'roles'                      => array('parcauto')),
-
-
-    	    )
-		    , []
-	    )
-    	),
+                include __DIR__ . '/routes/acl/home.php',
+                include __DIR__ . '/routes/acl/ad.php',
+                []
+            )
+        ),
     ),
 );

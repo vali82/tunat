@@ -5,6 +5,8 @@ namespace Application\Models\Ads;
 class Ad
 {
     /**@var int*/
+    protected $id;
+    /**@var int*/
     protected $userId;
     /**@var int*/
     protected $partCateg;
@@ -28,6 +30,69 @@ class Ad
     protected $dateadd;
     /**@var string*/
     protected $updatedAt;
+    /**@var string*/
+    protected $images;
+
+
+
+    public function adListHTML($partial, $ads)
+    {
+        $content = '';
+        foreach ($ads as $ad) {
+            $user_id = 1;
+            $adImg = unserialize($ad->getImages());
+            $content.= $partial('application/ad/partials/ad_in_list.phtml',
+                [
+                    'imgSrc' => General::getSimpleAvatar(
+                        $user_id . 'xadsx'.$ad->getId(),
+                        (count($adImg) > 0 ? $adImg[0] : ''),
+                        '100x100'
+                    ),
+                    'title' => $ad->getPartName(),
+                    'description' => $ad->getDescription(),
+                    'car' => $cars['make'][$ad->getCarMake()] . ' ' .
+                        $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model']
+                ]
+            );
+        }
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return Ad
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param string $images
+     * @return Ad
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+        return $this;
+    }
 
     /**
      * @return int

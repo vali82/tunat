@@ -113,7 +113,7 @@ class Forms extends AbstractHelper
                             echo $view->translate($element->getLabel());
 
                         } elseif ($element->getAttribute('name') == 'photosMultiUpload') {
-                            self::photosMultiUpload($view);
+                            self::photosMultiUpload($view, $element);
 
                         } else {
                             echo $view->formElement($element);
@@ -172,7 +172,7 @@ class Forms extends AbstractHelper
         echo $view->form()->closeTag($form);
     }
 
-    private static function photosMultiUpload($view)
+    private static function photosMultiUpload($view, $element)
     {
         $view->headLink()
             ->prependStylesheet('/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
@@ -211,15 +211,6 @@ class Forms extends AbstractHelper
                         <i class="glyphicon glyphicon-upload"></i>
                         <span>Start upload</span>
                     </button>
-                    <button class="btn btn-warning cancel" type="reset">
-                        <i class="glyphicon glyphicon-ban-circle"></i>
-                        <span>Cancel upload</span>
-                    </button>
-                    <button class="btn btn-danger delete" type="button">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        <span>Delete</span>
-                    </button>
-                    <input type="checkbox" class="toggle">
                     <!-- The global file processing state -->
                     <span class="fileupload-process"></span>
                 </div>
@@ -249,10 +240,10 @@ class Forms extends AbstractHelper
             <div class="panel-body">
                 <ul>
                     <li>
-                        Pozele trebuie sa aiba maximum <strong>5 MB</strong>.
+                        Pozele trebuie sa aiba maximum <strong><?=$element->getAttribute('maxFileSize')?></strong>.
                     </li>
                     <li>
-                        Sunt admise doar fisiere (<strong>JPG, PNG</strong>).
+                        Sunt admise doar fisiere (<strong><?=$element->getAttribute('acceptedFileType')?></strong>).
                     </li>
                 </ul>
             </div>

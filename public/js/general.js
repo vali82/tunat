@@ -14,9 +14,9 @@ $.general = function() {
             $(obj).popover();
         });
 
-        alert = function (p){
+        /*alert = function (p){
             bootbox.alert(p);
-        };
+        };*/
 
         confirm = function (message, funct_or_url)
         {
@@ -143,8 +143,8 @@ $.general = function() {
             //$("#select2CarModels").select2('destroy');
             //$("#select2CarModels").select2();
             if (thisObj.cars.model[carId] != undefined) {
-                $.each(thisObj.cars.model[carId], function (i, v) {
-                    userList += ('<option value="' + i + '">' + i + '</option>');
+                $.each(thisObj.cars.categ[carId], function (i, v) {
+                    userList += ('<option value="' + v + '">' + v + '</option>');
                 });
             }
             $('#select2CarModels').html(userList);
@@ -158,9 +158,12 @@ $.general = function() {
             var carCategId = $('#select2CarModels').val();
             var userList= '<option value="">Model</option>';
             $("#select2CarModels2").attr('disabled',false);
-            if (thisObj.cars.model[carId] != undefined && thisObj.cars.model[carId][carCategId] != undefined) {
-                $.each(thisObj.cars.model[carId][carCategId], function (i, v) {
-                    userList += ('<option value="' + i + '">' + v.model + '</option>');
+            if (thisObj.cars.model[carId] != undefined && thisObj.cars.model[carId] != undefined) {
+                $.each(thisObj.cars.model[carId], function (i, v) {
+                    if (v.categ == carCategId) {
+                        userList += ('<option value="' + i + '">' + v.model + '</option>');
+                    }
+
                 });
             }
             $('#select2CarModels2').html(userList);
@@ -193,8 +196,22 @@ $.general = function() {
 
             // Initialize the jQuery File Upload widget:
             $('#fileupload').fileupload({
-                disableImageResize:false,
+                disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
                 autoUpload:false,
+                imageMaxWidth: 2000,
+                imageMaxHeight: 2000,
+                maxFileSize:2*1024*1024,
+                acceptFileTypes:/(\.|\/)(jpe?g|png|gif)$/i,
+                messages:{
+                    maxNumberOfFiles:'Numarul maxim de fisiere depasit',
+                    acceptFileTypes:'Tipul fisierului nu este admis',
+                    maxFileSize:'Fisierul depaseste marimea admisa',
+                    minFileSize:'Fisierul este sub marimea admisa'
+                },
+                formData:{
+                    //dinselect:$("#selectDoi").val(),
+                    //album_id:albumId
+                },
                 // Uncomment the following to send cross-domain cookies:
                 //xhrFields: {withCredentials: true},
                 url:uploadUrl
@@ -206,35 +223,12 @@ $.general = function() {
                 // Enable image resizing, except for Android and Opera,
                 // which actually support image resizing, but fail to
                 // send Blob objects via XHR requests:
-                disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-                maxFileSize:10000000,
-                acceptFileTypes:/(\.|\/)(jpe?g|png)$/i,
-                messages:{
-                    maxNumberOfFiles:'Numarul maxim de fisiere depasit',
-                    acceptFileTypes:'Tipul fisierului nu este admis',
-                    maxFileSize:'Fisierul depaseste marimea admisa',
-                    minFileSize:'Fisierul este sub marimea admisa'
-                },
-                formData:{
-                    //dinselect:$("#selectDoi").val(),
-                    //album_id:albumId
-                }
+                //disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+                //maxFileSize:10000000,
+
             });
 
-            /*// Upload server status check for browsers with CORS support:
-            if ($.support.cors) {
-                $.ajax({
-                    url:uploadUrl,
-                    type:'HEAD'
-                }).fail(function () {
-                    $('<div class="alert alert-danger"/>')
-                        .text('Upload server currently unavailable - ' +
-                        new Date())
-                        .appendTo('#fileupload');
-                });
-            }*/
-
-            /*// Load & display existing files:
+            // Load & display existing files:
             $('#fileupload').addClass('fileupload-processing');
             $.ajax({
                 // Uncomment the following to send cross-domain cookies:
@@ -247,7 +241,7 @@ $.general = function() {
             }).done(function (result) {
                 $(this).fileupload('option', 'done')
                     .call(this, $.Event('done'), {result:result});
-            });*/
+            });
 
 
 
@@ -255,8 +249,39 @@ $.general = function() {
 
 
 
-        }
+        },
 
+        callUpload: function(uploadUrl)
+        {
+            $.ajax({
+                url: uploadUrl,
+                type:'GET',
+                dataType:'json',
+                statusCode: {
+                    403: function() {
+                        alert( "Acces interzis!" );
+                    },
+                    404: function() {
+                        alert( "Pagina nu a fost gasita!" ); //@TODO - ajax status
+                    }
+                },
+                beforeSend : function() {
+
+                }
+            })
+                .done(function( data ) {
+
+                    if (data.error == 0) {
+                        // Success so call function to process the form
+
+                    }
+                    else {
+                        // Handle errors here
+                        alert(data.message);
+                    }
+
+                });
+        }
 
 
     };

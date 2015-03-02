@@ -9,7 +9,7 @@ class AdDM extends DataMapper {
     public function __construct($adapter)
     {
         $this->adapter = $adapter;
-        $this->model = null;
+        $this->model = new Ad();
         $this->table_name = 'ads';
 
         $this->fields = array(
@@ -24,7 +24,8 @@ class AdDM extends DataMapper {
             'price',
             'dateadd',
             'status',
-            'updated_at'
+            'updated_at',
+            'images'
         );
 
         /*$this->_primary_key_update = array('id');

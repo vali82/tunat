@@ -9,6 +9,7 @@ return array(
         'RoleUserBridge',
         'ZendDeveloperTools',
         'BjyProfiler',
+        'WebinoImageThumb',
 
         'Application',
     ),

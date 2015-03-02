@@ -38,7 +38,14 @@ class AdController extends MyAbstractController
         $make = $this->cars['make'];
         $partsMain = $this->cars['partsMain'];
 
-        General::addToSession('adTmpId','tmp'.rand(10000,99999));
+        $adTmpId = General::getFromSession('adTmpId');
+
+        if ($adTmpId === null) {
+            $adTmpId = 'tmp'.rand(10000,99999);
+            General::addToSession('adTmpId', $adTmpId);
+        }
+
+        $file_path = PUBLIC_PATH . $this->myUser->getId() . '/ads/'. $adTmpId . '/' ;
 
         $carburant = General::getConfigs($this, 'consts|carburant');
         $cilindree = General::getConfigs($this, 'consts|cilindree');
@@ -68,15 +75,37 @@ class AdController extends MyAbstractController
                     $cilindree[$form->get('car_cilindree')->getValue()] :
                     ''
                 ;
+
+
+                $images = [];
+
+                if (is_dir($file_path)) {
+                    foreach (glob($file_path . "*") as $filefound) {
+                        $x = explode('/', $filefound);
+                        $filename = $x[count($x)-1];
+                        if (strpos($filename, '_') === false) {
+                            $images[] = $filename;
+                        }
+                    }
+                }
+
                 $resourceObj
                     ->setCarModel($form->get('car_model')->getValue())
                     ->setCarCarburant($carburantValue)
                     ->setCarCilindree($cilindreeValue)
                     ->setUserId($this->myUser->getId())
                     ->setStatus('pending')
+                    ->setImages(serialize($images))
                 ;
                 $adDM = new AdDM($this->adapter);
-                $adDM->createRow($resourceObj);
+                $adId = $adDM->createRow($resourceObj);
+
+                if (is_dir($file_path)) {
+                    rename($file_path, PUBLIC_PATH . $this->myUser->getId() . '/ads/' . $adId . '/');
+                }
+
+
+                General::unsetSession('adTmpId');
 
                 $this->redirect()->toRoute('home');
             } else {
@@ -84,6 +113,11 @@ class AdController extends MyAbstractController
                     ' generalObj.ad.changeClass("'.$form->get('car_class')->getValue().'");'.
                     ' generalObj.ad.changeModel("'.$form->get('car_model')->getValue().'"); ';
             }
+        }
+
+        if (is_dir($file_path)) {
+//            var_dump('asdads');
+//            $this->layout()->js_call .=' generalObj.ad.callUpload("'.$this->url()->fromRoute('home/ad/upload').'"); ';
         }
 
         return [
@@ -97,24 +131,23 @@ class AdController extends MyAbstractController
         $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
 
         if ($option == '' && $this->getRequest()->isPost()) {
-            // we're using user_id and email here as a way to
-            // verify the upload and store the file in a specific directory,
-            // you can strip that out for your purposes.
-            if (!is_dir(PUBLIC_PATH . $this->myUser->getId() . '/')) {
-                mkdir(PUBLIC_PATH . $this->myUser->getId() . '/');
-                chmod(PUBLIC_PATH . $this->myUser->getId() . '/', '0777');
-            }
-            $this->upload($this->myUser->getId(),
+            return $this->uploadAdImages(
+                $this->myUser->getId(),
                 $this->myUser->getEmail(),
-                PUBLIC_PATH . $this->myUser->getId() . '/' . General::getFromSession('adTmpId') . '/'
+                ['ads', General::getFromSession('adTmpId')],
+                ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
+                2*1024*1024
             );
         }
-
         if ($this->getRequest()->isGet()) {
-            //$this->upload( $this->session->user['id'], $this->session->user['email'] );
+            return  $this->uploadAdGetUploaded(
+                $this->myUser->getId(),
+                $this->myUser->getEmail(),
+                ['ads', General::getFromSession('adTmpId')]
+            );
         }
         if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
-            $this->delete( $this->myUser->getId(), $this->myUser->getEmail() );
+            return $this->deleteAdImages($this->myUser->getId(), $this->myUser->getEmail());
         }
         exit;
     }

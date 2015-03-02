@@ -19,6 +19,39 @@ class General
         echo '</div></div></div>';
     }
 
+    /**
+     * Get Profile Image for 'kg_admin','educator','child','parent'
+     * @param string 'kg_admin','educator','child','parent' $entity_type
+     * @param int $entity_id
+     * @param int $size
+     * @param string $style
+     * @param array $options
+     * @param string $return
+     *
+     * @return string
+     * */
+    public static function getSimpleAvatar($entity_type, $entity_id, $size, $includeHTTP = false)
+    {
+        $entity_id = ($entity_id !== '' && $entity_id !== null ? $entity_id : 0);
+
+        $sizex = explode('x', $size);
+        if ($sizex[0] == '0') {
+            $size = '9999x' . $sizex[1];
+            $sizestyle = 'height:' . $sizex[1] . 'px';
+
+        } elseif ($sizex[1] == '0') {
+            $size = $sizex[0] . 'x9999';
+            $sizestyle = 'width:' . $sizex[0] . 'px';
+        } else {
+            $sizestyle = 'width:' . $sizex[0] . 'px; height:' . $sizex[1] . 'px';
+        }
+
+        $src = ($includeHTTP ? 'http://' . MAIN_DOMAIN : '') .
+            '/display-image/' . $entity_type . '/' . $entity_id . '/' . $size;
+
+        return $src;
+    }
+
     public static function getConfigs($controller, $param = null)
     {
         $config = $controller->getServiceLocator();

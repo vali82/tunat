@@ -32,6 +32,26 @@ abstract class DataMapper implements MMDataMapperInterface
     protected $allow_log_action = false;
     protected $log_action_interested_fields = null;
 
+    public function getTableName()
+    {
+        return $this->table_name;
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    public function getAllowLogAction()
+    {
+        return $this->allow_log_action;
+    }
+
 
     /**
      * @return TableGateway
@@ -86,7 +106,7 @@ abstract class DataMapper implements MMDataMapperInterface
      * @param string
      *
      * @return \Zend\Db\Sql\Select
-    */
+     */
     private function constructWhere($select, $key, $value)
     {
         if (strpos($value, '__expression[:]') !== false) {
@@ -125,7 +145,7 @@ abstract class DataMapper implements MMDataMapperInterface
      * @param string $value
      *
      * @return string
-    */
+     */
     public static function expression($value)
     {
         return '__expression[:]expression[:]' . $value;
@@ -145,7 +165,8 @@ abstract class DataMapper implements MMDataMapperInterface
             if (method_exists($element, $fieldMethod)) {
                 if ($field == 'dateadd' && ($element->getDateadd() === '' || $element->getDateadd() === null)) {
                     $element->setDateadd(date('Y-m-d H:i:s'));
-                } elseif ($field == 'updated_at' && ($element->getUpdatedAt() === '' || $element->getUpdatedAt() === null)) {
+                } elseif ($field == 'updated_at' &&
+                    ($element->getUpdatedAt() === '' || $element->getUpdatedAt() === null)) {
                     $element->setUpdatedAt("0000-00-00 00:00:00");
                 }
                 $values[$field] = $element->$fieldMethod();
@@ -197,7 +218,8 @@ abstract class DataMapper implements MMDataMapperInterface
                 $fieldMethod .= ucfirst($y);
             }
             if (method_exists($element, $fieldMethod)) {
-                if ($field == 'updated_at' && ($element->getUpdatedAt() === '0000-00-00 00:00:00' || $element->getUpdatedAt() === null)) {
+                if ($field == 'updated_at' &&
+                    ($element->getUpdatedAt() === '0000-00-00 00:00:00' || $element->getUpdatedAt() === null)) {
                     $element->setUpdatedAt(date('Y-m-d H:i:s'));
                 }
                 $values[$field] = $element->$fieldMethod();
@@ -319,12 +341,18 @@ abstract class DataMapper implements MMDataMapperInterface
      * <p>
      * array of order by if needed
      * </p>
+     * @param $limit null|array
+     * <p>
+     * key0: pagina
+     * key1: limit pe page...
+     * [5,10] ... pagina 5 10 pe pagina
+     * </p>
      *
      * @return $this->_model[]|null
      */
-    public function fetchAllDefault($selectKey, $orderBy = null)
+    public function fetchAllDefault($selectKey, $orderBy = null, $limit = null)
     {
-        $results = $this->getTableGateway()->select(function (Select $select) use ($selectKey, $orderBy) {
+        $results = $this->getTableGateway()->select(function (Select $select) use ($selectKey, $orderBy, $limit) {
 
             if (is_array($selectKey)) {
                 foreach ($selectKey as $k => $pkey) {
@@ -338,6 +366,10 @@ abstract class DataMapper implements MMDataMapperInterface
             if ($orderBy !== null) {
                 $select->order($orderBy);
             }
+            if ($limit !== null) {
+                $select->limit($limit[1])->offset(((int)$limit[0]-1)*$limit[1]);
+            }
+
 
         });
 //		var_dump($results->getDataSource()->getResource()->queryString);
@@ -356,7 +388,7 @@ abstract class DataMapper implements MMDataMapperInterface
      * @param array <p>of where conditions</p>
      *
      * @return int
-    */
+     */
     public function countResults($selectKey = null)
     {
         $sql = new Sql($this->adapter);
