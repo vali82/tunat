@@ -1,5 +1,43 @@
 <h3>Anunturi</h3>
 
-<h4><?=$this->title?></h4>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <?=$this->breadcrump?>
+        </h3>
+    </div>
+    <?php if (($this->models) === null) { ?>
+    <div class="panel-body">
+        <?php
+        foreach ($this->layout()->cars['categ'][$this->carMakeId] as $categ) {
+            ?><a href="<?=$this->url(
+                'home/piese',
+                [
+                    'car_make' => $this->carCollection->urlizeCarMake($this->carMakeId),
+                    'car_class'=> $this->carCollection->urlizeCarClass($categ),
+                ]
+            )?>"><?=$categ?></a>, <?php
+        }
+        ?>
+    </div>
+    <?php } else { ?>
+        <div class="panel-body">
+            <?php
+            foreach ($this->models as $model) {
+                ?><a href="<?=$this->url(
+                    'home/piese',
+                    [
+                        'car_make' => $this->carCollection->urlizeCarMake($this->carMakeId),
+                        'car_class'=> $this->carCollection->urlizeCarClass($this->class),
+                        'car_model' => $this->carCollection->urlizeCarModel($model['model']),
+                    ]
+                )?>"><?=$model['model']?></a>, <?php
+            }
+            ?>
+        </div>
+    <?php } ?>
+</div>
 
 <?=$this->adList?>

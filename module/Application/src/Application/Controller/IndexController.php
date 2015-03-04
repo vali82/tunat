@@ -13,6 +13,7 @@ use Application\libs\General;
 use Application\Models\Ads\Ad;
 use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
+use Application\Models\Cars\CarsCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use ZfcBaseTest\Mapper\AbstractDbMapperTest;
@@ -34,10 +35,12 @@ class IndexController extends MyAbstractController
         $cars = $this->cars;
         $makeParam = $this->getEvent()->getRouteMatch()->getParam('car_make', 0);
         $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', 0);
+        $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
         $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', 0);
 
         $adList = '';
         $title = '';
+        $carClass = '';
         $x = explode('-', $makeParam);
         $carMakeId = $x[count($x)-1];
 
@@ -73,12 +76,41 @@ class IndexController extends MyAbstractController
 
             } else {
                 $title = $cars['make'][$carMakeId];
+
             }
         }
 
+
+        $carCollection = new CarsCollection($this);
+
+        $models = null;
+        $class = null;
+        if ($classParam !== null) {
+            $models = [];
+            foreach ($cars['model'][$carMakeId] as $model) {
+                if ($carCollection->urlizeCarClass($model['categ']) == $classParam) {
+                    $class = $model['categ'];
+                    $models[] = $model;
+                }
+            }
+        }
+
+
+
+
         return [
+            'carMake' => strtolower($cars['make'][$carMakeId]) . '-' . $carMakeId,
+            'carMakeId' => $carMakeId,
             'title' => $title,
-            'adList' => $adList
+
+            'models' => $models,
+            'class' => $class,
+
+            'breadcrump' => $carCollection->breadcrump($carMakeId, $class),
+            'carCollection' => $carCollection,
+
+            'adList' => $adList,
+
         ];
     }
 }

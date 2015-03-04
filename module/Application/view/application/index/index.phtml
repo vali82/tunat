@@ -1,5 +1,6 @@
 <div class="jumbotron">
     <h1><?php echo sprintf($this->translate('Bine ai venit pe %stunat.ro%s'), '<span class="zf-green">', '</span>') ?></h1>
+
     <p>
         <?php echo sprintf($this->translate('Congratulations! You have successfully installed the %sZF2
             Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple
@@ -7,9 +8,27 @@
             '<a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">', '</a>',
             \Zend\Version\Version::VERSION) ?>
     </p>
-    <p><a class="btn btn-success btn-lg" href="https://github.com/zendframework/zf2" target="_blank"><?php echo $this->translate('Fork Zend Framework 2 on GitHub') ?> &raquo;</a></p>
+
+    <p><a class="btn btn-success btn-lg" href="https://github.com/zendframework/zf2"
+          target="_blank"><?php echo $this->translate('Fork Zend Framework 2 on GitHub') ?> &raquo;</a></p>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Masini populare</h3>
+    </div>
+    <div class="panel-body">
+        <a href="<?= $this->url('home/piese', ['car_make' => 'vw-90']) ?>">VW</a>,
+        <a href="<?= $this->url('home/piese', ['car_make' => 'audi-5']) ?>">Audi</a>,
+        <a href="<?= $this->url('home/piese', ['car_make' => 'bmw-90']) ?>">BMW</a>,
+        <a href="<?= $this->url('home/piese', ['car_make' => 'opel-90']) ?>">Opel</a>,
+        <a href="<?= $this->url('home/piese', ['car_make' => 'mercedes-90']) ?>">Mercedes</a>,
+        <a href="<?= $this->url('home/piese', ['car_make' => 'renault-90']) ?>">Renault</a>,
+        <a href="<?= $this->url('home/piese', ['car_make' => 'daica-90']) ?>">Dacia</a>,
+        <a href="<?= $this->url('home/piese', ['car_make' => 'peugeot-90']) ?>">Peugeot</a>
+    </div>
 </div>
 
 <div>
-    <?=$this->adList?>
+    <?= $this->adList ?>
 </div>

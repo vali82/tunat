@@ -38,7 +38,7 @@ return [
     'piese' => [
         'type' => 'Segment',
         'options' => array(
-            'route' => 'piese[/:car_make][/:car_model][/:parts_main]',
+            'route' => 'piese[/:car_make][/:car_class][/:car_model][/:parts_main]',
             'defaults' => array(
                 '__NAMESPACE__' => 'Application\Controller',
                 'controller' => 'Index',
