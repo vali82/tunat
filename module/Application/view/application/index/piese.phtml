@@ -8,36 +8,37 @@
             <?=$this->breadcrump?>
         </h3>
     </div>
-    <?php if (($this->models) === null) { ?>
+    <?php if (($this->class) === null) { ?>
     <div class="panel-body">
+        <span>Step1</span><br />
         <?php
         foreach ($this->layout()->cars['categ'][$this->carMakeId] as $categ) {
-            ?><a href="<?=$this->url(
-                'home/piese',
-                [
-                    'car_make' => $this->carCollection->urlizeCarMake($this->carMakeId),
-                    'car_class'=> $this->carCollection->urlizeCarClass($categ),
-                ]
-            )?>"><?=$categ?></a>, <?php
+            ?><a href="<?=$this->carCollection->urlizeCarClass($this->carMakeId, $categ)?>"><?=$categ?></a>, <?php
         }
         ?>
     </div>
-    <?php } else { ?>
+    <?php } elseif ($this->class !== null && $this->models !== null && $this->carModelId === null) { ?>
         <div class="panel-body">
+            <span>Step2</span><br />
             <?php
-            foreach ($this->models as $model) {
-                ?><a href="<?=$this->url(
-                    'home/piese',
-                    [
-                        'car_make' => $this->carCollection->urlizeCarMake($this->carMakeId),
-                        'car_class'=> $this->carCollection->urlizeCarClass($this->class),
-                        'car_model' => $this->carCollection->urlizeCarModel($model['model']),
-                    ]
-                )?>"><?=$model['model']?></a>, <?php
+            foreach ($this->models as $modelId=>$model) {
+                ?><a href="<?=$this->carCollection->urlizeCarModel($this->carMakeId, $modelId)?>"><?=$model['model']?></a>, <?php
             }
             ?>
         </div>
+    <?php } elseif ($this->carModelId !== null && $this->partMainId === null) { ?>
+        <div class="panel-body">
+            <span>Step3</span><br />
+            <?php
+            foreach ($this->layout()->cars['partsMain'] as $partId=>$part) {
+                ?><a href="<?=$this->carCollection->urlizePartMain($this->carMakeId, $this->carModelId, $partId)?>"><?=$part?></a>, <?php
+            }
+            ?>
+        </div>
+    <?php } elseif ($this->partMainId !== null) { ?>
+        <div class="panel-body">
+            <span>Step4</span><br />
+            <?=$this->adList?>
+        </div>
     <?php } ?>
 </div>
-
-<?=$this->adList?>

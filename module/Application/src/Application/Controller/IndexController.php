@@ -33,53 +33,24 @@ class IndexController extends MyAbstractController
     {
 
         $cars = $this->cars;
-        $makeParam = $this->getEvent()->getRouteMatch()->getParam('car_make', 0);
-        $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', 0);
+        $makeParam = $this->getEvent()->getRouteMatch()->getParam('car_make', '');
+        $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', '');
         $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
-        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', 0);
+        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
 
         $adList = '';
-        $title = '';
-        $carClass = '';
+        $carMakeId = null;
         $x = explode('-', $makeParam);
-        $carMakeId = $x[count($x)-1];
-
-        if (isset($cars['make'][$carMakeId])) {
-//            General::echop($carMakeId);
-
-            $x = explode('-', $modelParam);
-            $carModelId = $x[count($x)-1];
-            if (isset($cars['model'][$carMakeId][$carModelId])) {
-//                General::echop($carModelId);
-
-                $x = explode('-', $partMain);
-                $partMainId = $x[count($x)-1];
-                if (isset($cars['partsMain'][$partMainId])) {
-//                    General::echop($partMainId);
-                    $title =
-                        $cars['make'][$carMakeId] . ' ' . $cars['model'][$carMakeId][$carModelId]['model'] . ' - '.
-                        $cars['partsMain'][$partMainId]
-                    ;
-
-                    $ad = new AdCollection($this);
-
-                    $adList = $ad->adListHTML([
-                        'car_model' => $carModelId,
-                        'part_categ' => $partMainId
-                    ]);
-
-
-                } else {
-                    $title = $cars['make'][$carMakeId] . ' ' . $cars['model'][$carMakeId][$carModelId]['model'];
-                }
-
-
-            } else {
-                $title = $cars['make'][$carMakeId];
-
+        if (is_array($x) && count($x) > 0) {
+            $carMakeId = $x[count($x)-1];
+            if (!isset($cars['model'][$carMakeId])) {
+                $carMakeId = null;
             }
         }
 
+        if ($carMakeId === null) {
+            $this->redirect()->toRoute('home');
+        }
 
         $carCollection = new CarsCollection($this);
 
@@ -87,28 +58,53 @@ class IndexController extends MyAbstractController
         $class = null;
         if ($classParam !== null) {
             $models = [];
-            foreach ($cars['model'][$carMakeId] as $model) {
-                if ($carCollection->urlizeCarClass($model['categ']) == $classParam) {
+            foreach ($cars['model'][$carMakeId] as $modelId => $model) {
+                if ($carCollection->getUrlize($model['categ']) == $classParam) {
                     $class = $model['categ'];
-                    $models[] = $model;
+                    $models[$modelId] = $model;
                 }
             }
+        }
+
+        $carModelId = null;
+        $x = explode('-', $modelParam);
+        if (is_array($x) && count($x) > 0) {
+            $carModelId = $x[count($x)-1];
+            if (!isset($cars['model'][$carMakeId][$carModelId])) {
+                $carModelId = null;
+            }
+        }
+
+        $partMainId = null;
+        $x = explode('-', $partMain);
+        if (is_array($x) && count($x) > 0) {
+            $partMainId = $x[count($x)-1];
+            if (!isset($cars['partsMain'][$partMainId])) {
+                $partMainId = null;
+            }
+        }
+
+        $adList = null;
+        if ($carModelId !== null && $partMainId !== null) {
+            $ad = new AdCollection($this);
+
+            $adList = $ad->adListHTML([
+                'car_model' => $carModelId,
+                'part_categ' => $partMainId
+            ]);
         }
 
 
 
 
         return [
-            'carMake' => strtolower($cars['make'][$carMakeId]) . '-' . $carMakeId,
             'carMakeId' => $carMakeId,
-            'title' => $title,
-
-            'models' => $models,
             'class' => $class,
-
-            'breadcrump' => $carCollection->breadcrump($carMakeId, $class),
+            'models' => $models,
+            'carModelId' => $carModelId,
+            'partMainId' => $partMainId,
+            'breadcrump' => $carCollection->breadcrump($carMakeId, $class, $carModelId, $partMainId),
             'carCollection' => $carCollection,
-
             'adList' => $adList,
 
         ];
