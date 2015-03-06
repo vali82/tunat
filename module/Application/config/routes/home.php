@@ -34,18 +34,4 @@ return [
         ),
         'may_terminate' => true,
     ],
-
-    'piese' => [
-        'type' => 'Segment',
-        'options' => array(
-            'route' => 'piese[/:car_make][/:car_class][/:car_model][/:parts_main]',
-            'defaults' => array(
-                '__NAMESPACE__' => 'Application\Controller',
-                'controller' => 'Index',
-                'action' => 'piese',
-            ),
-        ),
-        'may_terminate' => true,
-//        'child_routes' => include __DIR__ . '/ad.php'
-    ],
 ];

@@ -13,19 +13,42 @@ use Application\Forms\AdForm;
 use Application\Forms\Filters\AdFilter;
 use Application\libs\General;
 use Application\Models\Ads\Ad;
+use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\MvcEvent;
-use Zend\View\Helper\Json;
-use Zend\View\Model\JsonModel;
+use Application\Models\Cars\CarsCollection;
 use Zend\View\Model\ViewModel;
-use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
 class AdController extends MyAbstractController
 {
     public function indexAction()
     {
         return new ViewModel();
+    }
+
+    public function uploadAction()
+    {
+        $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
+
+        if ($option == '' && $this->getRequest()->isPost()) {
+            return $this->uploadAdImages(
+                $this->myUser->getId(),
+                $this->myUser->getEmail(),
+                ['ads', General::getFromSession('adTmpId')],
+                ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
+                2*1024*1024
+            );
+        }
+        if ($this->getRequest()->isGet()) {
+            return  $this->uploadAdGetUploaded(
+                $this->myUser->getId(),
+                $this->myUser->getEmail(),
+                ['ads', General::getFromSession('adTmpId')]
+            );
+        }
+        if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+            return $this->deleteAdImages($this->myUser->getId(), $this->myUser->getEmail());
+        }
+        exit;
     }
 
     public function createAction()
@@ -125,30 +148,110 @@ class AdController extends MyAbstractController
         ];
     }
 
-
-    public function uploadAction()
+    public function pieseAction()
     {
-        $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
 
-        if ($option == '' && $this->getRequest()->isPost()) {
-            return $this->uploadAdImages(
-                $this->myUser->getId(),
-                $this->myUser->getEmail(),
-                ['ads', General::getFromSession('adTmpId')],
-                ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
-                2*1024*1024
-            );
+        $cars = $this->cars;
+        $carCollection = new CarsCollection($this);
+
+        $makeParam = $this->getEvent()->getRouteMatch()->getParam('car_make', '');
+        $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', '');
+        $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
+        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
+        $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
+
+        // detect Car Make ID
+        $carMakeId = null;
+        $x = explode('-', $makeParam);
+        if ($makeParam != '' && is_array($x) && count($x) > 0) {
+            $carMakeId = $x[count($x)-1];
+            if (!isset($cars['model'][$carMakeId])) {
+                $carMakeId = null;
+            }
         }
-        if ($this->getRequest()->isGet()) {
-            return  $this->uploadAdGetUploaded(
-                $this->myUser->getId(),
-                $this->myUser->getEmail(),
-                ['ads', General::getFromSession('adTmpId')]
-            );
+        ////
+
+        if ($carMakeId === null) {
+            $this->redirect()->toRoute('home');
         }
-        if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
-            return $this->deleteAdImages($this->myUser->getId(), $this->myUser->getEmail());
+
+        // detect Car Class
+        $models = null;
+        $class = null;
+        if ($classParam !== null) {
+            $models = [];
+            foreach ($cars['model'][$carMakeId] as $modelId => $model) {
+                if ($carCollection->getUrlize($model['categ']) == $classParam) {
+                    $class = $model['categ'];
+                    $models[$modelId] = $model;
+                }
+            }
         }
-        exit;
+        ////
+
+        // detect Car Model ID
+        $carModelId = null;
+        $x = explode('-', $modelParam);
+        if ($modelParam != '' && is_array($x) && count($x) > 0) {
+            $carModelId = $x[count($x)-1];
+            if (!isset($cars['model'][$carMakeId][$carModelId])) {
+                $carModelId = null;
+            }
+        }
+        ////
+
+        // detect Car Part ID
+        $partMainId = null;
+        $x = explode('-', $partMain);
+        if ($partMain != '' && is_array($x) && count($x) > 0) {
+            $partMainId = $x[count($x)-1];
+            if (!isset($cars['partsMain'][$partMainId])) {
+                $partMainId = null;
+            }
+        }
+        ////
+
+        // get All ADs with these IDs
+        $adList = null;
+        if ($carModelId !== null && $partMainId !== null) {
+            $ad = new AdCollection($this);
+
+            $adList = $ad->adListHTML([
+                'car_model' => $carModelId,
+                'part_categ' => $partMainId
+            ]);
+        }
+        ////
+
+        // detect Ad ID
+        $adId = null;
+        $x = explode('-', $adParam);
+        if ($adParam != '' && is_array($x) && count($x) > 0) {
+            $adId = $x[count($x)-1];
+
+            General::echop($adId);
+            $adView = $ad->viewHTML($adId);
+
+        }
+        ////
+
+        return [
+            'carMakeId' => $carMakeId,
+            'class' => $class,
+            'models' => $models,
+            'carModelId' => $carModelId,
+            'partMainId' => $partMainId,
+            'breadcrump' => $carCollection->breadcrump($carMakeId, $class, $carModelId, $partMainId),
+            'carCollection' => $carCollection,
+            'adList' => $adList,
+            'adView' => $adView
+
+        ];
     }
+
+    public function viewAdAction()
+    {
+
+    }
+
 }

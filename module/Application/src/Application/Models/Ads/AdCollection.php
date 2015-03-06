@@ -3,6 +3,7 @@
 namespace Application\Models\Ads;
 
 use Application\libs\General;
+use Application\Models\Cars\CarsCollection;
 
 class AdCollection
 {
@@ -18,6 +19,8 @@ class AdCollection
     public function adListHTML($param)
     {
         $cars = $this->controller->getCars();
+        $carCollection = new CarsCollection($this->controller);
+
         $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
 
         $adDM = new AdDM($this->controller->getAdapter());
@@ -56,7 +59,9 @@ class AdCollection
                         'title' => $ad->getPartName(),
                         'description' => $ad->getDescription(),
                         'car' => $cars['make'][$ad->getCarMake()] . ' ' .
-                            $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model']
+                            $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model'],
+                        'href' =>
+                            $carCollection->urlizeAD($ad),
                     ]
                 );
             }
@@ -66,5 +71,15 @@ class AdCollection
         return $content;
     }
 
+    public function viewHTML($id)
+    {
+        $adDM = new AdDM($this->controller->getAdapter());
+        $adObj = $adDM->fetchOne($id);
+        if ($adObj !== null) {
+
+        } else {
+            return null;
+        }
+    }
 
 }

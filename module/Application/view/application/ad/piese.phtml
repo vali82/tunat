@@ -1,0 +1,96 @@
+<h3>Anunturi</h3>
+
+
+<h4><?=$this->breadcrump?></h4>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Marca Masina
+                </h3>
+            </div>
+            <div class="panel-body">
+            <?=$this->layout()->cars['make'][$this->carMakeId]?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Clasa
+                </h3>
+            </div>
+            <div class="panel-body">
+            <?php if (($this->class) === null) { ?>
+                <?php
+                foreach ($this->layout()->cars['categ'][$this->carMakeId] as $categ) {
+                    ?><a href="<?=$this->carCollection->urlizeCarClass($this->carMakeId, $categ)?>"><?=$categ?></a>, <?php
+                }
+                ?>
+            <?php } else { ?>
+                <?=$this->class?>
+            <?php } ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Model
+                </h3>
+            </div>
+            <div class="panel-body">
+                <?php if ($this->class !== null && $this->models !== null && $this->carModelId === null) { ?>
+                    <?php
+                    foreach ($this->models as $modelId=>$model) {
+                        ?><a href="<?=$this->carCollection->urlizeCarModel($this->carMakeId, $modelId)?>"><?=$model['model']?></a>, <?php
+                    }
+                    ?>
+                <?php } elseif ($this->carModelId !== null) { ?>
+                    <?=$this->layout()->cars['model'][$this->carMakeId][$this->carModelId]['model']?>
+                <?php } else { ?>
+                    selecteaza clasa
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Categorie Piesa
+                </h3>
+            </div>
+            <div class="panel-body">
+                <?php if ($this->carModelId !== null && $this->partMainId === null) { ?>
+                    <?php
+                    foreach ($this->layout()->cars['partsMain'] as $partId=>$part) {
+                        ?><a href="<?=$this->carCollection->urlizePartMain($this->carMakeId, $this->carModelId, $partId)?>"><?=$part?></a>, <?php
+                    }
+                    ?>
+                <?php } elseif ($this->partMainId !== null) { ?>
+                    <?=$this->layout()->cars['partsMain'][$this->partMainId]?>
+                <?php } else { ?>
+                    selecteaza modelul
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php if ($this->carModelId !== null && $this->partMainId !== null) { ?>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            Anunturi Piese
+        </h3>
+    </div>
+    <div class="panel-body">
+        <?=$this->adList?>
+    </div>
+</div>
+<?php } ?>
