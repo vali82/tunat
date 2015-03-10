@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\libs\General;
+use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsMakeDM;
 use Application\Models\Cars\CarsModelsDM;
 use Application\Models\Cars\CarsPartsMainDM;
@@ -16,6 +17,7 @@ use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
 class MyAbstractController extends AbstractActionController
 {
+    protected $myPark;
     protected $myUser;
     protected $role;
     protected $adapter;
@@ -24,12 +26,18 @@ class MyAbstractController extends AbstractActionController
     public function onDispatch(MvcEvent $e)
     {
         $this->adapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-        if($this->zfcUserAuthentication()->hasIdentity()) {
-            $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
-        } else {
-            $this->myUser = null;
-        }
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
+        $this->myPark = null;
+        $this->myUser = null;
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
+            $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
+            if ($this->role == 'parcauto') {
+                $this->myPark = $this->getServiceLocator()->get('AutoPark');
+            }
+        }
+
+//        General::echop($this->role);
+//        General::echop($this->myPark);
 
         // layout variables
         $this->layout()->myUser = $this->myUser;
@@ -41,13 +49,13 @@ class MyAbstractController extends AbstractActionController
         if ($cars === null) {
             $carMake = [];
             $carsMakeDM = new CarsMakeDM($this->adapter);
-            foreach ($carsMakeDM->fetchResultsArray() as $k=>$r) {
+            foreach ($carsMakeDM->fetchResultsArray() as $k => $r) {
                 $carMake[$r['id']] = $r['make'];
             }
             $carModel = [];
             $carCateg = [];
             $carsModelsDM = new CarsModelsDM($this->adapter);
-            foreach ($carsModelsDM->fetchResultsArray() as $k=>$r) {
+            foreach ($carsModelsDM->fetchResultsArray() as $k => $r) {
                 $years = $r['year_start'] > 0 ? $r['year_start'].'-'.$r['year_end'] : 'toate';
                 if (!isset($carCateg[$r['car_id']]) || !in_array($r['model_categ'], $carCateg[$r['car_id']])) {
                     $carCateg[$r['car_id']][] = $r['model_categ'];
@@ -61,7 +69,7 @@ class MyAbstractController extends AbstractActionController
             }
             $partsMain = [];
             $partsMainDM = new CarsPartsMainDM($this->adapter);
-            foreach ($partsMainDM->fetchResultsArray() as $k=>$r) {
+            foreach ($partsMainDM->fetchResultsArray() as $k => $r) {
                 $partsMain[$r['id']] = $r['category'];
             }
             /*$partsSub = [];
@@ -103,6 +111,7 @@ class MyAbstractController extends AbstractActionController
 
     protected function uploadAdGetUploaded($user_id, $email, $folder)
     {
+//        General::echop($folder);
         if ($user_id && $email) {
             $path = PUBLIC_PATH . $user_id . '/' . implode('/', $folder) . '/';
             foreach (glob($path . "*") as $filefound) {

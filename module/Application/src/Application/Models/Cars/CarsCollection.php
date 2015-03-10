@@ -17,10 +17,12 @@ class CarsCollection
 
     public function urlizeCarClass($makeId, $categ)
     {
+        $cars = $this->controller->getCars();
+        $carMake = strtolower($this->urlize($cars['make'][$makeId]) . '-' .$makeId);
         return $this->controller->url()->fromRoute(
             'home/ad/piese',
             [
-                'car_make' => $this->urlizeCarMake($makeId),
+                'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
             ]
         );
@@ -32,11 +34,12 @@ class CarsCollection
 
         $model = $cars['model'][$makeId][$modelId]['model'];
         $categ = $cars['model'][$makeId][$modelId]['categ'];
+        $carMake = strtolower($this->urlize($cars['make'][$makeId]) . '-' .$makeId);
 
         return $this->controller->url()->fromRoute(
             'home/ad/piese',
             [
-                'car_make' => $this->urlizeCarMake($makeId),
+                'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
                 'car_model' => $this->urlize($model).'-'.$modelId
             ]
@@ -47,6 +50,7 @@ class CarsCollection
     {
         $cars = $this->controller->getCars();
 
+        $carMake = strtolower($this->urlize($cars['make'][$makeId]) . '-' .$makeId);
         $model = $cars['model'][$makeId][$modelId]['model'];
         $categ = $cars['model'][$makeId][$modelId]['categ'];
         $part = $cars['partsMain'][$partId];
@@ -54,7 +58,7 @@ class CarsCollection
         return $this->controller->url()->fromRoute(
             'home/ad/piese',
             [
-                'car_make' => $this->urlizeCarMake($makeId),
+                'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
                 'car_model' => $this->urlize($model).'-'.$modelId,
                 'parts_main' => $this->urlize($part).'-'.$partId,
@@ -74,6 +78,7 @@ class CarsCollection
         $modelId = $ad->getCarModel();
         $partId = $ad->getPartCateg();
 
+        $carMake = strtolower($this->urlize($cars['make'][$makeId]) . '-' .$makeId);
         $model = $cars['model'][$makeId][$modelId]['model'];
         $categ = $cars['model'][$makeId][$modelId]['categ'];
         $part = $cars['partsMain'][$partId];
@@ -81,13 +86,39 @@ class CarsCollection
         return $this->controller->url()->fromRoute(
             'home/ad/piese',
             [
-                'car_make' => $this->urlizeCarMake($makeId),
+                'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
                 'car_model' => $this->urlize($model).'-'.$modelId,
                 'parts_main' => $this->urlize($part).'-'.$partId,
+                'p' => 1,
                 'ad_id' => $this->urlize($ad->getPartName()).'-'.$ad->getId()
             ]
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function urlizePageListAds($makeId, $modelId, $partId)
+    {
+        $cars = $this->controller->getCars();
+
+        $carMake = strtolower($this->urlize($cars['make'][$makeId]) . '-' .$makeId);
+        $model = $cars['model'][$makeId][$modelId]['model'];
+        $categ = $cars['model'][$makeId][$modelId]['categ'];
+        $part = $cars['partsMain'][$partId];
+
+        return [
+            'route'=>'home/ad/piese',
+            'routeArray' => [
+                'car_make' => $carMake,
+                'car_class' => $this->urlize($categ),
+                'car_model' => $this->urlize($model).'-'.$modelId,
+                'parts_main' => $this->urlize($part).'-'.$partId,
+                'p' => 1,
+            ]
+        ];
+
     }
 
     private function urlize($name)
@@ -100,9 +131,16 @@ class CarsCollection
         return $this->urlize($name);
     }
 
-    private function urlizeCarMake($carMakeId)
+    public function urlizeCarMake($carMakeId)
     {
         $cars = $this->controller->getCars();
+        $carMake = strtolower($this->urlize($cars['make'][$carMakeId]) . '-' .$carMakeId);
+        return $this->controller->url()->fromRoute(
+            'home/ad/piese',
+            [
+                'car_make' => $carMake,
+            ]
+        );
 
         return strtolower(str_replace(['/', ' ', ','], ['-', '-',''], $cars['make'][$carMakeId]) . '-' .$carMakeId);
     }
@@ -111,6 +149,8 @@ class CarsCollection
     public function breadcrump($carMakeId, $categ = null, $modelId = null, $partId = null)
     {
         $cars = $this->controller->getCars();
+        $carMake = strtolower($this->urlize($cars['make'][$carMakeId]) . '-' .$carMakeId);
+
 
         $model = '';
         if ($modelId !== null) {
@@ -123,7 +163,7 @@ class CarsCollection
         return
             '<a href="'.$this->controller->url()->fromRoute(
                 'home/ad/piese',
-                ['car_make' => $this->urlizeCarMake($carMakeId)]
+                ['car_make' => $carMake]
             ).'">'.$cars['make'][$carMakeId].'</a>' .
             ($categ !== null ?
             ' &gt; <a href="'.$this->urlizeCarClass($carMakeId, $categ).'">'.$categ.'</a>' : ''

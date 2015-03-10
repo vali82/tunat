@@ -13,7 +13,7 @@ class AdDM extends DataMapper {
         $this->table_name = 'ads';
 
         $this->fields = array(
-            'user_id',
+            'park_id',
             'part_categ',
             'part_name',
             'car_make',

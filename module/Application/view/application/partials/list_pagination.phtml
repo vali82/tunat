@@ -1,0 +1,62 @@
+
+<?php
+//echo 'curentItemCount'. $this->currentItemCount . ' . ItemCountPerPage: ' . $this->itemCountPerPage . ' . currentPageNumber:'.$this->current;
+
+function generateLink($view, $p)
+{
+    $arg = $view->routeArray;
+    $arg['p'] = $p;
+    return $view->url($view->route, $arg);
+}
+
+if ($this->pageCount): ?>
+
+    <div class="row" style="padding-top: 40px">
+        <div class="col-md-5 col-sm-12">
+            <div class="dataTables_info" id="sample_1_info">Afisare <?=(($this->current-1) * $this->itemCountPerPage + 1)?> ... <?=(($this->current-1) * $this->itemCountPerPage + $this->currentItemCount)?> din totalul de <?=$this->totalItemCount?> inregistrari</div>
+        </div>
+        <div class="col-md-7 col-sm-12">
+            <div class="">
+                <ul class="pagination">
+
+                    <li class="<?php echo (isset($this->previous)) ? '' : ' disabled'; ?>">
+                        <a href="<?=generateLink($this, $this->previous)?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <?php foreach ($this->pagesInRange as $page): ?>
+                        <?php if (($page > $this->current -3) && ($page < $this->current + 3)) { ?>
+                            <li<?php echo ($page == $this->current) ? ' class="active"' : ''; ?>>
+                                <a href="<?=generateLink($this, $page)?><?php /*echo $this->url($this->route, array('p' => $page, 'type'=>$this->type, 'order_by'=>$this->order_by,'order_type'=>$this->order_type));*/ ?>">
+                                    <?php echo $page; ?>
+                                    <?php if ($page == $this->current) { ?><span class="sr-only">(current)</span><?php } ?>
+                                </a>
+                            </li>
+                        <?php }?>
+                    <?php endforeach; ?>
+
+                    <!-- Next page link -->
+                    <li class="<?php echo (isset($this->next)) ? '' : ' disabled'; ?>">
+                        <a href="<?=generateLink($this, $this->next)?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<?php endif; ?>
+
+<?php
+$script = $this->inlineScript();
+$script->appendScript(<<<'EOT'
+
+$(document).ready(function() {
+	$(".pagination .disabled a").click(function() {
+	  return false;
+	});
+});
+EOT
+);

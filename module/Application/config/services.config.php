@@ -8,12 +8,10 @@ use ZfcUser\Mapper\UserHydrator;
 use Application\Mappers as Mappers;
 
 
-
 return array(
     'factories' => array(
 
         /*'UserObj' => function (ServiceLocatorInterface $sm) {
-            
         	$auth = $sm->get('zfcuser_auth_service');
         	if ($auth->hasIdentity()) {
         		$user_id = $auth->getIdentity()->getId();
@@ -24,20 +22,45 @@ return array(
         		return null;
         	}
         },*/
+
         'AuthenticatedUser' => function (ServiceLocatorInterface $sm) {
-        	$auth = $sm->get('zfcuser_auth_service');
-      		if ($auth->hasIdentity()) {
-    			$user_id = $auth->getIdentity();
-			} else {
-				$user_id = null;
-			}
-            return $user_id;
+            $auth = $sm->get('zfcuser_auth_service');
+            if ($auth->hasIdentity()) {
+                $user = $auth->getIdentity();
+                return $user;
+            } else {
+                $user = null;
+            }
+            return $user;
         },
+
+        'AutoPark' => function (ServiceLocatorInterface $sm) {
+            $park = \Application\libs\General::getFromSession('myPark');
+            if ($park === null) {
+                $auth = $sm->get('zfcuser_auth_service');
+                $user = $auth->getIdentity();
+                $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                $dm = new \Application\Models\Autoparks\ParkUsersDM($dbAdapter);
+                $parkUsers = $dm->fetchResultsArray(['user_id' => $user->getId()]);
+                $x = array_values($parkUsers)[0];
+                $dm = new \Application\Models\Autoparks\ParksDM($dbAdapter);
+                $park = $dm->fetchOne($x['park_id']);
+                \Application\libs\General::addToSession('myPark', $park !== null ? $park : false);
+            }
+            return $park;
+        },
+
         'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
-            $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
-            $roles = $pi->getIdentityRoles();
-            return array_pop($roles);
-        },       
+//            $role = \Application\libs\General::getFromSession('role');
+//            if ($role === null) {
+                $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
+                $roles = $pi->getIdentityRoles();
+                $role = array_pop($roles);
+//                \Application\libs\General::addToSession('role', $role);
+//            }
+            return $role;
+        },
+
         /* 'AffiliateDataMapper' => function (ServiceLocatorInterface $sm) {
             $dm = new Mappers\AffiliateMapper();
 

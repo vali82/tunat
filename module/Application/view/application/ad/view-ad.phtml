@@ -1,0 +1,116 @@
+<?php
+$this->headLink()
+    ->prependStylesheet('/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
+;
+$this->headScript()
+    ->appendFile('/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
+;
+?>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <?= $this->title ?> pentru <?= $this->car['model'] ?>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-4 col-sm-12">
+
+            <div class="col-md-12">
+                <?php
+                if (count($this->images) > 0) {
+                    $img = $this->images[0];
+                } else {
+                    $img = 0;
+                }
+                ?>
+                    <a href="<?=
+                    \Application\libs\General::getSimpleAvatar(
+                        $this->folder,
+                        $img,
+                        '2000x2000'
+                    ) ?>" type="" title=""
+                       download="" data-gallery>
+                        <img class="img-responsive" src="<?=
+                        \Application\libs\General::getSimpleAvatar(
+                            $this->folder,
+                            $img,
+                            '300x300'
+                        ) ?>">
+                    </a>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row col-md-12">
+                <?php
+                if (count ($this->images) > 0) {
+                    foreach ($this->images as $img) { ?>
+                    <div class="col-md-4" style="padding-top: 15px">
+                        <a href="<?=
+                        \Application\libs\General::getSimpleAvatar(
+                            $this->folder,
+                            $img,
+                            '2000x2000'
+                        ) ?>" type="" title=""
+                           download="" data-gallery>
+                            <img class="img-responsive" src="<?=
+                            \Application\libs\General::getSimpleAvatar(
+                                $this->folder,
+                                $img,
+                                '70x70'
+                            ) ?>">
+                        </a>
+
+                    </div>
+                <?php } } ?>
+            </div>
+
+        </div>
+        <div class="col-md-8 col-sm-12">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="well well-lg">
+                        <h4><?=$this->park['name']?></h4>
+                        <a href="<?=$this->park['url']?>"><?=$this->park['url']?></a>
+                    </div></div>
+                <div class="col-lg-6">
+                    <div class="well well-lg">
+                        Telefon: <?=$this->park['tel1']?><br />
+                        Email: <?=$this->park['email']?><br />
+                        Adresa: <?=$this->park['location']?><br />
+                    </div>
+                </div>
+            </div>
+
+            <p><?= $this->description ?></p>
+
+            <p>Masina: <?=$this->car['make']?> <?=$this->car['class']?></p>
+            <p>Model: <?=$this->car['model']?></p>
+            <p>Motorizare: <?=$this->motorizare?></p>
+
+
+        </div>
+    </div>
+</div>
+
+
+<!-- The blueimp Gallery widget -->
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter="">
+    <div class="slides">
+    </div>
+    <h3 class="title"></h3>
+    <a class="prev">
+        ‹
+    </a>
+    <a class="next">
+        ›
+    </a>
+    <a class="close white">
+    </a>
+    <a class="play-pause">
+    </a>
+    <ol class="indicator">
+    </ol>
+</div>

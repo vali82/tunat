@@ -1,6 +1,5 @@
 <h3>Anunturi</h3>
 
-
 <h4><?=$this->breadcrump?></h4>
 
 <div class="row">
@@ -12,7 +11,14 @@
                 </h3>
             </div>
             <div class="panel-body">
-            <?=$this->layout()->cars['make'][$this->carMakeId]?>
+                <?=$this->layout()->cars['make'][$this->carMakeId]?>
+                -
+                <a href="#" id="changeCarMakeButton">schimba</a>
+                <div id="allCarsContainer" style="display: none">
+                    <?php foreach ($this->layout()->cars['make'] as $makeId=>$make) { ?>
+                    <a href="<?=$this->carCollection->urlizeCarMake($makeId)?>"><?=$make?></a>
+                    <?php } ?>
+                </div>
             </div>
         </div>
     </div>
@@ -32,6 +38,8 @@
                 ?>
             <?php } else { ?>
                 <?=$this->class?>
+                -
+                <a href="<?=$this->carCollection->urlizeCarMake($this->carMakeId)?>">schimba</a>
             <?php } ?>
             </div>
         </div>
@@ -52,6 +60,8 @@
                     ?>
                 <?php } elseif ($this->carModelId !== null) { ?>
                     <?=$this->layout()->cars['model'][$this->carMakeId][$this->carModelId]['model']?>
+                    -
+                    <a href="<?=$this->carCollection->urlizeCarClass($this->carMakeId, $this->class)?>">schimba</a>
                 <?php } else { ?>
                     selecteaza clasa
                 <?php } ?>
@@ -74,6 +84,8 @@
                     ?>
                 <?php } elseif ($this->partMainId !== null) { ?>
                     <?=$this->layout()->cars['partsMain'][$this->partMainId]?>
+                    -
+                    <a href="<?=$this->carCollection->urlizeCarModel($this->carMakeId, $this->carModelId)?>">schimba</a>
                 <?php } else { ?>
                     selecteaza modelul
                 <?php } ?>
@@ -82,7 +94,7 @@
     </div>
 </div>
 
-<?php if ($this->carModelId !== null && $this->partMainId !== null) { ?>
+<?php if ($this->carModelId !== null && $this->partMainId !== null && $this->adView === null) { ?>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
@@ -90,7 +102,22 @@
         </h3>
     </div>
     <div class="panel-body">
-        <?=$this->adList?>
+        <?php if ($this->adList !== null) { ?>
+            <?=$this->adList?>
+            <?=
+            $this->paginationControl(
+                $this->ads,
+                'Sliding',
+                'application/partials/list_pagination.phtml',
+                $this->carCollection->urlizePageListAds($this->carMakeId, $this->carModelId, $this->partMainId)
+            );
+            ?>
+        <?php } else { ?>
+            <p>Nu sunt anunturi in aceasta categorie</p>
+        <?php } ?>
+
     </div>
 </div>
+<?php } elseif ($this->carModelId !== null && $this->partMainId !== null && $this->adView !== null) { ?>
+    <?=$this->adView?>
 <?php } ?>

@@ -7,7 +7,7 @@ class Ad
     /**@var int*/
     protected $id;
     /**@var int*/
-    protected $userId;
+    protected $parkId;
     /**@var int*/
     protected $partCateg;
     /**@var string*/
@@ -32,30 +32,6 @@ class Ad
     protected $updatedAt;
     /**@var string*/
     protected $images;
-
-
-
-    public function adListHTML($partial, $ads)
-    {
-        $content = '';
-        foreach ($ads as $ad) {
-            $user_id = 1;
-            $adImg = unserialize($ad->getImages());
-            $content.= $partial('application/ad/partials/ad_in_list.phtml',
-                [
-                    'imgSrc' => General::getSimpleAvatar(
-                        $user_id . 'xadsx'.$ad->getId(),
-                        (count($adImg) > 0 ? $adImg[0] : ''),
-                        '100x100'
-                    ),
-                    'title' => $ad->getPartName(),
-                    'description' => $ad->getDescription(),
-                    'car' => $cars['make'][$ad->getCarMake()] . ' ' .
-                        $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model']
-                ]
-            );
-        }
-    }
 
 
     /**
@@ -97,18 +73,18 @@ class Ad
     /**
      * @return int
      */
-    public function getUserId()
+    public function getParkId()
     {
-        return $this->userId;
+        return $this->parkId;
     }
 
     /**
-     * @param int $userId
+     * @param int $parkId
      * @return Ad
      */
-    public function setUserId($userId)
+    public function setParkId($parkId)
     {
-        $this->userId = $userId;
+        $this->parkId = $parkId;
         return $this;
     }
 

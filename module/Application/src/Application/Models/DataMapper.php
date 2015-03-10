@@ -29,6 +29,8 @@ abstract class DataMapper implements MMDataMapperInterface
     /**@var array of columns for update row */
     protected $primary_key_update = ['id'];
 
+    protected $paginate_values = null;
+
     protected $allow_log_action = false;
     protected $log_action_interested_fields = null;
 
@@ -52,6 +54,10 @@ abstract class DataMapper implements MMDataMapperInterface
         return $this->allow_log_action;
     }
 
+    public function setPaginateValues($sw)
+    {
+        $this->paginate_values = $sw;
+    }
 
     /**
      * @return TableGateway
@@ -373,15 +379,37 @@ abstract class DataMapper implements MMDataMapperInterface
 
         });
 //		var_dump($results->getDataSource()->getResource()->queryString);
+
         if (count($results) == 0) {
-            return null;
+            $res = null;
         } else {
             $res = array();
             foreach ($results as $r) {
                 array_push($res, $r);
             }
-            return $res;
         }
+
+        if ($this->paginate_values !== null) {
+            $page = $this->paginate_values['page'];
+            $res = ($res == null ? array() : $res);
+
+
+            $adapter = new Paginator\Adapter\ArrayAdapter($res);
+            $paginator = new Paginator\Paginator($adapter);
+
+
+            $paginator->setItemCountPerPage(
+                isset($this->paginate_values['items_per_page']) ? $this->paginate_values['items_per_page'] : 10
+            );
+            $paginator->setCurrentPageNumber($page);
+
+            return $paginator;
+
+        } else {
+            return $res;
+
+        }
+
     }
 
     /**

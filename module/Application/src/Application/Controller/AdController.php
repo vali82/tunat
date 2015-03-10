@@ -31,7 +31,7 @@ class AdController extends MyAbstractController
 
         if ($option == '' && $this->getRequest()->isPost()) {
             return $this->uploadAdImages(
-                $this->myUser->getId(),
+                $this->myPark->getId(),
                 $this->myUser->getEmail(),
                 ['ads', General::getFromSession('adTmpId')],
                 ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
@@ -40,13 +40,13 @@ class AdController extends MyAbstractController
         }
         if ($this->getRequest()->isGet()) {
             return  $this->uploadAdGetUploaded(
-                $this->myUser->getId(),
+                $this->myPark->getId(),
                 $this->myUser->getEmail(),
                 ['ads', General::getFromSession('adTmpId')]
             );
         }
         if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
-            return $this->deleteAdImages($this->myUser->getId(), $this->myUser->getEmail());
+            return $this->deleteAdImages($this->myPark->getId(), $this->myUser->getEmail());
         }
         exit;
     }
@@ -68,7 +68,7 @@ class AdController extends MyAbstractController
             General::addToSession('adTmpId', $adTmpId);
         }
 
-        $file_path = PUBLIC_PATH . $this->myUser->getId() . '/ads/'. $adTmpId . '/' ;
+        $file_path = PUBLIC_PATH . $this->myPark->getId() . '/ads/'. $adTmpId . '/' ;
 
         $carburant = General::getConfigs($this, 'consts|carburant');
         $cilindree = General::getConfigs($this, 'consts|cilindree');
@@ -81,7 +81,7 @@ class AdController extends MyAbstractController
 
         $request = $this->getRequest();
 
-        $resourceObj->setUserId($this->myUser->getId());
+        $resourceObj->setParkId($this->myPark->getId());
 
         if ($request->isPost()) {
             $filter = new AdFilter();
@@ -116,17 +116,15 @@ class AdController extends MyAbstractController
                     ->setCarModel($form->get('car_model')->getValue())
                     ->setCarCarburant($carburantValue)
                     ->setCarCilindree($cilindreeValue)
-                    ->setUserId($this->myUser->getId())
                     ->setStatus('pending')
                     ->setImages(serialize($images))
                 ;
                 $adDM = new AdDM($this->adapter);
                 $adId = $adDM->createRow($resourceObj);
 
-                if (is_dir($file_path)) {
-                    rename($file_path, PUBLIC_PATH . $this->myUser->getId() . '/ads/' . $adId . '/');
+                if ($adId && is_dir($file_path)) {
+                    rename($file_path, PUBLIC_PATH . $this->myPark->getId() . '/ads/' . $adId . '/');
                 }
-
 
                 General::unsetSession('adTmpId');
 
@@ -159,6 +157,7 @@ class AdController extends MyAbstractController
         $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
         $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
         $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
+        $page = $this->getEvent()->getRouteMatch()->getParam('p', '');
 
         // detect Car Make ID
         $carMakeId = null;
@@ -211,29 +210,69 @@ class AdController extends MyAbstractController
         }
         ////
 
-        // get All ADs with these IDs
-        $adList = null;
-        if ($carModelId !== null && $partMainId !== null) {
-            $ad = new AdCollection($this);
-
-            $adList = $ad->adListHTML([
-                'car_model' => $carModelId,
-                'part_categ' => $partMainId
-            ]);
-        }
-        ////
-
         // detect Ad ID
+        $ad = new AdCollection($this);
         $adId = null;
+        $adView = null;
         $x = explode('-', $adParam);
         if ($adParam != '' && is_array($x) && count($x) > 0) {
             $adId = $x[count($x)-1];
-
-            General::echop($adId);
             $adView = $ad->viewHTML($adId);
-
         }
         ////
+
+        // get All ADs with these IDs
+        $adList = null;
+        $ads = null;
+        if ($adView === null && $carModelId !== null && $partMainId !== null) {
+            $partial = $this->getServiceLocator()->get('viewhelpermanager')->get('partial');
+            $adDM = new AdDM($this->getAdapter());
+            /** @var $ads \Application\Models\Ads\Ad[]|null*/
+//            $ads = null;
+            General::echop($page);
+            $adDM->setPaginateValues(array(
+                'page' => $page,
+                'items_per_page' => 5,
+//                'order_by' => $order_by,
+//                'order_type' => $order_type
+            ));
+            $ads = $adDM->fetchAllDefault(
+                [
+                    'status' => 'ok',
+                    'car_model' => $carModelId,
+                    'part_categ' => $partMainId
+                ],
+                ['id' => 'DESC']
+            );
+
+            $content = '';
+            if ($ads !== null) {
+                foreach ($ads as $ad) {
+                    $adImg = unserialize($ad->getImages());
+                    $content.= $partial('application/ad/partials/ad_in_list.phtml',
+                        [
+                            'imgSrc' => General::getSimpleAvatar(
+                                $ad->getParkId() . 'xadsx'.$ad->getId(),
+                                (count($adImg) > 0 ? $adImg[0] : ''),
+                                '100x100'
+                            ),
+                            'title' => $ad->getPartName(),
+                            'id' => $ad->getId(),
+                            'description' => $ad->getDescription(),
+                            'car' => $cars['make'][$ad->getCarMake()] . ' ' .
+                                $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model'],
+                            'href' =>
+                                $carCollection->urlizeAD($ad),
+                        ]
+                    );
+                }
+            }
+
+            $adList = $content !== '' ? $content : null;
+        }
+        ////
+
+        $this->layout()->js_call .= ' generalObj.ad.search.init(); ';
 
         return [
             'carMakeId' => $carMakeId,
@@ -244,8 +283,8 @@ class AdController extends MyAbstractController
             'breadcrump' => $carCollection->breadcrump($carMakeId, $class, $carModelId, $partMainId),
             'carCollection' => $carCollection,
             'adList' => $adList,
+            'ads' => $ads,
             'adView' => $adView
-
         ];
     }
 
@@ -253,5 +292,4 @@ class AdController extends MyAbstractController
     {
 
     }
-
 }

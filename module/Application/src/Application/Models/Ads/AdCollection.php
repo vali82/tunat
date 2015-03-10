@@ -3,6 +3,8 @@
 namespace Application\Models\Ads;
 
 use Application\libs\General;
+use Application\Models\Autoparks\ParksDM;
+use Application\Models\Autoparks\Parks;
 use Application\Models\Cars\CarsCollection;
 
 class AdCollection
@@ -33,6 +35,14 @@ class AdCollection
                 [1, 5]
             );
         } else {
+            $page = $this->controller->getEvent()->getRouteMatch()->getParam('page', 1);
+
+            $adDM->setPaginateValues(array(
+                'page' => $page,
+			    'items_per_page' => 1,
+//                'order_by' => $order_by,
+//                'order_type' => $order_type
+            ));
             $ads = $adDM->fetchAllDefault(
                 [
                     'status' => 'ok',
@@ -47,12 +57,11 @@ class AdCollection
         $content = '';
         if ($ads !== null) {
             foreach ($ads as $ad) {
-                $user_id = 1;
                 $adImg = unserialize($ad->getImages());
                 $content.= $partial('application/ad/partials/ad_in_list.phtml',
                     [
                         'imgSrc' => General::getSimpleAvatar(
-                            $user_id . 'xadsx'.$ad->getId(),
+                            $ad->getParkId() . 'xadsx'.$ad->getId(),
                             (count($adImg) > 0 ? $adImg[0] : ''),
                             '100x100'
                         ),
@@ -65,17 +74,64 @@ class AdCollection
                     ]
                 );
             }
+            //$this->paginationControl($this->newsletters, 'Sliding', 'admin/partials/list_pagination.phtml', array('route'=>'kindergarten/newsletter/list', 'order_by'=>$this->order_by, 'order_type'=>$this->order_type));
         }
-
-
-        return $content;
+        return $content !== '' ? $content : null;
     }
 
     public function viewHTML($id)
     {
+        $cars = $this->controller->getCars();
+
         $adDM = new AdDM($this->controller->getAdapter());
+        /** @var $adObj \Application\Models\Ads\Ad*/
         $adObj = $adDM->fetchOne($id);
         if ($adObj !== null) {
+
+            $parkDM = new ParksDM($this->controller->getAdapter());
+            /** @var $parkObj \Application\Models\Autoparks\Park*/
+            $parkObj = $parkDM->fetchOne($adObj->getParkId());
+//            $parkDM->fetchOne($adObj->getU)
+
+            $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
+
+            $adImgs = unserialize($adObj->getImages());
+
+            return $partial(
+                'application/ad/view-ad.phtml',
+                [
+                    'imgSrc' => General::getSimpleAvatar(
+                        $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                        (count($adImgs) > 0 ? $adImgs[0] : ''),
+                        '300x300'
+                    ),
+                    'imgSrcBig' => General::getSimpleAvatar(
+                        $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                        (count($adImgs) > 0 ? $adImgs[0] : ''),
+                        '2000x2000'
+                    ),
+                    'images' => $adImgs,
+                    'id' => $adObj->getId(),
+                    'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                    'title' => $adObj->getPartName(),
+                    'description' => $adObj->getDescription(),
+                    'href' => '#',
+                    'motorizare' => ($adObj->getCarCilindree() !== '' ? $adObj->getCarCilindree() . ' ' : '') .
+                        ($adObj->getCarCarburant() != '' ? $adObj->getCarCarburant() : 'oricare'),
+                    'car' => [
+                        'make' => $cars['make'][$adObj->getCarMake()],
+                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
+                        'class' => $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['categ']
+                    ],
+                    'park' => [
+                        'name' => $parkObj->getName(),
+                        'tel1' => $parkObj->getTel1(),
+                        'email' => $parkObj->getEmail(),
+                        'url' => $parkObj->getUrl(),
+                        'location' => $parkObj->getLocation()
+                    ]
+                ]
+            );
 
         } else {
             return null;

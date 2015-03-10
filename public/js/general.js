@@ -14,9 +14,9 @@ $.general = function() {
             $(obj).popover();
         });
 
-        /*alert = function (p){
+        alert = function (p){
             bootbox.alert(p);
-        };*/
+        };
 
         confirm = function (message, funct_or_url)
         {
@@ -251,8 +251,7 @@ $.general = function() {
 
         },
 
-        callUpload: function(uploadUrl)
-        {
+        callUpload: function(uploadUrl) {
             $.ajax({
                 url: uploadUrl,
                 type:'GET',
@@ -281,6 +280,19 @@ $.general = function() {
                     }
 
                 });
+        },
+
+        search: {
+            init: function() {
+                var thisObj = this;
+                $('#changeCarMakeButton').bind('click', function(){
+                    thisObj.changeCarMake();
+                });
+            },
+            changeCarMake: function () {
+                $('#allCarsContainer').show();
+            }
+
         }
 
 
