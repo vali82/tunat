@@ -10,7 +10,8 @@ return [
         'roles' => array('parcauto')
     ),
     array(
-        'route' => 'home/ad/piese',
+        'route' => 'home/ad/getContact',
         'roles' => array('parcauto', 'user', 'guest')
     ),
+
 ];

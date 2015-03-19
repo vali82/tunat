@@ -283,16 +283,51 @@ $.general = function() {
         },
 
         search: {
-            init: function() {
+            _contactUrl: null,
+            init: function(contactUrl) {
                 var thisObj = this;
+                this._contactUrl = contactUrl;
                 $('#changeCarMakeButton').bind('click', function(){
-                    thisObj.changeCarMake();
+                    thisObj._changeCarMake();
+                });
+                $('#adGetContactButton').bind('click', function(){
+                    thisObj._getContact();
                 });
             },
-            changeCarMake: function () {
+            _changeCarMake: function () {
                 $('#allCarsContainer').show();
+            },
+            _getContact: function()
+            {
+                $.ajax({
+                    // Uncomment the following to send cross-domain cookies:
+                    //xhrFields: {withCredentials: true},
+                    url: this._contactUrl,
+                    dataType:'json',
+                    statusCode: {
+                        403: function() {
+                            alert( "Acces interzis!" );
+                        },
+                        404: function() {
+                            alert( "Pagina nu a fost gasita!" ); //@TODO - ajax status
+                        }
+                    },
+                    beforeSend : function() {
+                        $('#adGetContactButton').button('loading');
+                    }
+                })
+                    .done(function (data) {
+                    if (!data.error) {
+                        $('#contactParkPhone').html(data.result.tel1);
+                        $('#contactParkEmail').html(data.result.email);
+                        $('#contactParkAddress').html(data.result.location);
+                        $('#adGetContactButton').slideUp();
+                        $('#contactParkContainer').slideDown();
+                    } else {
+                        alert(data.message);
+                    }
+                });
             }
-
         }
 
 

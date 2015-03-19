@@ -15,7 +15,9 @@ use Application\libs\General;
 use Application\Models\Ads\Ad;
 use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
+use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsCollection;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class AdController extends MyAbstractController
@@ -148,7 +150,6 @@ class AdController extends MyAbstractController
 
     public function pieseAction()
     {
-
         $cars = $this->cars;
         $carCollection = new CarsCollection($this);
 
@@ -157,7 +158,6 @@ class AdController extends MyAbstractController
         $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
         $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
         $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
-        $page = $this->getEvent()->getRouteMatch()->getParam('p', '');
 
         // detect Car Make ID
         $carMakeId = null;
@@ -225,54 +225,19 @@ class AdController extends MyAbstractController
         $adList = null;
         $ads = null;
         if ($adView === null && $carModelId !== null && $partMainId !== null) {
-            $partial = $this->getServiceLocator()->get('viewhelpermanager')->get('partial');
-            $adDM = new AdDM($this->getAdapter());
-            /** @var $ads \Application\Models\Ads\Ad[]|null*/
-//            $ads = null;
-            General::echop($page);
-            $adDM->setPaginateValues(array(
-                'page' => $page,
-                'items_per_page' => 5,
-//                'order_by' => $order_by,
-//                'order_type' => $order_type
-            ));
-            $ads = $adDM->fetchAllDefault(
-                [
-                    'status' => 'ok',
-                    'car_model' => $carModelId,
-                    'part_categ' => $partMainId
-                ],
-                ['id' => 'DESC']
-            );
+            $content = $ad->adListHTML([
+                'place' => 'onSearch',
+                'carModelId' => $carModelId,
+                'partMainId' => $partMainId
+            ]);
 
-            $content = '';
-            if ($ads !== null) {
-                foreach ($ads as $ad) {
-                    $adImg = unserialize($ad->getImages());
-                    $content.= $partial('application/ad/partials/ad_in_list.phtml',
-                        [
-                            'imgSrc' => General::getSimpleAvatar(
-                                $ad->getParkId() . 'xadsx'.$ad->getId(),
-                                (count($adImg) > 0 ? $adImg[0] : ''),
-                                '100x100'
-                            ),
-                            'title' => $ad->getPartName(),
-                            'id' => $ad->getId(),
-                            'description' => $ad->getDescription(),
-                            'car' => $cars['make'][$ad->getCarMake()] . ' ' .
-                                $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model'],
-                            'href' =>
-                                $carCollection->urlizeAD($ad),
-                        ]
-                    );
-                }
-            }
-
-            $adList = $content !== '' ? $content : null;
+            $adList = $content['list'];
+            $ads = $content['ads'];
         }
         ////
 
-        $this->layout()->js_call .= ' generalObj.ad.search.init(); ';
+        $urlGetContact = $this->url()->fromRoute('home/ad/getContact', ['id'=>($adId !== null ? $adId : 0)]);
+        $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
 
         return [
             'carMakeId' => $carMakeId,
@@ -288,8 +253,33 @@ class AdController extends MyAbstractController
         ];
     }
 
-    public function viewAdAction()
+    public function getContactAction()
     {
+        $id = $this->getEvent()->getRouteMatch()->getParam('id', '');
+        $adDM = new AdDM($this->getAdapter());
+        /** @var $adObj \Application\Models\Ads\Ad*/
+        $adObj = $adDM->fetchOne([
+            'id' => $id,
+            'status' => 'ok'
+        ]);
+        $parkObj = null;
+        if ($adObj !== null) {
+            $parkDM = new ParksDM($this->getAdapter());
+            /** @var $parkObj \Application\Models\Autoparks\Park */
+            $parkObj = $parkDM->fetchOne($adObj->getParkId());
 
+        }
+
+        return new JsonModel([
+            'error' => $parkObj !== null ? 0 : 1,
+            'result' =>  $parkObj !== null ? [
+                'name' => $parkObj->getName(),
+                'tel1' => $parkObj->getTel1(),
+                'email' => $parkObj->getEmail(),
+                'url' => $parkObj->getUrl(),
+                'location' => $parkObj->getLocation()
+            ] : null,
+            'message' => $parkObj !== null ? '' : 'Datele de contact nu au fost gasite',
+        ]);
     }
 }

@@ -14,6 +14,20 @@ return [
         'child_routes' => include __DIR__ . '/ad.php'
     ],
 
+    'piese' => [
+        'type' => 'Segment',
+        'options' => array(
+            'route' => 'piese[/:car_make][/:car_class][/:car_model][/:parts_main][/:p][/:ad_id]',
+            'defaults' => array(
+                '__NAMESPACE__' => 'Application\Controller',
+                'controller' => 'Ad',
+                'action' => 'piese',
+            ),
+        ),
+        'may_terminate' => true,
+//        'child_routes' => include __DIR__ . '/ad.php'
+    ],
+
     'displayImage' => [
         'type' => 'Segment',
         'options' => array(
@@ -25,7 +39,6 @@ return [
             ),
             'constraints' => array(
                 'folder' => '[a-z0-9x]+',
-//                                'sectype' => '(kg_admin|educator|parent|kindergarten|photos|child|admin_kp|users|activities)',
                 'id' => '[a-z0-9_]+',
                 'size' => '[0-9x]+',
                 'ext' => '(.jpg|.png|.gif)'

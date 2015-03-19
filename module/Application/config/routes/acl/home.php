@@ -25,5 +25,9 @@ return array(
         'route' => 'home/displayImage',
         'roles' => array('parcauto', 'user', 'guest')
     ),
+    array(
+        'route' => 'home/piese',
+        'roles' => array('parcauto', 'user', 'guest')
+    ),
 
 );

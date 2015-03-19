@@ -4,7 +4,6 @@ namespace Application\Models\Ads;
 
 use Application\libs\General;
 use Application\Models\Autoparks\ParksDM;
-use Application\Models\Autoparks\Parks;
 use Application\Models\Cars\CarsCollection;
 
 class AdCollection
@@ -15,7 +14,6 @@ class AdCollection
     {
         /** @var $controller \Application\Controller\MyAbstractController*/
         $this->controller = $controller;
-
     }
 
     public function adListHTML($param)
@@ -28,29 +26,31 @@ class AdCollection
         $adDM = new AdDM($this->controller->getAdapter());
         /** @var $ads \Application\Models\Ads\Ad[]|null*/
         $ads = null;
-        if ($param == 'homepage') {
+        if ($param['place'] == 'homepage') {
+            // HOME PAGE ADS
             $ads = $adDM->fetchAllDefault(
                 ['status' => 'ok'],
                 ['id' => 'DESC'],
                 [1, 5]
             );
-        } else {
-            $page = $this->controller->getEvent()->getRouteMatch()->getParam('page', 1);
 
+        } elseif ($param['place'] == 'onSearch') {
+            // AFTER SEARCH ADS
+            $page = $this->controller->getEvent()->getRouteMatch()->getParam('p', '');
+            $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
+            $adDM = new AdDM($this->controller->getAdapter());
+            /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
                 'page' => $page,
-			    'items_per_page' => 1,
-//                'order_by' => $order_by,
-//                'order_type' => $order_type
+                'items_per_page' => 5,
             ));
             $ads = $adDM->fetchAllDefault(
                 [
                     'status' => 'ok',
-                    'car_model' => $param['car_model'],
-                    'part_categ' => $param['part_categ']
+                    'car_model' => $param['carModelId'],
+                    'part_categ' => $param['partMainId']
                 ],
-                ['id' => 'DESC'],
-                [1, 5]
+                ['id' => 'DESC']
             );
         }
 
@@ -66,6 +66,7 @@ class AdCollection
                             '100x100'
                         ),
                         'title' => $ad->getPartName(),
+                        'id' => $ad->getId(),
                         'description' => $ad->getDescription(),
                         'car' => $cars['make'][$ad->getCarMake()] . ' ' .
                             $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model'],
@@ -74,9 +75,15 @@ class AdCollection
                     ]
                 );
             }
-            //$this->paginationControl($this->newsletters, 'Sliding', 'admin/partials/list_pagination.phtml', array('route'=>'kindergarten/newsletter/list', 'order_by'=>$this->order_by, 'order_type'=>$this->order_type));
         }
-        return $content !== '' ? $content : null;
+        if ($param['place'] == 'onSearch') {
+            return [
+                'list' => $content !== '' ? $content : null,
+                'ads' => $ads
+            ];
+        } else {
+            return $content !== '' ? $content : null;
+        }
     }
 
     public function viewHTML($id)
@@ -85,9 +92,11 @@ class AdCollection
 
         $adDM = new AdDM($this->controller->getAdapter());
         /** @var $adObj \Application\Models\Ads\Ad*/
-        $adObj = $adDM->fetchOne($id);
+        $adObj = $adDM->fetchOne([
+            'id' => $id,
+            'status' => 'ok'
+        ]);
         if ($adObj !== null) {
-
             $parkDM = new ParksDM($this->controller->getAdapter());
             /** @var $parkObj \Application\Models\Autoparks\Park*/
             $parkObj = $parkDM->fetchOne($adObj->getParkId());
@@ -137,5 +146,4 @@ class AdCollection
             return null;
         }
     }
-
 }

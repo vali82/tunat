@@ -2,8 +2,6 @@
 
 namespace Application\Models\Cars;
 
-use Application\libs\General;
-
 class CarsCollection
 {
     protected $controller = null;
@@ -20,7 +18,7 @@ class CarsCollection
         $cars = $this->controller->getCars();
         $carMake = strtolower($this->urlize($cars['make'][$makeId]) . '-' .$makeId);
         return $this->controller->url()->fromRoute(
-            'home/ad/piese',
+            'home/piese',
             [
                 'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
@@ -37,7 +35,7 @@ class CarsCollection
         $carMake = strtolower($this->urlize($cars['make'][$makeId]) . '-' .$makeId);
 
         return $this->controller->url()->fromRoute(
-            'home/ad/piese',
+            'home/piese',
             [
                 'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
@@ -56,7 +54,7 @@ class CarsCollection
         $part = $cars['partsMain'][$partId];
 
         return $this->controller->url()->fromRoute(
-            'home/ad/piese',
+            'home/piese',
             [
                 'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
@@ -84,7 +82,7 @@ class CarsCollection
         $part = $cars['partsMain'][$partId];
 
         return $this->controller->url()->fromRoute(
-            'home/ad/piese',
+            'home/piese',
             [
                 'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
@@ -109,7 +107,7 @@ class CarsCollection
         $part = $cars['partsMain'][$partId];
 
         return [
-            'route'=>'home/ad/piese',
+            'route'=>'home/piese',
             'routeArray' => [
                 'car_make' => $carMake,
                 'car_class' => $this->urlize($categ),
@@ -136,13 +134,11 @@ class CarsCollection
         $cars = $this->controller->getCars();
         $carMake = strtolower($this->urlize($cars['make'][$carMakeId]) . '-' .$carMakeId);
         return $this->controller->url()->fromRoute(
-            'home/ad/piese',
+            'home/piese',
             [
                 'car_make' => $carMake,
             ]
         );
-
-        return strtolower(str_replace(['/', ' ', ','], ['-', '-',''], $cars['make'][$carMakeId]) . '-' .$carMakeId);
     }
 
 
@@ -162,7 +158,7 @@ class CarsCollection
 
         return
             '<a href="'.$this->controller->url()->fromRoute(
-                'home/ad/piese',
+                'home/piese',
                 ['car_make' => $carMake]
             ).'">'.$cars['make'][$carMakeId].'</a>' .
             ($categ !== null ?
@@ -177,5 +173,4 @@ class CarsCollection
 
             ;
     }
-
 }

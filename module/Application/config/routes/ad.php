@@ -23,17 +23,18 @@ return [
         ),
         'may_terminate' => true,
     ],
-    'piese' => [
+    'getContact' => [
         'type' => 'Segment',
         'options' => array(
-            'route' => 'piese[/:car_make][/:car_class][/:car_model][/:parts_main][/:p][/:ad_id]',
+            'route' => '/get-contact[/:id]',
+            'constraints' => [
+                'id' => '[0-9]+',
+            ],
             'defaults' => array(
-                '__NAMESPACE__' => 'Application\Controller',
-                'controller' => 'Ad',
-                'action' => 'piese',
+                'controller' => 'Application\Controller\Ad',
+                'action' => 'getContact',
             ),
         ),
         'may_terminate' => true,
-//        'child_routes' => include __DIR__ . '/ad.php'
-    ],
+    ]
 ];

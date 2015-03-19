@@ -25,7 +25,9 @@ class IndexController extends MyAbstractController
         $ad = new AdCollection($this);
 
         return [
-            'adList' => $ad->adListHTML('homepage')
+            'adList' => $ad->adListHTML([
+                'place' => 'homepage'
+            ])
         ];
     }
 
