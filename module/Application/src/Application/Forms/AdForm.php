@@ -69,7 +69,7 @@ class AdForm extends AbstractForm
 
         $this->add(array(
             'type' => 'select',
-            'name' => 'car_make',
+            'name' => 'categories',
             'options' => array(
                 'label' => 'Marca Masina',
                 'options' => ['' => ''] + $carMake,

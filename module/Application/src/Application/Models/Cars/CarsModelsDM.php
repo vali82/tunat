@@ -13,8 +13,8 @@ class CarsModelsDM extends DataMapper {
         $this->table_name = 'cars_model';
 
         $this->fields = array(
-            'car_id',
-            'model_categ',
+            'category_id',
+            'car_make',
             'model',
             'year_start',
             'year_end',

@@ -4,13 +4,13 @@ namespace Application\Models\Cars;
 
 use Application\Models\DataMapper;
 
-class CarsMakeDM extends DataMapper {
-
+class CarsCategoriesDM extends DataMapper
+{
     public function __construct($adapter)
     {
         $this->adapter = $adapter;
         $this->model = null;
-        $this->table_name = 'cars_make';
+        $this->table_name = 'categories';
 
         $this->fields = array(
             'make',

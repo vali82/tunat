@@ -11,12 +11,12 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <?=$this->layout()->cars['make'][$this->carMakeId]?>
+                <?=$this->layout()->cars['categories'][$this->carcategoriesId]?>
                 -
                 <a href="#" id="changeCarMakeButton">schimba</a>
                 <div id="allCarsContainer" style="display: none">
-                    <?php foreach ($this->layout()->cars['make'] as $makeId=>$make) { ?>
-                    <a href="<?=$this->carCollection->urlizeCarMake($makeId)?>"><?=$make?></a>
+                    <?php foreach ($this->layout()->cars['categories'] as $categoriesId=>$categories) { ?>
+                    <a href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>"><?=$categories?></a>
                     <?php } ?>
                 </div>
             </div>
@@ -32,19 +32,19 @@
             <div class="panel-body">
             <?php if (($this->class) === null) { ?>
                 <?php
-                foreach ($this->layout()->cars['categ'][$this->carMakeId] as $categ) {
-                    ?><a href="<?=$this->carCollection->urlizeCarClass($this->carMakeId, $categ)?>"><?=$categ?></a>, <?php
+                foreach ($this->layout()->cars['categ'][$this->carcategoriesId] as $categ) {
+                    ?><a href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $categ)?>"><?=$categ?></a>, <?php
                 }
                 ?>
             <?php } else { ?>
                 <?=$this->class?>
                 -
-                <a href="<?=$this->carCollection->urlizeCarMake($this->carMakeId)?>">schimba</a>
+                <a href="<?=$this->carCollection->urlizeCarcategories($this->carcategoriesId)?>">schimba</a>
             <?php } ?>
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <!--<div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -52,23 +52,23 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <?php if ($this->class !== null && $this->models !== null && $this->carModelId === null) { ?>
+                <?php /*if ($this->class !== null && $this->models !== null && $this->carModelId === null) { */?>
                     <?php
-                    foreach ($this->models as $modelId=>$model) {
-                        ?><a href="<?=$this->carCollection->urlizeCarModel($this->carMakeId, $modelId)?>"><?=$model['model']?></a>, <?php
-                    }
-                    ?>
-                <?php } elseif ($this->carModelId !== null) { ?>
-                    <?=$this->layout()->cars['model'][$this->carMakeId][$this->carModelId]['model']?>
+/*                    foreach ($this->models as $modelId=>$model) {
+                        */?><a href="<?/*=$this->carCollection->urlizeCarModel($this->carcategoriesId, $modelId)*/?>"><?/*=$model['model']*/?></a>, <?php
+/*                    }
+                    */?>
+                <?php /*} elseif ($this->carModelId !== null) { */?>
+                    <?/*=$this->layout()->cars['model'][$this->carcategoriesId][$this->carModelId]['model']*/?>
                     -
-                    <a href="<?=$this->carCollection->urlizeCarClass($this->carMakeId, $this->class)?>">schimba</a>
-                <?php } else { ?>
+                    <a href="<?/*=$this->carCollection->urlizeCarClass($this->carcategoriesId, $this->class)*/?>">schimba</a>
+                <?php /*} else { */?>
                     selecteaza clasa
-                <?php } ?>
+                <?php /*} */?>
             </div>
         </div>
-    </div>
-    <div class="col-md-3">
+    </div>-->
+    <!--<div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -76,25 +76,25 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <?php if ($this->carModelId !== null && $this->partMainId === null) { ?>
+                <?php /*if ($this->carModelId !== null && $this->partMainId === null) { */?>
                     <?php
-                    foreach ($this->layout()->cars['partsMain'] as $partId=>$part) {
-                        ?><a href="<?=$this->carCollection->urlizePartMain($this->carMakeId, $this->carModelId, $partId)?>"><?=$part?></a>, <?php
-                    }
-                    ?>
-                <?php } elseif ($this->partMainId !== null) { ?>
-                    <?=$this->layout()->cars['partsMain'][$this->partMainId]?>
+/*                    foreach ($this->layout()->cars['partsMain'] as $partId=>$part) {
+                        */?><a href="<?/*=$this->carCollection->urlizePartMain($this->carcategoriesId, $this->carModelId, $partId)*/?>"><?/*=$part*/?></a>, <?php
+/*                    }
+                    */?>
+                <?php /*} elseif ($this->partMainId !== null) { */?>
+                    <?/*=$this->layout()->cars['partsMain'][$this->partMainId]*/?>
                     -
-                    <a href="<?=$this->carCollection->urlizeCarModel($this->carMakeId, $this->carModelId)?>">schimba</a>
-                <?php } else { ?>
+                    <a href="<?/*=$this->carCollection->urlizeCarModel($this->carcategoriesId, $this->carModelId)*/?>">schimba</a>
+                <?php /*} else { */?>
                     selecteaza modelul
-                <?php } ?>
+                <?php /*} */?>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 
-<?php if ($this->carModelId !== null && $this->partMainId !== null && $this->adView === null) { ?>
+<?php if ($this->carModelId !== null && $this->adView === null) { ?>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
@@ -109,7 +109,7 @@
                 $this->ads,
                 'Sliding',
                 'application/partials/list_pagination.phtml',
-                $this->carCollection->urlizePageListAds($this->carMakeId, $this->carModelId, $this->partMainId)
+                $this->carCollection->urlizePageListAds($this->carcategoriesId, $this->carModelId, null)
             );
             ?>
         <?php } else { ?>
@@ -118,6 +118,6 @@
 
     </div>
 </div>
-<?php } elseif ($this->carModelId !== null && $this->partMainId !== null && $this->adView !== null) { ?>
+<?php } elseif ($this->carModelId !== null && $this->adView !== null) { ?>
     <?=$this->adView?>
 <?php } ?>

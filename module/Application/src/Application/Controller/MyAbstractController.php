@@ -4,7 +4,7 @@ namespace Application\Controller;
 
 use Application\libs\General;
 use Application\Models\Autoparks\ParksDM;
-use Application\Models\Cars\CarsMakeDM;
+use Application\Models\Cars\CarsCategoriesDM;
 use Application\Models\Cars\CarsModelsDM;
 use Application\Models\Cars\CarsPartsMainDM;
 use Application\Models\Cars\CarsPartsSubDM;
@@ -46,32 +46,32 @@ class MyAbstractController extends AbstractActionController
 
         // get cars make and models into session
         $cars = General::getFromSession('cars');
-        if ($cars === null) {
+        if ($cars === null || 1==1) {
             $carMake = [];
-            $carsMakeDM = new CarsMakeDM($this->adapter);
+            $carsMakeDM = new CarsCategoriesDM($this->adapter);
             foreach ($carsMakeDM->fetchResultsArray() as $k => $r) {
-                $carMake[$r['id']] = $r['make'];
+                $carMake[$r['id']] = $r['category'];
             }
             $carModel = [];
             $carCateg = [];
             $carsModelsDM = new CarsModelsDM($this->adapter);
             foreach ($carsModelsDM->fetchResultsArray() as $k => $r) {
-                $years = $r['year_start'] > 0 ? $r['year_start'].'-'.$r['year_end'] : 'toate';
-                if (!isset($carCateg[$r['car_id']]) || !in_array($r['model_categ'], $carCateg[$r['car_id']])) {
-                    $carCateg[$r['car_id']][] = $r['model_categ'];
+                //$years = $r['year_start'] > 0 ? $r['year_start'].'-'.$r['year_end'] : 'toate';
+                if (!isset($carCateg[$r['category_id']]) || !in_array($r['car_make'], $carCateg[$r['category_id']])) {
+                    $carCateg[$r['category_id']][] = $r['car_make'];
                 }
-                $carModel[$r['car_id']][$r['id']] = [
-                    'model' => $r['model'] . ' ('.$years.')',
-                    'categ' => $r['model_categ'],
-                    'popularity' => $r['popularity']
+                $carModel[$r['category_id']][$r['id']] = [
+                    //'model' => $r['model'],
+                    'categ' => $r['car_make'],
+//                    'popularity' => $r['popularity']
                 ];
 
             }
-            $partsMain = [];
+            /*$partsMain = [];
             $partsMainDM = new CarsPartsMainDM($this->adapter);
             foreach ($partsMainDM->fetchResultsArray() as $k => $r) {
                 $partsMain[$r['id']] = $r['category'];
-            }
+            }*/
             /*$partsSub = [];
             $partsSubDM = new CarsPartsSubDM($this->adapter);
             foreach($partsSubDM->fetchResultsArray() as $k=>$r) {
@@ -79,15 +79,15 @@ class MyAbstractController extends AbstractActionController
             }*/
 
             $cars = [
-                'make' => $carMake,
+                'categories' => $carMake,
                 'categ' => $carCateg,
                 'model' => $carModel,
-                'partsMain' => $partsMain,
+//                'partsMain' => $partsMain,
                 //'partsSub' => $partsSub,
             ];
             General::addToSession('cars', $cars);
         }
-//        General::echop($cars['model']);
+//        General::echop($carModel);
         $this->cars = $cars;
         $this->layout()->cars = $cars;
 

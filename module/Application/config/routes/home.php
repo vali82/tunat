@@ -17,7 +17,7 @@ return [
     'piese' => [
         'type' => 'Segment',
         'options' => array(
-            'route' => 'piese[/:car_make][/:car_class][/:car_model][/:parts_main][/:p][/:ad_id]',
+            'route' => 'piese[/:categories][/:car_class][/:p][/:ad_id]',
             'defaults' => array(
                 '__NAMESPACE__' => 'Application\Controller',
                 'controller' => 'Ad',

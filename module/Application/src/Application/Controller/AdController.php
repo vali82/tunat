@@ -60,7 +60,7 @@ class AdController extends MyAbstractController
         $this->layout()->js_call .= ' generalObj.cars = '.json_encode($cars).'; ';
         $this->layout()->js_call .= ' generalObj.ad.create("'.$this->url()->fromRoute("home/ad/upload").'"); ';
 
-        $make = $this->cars['make'];
+        $categories = $this->cars['categories'];
         $partsMain = $this->cars['partsMain'];
 
         $adTmpId = General::getFromSession('adTmpId');
@@ -78,7 +78,7 @@ class AdController extends MyAbstractController
         $resourceObj = new Ad();
         $form = new AdForm();
         $form->setCancelRoute('back');
-        $form->create($resourceObj, $make, $carburant, $cilindree, $partsMain);
+        $form->create($resourceObj, $categories, $carburant, $cilindree, $partsMain);
 
 
         $request = $this->getRequest();
@@ -153,47 +153,51 @@ class AdController extends MyAbstractController
         $cars = $this->cars;
         $carCollection = new CarsCollection($this);
 
-        $makeParam = $this->getEvent()->getRouteMatch()->getParam('car_make', '');
+        $categoriesParam = $this->getEvent()->getRouteMatch()->getParam('categories', '');
         $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', '');
         $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
         $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
         $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
 
-        // detect Car Make ID
-        $carMakeId = null;
-        $x = explode('-', $makeParam);
-        if ($makeParam != '' && is_array($x) && count($x) > 0) {
-            $carMakeId = $x[count($x)-1];
-            if (!isset($cars['model'][$carMakeId])) {
-                $carMakeId = null;
+        // detect Car categories ID
+        $carcategoriesId = null;
+//        $ = null;
+        if ($categoriesParam !== '') {
+            $models = [];
+            foreach ($cars['categories'] as $categId => $model) {
+                if (strtolower($carCollection->getUrlize($model)) == $categoriesParam) {
+                    $carcategoriesId = $categId;
+                }
             }
         }
         ////
 
-        if ($carMakeId === null) {
+        if ($carcategoriesId === null) {
             $this->redirect()->toRoute('home');
         }
 
         // detect Car Class
         $models = null;
         $class = null;
+        $carModelId = null;
         if ($classParam !== null) {
             $models = [];
-            foreach ($cars['model'][$carMakeId] as $modelId => $model) {
+            foreach ($cars['model'][$carcategoriesId] as $modelId => $model) {
                 if ($carCollection->getUrlize($model['categ']) == $classParam) {
                     $class = $model['categ'];
                     $models[$modelId] = $model;
+                    $carModelId = $modelId;
                 }
             }
         }
         ////
 
-        // detect Car Model ID
+        /*// detect Car Model ID
         $carModelId = null;
         $x = explode('-', $modelParam);
         if ($modelParam != '' && is_array($x) && count($x) > 0) {
             $carModelId = $x[count($x)-1];
-            if (!isset($cars['model'][$carMakeId][$carModelId])) {
+            if (!isset($cars['model'][$carcategoriesId][$carModelId])) {
                 $carModelId = null;
             }
         }
@@ -208,7 +212,7 @@ class AdController extends MyAbstractController
                 $partMainId = null;
             }
         }
-        ////
+        ////*/
 
         // detect Ad ID
         $ad = new AdCollection($this);
@@ -224,11 +228,11 @@ class AdController extends MyAbstractController
         // get All ADs with these IDs
         $adList = null;
         $ads = null;
-        if ($adView === null && $carModelId !== null && $partMainId !== null) {
+        if ($adView === null) {
             $content = $ad->adListHTML([
                 'place' => 'onSearch',
                 'carModelId' => $carModelId,
-                'partMainId' => $partMainId
+                'partMainId' => 0
             ]);
 
             $adList = $content['list'];
@@ -240,12 +244,12 @@ class AdController extends MyAbstractController
         $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
 
         return [
-            'carMakeId' => $carMakeId,
+            'carcategoriesId' => $carcategoriesId,
             'class' => $class,
             'models' => $models,
             'carModelId' => $carModelId,
-            'partMainId' => $partMainId,
-            'breadcrump' => $carCollection->breadcrump($carMakeId, $class, $carModelId, $partMainId),
+//            'partMainId' => $partMainId,
+            'breadcrump' => $carCollection->breadcrump($carcategoriesId, $class, null, null),
             'carCollection' => $carCollection,
             'adList' => $adList,
             'ads' => $ads,

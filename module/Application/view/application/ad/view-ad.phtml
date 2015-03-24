@@ -9,7 +9,7 @@ $this->headScript()
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <?= $this->title ?> pentru <?= $this->car['model'] ?>
+            <?= $this->title ?> pentru <?= $this->car['class'] ?>
         </h3>
     </div>
     <div class="panel-body">
@@ -91,8 +91,8 @@ $this->headScript()
 
             <p><?= $this->description ?></p>
 
-            <p>Masina: <?=$this->car['make']?> <?=$this->car['class']?></p>
-            <p>Model: <?=$this->car['model']?></p>
+            <p>Masina: <?=$this->car['category']?> <?=$this->car['class']?></p>
+            <p>Model: <?=$this->car['class']?></p>
             <p>Motorizare: <?=$this->motorizare?></p>
 
 

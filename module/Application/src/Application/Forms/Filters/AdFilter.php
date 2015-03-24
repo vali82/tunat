@@ -38,7 +38,7 @@ class AdFilter extends AbstractFilter
 				),
 			),
             array(
-                'name'       => 'car_make',
+                'name'       => 'categories',
                 'required'   => true,
                 'filters'   => array(
                     array('name' => 'StringTrim'),

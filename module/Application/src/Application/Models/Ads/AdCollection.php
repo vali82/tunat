@@ -68,8 +68,8 @@ class AdCollection
                         'title' => $ad->getPartName(),
                         'id' => $ad->getId(),
                         'description' => $ad->getDescription(),
-                        'car' => $cars['make'][$ad->getCarMake()] . ' ' .
-                            $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['model'],
+                        'car' => $cars['categories'][$ad->getCarMake()] . ' ' .
+                            $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['categ'],
                         'href' =>
                             $carCollection->urlizeAD($ad),
                     ]
@@ -128,8 +128,8 @@ class AdCollection
                     'motorizare' => ($adObj->getCarCilindree() !== '' ? $adObj->getCarCilindree() . ' ' : '') .
                         ($adObj->getCarCarburant() != '' ? $adObj->getCarCarburant() : 'oricare'),
                     'car' => [
-                        'make' => $cars['make'][$adObj->getCarMake()],
-                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
+                        'category' => $cars['categories'][$adObj->getCarMake()],
+//                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
                         'class' => $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['categ']
                     ],
                     'park' => [
