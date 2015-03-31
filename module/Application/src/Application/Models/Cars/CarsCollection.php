@@ -74,9 +74,13 @@ class CarsCollection
     {
         $cars = $this->controller->getCars();
 
-        $categoryId = $ad->getCarMake();
-        $modelId = $ad->getCarModel();
-        $partId = $ad->getPartCateg();
+
+
+        $categoryId = $ad->getCarCategory();
+        $modelId = $ad->getCarMake();
+
+//        General::echop($cars['model'][$categoryId]);
+//        $partId = $ad->g();
 
         $carcategories = strtolower($this->urlize($cars['categories'][$categoryId]));
 //        $model = $cars['model'][$categoryId][$modelId]['model'];

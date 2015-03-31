@@ -1,4 +1,4 @@
-<h3>Adauga Anunt</h3>
+<h3><?=$this->title?></h3>
 <?php
 
-\Application\View\Helper\Forms::render($this, $this->form, $this->url('home/ad/create'));
+\Application\View\Helper\Forms::render($this, $this->form, $this->url('home/ad/create', ['id'=>$this->id]));

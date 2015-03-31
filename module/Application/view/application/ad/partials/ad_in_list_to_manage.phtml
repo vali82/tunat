@@ -1,0 +1,23 @@
+<div class="media">
+    <div class="media-left">
+        <a href="#">
+            <img alt="64x64" data-src="holder.js/64x64" class="media-object" src="<?=$this->imgSrc?>" data-holder-rendered="true">
+        </a>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading"><a href="<?=$this->href?>"><?=$this->title?></a></h4>
+        <p><?=$this->description?></p>
+        <p><?=$this->car?></p>
+        <?php if ($this->status == 'expired') { ?>
+        <a href="#" class="btn btn-primary btn-sm" role="button">Reactiveaza Anunt</a>
+        <?php } else { ?>
+        <a href="<?=$this->url('home/ad/create', ['id'=>$this->id])?>" class="btn btn-success btn-sm" role="button">Modifica Anunt</a>
+        <?php } ?>
+        <a href="javascript:;" onclick="<?=\Application\libs\General::confirmBoxJS(
+            $this,
+            $this->url('home/ad/changeStatus', ['mode'=>'delete', 'id'=>$this->id, 'token'=>$this->token]),
+            'Vrei sa stergi definitiv acest anunt?'
+        )?>"
+           class="btn btn-danger btn-sm" role="button">Sterge Anunt</a>
+    </div>
+</div>

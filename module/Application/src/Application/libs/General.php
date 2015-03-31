@@ -278,5 +278,4 @@ class General
             $controller->layout()->cnt_subtitle = $controller->translator->translate($subtitle);
         }
     }
-
 }

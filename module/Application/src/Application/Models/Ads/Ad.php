@@ -8,18 +8,14 @@ class Ad
     protected $id;
     /**@var int*/
     protected $parkId;
-    /**@var int*/
-    protected $partCateg;
     /**@var string*/
     protected $partName;
     /**@var int*/
     protected $carMake;
     /**@var int*/
+    protected $carCategory;
+    /**@var string*/
     protected $carModel;
-    /**@var string*/
-    protected $carCarburant;
-    /**@var string*/
-    protected $carCilindree;
     /**@var string*/
     protected $description;
     /**@var float*/
@@ -32,6 +28,87 @@ class Ad
     protected $updatedAt;
     /**@var string*/
     protected $images;
+    /**@var string*/
+    protected $yearStart;
+    /**@var string*/
+    protected $yearEnd;
+    /**@var string*/
+    protected $currency;
+
+    /**
+     * @return string
+     */
+    public function getCarModel()
+    {
+        return $this->carModel;
+    }
+
+    /**
+     * @param string $carModel
+     * @return Ad
+     */
+    public function setCarModel($carModel)
+    {
+        $this->carModel = $carModel;
+        return $this;
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     * @return Ad
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYearStart()
+    {
+        return $this->yearStart;
+    }
+
+    /**
+     * @param string $yearStart
+     * @return Ad
+     */
+    public function setYearStart($yearStart)
+    {
+        $this->yearStart = $yearStart;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getYearEnd()
+    {
+        return $this->yearEnd;
+    }
+
+    /**
+     * @param string $yearEnd
+     * @return Ad
+     */
+    public function setYearEnd($yearEnd)
+    {
+        $this->yearEnd = $yearEnd;
+        return $this;
+    }
+
 
 
     /**
@@ -89,24 +166,6 @@ class Ad
     }
 
     /**
-     * @return int
-     */
-    public function getPartCateg()
-    {
-        return $this->partCateg;
-    }
-
-    /**
-     * @param int $partCateg
-     * @return Ad
-     */
-    public function setPartCateg($partCateg)
-    {
-        $this->partCateg = $partCateg;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getPartName()
@@ -145,54 +204,18 @@ class Ad
     /**
      * @return int
      */
-    public function getCarModel()
+    public function getCarCategory()
     {
-        return $this->carModel;
+        return $this->carCategory;
     }
 
     /**
-     * @param int $carModel
+     * @param int $carCategory
      * @return Ad
      */
-    public function setCarModel($carModel)
+    public function setCarCategory($carCategory)
     {
-        $this->carModel = $carModel;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCarCarburant()
-    {
-        return $this->carCarburant;
-    }
-
-    /**
-     * @param string $carCarburant
-     * @return Ad
-     */
-    public function setCarCarburant($carCarburant)
-    {
-        $this->carCarburant = $carCarburant;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCarCilindree()
-    {
-        return $this->carCilindree;
-    }
-
-    /**
-     * @param string $carCilindree
-     * @return Ad
-     */
-    public function setCarCilindree($carCilindree)
-    {
-        $this->carCilindree = $carCilindree;
+        $this->carCategory = $carCategory;
         return $this;
     }
 

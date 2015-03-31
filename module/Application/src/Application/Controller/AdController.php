@@ -56,30 +56,49 @@ class AdController extends MyAbstractController
     public function createAction()
     {
         $cars = $this->cars;
+        $id = $this->getEvent()->getRouteMatch()->getParam('id', null);
 
         $this->layout()->js_call .= ' generalObj.cars = '.json_encode($cars).'; ';
         $this->layout()->js_call .= ' generalObj.ad.create("'.$this->url()->fromRoute("home/ad/upload").'"); ';
 
-        $categories = $this->cars['categories'];
-        $partsMain = $this->cars['partsMain'];
-
-        $adTmpId = General::getFromSession('adTmpId');
-
-        if ($adTmpId === null) {
-            $adTmpId = 'tmp'.rand(10000,99999);
+        if ($id !== null) {
+            // EDIT
+            $adDM = new AdDM($this->adapter);
+            $resourceObj = $adDM->fetchOne([
+                'id' => $id,
+                'park_id' => $this->myPark->getId()
+            ]);
+            if ($resourceObj === null) {
+                $this->flashMessenger()->addErrorMessage('A aparut o eroare! Anunt invalid!');
+                $this->redirect()->toRoute('home/ad/myAds', ['status'=>'active']);
+            }
+            $adTmpId = $id;
             General::addToSession('adTmpId', $adTmpId);
+
+            $this->layout()->js_call .=
+                ' generalObj.ad.changeClass("'.$resourceObj->getCarMake().'");'
+                .
+                ' generalObj.ad.changeModel("'.$resourceObj->getCarModel().'"); '
+            ;
+
+        } else {
+            // ADD
+            $adTmpId = General::getFromSession('adTmpId');
+
+            if ($adTmpId === null) {
+                $adTmpId = 'tmp'.rand(10000, 99999);
+                General::addToSession('adTmpId', $adTmpId);
+            }
+            $resourceObj = new Ad();
         }
 
-        $file_path = PUBLIC_PATH . $this->myPark->getId() . '/ads/'. $adTmpId . '/' ;
+        $file_path = PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/'. $adTmpId . '/' ;
 
-        $carburant = General::getConfigs($this, 'consts|carburant');
-        $cilindree = General::getConfigs($this, 'consts|cilindree');
-
-        $resourceObj = new Ad();
         $form = new AdForm();
         $form->setCancelRoute('back');
-        $form->create($resourceObj, $categories, $carburant, $cilindree, $partsMain);
+        $form->create($resourceObj, $this->cars['categories'], null, null, null);
 
+        $form->bind($resourceObj);
 
         $request = $this->getRequest();
 
@@ -91,17 +110,6 @@ class AdController extends MyAbstractController
 
             $form->setData($request->getPost());
             if ($form->isValid()) {
-
-                $carburantValue = isset($carburant[$form->get('car_carburant')->getValue()]) ?
-                    $carburant[$form->get('car_carburant')->getValue()] :
-                    ''
-                ;
-                $cilindreeValue = isset($cilindree[$form->get('car_cilindree')->getValue()]) ?
-                    $cilindree[$form->get('car_cilindree')->getValue()] :
-                    ''
-                ;
-
-
                 $images = [];
 
                 if (is_dir($file_path)) {
@@ -114,37 +122,85 @@ class AdController extends MyAbstractController
                     }
                 }
 
+                // detect Car Class
+                $carMakelId = $form->get('car_make')->getValue();
+                ////
+
                 $resourceObj
-                    ->setCarModel($form->get('car_model')->getValue())
-                    ->setCarCarburant($carburantValue)
-                    ->setCarCilindree($cilindreeValue)
-                    ->setStatus('pending')
+                    ->setCarMake($carMakelId)
+                    ->setStatus('ok')
                     ->setImages(serialize($images))
                 ;
                 $adDM = new AdDM($this->adapter);
-                $adId = $adDM->createRow($resourceObj);
 
-                if ($adId && is_dir($file_path)) {
-                    rename($file_path, PUBLIC_PATH . $this->myPark->getId() . '/ads/' . $adId . '/');
+                if ($id === null) {
+                    $adId = $adDM->createRow($resourceObj);
+
+
+                    if ($adId && is_dir($file_path)) {
+                        rename($file_path, PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/' . $adId . '/');
+                    }
+                    $this->flashMessenger()->addSuccessMessage('Anuntul a fost adaugat cu success!');
+
+                } else {
+                    $adId = $adDM->updateRow($resourceObj);
+                    $this->flashMessenger()->addSuccessMessage('Anuntul a fost modificat cu success!');
+
                 }
-
                 General::unsetSession('adTmpId');
 
-                $this->redirect()->toRoute('home');
+                $this->redirect()->toRoute('home/ad/myAds');
             } else {
                 $this->layout()->js_call .=
-                    ' generalObj.ad.changeClass("'.$form->get('car_class')->getValue().'");'.
-                    ' generalObj.ad.changeModel("'.$form->get('car_model')->getValue().'"); ';
+                    ' generalObj.ad.changeClass("'.$form->get('car_make')->getValue().'");'
+                    .
+                    ' generalObj.ad.changeModel("'.$form->get('car_model')->getValue().'"); '
+                ;
             }
         }
 
-        if (is_dir($file_path)) {
-//            var_dump('asdads');
-//            $this->layout()->js_call .=' generalObj.ad.callUpload("'.$this->url()->fromRoute('home/ad/upload').'"); ';
-        }
-
         return [
-            'form' => $form
+            'form' => $form,
+            'id' => $id,
+            'title' => $id !== null ? 'Modifica Anunt' : 'Adauga Anunt'
+        ];
+    }
+
+    public function myAdsAction()
+    {
+        $statusParam = $this->getEvent()->getRouteMatch()->getParam('status', 'active');
+        switch ($statusParam) {
+            case "active":
+                $status = 'ok';
+                $title = 'Anunturi Active';
+                break;
+            case "expired":
+                $title = 'Anunturi Expirate';
+                $status = 'expired';
+                break;
+            default:
+                $status = 'ok';
+        }
+        $cars = $this->cars;
+        $carCollection = new CarsCollection($this);
+        $ad = new AdCollection($this);
+
+        $token = md5(time().'asdfqwer'.rand(1000, 9999));
+        General::addToSession('token', $token);
+        $content = $ad->adListHTML([
+            'place' => 'myAds',
+            'status' => $status,
+            'token' => $token
+        ]);
+
+        $adList = $content['list'];
+        $ads = $content['ads'];
+        return [
+            'adList' => $adList,
+            'ads' => $ads,
+            'carCollection' => $carCollection,
+            'statusParam' => $statusParam,
+            'title' => $title
         ];
     }
 
@@ -285,5 +341,39 @@ class AdController extends MyAbstractController
             ] : null,
             'message' => $parkObj !== null ? '' : 'Datele de contact nu au fost gasite',
         ]);
+    }
+
+    public function changeStatusAction()
+    {
+        $token = $this->getEvent()->getRouteMatch()->getParam('token', '');
+        $id = $this->getEvent()->getRouteMatch()->getParam('id', '');
+        $mode = $this->getEvent()->getRouteMatch()->getParam('mode', '');
+
+        if ($token == General::getFromSession('token')) {
+            $adDM = new AdDM($this->adapter);
+            $adObj = $adDM->fetchOne([
+                'id' => $id,
+                'park_id' => $this->myPark->getId()
+            ]);
+            if ($mode == 'delete') {
+                if ($adObj !== null) {
+                    $adDM->deleteOne($adObj);
+                    $file_path = PUBLIC_IMG_PATH . $this->myPark->getId(). '/ads/'. $id;
+                    foreach (glob($file_path . "/*") as $filefound) {
+                        @unlink($filefound);
+                    }
+                    rmdir($file_path);
+
+                    $this->flashMessenger()->addSuccessMessage('Anuntul a fost sters cu success!');
+                } else {
+                    $this->flashMessenger()->addErrorMessage('Stergere esuata! Anunt invalid!');
+                }
+            }
+
+        } else {
+            $this->flashMessenger()->addErrorMessage('Stergere esuata! Token invalid!');
+        }
+
+        $this->redirect()->toRoute('home/ad/myAds', ['status'=>'active']);
     }
 }

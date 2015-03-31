@@ -13,14 +13,6 @@ class AdFilter extends AbstractFilter
 
 		$this->_filterFields = array(
 			array(
-				'name'       => 'part_categ',
-				'required'   => true,
-				'filters'   => array(
-					array('name' => 'StringTrim'),
-					array('name' => 'StripTags'),
-				),
-			),
-			array(
 				'name'       => 'part_name',
 				'required'   => true,
 				'validators' => array(
@@ -38,7 +30,7 @@ class AdFilter extends AbstractFilter
 				),
 			),
             array(
-                'name'       => 'categories',
+                'name'       => 'car_category',
                 'required'   => true,
                 'filters'   => array(
                     array('name' => 'StringTrim'),
@@ -48,22 +40,6 @@ class AdFilter extends AbstractFilter
             array(
                 'name'       => 'car_model',
                 'required'   => true,
-                'filters'   => array(
-                    array('name' => 'StringTrim'),
-                    array('name' => 'StripTags'),
-                ),
-            ),
-            array(
-                'name'       => 'car_carburant',
-                'required'   => false,
-                'filters'   => array(
-                    array('name' => 'StringTrim'),
-                    array('name' => 'StripTags'),
-                ),
-            ),
-            array(
-                'name'       => 'car_cilindree',
-                'required'   => false,
                 'filters'   => array(
                     array('name' => 'StringTrim'),
                     array('name' => 'StripTags'),

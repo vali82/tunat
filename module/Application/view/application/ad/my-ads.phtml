@@ -1,0 +1,25 @@
+<h3>Anunturile mele</h3>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <?=$this->title?>
+        </h3>
+    </div>
+    <div class="panel-body">
+        <?php if ($this->adList !== null) { ?>
+            <?=$this->adList?>
+            <?=
+            $this->paginationControl(
+                $this->ads,
+                'Sliding',
+                'application/partials/list_pagination.phtml',
+                ['route' => 'home/ad/myAds', 'routeArray' => ['status' => $this->statusParam]]
+            );
+            ?>
+        <?php } else { ?>
+            <p>Nu ai niciun anunt!</p>
+        <?php } ?>
+
+    </div>
+</div>

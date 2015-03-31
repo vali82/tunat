@@ -19,15 +19,7 @@ class AdForm extends AbstractForm
 
         //--------------------------------------------------------- DETALII PIESA--------------
 
-        $this->add(array(
-            'name' => 'custom_form_spacer',
-            'type' => 'hidden',
-            'attributes' => array(
-                'textAbove' => 'Detalii Piesa',
-            )
-        ));
-
-        $this->add(array(
+        /*$this->add(array(
             'type' => 'select',
             'name' => 'part_categ',
             'options' => array(
@@ -40,23 +32,10 @@ class AdForm extends AbstractForm
 //                    'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
             ),
-        ));
+        ));*/
 
 
-        $this->add(array(
-            'type' => 'text',
-            'name' => 'part_name',
-            'options' => array(
-                'label' => 'Piesa',
-//                'options' => [''=>''],
-            ),
-            'attributes' => array(
-                'id' => 'select2CarPartsSub',
-                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
-            ),
-        ));
 
 //-------------------------- DETALII MASINA--------------------
         $this->add(array(
@@ -69,14 +48,14 @@ class AdForm extends AbstractForm
 
         $this->add(array(
             'type' => 'select',
-            'name' => 'categories',
+            'name' => 'car_category',
             'options' => array(
-                'label' => 'Marca Masina',
-                'options' => ['' => ''] + $carMake,
+                'label' => 'Piesa Pentru',
+                'options' => ['0' => 'Alege Categoria'] + $carMake,
             ),
             'attributes' => array(
                 'id' => 'select2CarMake',
-                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
@@ -85,43 +64,85 @@ class AdForm extends AbstractForm
 
         $this->add(array(
             'type' => 'select',
-            'name' => 'car_class',
+            'name' => 'car_make',
             'options' => array(
-                'label' => 'Model Masina',
-                'options' => ['' => 'Clasa'],
+                'label' => 'Marca',
+                'options' => ['' => 'Marca'],
                 //'empty_option' => '--- Selecteaza Parinte ---',
                 'disable_inarray_validator' => true
             ),
             'attributes' => array(
-                'noLabel' => true,
-                'disabled' => 'disabled',
+//                'noLabel' => true,
+//                'disabled' => 'disabled',
                 'id' => 'select2CarModels',
-                'group' => array('size' => 'col-sm-6 col-md-3', 'type' => ''),
+                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'start'),
+                'required' => true,
+//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+            ),
+        ));
+        $this->add(array(
+            'type' => 'text',
+            'name' => 'car_model',
+            'options' => array(
+                'label' => 'Model',
+//                'disable_inarray_validator' => true
+            ),
+            'attributes' => array(
+                'placeholder' => 'Model',
+//                'disabled' => 'disabled',
+//                'noLabel' => true,
+                'id' => 'select2CarModels2',
+                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'end'),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
+            ),
+        ));
+
+        for ($i=date('Y'); $i>1960; $i--) {
+            $years[$i] = $i;
+        }
+
+        $this->add(array(
+            'type' => 'select',
+            'name' => 'year_start',
+            'options' => array(
+                'label' => 'An Fabricatie',
+                'options' => ['' => 'de la '] + $years,
+                //'empty_option' => '--- Selecteaza Parinte ---',
+//                'disable_inarray_validator' => true
+            ),
+            'attributes' => array(
+//                'noLabel' => true,
+//                'disabled' => 'disabled',
+                'id' => 'year_start',
+                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => 'start'),
+                'required' => false,
+//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
         ));
         $this->add(array(
             'type' => 'select',
-            'name' => 'car_model',
+            'name' => 'year_end',
             'options' => array(
-                'options' => ['' => 'Model'],
-                'disable_inarray_validator' => true
+                'label' => '-',
+                'options' => ['' => 'pana la '] + $years,
+                //'empty_option' => '--- Selecteaza Parinte ---',
+//                'disable_inarray_validator' => true
             ),
             'attributes' => array(
-                'disabled' => 'disabled',
                 'noLabel' => true,
-                'id' => 'select2CarModels2',
-                'group' => array('size' => 'col-sm-6 col-md-3', 'type' => 'end'),
-                'required' => true,
+//                'disabled' => 'disabled',
+                'id' => 'year_end',
+                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => 'end'),
+                'required' => false,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
-
             ),
         ));
 
 
-        $this->add(array(
+
+        /*$this->add(array(
             'type' => 'select',
             'name' => 'car_carburant',
             'options' => array(
@@ -145,30 +166,7 @@ class AdForm extends AbstractForm
                 'noLabel' => true,
                 'group' => array('size' => 'col-sm-4 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
             ),
-        ));
-//--------------------------------------------------------- POZE ANUNT--------------
-
-        $this->add(array(
-            'name' => 'custom_form_spacer',
-            'type' => 'hidden',
-            'attributes' => array(
-                'textAbove' => 'Poze',
-            )
-        ));
-
-        $this->add(array(
-            'name' => 'photosMultiUpload',
-            'type' => 'text',
-            'options' => [
-                'label' => '',
-            ],
-            'attributes' => array(
-                'maxFileSize' => '2MB',
-                'acceptedFileType' => 'jpeg, png, gif'
-//                'noLabel' => true,
-                //'textAbove' => 'Detalii Anunt',
-            )
-        ));
+        ));*/
 
 //--------------------------------------------------------- DETALII ANUNT--------------
 
@@ -179,6 +177,21 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'textAbove' => 'Detalii Anunt',
             )
+        ));
+
+        $this->add(array(
+            'type' => 'text',
+            'name' => 'part_name',
+            'options' => array(
+                'label' => 'Piesa',
+//                'options' => [''=>''],
+            ),
+            'attributes' => array(
+                'id' => 'select2CarPartsSub',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+
+            ),
         ));
 
 
@@ -212,20 +225,26 @@ class AdForm extends AbstractForm
                 'label' => 'Pret',
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-sm-6 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-2 col-sm-5 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
                 'type' => 'text',
             ),
         ));
         $this->add(array(
-            'name' => 'phone',
+            'type' => 'select',
+            'name' => 'currency',
             'options' => array(
-                'label' => 'RON',
+//                'label' => '-',
+                'options' => ['RON' => 'RON', 'EUR' => 'EUR', 'USD' => 'USD'],
+                //'empty_option' => '--- Selecteaza Parinte ---',
+//                'disable_inarray_validator' => true
             ),
             'attributes' => array(
-                'justText' => true,
                 'noLabel' => true,
-                'group' => array('size' => 'col-sm-2 col-md-1', 'type' => 'end'),
-                'type' => 'text',
+//                'disabled' => 'disabled',
+//                'id' => 'year_end',
+                'group' => array('size' => 'col-lg-1 col-sm-3 col-md-2', 'type' => 'end'),
+                'required' => true,
+//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
         ));
 
@@ -236,12 +255,43 @@ class AdForm extends AbstractForm
             )
         ));
 
+//--------------------------------------------------------- POZE ANUNT--------------
+
+        $this->add(array(
+            'name' => 'custom_form_spacer',
+            'type' => 'hidden',
+            'attributes' => array(
+                'textAbove' => 'Poze',
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'photosMultiUpload',
+            'type' => 'text',
+            'options' => [
+                'label' => '',
+            ],
+            'attributes' => array(
+                'maxFileSize' => '2MB',
+                'acceptedFileType' => 'jpeg, png, gif'
+//                'noLabel' => true,
+                //'textAbove' => 'Detalii Anunt',
+            )
+        ));
+
+        $this->add(array(
+            'name' => 'custom_form_spacer',
+            'type' => 'hidden',
+            'attributes' => array(
+                'textAbove' => '',
+            )
+        ));
 
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Adauga Anunt',
+                'value' => 'Salveaza',
                 'id' => 'submitbutton',
                 'cancelLink' => $this->_cancel_route
             ),

@@ -5,7 +5,7 @@
  */
 chdir(dirname(__DIR__));
 
-define('PUBLIC_PATH', __DIR__ . '/images/');
+define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 define('MAIN_DOMAIN', 'http://tunat.local/');
 
 // Decline static file requests back to the PHP built-in webserver

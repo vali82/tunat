@@ -135,28 +135,25 @@ $.general = function() {
         changeClass: function (selected) {
             var thisObj = this;
             var carId = $('#select2CarMake').val();
-            var userList= '<option value="">Clasa</option>';
+            var userList= '<option value="">Marca</option>';
             $("#select2CarModels").attr('disabled',false);
             $("#select2CarModels2").attr('disabled',true);
             $("#select2CarModels2").val('');
-            //$('#select2CarModels').val(0);
-            //$("#select2CarModels").select2('destroy');
-            //$("#select2CarModels").select2();
             if (thisObj.cars.model[carId] != undefined) {
-                $.each(thisObj.cars.categ[carId], function (i, v) {
-                    userList += ('<option value="' + v + '">' + v + '</option>');
+                $.each(thisObj.cars.model[carId], function (i, v) {
+                    userList += ('<option value="' + i + '">' + v.categ + '</option>');
                 });
             }
             $('#select2CarModels').html(userList);
             $('#select2CarModels').val(selected == 0 ? '' : selected);
-            //$('#select2CarModels2').html('');
         },
 
         changeModel: function (selected) {
             var thisObj = this;
             var carId = $('#select2CarMake').val();
             var carCategId = $('#select2CarModels').val();
-            var userList= '<option value="">Model</option>';
+            $("#select2CarModels2").attr('disabled',false);
+            /*var userList= '<option value="">Model</option>';
             $("#select2CarModels2").attr('disabled',false);
             if (thisObj.cars.model[carId] != undefined && thisObj.cars.model[carId] != undefined) {
                 $.each(thisObj.cars.model[carId], function (i, v) {
@@ -165,15 +162,17 @@ $.general = function() {
                     }
 
                 });
-            }
-            $('#select2CarModels2').html(userList);
-            $('#select2CarModels2').val(selected == 0 ? '' : selected);
+            }*/
+            $('#select2CarModels2').val(selected);
+            $("#year_start").attr('disabled',false);
+            $("#year_end").attr('disabled',false);
+            //$('#select2CarModels2').val(selected == 0 ? '' : selected);
         },
 
         create: function(uploadUrl) {
             this.cars = generalObj.cars;
             var thisObj = this;
-            // avem selector de model
+
 
             if ($('#select2CarMake').length > 0 && this.cars !== false) {
 
@@ -182,17 +181,17 @@ $.general = function() {
                 });
 
                 $('#select2CarModels').bind('change', function(i,v) {
-                    thisObj.changeModel(0);
+                    thisObj.changeModel('');
                 });
 
             }
 
-            $("#select2CarMake").select2({
-                placeholder: "Alege Marca",
-            });
-            $("#select2CarPartsMain").select2({
+            /*$("#select2CarMake").select2({
+                placeholder: "Alege Categoria",
+            });*/
+            /*$("#select2CarPartsMain").select2({
                 placeholder: "Alege Categorie",
-            });
+            });*/
 
             // Initialize the jQuery File Upload widget:
             $('#fileupload').fileupload({

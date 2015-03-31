@@ -20,6 +20,7 @@ class AdCollection
     {
         $cars = $this->controller->getCars();
         $carCollection = new CarsCollection($this->controller);
+        $ad_in_list = 'ad_in_list';
 
         $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
 
@@ -32,6 +33,26 @@ class AdCollection
                 ['status' => 'ok'],
                 ['id' => 'DESC'],
                 [1, 5]
+            );
+
+        } elseif ($param['place'] == 'myAds') {
+            // My ADS
+            $ad_in_list = 'ad_in_list_to_manage';
+            $page = $this->controller->getEvent()->getRouteMatch()->getParam('p', '');
+            $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
+            $adDM = new AdDM($this->controller->getAdapter());
+            /** @var $ads \Application\Models\Ads\Ad[]|null*/
+            $adDM->setPaginateValues(array(
+                'page' => $page,
+                'items_per_page' => 5,
+            ));
+
+            $ads = $adDM->fetchAllDefault(
+                [
+                    'park_id' => $this->controller->getMyPark()->getId(),
+                    'status' => $param['status']
+                ],
+                ['id' => 'DESC']
             );
 
         } elseif ($param['place'] == 'onSearch') {
@@ -47,8 +68,8 @@ class AdCollection
             $ads = $adDM->fetchAllDefault(
                 [
                     'status' => 'ok',
-                    'car_model' => $param['carModelId'],
-                    'part_categ' => $param['partMainId']
+                    'car_make' => $param['carModelId'],
+                    // 'part_categ' => $param['partMainId']
                 ],
                 ['id' => 'DESC']
             );
@@ -58,7 +79,7 @@ class AdCollection
         if ($ads !== null) {
             foreach ($ads as $ad) {
                 $adImg = unserialize($ad->getImages());
-                $content.= $partial('application/ad/partials/ad_in_list.phtml',
+                $content.= $partial('application/ad/partials/'.$ad_in_list.'.phtml',
                     [
                         'imgSrc' => General::getSimpleAvatar(
                             $ad->getParkId() . 'xadsx'.$ad->getId(),
@@ -68,15 +89,17 @@ class AdCollection
                         'title' => $ad->getPartName(),
                         'id' => $ad->getId(),
                         'description' => $ad->getDescription(),
-                        'car' => $cars['categories'][$ad->getCarMake()] . ' ' .
-                            $cars['model'][$ad->getCarMake()][$ad->getCarModel()]['categ'],
+                        'car' => $cars['categories'][$ad->getCarCategory()] . ' ' .
+                            $cars['model'][$ad->getCarCategory()][$ad->getCarMake()]['categ'],
                         'href' =>
                             $carCollection->urlizeAD($ad),
+                        'status' => $ad->getStatus(),
+                        'token' => isset($param['token']) ? $param['token'] : ''
                     ]
                 );
             }
         }
-        if ($param['place'] == 'onSearch') {
+        if ($param['place'] !== 'homepage') {
             return [
                 'list' => $content !== '' ? $content : null,
                 'ads' => $ads
@@ -125,12 +148,10 @@ class AdCollection
                     'title' => $adObj->getPartName(),
                     'description' => $adObj->getDescription(),
                     'href' => '#',
-                    'motorizare' => ($adObj->getCarCilindree() !== '' ? $adObj->getCarCilindree() . ' ' : '') .
-                        ($adObj->getCarCarburant() != '' ? $adObj->getCarCarburant() : 'oricare'),
                     'car' => [
-                        'category' => $cars['categories'][$adObj->getCarMake()],
+                        'category' => $cars['categories'][$adObj->getCarCategory()],
 //                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
-                        'class' => $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['categ']
+                        'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']
                     ],
                     'park' => [
                         'name' => $parkObj->getName(),

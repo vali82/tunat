@@ -39,12 +39,12 @@ class SimpleController extends AbstractActionController
         $typex = str_replace("x",'/',$folder);
         $sizex = explode('x', $size);
 
-        $image_to_display = PUBLIC_PATH . $typex . '/' . $id . '_' . $size;
+        $image_to_display = PUBLIC_IMG_PATH . $typex . '/' . $id . '_' . $size;
 
         if (!file_exists($image_to_display)) {
 
 
-            $oldname = PUBLIC_PATH . $typex . '/' . $id;
+            $oldname = PUBLIC_IMG_PATH . $typex . '/' . $id;
 
             if (file_exists($oldname)) {
 
@@ -63,9 +63,9 @@ class SimpleController extends AbstractActionController
                 $thumb->save($image_to_display);
 
             } else {  // display no image
-                $image_to_display = PUBLIC_PATH . $noPhoto . '_' . $size;
+                $image_to_display = PUBLIC_IMG_PATH . $noPhoto . '_' . $size;
                 if (!file_exists($image_to_display)) {
-                    $oldname = PUBLIC_PATH . $noPhoto;
+                    $oldname = PUBLIC_IMG_PATH . $noPhoto;
 
                     $thumbnailer = $this->getServiceLocator()->get('WebinoImageThumb');
                     $imagePath = $oldname;

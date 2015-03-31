@@ -56,7 +56,15 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         <ul class="nav navbar-nav">
                             <?php if ($role == 'parcauto') { ?>
                                 <li><a href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
-                                <li><a href="#">Anunturile mele</a></li>
+                                <li class="dropdown">
+                                    <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                        Anunturile mele<span class="caret"></span>
+                                    </a>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Active</a></li>
+                                        <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Expirate</a></li>
+                                    </ul>
+                                </li>
                             <?php } ?>
 
                         </ul>
@@ -83,6 +91,48 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
             </div>
         </nav>
         <div class="container" style="padding-bottom: 50px">
+
+            <?php
+            if (count($this->flashMessenger()->getErrorMessages())) : ?>
+                <div class="alert alert-danger alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <?php foreach ($this->flashMessenger()->getErrorMessages() as $fMessage) : ?>
+                        <?php echo $fMessage . '<br />'; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php
+            if (count($this->flashMessenger()->getSuccessMessages())) : ?>
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <?php foreach ($this->flashMessenger()->getSuccessMessages() as $fMessage) : ?>
+                        <?php echo $fMessage . '<br />'; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+
+            <?php
+            if (count($this->flashMessenger()->getInfoMessages())) : ?>
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <?php foreach ($this->flashMessenger()->getInfoMessages() as $fMessage) : ?>
+                        <?php echo $fMessage . '<br />'; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+            <?php
+            if (count($this->flashMessenger()->getMessages())) : ?>
+                <div class="alert alert-info alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <?php foreach ($this->flashMessenger()->getMessages() as $fMessage) : ?>
+                        <?php echo $fMessage . '<br />'; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
             <?php echo $this->content; ?>
         </div> <!-- /container -->
 
