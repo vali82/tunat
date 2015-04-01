@@ -6,6 +6,12 @@ $this->headScript()
     ->appendFile('/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
 ;
 ?>
+<?php if ($this->status !== 'ok') { ?>
+    <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        Anuntul a expirat!
+    </div>
+<?php } ?>
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">

@@ -17,6 +17,7 @@ use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
 class MyAbstractController extends AbstractActionController
 {
+    /** @var \Application\Models\Autoparks\Park*/
     protected $myPark;
     protected $myUser;
     protected $role;

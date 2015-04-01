@@ -34,6 +34,46 @@ class Ad
     protected $yearEnd;
     /**@var string*/
     protected $currency;
+    /**@var int*/
+    protected $views;
+    /**@var int*/
+    protected $contactDisplayed;
+
+    /**
+     * @return int
+     */
+    public function getContactDisplayed()
+    {
+        return $this->contactDisplayed;
+    }
+
+    /**
+     * @param int $contactDisplayed
+     * @return Ad
+     */
+    public function setContactDisplayed($contactDisplayed)
+    {
+        $this->contactDisplayed = $contactDisplayed;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getViews()
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int $views
+     * @return Ad
+     */
+    public function setViews($views)
+    {
+        $this->views = $views;
+        return $this;
+    }
 
     /**
      * @return string
@@ -52,8 +92,6 @@ class Ad
         $this->carModel = $carModel;
         return $this;
     }
-
-
 
     /**
      * @return string

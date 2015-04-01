@@ -120,10 +120,17 @@ class AdCollection
             'status' => 'ok'
         ]);
         if ($adObj !== null) {
+            // increment view counter
+            if ($this->controller->getMyPark() === null ||
+                $this->controller->getMyPark()->getId() !== $adObj->getParkId()) {
+                $adObj->setViews($adObj->getViews() + 1);
+                $adDM->updateRow($adObj);
+            }
+            ////
+
             $parkDM = new ParksDM($this->controller->getAdapter());
             /** @var $parkObj \Application\Models\Autoparks\Park*/
             $parkObj = $parkDM->fetchOne($adObj->getParkId());
-//            $parkDM->fetchOne($adObj->getU)
 
             $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
 
@@ -159,7 +166,8 @@ class AdCollection
                         'email' => $parkObj->getEmail(),
                         'url' => $parkObj->getUrl(),
                         'location' => $parkObj->getLocation()
-                    ]
+                    ],
+                    'status' => $adObj->getStatus()
                 ]
             );
 

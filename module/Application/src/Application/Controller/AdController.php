@@ -130,6 +130,8 @@ class AdController extends MyAbstractController
                     ->setCarMake($carMakelId)
                     ->setStatus('ok')
                     ->setImages(serialize($images))
+                    ->setViews(0)
+                    ->setContactDisplayed(0)
                 ;
                 $adDM = new AdDM($this->adapter);
 
@@ -248,36 +250,18 @@ class AdController extends MyAbstractController
         }
         ////
 
-        /*// detect Car Model ID
-        $carModelId = null;
-        $x = explode('-', $modelParam);
-        if ($modelParam != '' && is_array($x) && count($x) > 0) {
-            $carModelId = $x[count($x)-1];
-            if (!isset($cars['model'][$carcategoriesId][$carModelId])) {
-                $carModelId = null;
-            }
-        }
-        ////
-
-        // detect Car Part ID
-        $partMainId = null;
-        $x = explode('-', $partMain);
-        if ($partMain != '' && is_array($x) && count($x) > 0) {
-            $partMainId = $x[count($x)-1];
-            if (!isset($cars['partsMain'][$partMainId])) {
-                $partMainId = null;
-            }
-        }
-        ////*/
-
         // detect Ad ID
         $ad = new AdCollection($this);
         $adId = null;
         $adView = null;
         $x = explode('-', $adParam);
         if ($adParam != '' && is_array($x) && count($x) > 0) {
-            $adId = $x[count($x)-1];
+            $adId = (int)$x[count($x)-1];
             $adView = $ad->viewHTML($adId);
+            if ($adView === null) {
+                //$this->flashMessenger()->addInfoMessage('Anuntul #'.$adId.' a expirat');
+                return $this->redirect()->toRoute('home');
+            }
         }
         ////
 
@@ -328,7 +312,15 @@ class AdController extends MyAbstractController
             /** @var $parkObj \Application\Models\Autoparks\Park */
             $parkObj = $parkDM->fetchOne($adObj->getParkId());
 
+            // count number of view contacts
+            if ($this->myPark === null ||
+                $this->myPark->getId() !== $adObj->getParkId()) {
+                $adObj->setContactDisplayed($adObj->getContactDisplayed() + 1);
+                $adDM->updateRow($adObj);
+            }
+            ////
         }
+
 
         return new JsonModel([
             'error' => $parkObj !== null ? 0 : 1,
@@ -348,32 +340,55 @@ class AdController extends MyAbstractController
         $token = $this->getEvent()->getRouteMatch()->getParam('token', '');
         $id = $this->getEvent()->getRouteMatch()->getParam('id', '');
         $mode = $this->getEvent()->getRouteMatch()->getParam('mode', '');
+        $messageError = '';
+        $messageSuccess = '';
+        $error = 0;
+        $statusRedirect = 'active';
 
         if ($token == General::getFromSession('token')) {
             $adDM = new AdDM($this->adapter);
+            /** @var $adObj \Application\Models\Ads\Ad*/
             $adObj = $adDM->fetchOne([
                 'id' => $id,
                 'park_id' => $this->myPark->getId()
             ]);
-            if ($mode == 'delete') {
-                if ($adObj !== null) {
+            if ($adObj !== null) {
+                if ($mode == 'delete') {
                     $adDM->deleteOne($adObj);
-                    $file_path = PUBLIC_IMG_PATH . $this->myPark->getId(). '/ads/'. $id;
+                    $file_path = PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/' . $id;
                     foreach (glob($file_path . "/*") as $filefound) {
                         @unlink($filefound);
                     }
                     rmdir($file_path);
 
-                    $this->flashMessenger()->addSuccessMessage('Anuntul a fost sters cu success!');
-                } else {
-                    $this->flashMessenger()->addErrorMessage('Stergere esuata! Anunt invalid!');
+                    $messageSuccess = 'Anuntul a fost sters cu success!';
+
+                } elseif ($mode == 'activate') {
+                    $adObj
+                        ->setDateadd(General::DateTime())
+                        ->setStatus('ok')
+                    ;
+                    $adDM->updateRow($adObj);
+                    $messageSuccess = 'Anuntul a fost activat cu success!';
+                    $statusRedirect = 'expired';
                 }
+            } else {
+                $error = 1;
+                $messageError = 'Anunt invalid!';
             }
 
+
         } else {
-            $this->flashMessenger()->addErrorMessage('Stergere esuata! Token invalid!');
+            $messageError = 'Token invalid!';
+            $error = 1;
         }
 
-        $this->redirect()->toRoute('home/ad/myAds', ['status'=>'active']);
+        if ($error) {
+            $this->flashMessenger()->addErrorMessage($messageError);
+        } else {
+            $this->flashMessenger()->addSuccessMessage($messageSuccess);
+        }
+
+        $this->redirect()->toRoute('home/ad/myAds', ['status' => $statusRedirect]);
     }
 }
