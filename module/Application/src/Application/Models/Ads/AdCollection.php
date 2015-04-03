@@ -44,7 +44,7 @@ class AdCollection
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
                 'page' => $page,
-                'items_per_page' => 5,
+                'items_per_page' => 10,
             ));
 
             $ads = $adDM->fetchAllDefault(
@@ -94,7 +94,10 @@ class AdCollection
                         'href' =>
                             $carCollection->urlizeAD($ad),
                         'status' => $ad->getStatus(),
-                        'token' => isset($param['token']) ? $param['token'] : ''
+                        'token' => isset($param['token']) ? $param['token'] : '',
+                        'views' => $ad->getViews(),
+                        'contactDisplayed' => $ad->getContactDisplayed(),
+                        'expirationDate' => '22 mar 2015'
                     ]
                 );
             }
