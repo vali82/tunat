@@ -12,3 +12,4 @@ vendor
 composer.phar
 
 public/images
+public/.htaccess
