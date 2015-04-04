@@ -9,7 +9,6 @@ chdir(dirname(__DIR__));
 defined('APPLICATION_ENV')
 || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-die('sdad');
 
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 define('MAIN_DOMAIN', 'http://tunat.local/');
