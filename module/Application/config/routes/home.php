@@ -23,6 +23,9 @@ return [
                 'controller' => 'Ad',
                 'action' => 'piese',
             ),
+            'constraints' => array(
+               // 'categories' => '(camioane|dube|"utilaje-agricole")',
+            )
         ),
         'may_terminate' => true,
 //        'child_routes' => include __DIR__ . '/ad.php'

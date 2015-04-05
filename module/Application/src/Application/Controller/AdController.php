@@ -217,11 +217,10 @@ class AdController extends MyAbstractController
         $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
         $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
 
+
         // detect Car categories ID
         $carcategoriesId = null;
-//        $ = null;
         if ($categoriesParam !== '') {
-            $models = [];
             foreach ($cars['categories'] as $categId => $model) {
                 if (strtolower($carCollection->getUrlize($model)) == $categoriesParam) {
                     $carcategoriesId = $categId;
@@ -230,9 +229,12 @@ class AdController extends MyAbstractController
         }
         ////
 
-        if ($carcategoriesId === null) {
-            $this->redirect()->toRoute('home');
+
+        if ($carcategoriesId == null || !isset($cars['model'][$carcategoriesId])) {
+            return $this->redirect()->toRoute('home');
         }
+
+
 
         // detect Car Class
         $models = null;
@@ -250,6 +252,9 @@ class AdController extends MyAbstractController
         }
         ////
 
+//        var_dump($cars['model'][$carcategoriesId]); die();
+
+
         // detect Ad ID
         $ad = new AdCollection($this);
         $adId = null;
@@ -264,6 +269,8 @@ class AdController extends MyAbstractController
             }
         }
         ////
+
+
 
         // get All ADs with these IDs
         $adList = null;
@@ -280,8 +287,12 @@ class AdController extends MyAbstractController
         }
         ////
 
+
+
         $urlGetContact = $this->url()->fromRoute('home/ad/getContact', ['id'=>($adId !== null ? $adId : 0)]);
         $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
+
+
 
         return [
             'carcategoriesId' => $carcategoriesId,
