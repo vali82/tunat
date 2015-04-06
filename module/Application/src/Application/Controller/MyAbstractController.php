@@ -164,13 +164,13 @@ class MyAbstractController extends AbstractActionController
             $path = PUBLIC_IMG_PATH . $user_id . '/';
             if (!is_dir($path)) {
                 mkdir($path);
-                chmod($path, '0777');
+                chmod($path, '0755');
             }
             foreach ($folder as $f) {
                 $path .= $f . '/';
                 if (!is_dir($path)) {
                     mkdir($path);
-                    chmod($path, '0777');
+                    chmod($path, '0755');
                 }
             }
             foreach ($adapter->getFileInfo() as $file => $info) {
