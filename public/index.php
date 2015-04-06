@@ -5,11 +5,9 @@
  */
 chdir(dirname(__DIR__));
 
-
 // Define application environment
 defined('APPLICATION_ENV')
 || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
 
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
