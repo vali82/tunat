@@ -5,7 +5,6 @@ return array(
 
         'Application',
         'ScnSocialAuth',
-
         'ZfcBase',
         'ZfcUser',
         'BjyAuthorize',
@@ -13,7 +12,6 @@ return array(
         'ZendDeveloperTools',
         'BjyProfiler',
         'WebinoImageThumb',
-
 
     ),
 

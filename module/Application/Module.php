@@ -29,39 +29,26 @@ class Module
         date_default_timezone_set($config['timezone']);
         \Locale::setDefault($config['translator']['locale']);
 
-        // unlogged users .. mark some fields after simple register or social media register
-        // PT USER NEINREGISTRATI
-        $user = null;
-        $auth = $serviceManager->get('zfcuser_auth_service');
-        if ($auth->hasIdentity()) {
-            $user = $serviceManager->get('AuthenticatedUser');
-        }
-
-        /*$fp = fopen( PUBLIC_IMG_PATH . 'data.txt', 'a');
-        fwrite($fp, '---'."\r\n");
-        fclose($fp);*/
-        /*$userRoleLinkerDM = $serviceManager->get('getUserRoleLinkerDB');
-        $userRoleLinkerDM->createRow(array(
-            'user_id' => 100,
-            'role_id' => 'user'
-        ));*/
-
-//        if (1==1 ||  (!defined('_CRONJOB_') || _CRONJOB_ == false) && $user === null) {
+//          if (1==1 ||  (!defined('_CRONJOB_') || _CRONJOB_ == false) && $user === null) {
             // for simple register
-            $e->getApplication()->getEventManager()->getSharedManager()
-                ->attach('ZfcUser\Service\User', 'register.post', function ($e) use ($serviceManager) {
+        $events = $e->getApplication()->getEventManager()->getSharedManager();
+        // Handle login
+        /*$events->attach('ZfcUser\Authentication\Adapter\AdapterChain', 'authenticate.success', function($e) use ($serviceManager) {
+            $user = $e->getIdentity();
+            $this->doThingsAfterRegisterStas($serviceManager, $user);
+            // do some stuff
+        });*/
 
-                    $userRoleLinkerDM = $serviceManager->get('getUserRoleLinkerDB');
-                    $userRoleLinkerDM->createRow(array(
-                        'user_id' => 101,
-                        'role_id' => 'user'
-                    ));
-
-                // User account object
-                $user = $e->getParam('user');
-                $this->doThingsAfterRegisterStas($serviceManager, $user);
-            });
-//        }
+        $events->attach('ZfcUser\Service\User', 'register.post', function($e) use ($serviceManager) {
+            $user = $e->getParam('user');
+            $this->doThingsAfterRegisterStas($serviceManager, $user);
+            // do some stuff
+        });
+        $events->attach('ScnSocialAuth\Authentication\Adapter\HybridAuth', 'registerViaProvider.post', function($e) use ($serviceManager) {
+            $user = $e->getParam('user');
+            $this->doThingsAfterRegisterStas($serviceManager, $user);
+            // do some stuff
+        });
     }
 
     public function doThingsAfterRegisterStas($serviceManager, $user)
@@ -74,11 +61,11 @@ class Module
 
 //        $userDM = $serviceManager->get('UserDataMapper');
 
-        $userRoleLinkerDM = $serviceManager->get('getUserRoleLinkerDB');
+        /*$userRoleLinkerDM = $serviceManager->get('getUserRoleLinkerDB');
         $userRoleLinkerDM->createRow(array(
             'user_id' => 102,
             'role_id' => 'user'
-        ));
+        ));*/
 
         $parkDM = $serviceManager->get('AutoParkDM');
         $autoPark = new Models\Autoparks\Park();
