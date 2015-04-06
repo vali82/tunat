@@ -97,7 +97,7 @@ class AdCollection
                         'token' => isset($param['token']) ? $param['token'] : '',
                         'views' => $ad->getViews(),
                         'contactDisplayed' => $ad->getContactDisplayed(),
-                        'expirationDate' => '22 mar 2015'
+                        'expirationDate' => General::DateTime($ad->getExpirationDate(), 'LONG')
                     ]
                 );
             }

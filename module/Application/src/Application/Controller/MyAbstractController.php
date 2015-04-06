@@ -47,7 +47,7 @@ class MyAbstractController extends AbstractActionController
 
         // get cars make and models into session
         $cars = General::getFromSession('cars');
-        if ($cars === null || 1==1) {
+        if ($cars === null || 1==2) {
             $carMake = [];
             $carsMakeDM = new CarsCategoriesDM($this->adapter);
             foreach ($carsMakeDM->fetchResultsArray() as $k => $r) {

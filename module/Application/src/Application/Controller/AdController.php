@@ -126,12 +126,15 @@ class AdController extends MyAbstractController
                 $carMakelId = $form->get('car_make')->getValue();
                 ////
 
+                $expDate = General::DateTime(null, 'object');
+                $expDate->add(new \DateInterval('P30D'));
                 $resourceObj
                     ->setCarMake($carMakelId)
                     ->setStatus('ok')
                     ->setImages(serialize($images))
                     ->setViews(0)
                     ->setContactDisplayed(0)
+                    ->setExpirationDate(General::DateTime($expDate))
                 ;
                 $adDM = new AdDM($this->adapter);
 
