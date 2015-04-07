@@ -38,17 +38,17 @@ class Module
             $this->doThingsAfterRegisterStas($serviceManager, $user);
             // do some stuff
         });*/
-
-        $events->attach('ZfcUser\Service\User', 'register.post', function($e) use ($serviceManager) {
+//        $auth = $sm->get('zfcuser_auth_service');
+        /*$events->attach('ZfcUser\Service\User', 'register.post', function($e) use ($serviceManager) {
             $user = $e->getParam('user');
             $this->doThingsAfterRegisterStas($serviceManager, $user);
             // do some stuff
-        });
-        $events->attach('ScnSocialAuth\Authentication\Adapter\HybridAuth', 'registerViaProvider.post', function($e) use ($serviceManager) {
+        });*/
+        /*$events->attach('ScnSocialAuth\Authentication\Adapter\HybridAuth', 'registerViaProvider.post', function($e) use ($serviceManager) {
             $user = $e->getParam('user');
             $this->doThingsAfterRegisterStas($serviceManager, $user);
             // do some stuff
-        });
+        });*/
     }
 
     public function doThingsAfterRegisterStas($serviceManager, $user)

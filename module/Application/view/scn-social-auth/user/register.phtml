@@ -1,0 +1,42 @@
+<?php
+//$this->layout()->js_call .= ' generalObj.loginRegister.init(); ';
+$emailValue = '';
+?>
+Register:
+
+<form id="registerForm" data-bing-action-uri="<?php echo $this->url('home/register'); ?>" data-form-code="KPGSF"
+      target="_self" action="<?php echo $this->url('home/register'); ?>" method="POST"
+      data-login-action="<?php echo $this->url('home/login'); ?>">
+	<div class="loginForm registerForm">
+
+		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginFieldEmail" style="display: block;">
+            <?php echo $this->translate('email utilizator'); ?>
+        </label>
+		<input name="email" type="email" class="loginField clearMeToo titanLowColor" data-id="1"
+               data-auto-suggest-settings="{}" maxlength="250"
+               value="<?=$emailValue?>" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
+               id="globalRegisterFieldEmail">
+	</div>
+
+	<div class="loginForm registerForm">
+
+		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginFieldPass" style="display: block;"><?php echo $this->translate('parola'); ?></label>
+		<input name="password" type="password" class="loginField clearMeToo titanLowColor" data-id="1" data-auto-suggest-settings="{}" maxlength="250" value="" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
+               id="globalRegisterFieldPass">
+	</div>
+
+
+	<div class="loginForm registerForm">
+
+		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginFieldRePass" style="display: block;"><?php echo $this->translate('confirma parola'); ?></label>
+		<input name="passwordVerify" type="password" class="loginField clearMeToo titanLowColor" data-id="1" data-auto-suggest-settings="{}" maxlength="250" value="" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
+               id="globalRegisterFieldRePass">
+	</div>
+
+	<div class="loginButtons registerForm">
+        <a id="registerButton" href="javascript:;" onclick="$('#registerForm').submit()" class="btn btn-primary"><?=$this->translate('Creeaza Cont')?></a>
+		<br /><input type="submit" style="float: right;visibility: hidden;">
+	</div>
+
+</form>
+

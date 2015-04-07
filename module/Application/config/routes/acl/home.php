@@ -6,11 +6,11 @@ return array(
         'roles' => array('guest', 'user', 'parcauto')
     ),
     array(
-        'route' => 'scn-social-auth-user/login',
+        'route' => 'home/login',
         'roles' => array('guest')
     ),
     array(
-        'route' => 'scn-social-auth-user/register',
+        'route' => 'home/register',
         'roles' => array('guest')
     ),
     array(

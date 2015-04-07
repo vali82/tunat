@@ -23,9 +23,11 @@ class MyAbstractController extends AbstractActionController
     protected $role;
     protected $adapter;
     protected $cars;
+    protected $translator;
 
     public function onDispatch(MvcEvent $e)
     {
+        $this->translator = $this->getServiceLocator()->get('translator');
         $this->adapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
         $this->myPark = null;

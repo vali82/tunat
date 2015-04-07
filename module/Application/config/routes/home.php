@@ -1,6 +1,35 @@
 <?php
 
 return [
+
+    'login' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route'    => 'login',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'login',
+            ),
+            'constraints' => array(
+//                'iHash' => '[a-zA-Z0-9]+'
+            ),
+        ),
+    ),
+
+    'register' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route'    => 'register',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'register',
+            ),
+            'constraints' => array(
+//                'iHash' => '[a-zA-Z0-9]+'
+            ),
+        ),
+    ),
+
     'ad' => [
         'type' => 'Literal',
         'options' => array(

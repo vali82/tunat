@@ -91,7 +91,7 @@ $settings = array(
      *
      * Accepted values: positive int value
      */
-    //'user_form_timeout' => 300,
+    'user_form_timeout' => 300,
 
     /**
      * Login After Registration
@@ -109,7 +109,7 @@ $settings = array(
      * Determines if a captcha should be utilized on the user registration form.
      * Default value is false.
      */
-    //'use_registration_form_captcha' => false,
+    'use_registration_form_captcha' => false,
 
     /**
      * Form Captcha Options
@@ -210,7 +210,7 @@ $settings = array(
      * Include null if you want user's with no state to login as well.
      * Allowed value types: null and integer
      */
-    //'allowed_login_states' => array( null, 1 ),
+    'allowed_login_states' => array( null, 1 ),
     
     /**
      * User table name

@@ -70,7 +70,9 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                         <?php if ($role == 'guest') { ?>
-                            <li class="pull-right"><a href="<?php echo $this->url('zfcuser/login') ?>"><?php echo $this->translate('Login') ?></a></li>
+                            <li class="pull-right">
+                                <a id="loginButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
+                            </li>
                         <?php } else { ?>
                             <li class="dropdown">
                                 <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><?=($user !== null ? $user->getEmail() : '')?><span class="caret"></span></a>
@@ -90,6 +92,20 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
+
+        <?php if ($role == 'guest') { ?>
+        <div id="LoginRegisterContainer" style="display:none; margin-right: 20px; padding: 0px; width:100%; position: absolute;">
+            <div style="background-color: #fff; border: 1px solid #eaeaea; float: right; margin-right: 5%; padding: 10px; width: 300px;">
+                <img id="loginRegisterLoading" src="/img/loading.gif" style="display:none; height: 20px; padding-top: 0px">
+                <div id="errorLoginRegister" style="color:#000; font-size: 12px; font-weight: normal"></div>
+            <?php echo $this->partial('scn-social-auth/user/login');?>
+            <hr />
+            <?php echo $this->partial('scn-social-auth/user/register');?>
+            </div>
+        </div>
+        <?php } ?>
+
+
         <div class="container" style="padding-bottom: 50px">
 
             <?php

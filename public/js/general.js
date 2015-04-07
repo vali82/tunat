@@ -121,12 +121,150 @@ $.general = function() {
         };
 
 
+        $('#loginButton').on('click', function(){
+            $('#LoginRegisterContainer').slideToggle();
+        });
+
 
 
         //});
     };
 
+    this.loginRegister = {
+        init: function()
+        {
+            var thisObj = this;
 
+            // rewrite login form action
+            $("body").on("submit", "#loginForm", function(e){
+                e.preventDefault();
+                thisObj._doLoginDefault($(e.target).attr("action"), false);
+            });
+            ////
+
+            // rewrite register form action
+            $("body").on("submit", "#registerForm", function(e){
+                e.preventDefault();
+                thisObj._doRegisterDefault($(e.target));
+            });
+            ////
+
+            // efect on click pe social media login
+            $('a[id^=loginOption]').on('click', function(){
+                var socialMediaType = $(this).attr('id').replace('loginOption', '');
+                $('#errorLoginRegister').slideDown();
+                $('#errorLoginRegister').html('Autentificare prin '+socialMediaType+'...');
+                $('#errorLoginRegister').css('font-size', '16px');
+                $('#loginForm').slideUp();
+                $('#loginSocialContainer').fadeOut();
+            });
+            ////
+        },
+
+        _doRegisterDefault: function (form)
+        {
+            var thisObj = this;
+            $.ajax( {
+                url: form.attr("action"),
+                type: "POST",
+                data: {
+                    data: {
+                        email: $('#globalRegisterFieldEmail').val(),
+                        password: $('#globalRegisterFieldPass').val(),
+                        passwordVerify: $('#globalRegisterFieldRePass').val()
+                    }
+                },
+                dataType: "json",
+                statusCode: {
+                    403: function() {
+                        alert( "Acces interzis!" );
+                    },
+                    404: function() {
+                        alert( "Pagina nu a fost gasita!" );
+                    }
+                },
+                beforeSend : function() {
+                    $('#errorLoginRegister').hide();
+                    $('#loginRegisterLoading').show();
+                    $('#registerButton').hide();
+                }
+            }).done(function( data ) {
+
+                $('#errorLoginRegister').slideDown();
+                $('#errorLoginRegister').html(data.message);
+
+                if (data.error == 0) {
+                    $('#registerForm').slideUp();
+                    //self.location.replace(data.result.redirectUrl);
+                    thisObj._doLoginDefault(
+                        form.attr("data-login-action"),
+                        true
+                    )
+                } else {
+                    $('#loginRegisterLoading').hide();
+                    $('#registerButton').show();
+                }
+            });
+        },
+
+        _doLoginDefault: function (formAction, afterRegister)
+        {
+            $.ajax( {
+                url: formAction,
+                type: "POST",
+                data: {
+                    data: {
+                        username: afterRegister ?
+                            $('#globalRegisterFieldEmail').val() :
+                            $('#globalLoginFieldIdentity').val()
+                        ,
+                        password: afterRegister ?
+                            $('#globalRegisterFieldPass').val() :
+                            $('#globalLoginFieldPass').val()
+
+                    }
+                },
+                dataType: "json",
+                statusCode: {
+                    403: function() {
+                        alert( "Acces interzis!" );
+                    },
+                    404: function() {
+                        alert( "Pagina nu a fost gasita!" );
+                    }
+                },
+                beforeSend : function() {
+                    if (!afterRegister) {
+                        $('#errorLoginRegister').hide();
+                        $('#loginRegisterLoading').show();
+                        $('#loginButton').hide();
+                    }
+                }
+            }).done(function( data ) {
+
+                $('#errorLoginRegister').slideDown();
+                $('#errorLoginRegister').html(data.message);
+
+                if (data.error == 0) {
+                    if (!afterRegister) {
+                        $('#loginForm').slideUp();
+                        $('#loginSocialContainer').fadeOut();
+                    }
+                    setTimeout(function () {
+                        self.location.replace(data.result.redirectUrl);
+                    }, 1000);
+
+
+                } else {
+                    if (!afterRegister) {
+                        $('#loginRegisterLoading').hide();
+                        $('#loginButton').show();
+                    }
+                }
+            });
+        }
+
+    };
 
     this.ad = {
 
