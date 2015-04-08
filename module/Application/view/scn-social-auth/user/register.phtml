@@ -2,34 +2,33 @@
 //$this->layout()->js_call .= ' generalObj.loginRegister.init(); ';
 $emailValue = '';
 ?>
-Register:
-
 <form id="registerForm" data-bing-action-uri="<?php echo $this->url('home/register'); ?>" data-form-code="KPGSF"
       target="_self" action="<?php echo $this->url('home/register'); ?>" method="POST"
       data-login-action="<?php echo $this->url('home/login'); ?>">
 	<div class="loginForm registerForm">
 
-		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginFieldEmail" style="display: block;">
+		<label for="globalRegisterFieldEmail" style="display: block;">
             <?php echo $this->translate('email utilizator'); ?>
         </label>
-		<input name="email" type="email" class="loginField clearMeToo titanLowColor" data-id="1"
-               data-auto-suggest-settings="{}" maxlength="250"
+		<input name="email" type="email" style="width:100%;" maxlength="250"
                value="<?=$emailValue?>" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
                id="globalRegisterFieldEmail">
 	</div>
 
 	<div class="loginForm registerForm">
 
-		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginFieldPass" style="display: block;"><?php echo $this->translate('parola'); ?></label>
-		<input name="password" type="password" class="loginField clearMeToo titanLowColor" data-id="1" data-auto-suggest-settings="{}" maxlength="250" value="" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
+		<label for="globalRegisterFieldPass" style="display: block;"><?php echo $this->translate('parola'); ?></label>
+		<input name="password" type="password" style="width:100%;" maxlength="250" value="" spellcheck="false"
+               autocomplete="off" accesskey="S" tabindex="1"
                id="globalRegisterFieldPass">
 	</div>
 
 
 	<div class="loginForm registerForm">
 
-		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginFieldRePass" style="display: block;"><?php echo $this->translate('confirma parola'); ?></label>
-		<input name="passwordVerify" type="password" class="loginField clearMeToo titanLowColor" data-id="1" data-auto-suggest-settings="{}" maxlength="250" value="" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
+		<label for="globalRegisterFieldRePass" style="display: block;"><?php echo $this->translate('confirma parola'); ?></label>
+		<input name="passwordVerify" type="password" style="width:100%;" maxlength="250" value="" spellcheck="false"
+               autocomplete="off" accesskey="S" tabindex="1"
                id="globalRegisterFieldRePass">
 	</div>
 
@@ -39,4 +38,6 @@ Register:
 	</div>
 
 </form>
+
+<a href="javascript:;" id="loginTab">ai cont? login</a>
 

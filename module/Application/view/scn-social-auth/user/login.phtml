@@ -1,22 +1,21 @@
 <?php
     $this->layout()->js_call .= ' generalObj.loginRegister.init(); ';
 ?>
-Login:
 <form id="loginForm" action = "<?=$this->url('home/login')?>"
       data-bing-action-uri="#" data-form-code="KPGSF" target="_self" method="POST">
 	<div class="loginForm">
 
-		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginField" style="display: block;"><?=$this->translate('email utilizator')?></label>
-		<input type="email" class="loginField clearMeToo titanLowColor" data-id="1" data-auto-suggest-settings="{}"
-               maxlength="250" value="" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
+		<label for="globalLoginFieldIdentity" style="display: block;"><?=$this->translate('email utilizator')?></label>
+		<input type="email" style="width:100%;"
+               maxlength="250" value="" spellcheck="false" autocomplete="off"
                name="identity" id="globalLoginFieldIdentity">
 
 	</div>
 	<div class="loginForm">
 
-		<label class="inputLabelLogin" id="globalLoginLabel" for="globalLoginField" style="display: block;"><?=$this->translate('parola')?></label>
-		<input type="password" class="loginField clearMeToo titanLowColor" data-id="1" data-auto-suggest-settings="{}"
-               maxlength="250" value="" spellcheck="false" autocomplete="off" accesskey="S" tabindex="1"
+		<label for="globalLoginFieldPass" style="display: block;"><?=$this->translate('parola')?></label>
+		<input type="password" style="width:100%;"
+               maxlength="250" value="" spellcheck="false" autocomplete="off"
                name="credential" id="globalLoginFieldPass">
 	</div>
 
@@ -27,6 +26,8 @@ Login:
 	</div>
 
 </form>
+
+<a href="javascript:;" id="registerTab">nu ai cont? inregistreaza-te</a>
 
 
 

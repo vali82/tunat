@@ -121,7 +121,7 @@ $.general = function() {
         };
 
 
-        $('#loginButton').on('click', function(){
+        $('#loginNavMenuButton').on('click', function(){
             $('#LoginRegisterContainer').slideToggle();
         });
 
@@ -134,6 +134,8 @@ $.general = function() {
         init: function()
         {
             var thisObj = this;
+
+            $('#registerContainer').hide();
 
             // rewrite login form action
             $("body").on("submit", "#loginForm", function(e){
@@ -148,6 +150,20 @@ $.general = function() {
                 thisObj._doRegisterDefault($(e.target));
             });
             ////
+
+            $(document).on("click", "#registerTab", function(e){
+                e.preventDefault();
+                $('#registerContainer').slideDown();
+                $('#loginContainer').slideUp();
+                $('#errorLoginRegister').hide();
+            });
+            $(document).on("click", "#loginTab", function(e){
+                e.preventDefault();
+                $('#registerContainer').slideUp();
+                $('#loginContainer').slideDown();
+                $('#errorLoginRegister').hide();
+            });
+
 
             // efect on click pe social media login
             $('a[id^=loginOption]').on('click', function(){
@@ -247,9 +263,10 @@ $.general = function() {
 
                 if (data.error == 0) {
                     if (!afterRegister) {
-                        $('#loginForm').slideUp();
+                        $('#loginContainer').slideUp();
                         $('#loginSocialContainer').fadeOut();
                     }
+                    $('#loginRegisterLoading').hide();
                     setTimeout(function () {
                         self.location.replace(data.result.redirectUrl);
                     }, 1000);
