@@ -63,7 +63,7 @@ class AdCollection
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
                 'page' => $page,
-                'items_per_page' => 5,
+                'items_per_page' => 2,
             ));
             $ads = $adDM->fetchAllDefault(
                 [

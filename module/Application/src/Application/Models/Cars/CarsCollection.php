@@ -94,7 +94,7 @@ class CarsCollection
                 'car_class' => $this->urlize($categ),
 //                'car_model' => $this->urlize($model).'-'.$modelId,
 //                'parts_main' => $this->urlize($part).'-'.$partId,
-                'p' => 1,
+                //'p' => 1,
                 'ad_id' => $this->urlize($ad->getPartName()).'-'.$ad->getId()
             ]
         );
@@ -103,6 +103,30 @@ class CarsCollection
     /**
      * @return string
      */
+    public function urlizeSearchAds($categoryId, $modelId)
+    {
+        $cars = $this->controller->getCars();
+
+        $carcategories = strtolower($this->urlize($cars['categories'][$categoryId]));
+//        $model = $cars['model'][$categoryId][$modelId]['model'];
+        $categ = $cars['model'][$categoryId][$modelId]['categ'];
+//        $part = $cars['partsMain'][$partId];
+
+        return $this->controller->url()->fromRoute(
+            'home/piese',
+            [
+                'categories' => $carcategories,
+                'car_class' => $this->urlize($categ),
+//                'car_model' => $this->urlize($model).'-'.$modelId,
+//                'parts_main' => $this->urlize($part).'-'.$partId,
+                'ad_id' => '0',
+                'p' => 1,
+                'search' => '__search__'
+            ]
+        );
+
+    }
+
     public function urlizePageListAds($categoryId, $modelId, $partId)
     {
         $cars = $this->controller->getCars();
@@ -119,6 +143,7 @@ class CarsCollection
                 'car_class' => $this->urlize($categ),
 //                'car_model' => $this->urlize($model).'-'.$modelId,
 //                'parts_main' => $this->urlize($part).'-'.$partId,
+                'ad_id' => '0',
                 'p' => 1,
             ]
         ];

@@ -215,9 +215,9 @@ class AdController extends MyAbstractController
         $carCollection = new CarsCollection($this);
 
         $categoriesParam = $this->getEvent()->getRouteMatch()->getParam('categories', '');
-        $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', '');
+//        $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', '');
         $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
-        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
+//        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
         $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
 
 
@@ -263,7 +263,7 @@ class AdController extends MyAbstractController
         $adId = null;
         $adView = null;
         $x = explode('-', $adParam);
-        if ($adParam != '' && is_array($x) && count($x) > 0) {
+        if ($adParam != '' && strpos($adParam, '-') !== false && is_array($x) && count($x) > 0) {
             $adId = (int)$x[count($x)-1];
             $adView = $ad->viewHTML($adId);
             if ($adView === null) {
