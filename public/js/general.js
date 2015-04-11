@@ -447,6 +447,20 @@ $.general = function() {
                 $('#adGetContactButton').bind('click', function(){
                     thisObj._getContact();
                 });
+                $('#searchAds').bind('submit', function() {
+                    var searchQuery = $('#searchInput').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
+                    if ($('#searchYearStart').val() > 0 || $('#searchYearEnd').val() > 0) {
+                        searchQuery += ':' + $('#searchYearStart').val() + $('#searchYearEnd').val()
+                    }
+                    var actionForm = $('#searchAds').attr('action').
+                        replace(
+                            '__search__',
+                            searchQuery
+                        )
+                    ;
+                    $('#searchAds').attr('action', actionForm);
+                    //return false;
+                });
             },
             _changeCarMake: function () {
                 $('#allCarsContainer').show();

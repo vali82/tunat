@@ -61,6 +61,9 @@ class AdController extends MyAbstractController
         $this->layout()->js_call .= ' generalObj.cars = '.json_encode($cars).'; ';
         $this->layout()->js_call .= ' generalObj.ad.create("'.$this->url()->fromRoute("home/ad/upload").'"); ';
 
+        $request = $this->getRequest();
+        $adCollection = new AdCollection($this);
+
         if ($id !== null) {
             // EDIT
             $adDM = new AdDM($this->adapter);
@@ -83,12 +86,13 @@ class AdController extends MyAbstractController
 
         } else {
             // ADD
-            $adTmpId = General::getFromSession('adTmpId');
-
-            if ($adTmpId === null) {
+            if ($request->isPost()) {
+                $adTmpId = General::getFromSession('adTmpId');
+            } else {
                 $adTmpId = 'tmp'.rand(10000, 99999);
                 General::addToSession('adTmpId', $adTmpId);
             }
+
             $resourceObj = new Ad();
         }
 
@@ -96,11 +100,10 @@ class AdController extends MyAbstractController
 
         $form = new AdForm();
         $form->setCancelRoute('back');
-        $form->create($resourceObj, $this->cars['categories'], null, null, null);
+        $years = $adCollection->getYears();
+        $form->create($resourceObj, $this->cars['categories'], $years, null, null, null);
 
         $form->bind($resourceObj);
-
-        $request = $this->getRequest();
 
         $resourceObj->setParkId($this->myPark->getId());
 
@@ -219,6 +222,16 @@ class AdController extends MyAbstractController
         $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
 //        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
         $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
+        $searchParam = $this->getEvent()->getRouteMatch()->getParam('search', '');
+
+
+        if (strpos(':', $searchParam) !== false) {
+            $search = explode(":", $searchParam);
+            $searchWords = $search[0];
+            $search = explode("-", $search[1]);
+            $searchYearStart = $search[0];
+            $searchYearStart = $search[1];
+        }
 
 
         // detect Car categories ID
@@ -259,13 +272,13 @@ class AdController extends MyAbstractController
 
 
         // detect Ad ID
-        $ad = new AdCollection($this);
+        $adCollection = new AdCollection($this);
         $adId = null;
         $adView = null;
         $x = explode('-', $adParam);
         if ($adParam != '' && strpos($adParam, '-') !== false && is_array($x) && count($x) > 0) {
             $adId = (int)$x[count($x)-1];
-            $adView = $ad->viewHTML($adId);
+            $adView = $adCollection->viewHTML($adId);
             if ($adView === null) {
                 //$this->flashMessenger()->addInfoMessage('Anuntul #'.$adId.' a expirat');
                 return $this->redirect()->toRoute('home');
@@ -275,14 +288,15 @@ class AdController extends MyAbstractController
 
 
 
-        // get All ADs with these IDs
+        // get ADs list
         $adList = null;
         $ads = null;
         if ($adView === null) {
-            $content = $ad->adListHTML([
+            $content = $adCollection->adListHTML([
                 'place' => 'onSearch',
                 'carModelId' => $carModelId,
-                'partMainId' => 0
+                'partMainId' => 0,
+                'search' => General::generateQueryWords($searchParam)
             ]);
 
             $adList = $content['list'];
@@ -297,6 +311,7 @@ class AdController extends MyAbstractController
 
 
 
+
         return [
             'carcategoriesId' => $carcategoriesId,
             'class' => $class,
@@ -307,7 +322,14 @@ class AdController extends MyAbstractController
             'carCollection' => $carCollection,
             'adList' => $adList,
             'ads' => $ads,
-            'adView' => $adView
+            'adView' => $adView,
+            'searchValues' => [
+                'input' => str_replace("+", " ", $search[0]),
+                'yearStart' => $search[1]
+            ],
+//            'searchValue' => str_replace("+", " ", $search[0]),
+//            'searchYearStart' => ($search[1]),
+//            'years' => $adCollection->getYears()
         ];
     }
 

@@ -5,6 +5,8 @@ namespace Application\Models\Ads;
 use Application\libs\General;
 use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsCollection;
+use Application\Models\DataMapper;
+use Zend\Db\Sql\Predicate\Expression;
 
 class AdCollection
 {
@@ -57,9 +59,36 @@ class AdCollection
 
         } elseif ($param['place'] == 'onSearch') {
             // AFTER SEARCH ADS
+
             $page = $this->controller->getEvent()->getRouteMatch()->getParam('p', '');
             $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
             $adDM = new AdDM($this->controller->getAdapter());
+
+            if (isset($param['search']) && count($param['search']) > 0) {
+                $adDM->setColumns(array(
+                    '*',
+                    'part_name_match' => new Expression(
+                        'MATCH (`part_name`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                    ),
+                    'description_match' => new Expression(
+                        'MATCH (`description`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                    ),
+                ));
+                $order = array(
+                    new Expression(
+                        '(part_name_match * 10  + description_match * 3) DESC'
+                    )
+                );
+                $sql_where = DataMapper::expression(
+                    'MATCH (`part_name`,`description`) AGAINST ("' . implode(' ', $param['search']) .
+                    '" IN BOOLEAN MODE)'
+                );
+            } else {
+                $order = ['id' => 'DESC'];
+                $sql_where = null;
+            }
+
+
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
                 'page' => $page,
@@ -69,9 +98,8 @@ class AdCollection
                 [
                     'status' => 'ok',
                     'car_make' => $param['carModelId'],
-                    // 'part_categ' => $param['partMainId']
-                ],
-                ['id' => 'DESC']
+                ] + ($sql_where !== null ? ['search' => $sql_where] : []),
+                $order
             );
         }
 
@@ -91,6 +119,9 @@ class AdCollection
                         'description' => $ad->getDescription(),
                         'car' => $cars['categories'][$ad->getCarCategory()] . ' ' .
                             $cars['model'][$ad->getCarCategory()][$ad->getCarMake()]['categ'],
+                        'model' => $ad->getCarModel(),
+                        'yearStart' => $ad->getYearStart(),
+                        'yearEnd' => $ad->getYearEnd(),
                         'href' =>
                             $carCollection->urlizeAD($ad),
                         'status' => $ad->getStatus(),
@@ -177,5 +208,14 @@ class AdCollection
         } else {
             return null;
         }
+    }
+
+    public function getYears()
+    {
+        $years = [];
+        for ($i=date('Y'); $i>1960; $i--) {
+            $years[$i] = $i;
+        }
+        return $years;
     }
 }

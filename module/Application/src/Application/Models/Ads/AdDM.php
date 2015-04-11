@@ -3,6 +3,8 @@
 namespace Application\Models\Ads;
 
 use Application\Models\DataMapper;
+use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Sql;
 
 class AdDM extends DataMapper {
 
@@ -36,5 +38,4 @@ class AdDM extends DataMapper {
         $this->_primary_key_delete = array('id');*/
 
     }
-
 }

@@ -7,7 +7,7 @@ use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class AdForm extends AbstractForm
 {
-    public function create($resourceObj, $carMake, $carburant, $cilindree, $partsMain)
+    public function create($resourceObj, $carMake, $years, $carburant, $cilindree, $partsMain)
     {
         $this->setHydrator(new ClassMethodsHydrator(true))
             ->setObject($resourceObj);

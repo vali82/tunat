@@ -119,6 +119,7 @@ class MyAbstractController extends AbstractActionController
     protected function uploadAdGetUploaded($user_id, $email, $folder)
     {
 //        General::echop($folder);
+        $files = [];
         if ($user_id && $email) {
             $path = PUBLIC_IMG_PATH . $user_id . '/' . implode('/', $folder) . '/';
             foreach (glob($path . "*") as $filefound) {
