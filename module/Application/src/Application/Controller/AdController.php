@@ -225,12 +225,15 @@ class AdController extends MyAbstractController
         $searchParam = $this->getEvent()->getRouteMatch()->getParam('search', '');
 
 
-        if (strpos(':', $searchParam) !== false) {
+        $searchWords = '';
+        $searchYearStart = '';
+        $searchYearEnd = '';
+        if (strpos($searchParam, ":") !== false) {
             $search = explode(":", $searchParam);
             $searchWords = $search[0];
             $search = explode("-", $search[1]);
             $searchYearStart = $search[0];
-            $searchYearStart = $search[1];
+            $searchYearEnd = $search[1];
         }
 
 
@@ -296,7 +299,9 @@ class AdController extends MyAbstractController
                 'place' => 'onSearch',
                 'carModelId' => $carModelId,
                 'partMainId' => 0,
-                'search' => General::generateQueryWords($searchParam)
+                'search' => General::generateQueryWords($searchWords),
+                'searchYearStart' => $searchYearStart,
+                'searchYearEnd' => $searchYearEnd,
             ]);
 
             $adList = $content['list'];
@@ -324,12 +329,13 @@ class AdController extends MyAbstractController
             'ads' => $ads,
             'adView' => $adView,
             'searchValues' => [
-                'input' => str_replace("+", " ", $search[0]),
-                'yearStart' => $search[1]
+                'input' => str_replace("+", " ", $searchWords),
+                'yearStart' => $searchYearStart,
+                'yearEnd' => $searchYearEnd,
             ],
 //            'searchValue' => str_replace("+", " ", $search[0]),
 //            'searchYearStart' => ($search[1]),
-//            'years' => $adCollection->getYears()
+            'years' => $adCollection->getYears()
         ];
     }
 

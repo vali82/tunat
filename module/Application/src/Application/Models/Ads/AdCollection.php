@@ -88,6 +88,22 @@ class AdCollection
                 $sql_where = null;
             }
 
+            $sql_years = null;
+            if ($param['searchYearStart'] > 0 || $param['searchYearEnd'] > 0) {
+                if ($param['searchYearStart'] > 0 && $param['searchYearEnd'] > 0) {
+                    $x = DataMapper::between($param['searchYearStart'], $param['searchYearEnd']);
+                } elseif ($param['searchYearStart'] > 0) {
+                    $x = DataMapper::expression('year_end >= '.$param['searchYearStart']);
+                } elseif ($param['searchYearEnd'] > 0) {
+                    $x = DataMapper::expression('year_end <= '.$param['searchYearEnd']);
+                }
+
+
+                $sql_years = [
+                    'years_query' => $x
+                ];
+            }
+
 
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
@@ -98,7 +114,9 @@ class AdCollection
                 [
                     'status' => 'ok',
                     'car_make' => $param['carModelId'],
-                ] + ($sql_where !== null ? ['search' => $sql_where] : []),
+                ] + ($sql_where !== null ? ['search' => $sql_where] : [])
+                + ($sql_years !== null ? $sql_years : [])
+                ,
                 $order
             );
         }
