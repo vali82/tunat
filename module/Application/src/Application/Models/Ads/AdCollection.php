@@ -89,14 +89,10 @@ class AdCollection
             }
 
             $sql_years = null;
-            if ($param['searchYearStart'] > 0 || $param['searchYearEnd'] > 0) {
-                if ($param['searchYearStart'] > 0 && $param['searchYearEnd'] > 0) {
-                    $x = DataMapper::between($param['searchYearStart'], $param['searchYearEnd']);
-                } elseif ($param['searchYearStart'] > 0) {
-                    $x = DataMapper::expression('year_end >= '.$param['searchYearStart']);
-                } elseif ($param['searchYearEnd'] > 0) {
-                    $x = DataMapper::expression('year_end <= '.$param['searchYearEnd']);
-                }
+            if ($param['searchYear'] > 0) {
+                $x =
+                    DataMapper::expression('year_start <= '.$param['searchYear'].' AND year_end >= '.$param['searchYear'])
+                ;
 
 
                 $sql_years = [

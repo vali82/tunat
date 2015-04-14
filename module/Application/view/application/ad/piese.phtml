@@ -56,16 +56,10 @@
                     <div class="form-group">
                         <input id ="searchInput" value="<?=$this->searchValues['input']?>" size="50" maxlength="50" class="form-control" type="text">
 
-                        <select class="form-control" id="searchYearStart">
-                            <option value="0">din anul:</option>
+                        <select class="form-control" id="searchYear">
+                            <option value="0">orice an</option>
                             <?php foreach ($this->years as $year) {?>
-                                <option value="<?=$year?>"<?=($year == $this->searchValues['yearStart'] ? 'selected' : '')?>><?=$year?></option>
-                            <?php }?>
-                        </select>
-                        <select class="form-control" id="searchYearEnd">
-                            <option value="0">pana in anul:</option>
-                            <?php foreach ($this->years as $year) {?>
-                                <option value="<?=$year?>"<?=($year == $this->searchValues['yearEnd'] ? 'selected' : '')?>><?=$year?></option>
+                                <option value="<?=$year?>"<?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
                             <?php }?>
                         </select>
 

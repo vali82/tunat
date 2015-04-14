@@ -449,8 +449,8 @@ $.general = function() {
                 });
                 $('#searchAds').bind('submit', function() {
                     var searchQuery = $('#searchInput').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
-                    if ($('#searchYearStart').val() > 0 || $('#searchYearEnd').val() > 0) {
-                        searchQuery += ':' + $('#searchYearStart').val() + '-' +  $('#searchYearEnd').val()
+                    if ($('#searchYear').val() > 0 ) {
+                        searchQuery += ':' + $('#searchYear').val();
                     }
                     var actionForm = $('#searchAds').attr('action').
                         replace(

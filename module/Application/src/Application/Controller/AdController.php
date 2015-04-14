@@ -226,14 +226,13 @@ class AdController extends MyAbstractController
 
 
         $searchWords = '';
-        $searchYearStart = '';
-        $searchYearEnd = '';
+        $searchYear = '';
         if (strpos($searchParam, ":") !== false) {
             $search = explode(":", $searchParam);
             $searchWords = $search[0];
-            $search = explode("-", $search[1]);
-            $searchYearStart = $search[0];
-            $searchYearEnd = $search[1];
+            $searchYear = $search[1];
+        } elseif ($searchParam != '') {
+            $searchWords = $searchParam;
         }
 
 
@@ -300,8 +299,7 @@ class AdController extends MyAbstractController
                 'carModelId' => $carModelId,
                 'partMainId' => 0,
                 'search' => General::generateQueryWords($searchWords),
-                'searchYearStart' => $searchYearStart,
-                'searchYearEnd' => $searchYearEnd,
+                'searchYear' => $searchYear,
             ]);
 
             $adList = $content['list'];
@@ -330,8 +328,7 @@ class AdController extends MyAbstractController
             'adView' => $adView,
             'searchValues' => [
                 'input' => str_replace("+", " ", $searchWords),
-                'yearStart' => $searchYearStart,
-                'yearEnd' => $searchYearEnd,
+                'year' => $searchYear,
             ],
 //            'searchValue' => str_replace("+", " ", $search[0]),
 //            'searchYearStart' => ($search[1]),
