@@ -137,11 +137,11 @@ class AdController extends MyAbstractController
                     ->setImages(serialize($images))
                     ->setViews(0)
                     ->setContactDisplayed(0)
-                    ->setExpirationDate(General::DateTime($expDate))
                 ;
                 $adDM = new AdDM($this->adapter);
 
                 if ($id === null) {
+                    $resourceObj->setExpirationDate(General::DateTime($expDate));
                     $adId = $adDM->createRow($resourceObj);
 
 

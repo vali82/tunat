@@ -1,6 +1,7 @@
 <?php
 namespace Application\View\Helper;
 
+use Application\libs\General;
 use Zend\View\Helper\AbstractHelper;
 
 class Forms extends AbstractHelper
@@ -35,8 +36,9 @@ class Forms extends AbstractHelper
             $group = $element->getAttribute('group');
             $container = $element->getAttribute('container');
 
-            if ($element->getAttribute('name') == 'custom_form_spacer') {
+            if ($element->getAttribute('custom_form_spacer') == true) {
                 self::customSpacerElement($element);
+//                General::echop($element->getAttribute('name'));
 
             } else {
                 if ($element->getAttribute('class')) {
@@ -377,19 +379,24 @@ class Forms extends AbstractHelper
         <?php }?>
         <?php if ($element->getAttribute('pureHtml')) { ?>
         <?= $element->getAttribute('pureHtml') ?>
-    <?php } else { ?>
-        <?php if ($element->getAttribute('textAbove')) { ?>
-            <p class="help-block"
-               style="text-align:<?= ($element->getAttribute('aalign') ? $element->getAttribute('aalign') : 'left') ?>; color: #666666;font-size: <?= ($element->getAttribute('afsize') ? $element->getAttribute('afsize') : 15) ?>px;font-weight: 500;padding: 15px 0 0 0;"><?= $element->getAttribute('textAbove') ?></p>
-        <?php } ?>
-        <hr style="margin:10px 0">
-        <?php if ($element->getAttribute('textBellow')) { ?>
-            <p class="help-block"
-               style="text-align:<?= ($element->getAttribute('balign') ? $element->getAttribute('balign') : 'left') ?>; color: #666666;font-size: <?= ($element->getAttribute('bfsize') ? $element->getAttribute('bfsize') : 15) ?>px;font-weight: 500;padding: 0 0 15px 0;"><?= $element->getAttribute('textBellow') ?></p>
-        <?php } ?>
-
-    <?php }
-        if (!$element->getAttribute('no_form_group')) { ?></div><?php }
+        <?php } else { ?>
+            <?php if ($element->getAttribute('textAbove')) { ?>
+                <p class="help-block"
+                   style="text-align:<?= ($element->getAttribute('aalign') ? $element->getAttribute('aalign') : 'left') ?>; color: #666666;font-size: <?= ($element->getAttribute('afsize') ? $element->getAttribute('afsize') : 15) ?>px;font-weight: 500;padding: 15px 0 0 0;">
+                    <?= $element->getAttribute('textAbove') ?>
+                </p>
+            <?php } ?>
+            <hr style="margin:10px 0">
+            <?php if ($element->getAttribute('textBellow')) { ?>
+                <p class="help-block"
+                   style="text-align:<?= ($element->getAttribute('balign') ? $element->getAttribute('balign') : 'left') ?>; color: #666666;font-size: <?= ($element->getAttribute('bfsize') ? $element->getAttribute('bfsize') : 15) ?>px;font-weight: 500;padding: 0 0 15px 0;">
+                    <?= $element->getAttribute('textBellow') ?>
+                </p>
+            <?php } ?>
+        <?php }
+        if (!$element->getAttribute('no_form_group')) { ?>
+            </div>
+        <?php }
 
     }
 

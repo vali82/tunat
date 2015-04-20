@@ -31,7 +31,8 @@ class AdDM extends DataMapper {
             'images',
             'views',
             'contact_displayed',
-            'expiration_date'
+            'expiration_date',
+            'stare'
         );
 
         /*$this->_primary_key_update = array('id');

@@ -192,6 +192,7 @@ class MyAbstractController extends AbstractActionController
                 }
 
                 $name =  rand(100, 999).md5($info['name']);
+                copy($info['tmp_name'], $path.$name);
                 rename($info['tmp_name'], $path.$name);
 
                 $files = array(

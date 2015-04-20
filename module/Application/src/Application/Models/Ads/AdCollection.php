@@ -73,14 +73,17 @@ class AdCollection
                     'description_match' => new Expression(
                         'MATCH (`description`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
                     ),
+                    'model_match' => new Expression(
+                        'MATCH (`car_model`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                    ),
                 ));
                 $order = array(
                     new Expression(
-                        '(part_name_match * 10  + description_match * 3) DESC'
+                        '(model_match * 7 + part_name_match * 5  + description_match) DESC'
                     )
                 );
                 $sql_where = DataMapper::expression(
-                    'MATCH (`part_name`,`description`) AGAINST ("' . implode(' ', $param['search']) .
+                    'MATCH (`part_name`, `description`, car_model) AGAINST ("' . implode(' ', $param['search']) .
                     '" IN BOOLEAN MODE)'
                 );
             } else {
@@ -90,10 +93,9 @@ class AdCollection
 
             $sql_years = null;
             if ($param['searchYear'] > 0) {
-                $x =
-                    DataMapper::expression('year_start <= '.$param['searchYear'].' AND year_end >= '.$param['searchYear'])
-                ;
-
+                $x = DataMapper::expression(
+                    'year_start <= '.$param['searchYear'].' AND year_end >= '.$param['searchYear']
+                );
 
                 $sql_years = [
                     'years_query' => $x
@@ -111,8 +113,7 @@ class AdCollection
                     'status' => 'ok',
                     'car_make' => $param['carModelId'],
                 ] + ($sql_where !== null ? ['search' => $sql_where] : [])
-                + ($sql_years !== null ? $sql_years : [])
-                ,
+                + ($sql_years !== null ? $sql_years : []),
                 $order
             );
         }
@@ -202,6 +203,7 @@ class AdCollection
                     'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
                     'title' => $adObj->getPartName(),
                     'description' => $adObj->getDescription(),
+                    'stare' => $adObj->getStare(),
                     'href' => '#',
                     'car' => [
                         'category' => $cars['categories'][$adObj->getCarCategory()],

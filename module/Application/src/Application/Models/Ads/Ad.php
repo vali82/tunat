@@ -40,6 +40,27 @@ class Ad
     protected $contactDisplayed;
     /**@var string*/
     protected $expirationDate;
+    /**@var string*/
+    protected $stare;
+
+    /**
+     * @return string
+     */
+    public function getStare()
+    {
+        return $this->stare;
+    }
+
+    /**
+     * @param string $stare
+     * @return $this
+     */
+    public function setStare($stare)
+    {
+        $this->stare = $stare;
+        return $this;
+    }
+
 
     /**
      * @return string

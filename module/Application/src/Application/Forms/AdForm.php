@@ -39,10 +39,11 @@ class AdForm extends AbstractForm
 
 //-------------------------- DETALII MASINA--------------------
         $this->add(array(
-            'name' => 'custom_form_spacer',
             'type' => 'hidden',
+            'name' => 'x1',
             'attributes' => array(
                 'textAbove' => 'Detalii masina',
+                'custom_form_spacer' => true,
             )
         ));
 
@@ -134,9 +135,23 @@ class AdForm extends AbstractForm
                 'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'year_end',
-                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => 'end'),
+                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => ''),
                 'required' => false,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+            ),
+        ));
+
+        $this->add(array(
+            'type' => 'select',
+            'name' => 'stare',
+            'options' => array(
+                'label' => 'Stare',
+                'options' => ['nou' => 'Nou', 'second' => 'Second'],
+            ),
+            'attributes' => array(
+//                'id' => 'year_end',
+                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'end'),
+                'required' => false,
             ),
         ));
 
@@ -172,10 +187,11 @@ class AdForm extends AbstractForm
 
 
         $this->add(array(
-            'name' => 'custom_form_spacer',
+            'name' => 'x2',
             'type' => 'hidden',
             'attributes' => array(
                 'textAbove' => 'Detalii Anunt',
+                'custom_form_spacer' => true,
             )
         ));
 
@@ -248,20 +264,14 @@ class AdForm extends AbstractForm
             ),
         ));
 
-        $this->add(array(
-            'name' => 'custom_form_spacer',
-            'type' => 'hidden',
-            'attributes' => array(// 'textAbove' => 'Detalii Anunt',
-            )
-        ));
-
 //--------------------------------------------------------- POZE ANUNT--------------
 
         $this->add(array(
-            'name' => 'custom_form_spacer',
             'type' => 'hidden',
+            'name' => 'x4',
             'attributes' => array(
                 'textAbove' => 'Poze',
+                'custom_form_spacer' => true,
             )
         ));
 
@@ -279,13 +289,15 @@ class AdForm extends AbstractForm
             )
         ));
 
-        $this->add(array(
+        /*$this->add(array(
             'name' => 'custom_form_spacer',
             'type' => 'hidden',
             'attributes' => array(
-                'textAbove' => '',
+                'name' => 'sdad',
+                'id' => 'x2',
+                'textAbove' => 'zzz',
             )
-        ));
+        ));*/
 
         $this->add(array(
             'name' => 'submit',
