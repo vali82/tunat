@@ -29,6 +29,7 @@
         "Darkmatus/RoleUserBridge": "dev-master",
         "zendframework/zend-developer-tools": "dev-master",
         "bjyoungblood/bjy-profiler" : "dev-master",
-        "webino/webino-image-thumb" : "dev-master"
+        "webino/webino-image-thumb" : "dev-master",
+        "mandrill/mandrill": "1.0.*"
     }
 }
