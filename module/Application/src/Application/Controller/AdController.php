@@ -55,8 +55,6 @@ class AdController extends MyAbstractController
 
     public function createAction()
     {
-//        require_once 'mandrill-api-php/src/Mandrill.php'; //Not required with Composer
-        /*$mandrill = new \Mandrill('rQUJH3gglPTL_T4BmX6IuQ');
         try {
             $mandrill = new \Mandrill('rQUJH3gglPTL_T4BmX6IuQ');
             $message = array(
@@ -106,8 +104,8 @@ class AdController extends MyAbstractController
                     )
                 ),
                 'tags' => array('password-resets'),
-                'subaccount' => 'customer-123',
-                'google_analytics_domains' => array('example.com'),
+                'subaccount' => 'contact',
+                /*'google_analytics_domains' => array('example.com'),
                 'google_analytics_campaign' => 'message.from_email@example.com',
                 'metadata' => array('website' => 'www.example.com'),
                 'recipient_metadata' => array(
@@ -129,11 +127,11 @@ class AdController extends MyAbstractController
                         'name' => 'IMAGECID',
                         'content' => 'ZXhhbXBsZSBmaWxl'
                     )
-                )
+                )*/
             );
             $async = false;
             $ip_pool = 'Main Pool';
-            $send_at = 'example send_at';
+            $send_at = '';
             $result = $mandrill->messages->send($message, $async, $ip_pool, $send_at);
             print_r($result);
 
@@ -144,7 +142,7 @@ class AdController extends MyAbstractController
             echo 'A mandrill error occurred: ' . get_class($e) . ' - ' . $e->getMessage();
             // A mandrill error occurred: Mandrill_Unknown_Subaccount - No subaccount exists with the id 'customer-123'
             throw $e;
-        }*/
+        }
 
 
 

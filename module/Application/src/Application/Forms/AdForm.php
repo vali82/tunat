@@ -7,7 +7,7 @@ use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class AdForm extends AbstractForm
 {
-    public function create($resourceObj, $carMake, $years, $carburant, $cilindree, $partsMain)
+    public function create($resourceObj, $carMake, $years)
     {
         $this->setHydrator(new ClassMethodsHydrator(true))
             ->setObject($resourceObj);
@@ -154,34 +154,6 @@ class AdForm extends AbstractForm
                 'required' => false,
             ),
         ));
-
-
-
-        /*$this->add(array(
-            'type' => 'select',
-            'name' => 'car_carburant',
-            'options' => array(
-                'label' => 'Motorizare',
-                'options' => ['' => 'Oricare'] + $carburant,
-            ),
-            'attributes' => array(
-                'group' => array('size' => 'col-sm-4 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
-            ),
-        ));
-
-
-        $this->add(array(
-            'type' => 'select',
-            'name' => 'car_cilindree',
-            'options' => array(
-                'placeholder' => 'Cilindree',
-                'options' => ['' => 'Oricare'] + $cilindree,
-            ),
-            'attributes' => array(
-                'noLabel' => true,
-                'group' => array('size' => 'col-sm-4 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
-            ),
-        ));*/
 
 //--------------------------------------------------------- DETALII ANUNT--------------
 
