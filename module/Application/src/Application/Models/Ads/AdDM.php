@@ -3,6 +3,8 @@
 namespace Application\Models\Ads;
 
 use Application\Models\DataMapper;
+use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Sql;
 
 class AdDM extends DataMapper {
 
@@ -28,12 +30,13 @@ class AdDM extends DataMapper {
             'updated_at',
             'images',
             'views',
-            'contact_displayed'
+            'contact_displayed',
+            'expiration_date',
+            'stare'
         );
 
         /*$this->_primary_key_update = array('id');
         $this->_primary_key_delete = array('id');*/
 
     }
-
 }

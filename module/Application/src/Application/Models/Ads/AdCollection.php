@@ -5,6 +5,8 @@ namespace Application\Models\Ads;
 use Application\libs\General;
 use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsCollection;
+use Application\Models\DataMapper;
+use Zend\Db\Sql\Predicate\Expression;
 
 class AdCollection
 {
@@ -57,21 +59,62 @@ class AdCollection
 
         } elseif ($param['place'] == 'onSearch') {
             // AFTER SEARCH ADS
+
             $page = $this->controller->getEvent()->getRouteMatch()->getParam('p', '');
             $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
             $adDM = new AdDM($this->controller->getAdapter());
+
+            if (isset($param['search']) && count($param['search']) > 0) {
+                $adDM->setColumns(array(
+                    '*',
+                    'part_name_match' => new Expression(
+                        'MATCH (`part_name`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                    ),
+                    'description_match' => new Expression(
+                        'MATCH (`description`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                    ),
+                    'model_match' => new Expression(
+                        'MATCH (`car_model`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                    ),
+                ));
+                $order = array(
+                    new Expression(
+                        '(model_match * 7 + part_name_match * 5  + description_match) DESC'
+                    )
+                );
+                $sql_where = DataMapper::expression(
+                    'MATCH (`part_name`, `description`, car_model) AGAINST ("' . implode(' ', $param['search']) .
+                    '" IN BOOLEAN MODE)'
+                );
+            } else {
+                $order = ['id' => 'DESC'];
+                $sql_where = null;
+            }
+
+            $sql_years = null;
+            if ($param['searchYear'] > 0) {
+                $x = DataMapper::expression(
+                    'year_start <= '.$param['searchYear'].' AND year_end >= '.$param['searchYear']
+                );
+
+                $sql_years = [
+                    'years_query' => $x
+                ];
+            }
+
+
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
                 'page' => $page,
-                'items_per_page' => 5,
+                'items_per_page' => 2,
             ));
             $ads = $adDM->fetchAllDefault(
                 [
                     'status' => 'ok',
                     'car_make' => $param['carModelId'],
-                    // 'part_categ' => $param['partMainId']
-                ],
-                ['id' => 'DESC']
+                ] + ($sql_where !== null ? ['search' => $sql_where] : [])
+                + ($sql_years !== null ? $sql_years : []),
+                $order
             );
         }
 
@@ -91,13 +134,16 @@ class AdCollection
                         'description' => $ad->getDescription(),
                         'car' => $cars['categories'][$ad->getCarCategory()] . ' ' .
                             $cars['model'][$ad->getCarCategory()][$ad->getCarMake()]['categ'],
+                        'model' => $ad->getCarModel(),
+                        'yearStart' => $ad->getYearStart(),
+                        'yearEnd' => $ad->getYearEnd(),
                         'href' =>
                             $carCollection->urlizeAD($ad),
                         'status' => $ad->getStatus(),
                         'token' => isset($param['token']) ? $param['token'] : '',
                         'views' => $ad->getViews(),
                         'contactDisplayed' => $ad->getContactDisplayed(),
-                        'expirationDate' => '22 mar 2015'
+                        'expirationDate' => General::DateTime($ad->getExpirationDate(), 'LONG')
                     ]
                 );
             }
@@ -157,6 +203,7 @@ class AdCollection
                     'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
                     'title' => $adObj->getPartName(),
                     'description' => $adObj->getDescription(),
+                    'stare' => $adObj->getStare(),
                     'href' => '#',
                     'car' => [
                         'category' => $cars['categories'][$adObj->getCarCategory()],
@@ -177,5 +224,14 @@ class AdCollection
         } else {
             return null;
         }
+    }
+
+    public function getYears()
+    {
+        $years = [];
+        for ($i=date('Y'); $i>1960; $i--) {
+            $years[$i] = $i;
+        }
+        return $years;
     }
 }

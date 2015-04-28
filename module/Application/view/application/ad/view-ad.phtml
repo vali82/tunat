@@ -12,6 +12,7 @@ $this->headScript()
         Anuntul a expirat!
     </div>
 <?php } ?>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
@@ -88,7 +89,7 @@ $this->headScript()
                             Email: <span id="contactParkEmail"></span><br />
                             Adresa: <span id="contactParkAddress"></span><br />
                         </div>
-                        <a id="adGetContactButton" href="#" role="button" class="btn btn-success"
+                        <a id="adGetContactButton" href="javascript:;" role="button" class="btn btn-success"
                            data-loading-text="se incarca..."
                            style="padding: 20px; width: 100%">Vezi date de contact!</a>
                     </div>
@@ -99,6 +100,8 @@ $this->headScript()
 
             <p>Masina: <?=$this->car['category']?> <?=$this->car['class']?></p>
             <p>Model: <?=$this->car['class']?></p>
+
+            <p>Stare: <?=$this->stare?></p>
 
 
         </div>

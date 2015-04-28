@@ -23,6 +23,12 @@ return array(
         	}
         },*/
 
+        'getUserRoleLinkerDB' => function (ServiceLocatorInterface $sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $dm = new \Application\Models\UserRoleCustomizedDM($dbAdapter);
+            return $dm;
+        },
+
         'AuthenticatedUser' => function (ServiceLocatorInterface $sm) {
             $auth = $sm->get('zfcuser_auth_service');
             if ($auth->hasIdentity()) {
@@ -50,6 +56,18 @@ return array(
             return $park;
         },
 
+        'AutoParkUserDM'  => function (ServiceLocatorInterface $sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $dm = new \Application\Models\Autoparks\ParkUsersDM($dbAdapter);
+            return $dm;
+        },
+
+        'AutoParkDM' => function (ServiceLocatorInterface $sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $dm = new \Application\Models\Autoparks\ParksDM($dbAdapter);
+            return $dm;
+        },
+
         'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
 //            $role = \Application\libs\General::getFromSession('role');
 //            if ($role === null) {
@@ -71,6 +89,17 @@ return array(
             $dm->setHydrator(new UserHydrator());
             return $dm;
         }, */
+
+        'UserDataMapper' => function (ServiceLocatorInterface $sm) {
+            $dm = new \ZfcUser\Mapper\User();
+
+            $dm->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
+            $zfcUserOptions = $sm->get('zfcuser_module_options');
+            $entityClass = $zfcUserOptions->getUserEntityClass();
+            $dm->setEntityPrototype(new $entityClass);
+            $dm->setHydrator(new UserHydrator());
+            return $dm;
+        },
 
     ),
 );

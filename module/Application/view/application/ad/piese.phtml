@@ -44,79 +44,57 @@
             </div>
         </div>
     </div>
-    <!--<div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    Model
-                </h3>
-            </div>
-            <div class="panel-body">
-                <?php /*if ($this->class !== null && $this->models !== null && $this->carModelId === null) { */?>
-                    <?php
-/*                    foreach ($this->models as $modelId=>$model) {
-                        */?><a href="<?/*=$this->carCollection->urlizeCarModel($this->carcategoriesId, $modelId)*/?>"><?/*=$model['model']*/?></a>, <?php
-/*                    }
-                    */?>
-                <?php /*} elseif ($this->carModelId !== null) { */?>
-                    <?/*=$this->layout()->cars['model'][$this->carcategoriesId][$this->carModelId]['model']*/?>
-                    -
-                    <a href="<?/*=$this->carCollection->urlizeCarClass($this->carcategoriesId, $this->class)*/?>">schimba</a>
-                <?php /*} else { */?>
-                    selecteaza clasa
-                <?php /*} */?>
-            </div>
-        </div>
-    </div>-->
-    <!--<div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    Categorie Piesa
-                </h3>
-            </div>
-            <div class="panel-body">
-                <?php /*if ($this->carModelId !== null && $this->partMainId === null) { */?>
-                    <?php
-/*                    foreach ($this->layout()->cars['partsMain'] as $partId=>$part) {
-                        */?><a href="<?/*=$this->carCollection->urlizePartMain($this->carcategoriesId, $this->carModelId, $partId)*/?>"><?/*=$part*/?></a>, <?php
-/*                    }
-                    */?>
-                <?php /*} elseif ($this->partMainId !== null) { */?>
-                    <?/*=$this->layout()->cars['partsMain'][$this->partMainId]*/?>
-                    -
-                    <a href="<?/*=$this->carCollection->urlizeCarModel($this->carcategoriesId, $this->carModelId)*/?>">schimba</a>
-                <?php /*} else { */?>
-                    selecteaza modelul
-                <?php /*} */?>
-            </div>
-        </div>
-    </div>-->
 </div>
 
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            Anunturi Piese
-        </h3>
+
+    <div class="row">
+        <div class="col-md-12" style="padding-bottom: 20px">
+            <form class="form-inline" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
+                <div class="input-group">
+
+                    <div class="form-group">
+                        <input id ="searchInput" value="<?=$this->searchValues['input']?>" size="50" maxlength="50" class="form-control" type="text">
+
+                        <select class="form-control" id="searchYear">
+                            <option value="0">orice an</option>
+                            <?php foreach ($this->years as $year) {?>
+                                <option value="<?=$year?>"<?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
+                            <?php }?>
+                        </select>
+
+
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">Cauta!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="panel-body">
-        <?php if ($this->adList !== null) { ?>
-            <?=$this->adList?>
-            <?=
-            $this->paginationControl(
-                $this->ads,
-                'Sliding',
-                'application/partials/list_pagination.phtml',
-                $this->carCollection->urlizePageListAds($this->carcategoriesId, $this->carModelId, null)
-            );
-            ?>
-        <?php } else { ?>
-            <p>Nu sunt anunturi in aceasta categorie</p>
-        <?php } ?>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                Anunturi Piese
+            </h3>
+        </div>
+        <div class="panel-body">
+            <?php if ($this->adList !== null) { ?>
+                <?=$this->adList?>
+                <?=
+                $this->paginationControl(
+                    $this->ads,
+                    'Sliding',
+                    'application/partials/list_pagination.phtml',
+                    $this->carCollection->urlizePageListAds($this->carcategoriesId, $this->carModelId, null)
+                );
+                ?>
+            <?php } else { ?>
+                <p>Nu sunt anunturi in aceasta categorie</p>
+            <?php } ?>
+        </div>
     </div>
-</div>
 <?php } elseif ($this->carModelId !== null && $this->adView !== null) { ?>
     <?=$this->adView?>
 <?php } ?>

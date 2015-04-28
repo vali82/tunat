@@ -6,19 +6,19 @@ return array(
         'roles' => array('guest', 'user', 'parcauto')
     ),
     array(
-        'route' => 'zfcuser/login',
+        'route' => 'home/login',
         'roles' => array('guest')
     ),
     array(
-        'route' => 'zfcuser/register',
+        'route' => 'home/register',
         'roles' => array('guest')
     ),
     array(
-        'route' => 'zfcuser',
+        'route' => 'scn-social-auth-user',
         'roles' => array('parcauto', 'user')
     ),
     array(
-        'route' => 'zfcuser/logout',
+        'route' => 'scn-social-auth-user/logout',
         'roles' => array('parcauto', 'user')
     ),
     array(

@@ -38,6 +38,50 @@ class Ad
     protected $views;
     /**@var int*/
     protected $contactDisplayed;
+    /**@var string*/
+    protected $expirationDate;
+    /**@var string*/
+    protected $stare;
+
+    /**
+     * @return string
+     */
+    public function getStare()
+    {
+        return $this->stare;
+    }
+
+    /**
+     * @param string $stare
+     * @return $this
+     */
+    public function setStare($stare)
+    {
+        $this->stare = $stare;
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
+    }
+
+    /**
+     * @param string $expirationDate
+     * @return Ad
+     */
+    public function setExpirationDate($expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+        return $this;
+    }
+
+
+
 
     /**
      * @return int

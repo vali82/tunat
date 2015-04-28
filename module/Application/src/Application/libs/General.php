@@ -46,7 +46,7 @@ class General
             $sizestyle = 'width:' . $sizex[0] . 'px; height:' . $sizex[1] . 'px';
         }
 
-        $src = ($includeHTTP ? 'http://' . MAIN_DOMAIN : '') .
+        $src = (MAIN_DOMAIN) .
             '/display-image/' . $entity_type . '/' . $entity_id . '/' . $size;
 
         return $src;
@@ -250,12 +250,10 @@ class General
      */
     public static function generateQueryWords($words, $searchWath = 'frontSearch')
     {
-        $x = explode(' ', strtolower(htmlentities($words)));
+        $x = explode('+', strtolower(htmlentities($words)));
         $stoped_words = [];
         if ($searchWath == 'frontSearch') {
-            $stoped_words = ['gradinita', 'de', 'pe', 'ce', 'sa', 'la', 'din', 'in'];
-        } elseif ($searchWath == 'eduResources') {
-            $stoped_words = ['de', 'pe', 'ce', 'sa', 'la', 'din', 'in'];
+            $stoped_words = ['piesa', 'de', 'pe', 'ce', 'sa', 'la', 'din', 'in', 'piese'];
         }
 
         $return = array();

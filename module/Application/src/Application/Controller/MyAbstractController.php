@@ -23,9 +23,11 @@ class MyAbstractController extends AbstractActionController
     protected $role;
     protected $adapter;
     protected $cars;
+    protected $translator;
 
     public function onDispatch(MvcEvent $e)
     {
+        $this->translator = $this->getServiceLocator()->get('translator');
         $this->adapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
         $this->myPark = null;
@@ -47,7 +49,7 @@ class MyAbstractController extends AbstractActionController
 
         // get cars make and models into session
         $cars = General::getFromSession('cars');
-        if ($cars === null || 1==1) {
+        if ($cars === null || 1==2) {
             $carMake = [];
             $carsMakeDM = new CarsCategoriesDM($this->adapter);
             foreach ($carsMakeDM->fetchResultsArray() as $k => $r) {
@@ -117,6 +119,7 @@ class MyAbstractController extends AbstractActionController
     protected function uploadAdGetUploaded($user_id, $email, $folder)
     {
 //        General::echop($folder);
+        $files = [];
         if ($user_id && $email) {
             $path = PUBLIC_IMG_PATH . $user_id . '/' . implode('/', $folder) . '/';
             foreach (glob($path . "*") as $filefound) {
@@ -164,13 +167,13 @@ class MyAbstractController extends AbstractActionController
             $path = PUBLIC_IMG_PATH . $user_id . '/';
             if (!is_dir($path)) {
                 mkdir($path);
-                chmod($path, '0777');
+                chmod($path, 0755);
             }
             foreach ($folder as $f) {
                 $path .= $f . '/';
                 if (!is_dir($path)) {
                     mkdir($path);
-                    chmod($path, '0777');
+                    chmod($path, 0755);
                 }
             }
             foreach ($adapter->getFileInfo() as $file => $info) {
@@ -189,6 +192,7 @@ class MyAbstractController extends AbstractActionController
                 }
 
                 $name =  rand(100, 999).md5($info['name']);
+                copy($info['tmp_name'], $path.$name);
                 rename($info['tmp_name'], $path.$name);
 
                 $files = array(

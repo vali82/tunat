@@ -18,12 +18,72 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         $translator = $e->getApplication()->getServiceManager()->get('translator');
-        $eventManager        = $e->getApplication()->getEventManager();
+        $serviceManager = $e->getApplication()->getServiceManager();
+        $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
+        $config = $serviceManager->get('Config');
+
         $moduleRouteListener->attach($eventManager);
-
-
         AbstractValidator::setDefaultTranslator($translator);
+
+        date_default_timezone_set($config['timezone']);
+        \Locale::setDefault($config['translator']['locale']);
+
+//          if (1==1 ||  (!defined('_CRONJOB_') || _CRONJOB_ == false) && $user === null) {
+            // for simple register
+        $events = $e->getApplication()->getEventManager()->getSharedManager();
+        // Handle login
+        /*$events->attach('ZfcUser\Authentication\Adapter\AdapterChain', 'authenticate.success', function($e) use ($serviceManager) {
+            $user = $e->getIdentity();
+            $this->doThingsAfterRegisterStas($serviceManager, $user);
+            // do some stuff
+        });*/
+//        $auth = $sm->get('zfcuser_auth_service');
+        /*$events->attach('ZfcUser\Service\User', 'register.post', function($e) use ($serviceManager) {
+            $user = $e->getParam('user');
+            $this->doThingsAfterRegisterStas($serviceManager, $user);
+            // do some stuff
+        });*/
+        /*$events->attach('ScnSocialAuth\Authentication\Adapter\HybridAuth', 'registerViaProvider.post', function($e) use ($serviceManager) {
+            $user = $e->getParam('user');
+            $this->doThingsAfterRegisterStas($serviceManager, $user);
+            // do some stuff
+        });*/
+    }
+
+    public function doThingsAfterRegisterStas($serviceManager, $user)
+    {
+        /*$fp = fopen( PUBLIC_IMG_PATH . 'data.txt', 'a');
+        fwrite($fp, 'do after register');
+        fwrite($fp, '---'."\r\n");
+        fclose($fp);*/
+
+
+//        $userDM = $serviceManager->get('UserDataMapper');
+
+        /*$userRoleLinkerDM = $serviceManager->get('getUserRoleLinkerDB');
+        $userRoleLinkerDM->createRow(array(
+            'user_id' => 102,
+            'role_id' => 'user'
+        ));*/
+
+        $parkDM = $serviceManager->get('AutoParkDM');
+        $autoPark = new Models\Autoparks\Park();
+        $autoPark
+            ->setEmail($user->getEmail())
+            ->setName($user->getEmail())
+            ->setDescription('')
+            ->setLocation('')
+        ;
+        $park_id = $parkDM->createRow($autoPark);
+
+        $userParkDM = $serviceManager->get('AutoParkUserDM');
+        $userParkDM->createFromArray($user->getId(), $park_id);
+
+
+        // in order to save api_key
+        //$myuser = $userDM->fetchByDBId($user->getId());
+        //$userDM->updateRow($myuser);
     }
 
     public function getConfig()

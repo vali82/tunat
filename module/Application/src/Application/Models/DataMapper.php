@@ -34,6 +34,8 @@ abstract class DataMapper implements MMDataMapperInterface
     protected $allow_log_action = false;
     protected $log_action_interested_fields = null;
 
+    protected $columns = [];
+
     public function getTableName()
     {
         return $this->table_name;
@@ -57,6 +59,11 @@ abstract class DataMapper implements MMDataMapperInterface
     public function setPaginateValues($sw)
     {
         $this->paginate_values = $sw;
+    }
+
+    public function setColumns($col)
+    {
+        $this->columns = $col;
     }
 
     /**
@@ -132,7 +139,7 @@ abstract class DataMapper implements MMDataMapperInterface
                 default:
                     break;
             }
-        } else {
+        } elseif ($value !== false) {
             $select->where($key . ' = ' . (is_string($value) ? '"' . $value . '"' : (int)$value) . '');
         }
         return $select;
@@ -360,6 +367,10 @@ abstract class DataMapper implements MMDataMapperInterface
     {
         $results = $this->getTableGateway()->select(function (Select $select) use ($selectKey, $orderBy, $limit) {
 
+            if (count($this->columns) > 0) {
+                $select->columns($this->columns);
+            }
+
             if (is_array($selectKey)) {
                 foreach ($selectKey as $k => $pkey) {
                     $select = $this->constructWhere($select, $k, $pkey);
@@ -504,4 +515,5 @@ abstract class DataMapper implements MMDataMapperInterface
 
         return $return;
     }
+
 }

@@ -12,6 +12,7 @@ namespace Application\Controller;
 use Application\Forms\AdForm;
 use Application\Forms\Filters\AdFilter;
 use Application\libs\General;
+use Application\Mail\MailGeneral;
 use Application\Models\Ads\Ad;
 use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
@@ -55,11 +56,27 @@ class AdController extends MyAbstractController
 
     public function createAction()
     {
+        var_dump(__DIR__);
+        $structure = __DIR__ . '/../../../../data/mails/' . '2015/';
+        if (!is_dir($structure)) {
+            mkdir($structure, 0777, true);
+            chmod($structure, 0777);
+        }
+        /*$mail = new MailGeneral($this->getServiceLocator());
+        $mail->_to = 'ileavalentin@gmail.com';
+        $mail->_no_reply = true;
+        var_dump($mail->forgotPassword("Gigi D'agostino", '123456'));*/
+
+
+
         $cars = $this->cars;
         $id = $this->getEvent()->getRouteMatch()->getParam('id', null);
 
         $this->layout()->js_call .= ' generalObj.cars = '.json_encode($cars).'; ';
         $this->layout()->js_call .= ' generalObj.ad.create("'.$this->url()->fromRoute("home/ad/upload").'"); ';
+
+        $request = $this->getRequest();
+        $adCollection = new AdCollection($this);
 
         if ($id !== null) {
             // EDIT
@@ -83,12 +100,13 @@ class AdController extends MyAbstractController
 
         } else {
             // ADD
-            $adTmpId = General::getFromSession('adTmpId');
-
-            if ($adTmpId === null) {
+            if ($request->isPost()) {
+                $adTmpId = General::getFromSession('adTmpId');
+            } else {
                 $adTmpId = 'tmp'.rand(10000, 99999);
                 General::addToSession('adTmpId', $adTmpId);
             }
+
             $resourceObj = new Ad();
         }
 
@@ -96,11 +114,10 @@ class AdController extends MyAbstractController
 
         $form = new AdForm();
         $form->setCancelRoute('back');
-        $form->create($resourceObj, $this->cars['categories'], null, null, null);
+        $years = $adCollection->getYears();
+        $form->create($resourceObj, $this->cars['categories'], $years, null, null, null);
 
         $form->bind($resourceObj);
-
-        $request = $this->getRequest();
 
         $resourceObj->setParkId($this->myPark->getId());
 
@@ -126,6 +143,8 @@ class AdController extends MyAbstractController
                 $carMakelId = $form->get('car_make')->getValue();
                 ////
 
+                $expDate = General::DateTime(null, 'object');
+                $expDate->add(new \DateInterval('P30D'));
                 $resourceObj
                     ->setCarMake($carMakelId)
                     ->setStatus('ok')
@@ -136,6 +155,7 @@ class AdController extends MyAbstractController
                 $adDM = new AdDM($this->adapter);
 
                 if ($id === null) {
+                    $resourceObj->setExpirationDate(General::DateTime($expDate));
                     $adId = $adDM->createRow($resourceObj);
 
 
@@ -212,16 +232,27 @@ class AdController extends MyAbstractController
         $carCollection = new CarsCollection($this);
 
         $categoriesParam = $this->getEvent()->getRouteMatch()->getParam('categories', '');
-        $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', '');
+//        $modelParam = $this->getEvent()->getRouteMatch()->getParam('car_model', '');
         $classParam = $this->getEvent()->getRouteMatch()->getParam('car_class', null);
-        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
+//        $partMain = $this->getEvent()->getRouteMatch()->getParam('parts_main', '');
         $adParam = $this->getEvent()->getRouteMatch()->getParam('ad_id', '');
+        $searchParam = $this->getEvent()->getRouteMatch()->getParam('search', '');
+
+
+        $searchWords = '';
+        $searchYear = '';
+        if (strpos($searchParam, ":") !== false) {
+            $search = explode(":", $searchParam);
+            $searchWords = $search[0];
+            $searchYear = $search[1];
+        } elseif ($searchParam != '') {
+            $searchWords = $searchParam;
+        }
+
 
         // detect Car categories ID
         $carcategoriesId = null;
-//        $ = null;
         if ($categoriesParam !== '') {
-            $models = [];
             foreach ($cars['categories'] as $categId => $model) {
                 if (strtolower($carCollection->getUrlize($model)) == $categoriesParam) {
                     $carcategoriesId = $categId;
@@ -230,9 +261,12 @@ class AdController extends MyAbstractController
         }
         ////
 
-        if ($carcategoriesId === null) {
-            $this->redirect()->toRoute('home');
+
+        if ($carcategoriesId == null || !isset($cars['model'][$carcategoriesId])) {
+            return $this->redirect()->toRoute('home');
         }
+
+
 
         // detect Car Class
         $models = null;
@@ -250,14 +284,17 @@ class AdController extends MyAbstractController
         }
         ////
 
+//        var_dump($cars['model'][$carcategoriesId]); die();
+
+
         // detect Ad ID
-        $ad = new AdCollection($this);
+        $adCollection = new AdCollection($this);
         $adId = null;
         $adView = null;
         $x = explode('-', $adParam);
-        if ($adParam != '' && is_array($x) && count($x) > 0) {
+        if ($adParam != '' && strpos($adParam, '-') !== false && is_array($x) && count($x) > 0) {
             $adId = (int)$x[count($x)-1];
-            $adView = $ad->viewHTML($adId);
+            $adView = $adCollection->viewHTML($adId);
             if ($adView === null) {
                 //$this->flashMessenger()->addInfoMessage('Anuntul #'.$adId.' a expirat');
                 return $this->redirect()->toRoute('home');
@@ -265,14 +302,18 @@ class AdController extends MyAbstractController
         }
         ////
 
-        // get All ADs with these IDs
+
+
+        // get ADs list
         $adList = null;
         $ads = null;
         if ($adView === null) {
-            $content = $ad->adListHTML([
+            $content = $adCollection->adListHTML([
                 'place' => 'onSearch',
                 'carModelId' => $carModelId,
-                'partMainId' => 0
+                'partMainId' => 0,
+                'search' => General::generateQueryWords($searchWords),
+                'searchYear' => $searchYear,
             ]);
 
             $adList = $content['list'];
@@ -280,8 +321,13 @@ class AdController extends MyAbstractController
         }
         ////
 
+
+
         $urlGetContact = $this->url()->fromRoute('home/ad/getContact', ['id'=>($adId !== null ? $adId : 0)]);
         $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
+
+
+
 
         return [
             'carcategoriesId' => $carcategoriesId,
@@ -293,7 +339,14 @@ class AdController extends MyAbstractController
             'carCollection' => $carCollection,
             'adList' => $adList,
             'ads' => $ads,
-            'adView' => $adView
+            'adView' => $adView,
+            'searchValues' => [
+                'input' => str_replace("+", " ", $searchWords),
+                'year' => $searchYear,
+            ],
+//            'searchValue' => str_replace("+", " ", $search[0]),
+//            'searchYearStart' => ($search[1]),
+            'years' => $adCollection->getYears()
         ];
     }
 

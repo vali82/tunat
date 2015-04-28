@@ -1,0 +1,40 @@
+<?php
+    $this->layout()->js_call .= ' generalObj.loginRegister.init(); ';
+?>
+<form id="loginForm" action = "<?=$this->url('home/login')?>"
+      data-bing-action-uri="#" data-form-code="KPGSF" target="_self" method="POST">
+	<div class="loginForm">
+
+		<label for="globalLoginFieldIdentity" style="display: block;"><?=$this->translate('email utilizator')?></label>
+		<input type="email" style="width:100%;"
+               maxlength="250" value="" spellcheck="false" autocomplete="off"
+               name="identity" id="globalLoginFieldIdentity">
+
+	</div>
+	<div class="loginForm">
+
+		<label for="globalLoginFieldPass" style="display: block;"><?=$this->translate('parola')?></label>
+		<input type="password" style="width:100%;"
+               maxlength="250" value="" spellcheck="false" autocomplete="off"
+               name="credential" id="globalLoginFieldPass">
+	</div>
+
+	<div class="loginButtons">
+
+		<a id="loginButton" href="javascript:;" onclick="$('#loginForm').submit()" class="btn btn-success">Login</a>
+		<br /><input type="submit" style="float: right;visibility: hidden;">
+	</div>
+
+</form>
+
+<a href="javascript:;" id="registerTab">nu ai cont? inregistreaza-te</a>
+
+
+
+<!--<div id = "loginSocialContainer" class="shell">
+
+	<a href="/user/login/facebook" id="loginOptionFacebook" class="cellBtn rotX180 autoExecCenter">
+		FaceBook
+	</a>
+
+</div>-->
