@@ -22,7 +22,7 @@ class MailGeneral extends AbstractActionController
     protected $translator;
     protected $_config;
     protected $_general_config;
-    protected $_log2hdd = true; // keep mails into logs
+    protected $_log2hdd = false; // keep mails into logs
 
 	protected $method = 'mandrill'; // mandrill OR null if zf2 mail
 
@@ -95,32 +95,8 @@ class MailGeneral extends AbstractActionController
 		try
 		{
 			$mandrill = new \Mandrill($this->_config['mandrill']['key']);
-			$subdomain_id = null;
-			if ($this->_subdomain !== null) {
-				try {
-					$subdomain_id = APPLICATION_ENV.'-'.$this->_subdomain['id'];
-					$mandrill->subaccounts->info($subdomain_id);
 
-				} catch (\Exception $e) {
-					$subdomain_id = null;
-				}
-
-				if ($subdomain_id === null) {
-					try {
-						$subdomain_id = APPLICATION_ENV.'-'.$this->_subdomain['id'];
-						$name = $this->_subdomain['name'];
-						$notes = (isset($this->_subdomain['notes']) ? $this->_subdomain['notes'] : '');
-						$custom_quota = 600; // cronu mere in fiecare minut si face 10 pe minut
-						$mandrill->subaccounts->add($subdomain_id, $name, $notes, $custom_quota);
-					} catch (\Exception $e) {
-						$subdomain_id = null;
-					}
-				}
-			}
-
-			if ($subdomain_id === null) {
-				$subdomain_id = APPLICATION_ENV.'-default';
-			}
+			$subdomain_id = APPLICATION_ENV.'-default';
 
 			$message = array(
 				'html' => $this->_message,
@@ -135,7 +111,7 @@ class MailGeneral extends AbstractActionController
 						'type' => 'to'
 					)
 				),
-				'headers' => ($this->_no_reply === true ? array('Reply-To' => 'no-reply@kinderpedia.ro') : array('Reply-To' => $from['email'])),
+				'headers' => ($this->_no_reply === true ? array('Reply-To' => 'no-reply@'.$this->_site_names['domain']) : array('Reply-To' => $from['email'])),
 				'important' => false,
 				'track_opens' => null,
 				'track_clicks' => null,

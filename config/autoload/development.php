@@ -41,7 +41,8 @@ return array(
         'http'=>'http://dev.tirbox.ro',
         'name' => 'Tirbox',
         'cool_url' => 'dev.tirbox.ro',
-        'entity_zone' => 'http://dev.tirbox.ro/%1$s/%2$s'
+        'entity_zone' => 'http://dev.tirbox.ro/%1$s/%2$s',
+        'domain' => 'dev.tirbox.ro'
     ),
     // ...
 );

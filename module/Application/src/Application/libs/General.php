@@ -46,7 +46,7 @@ class General
             $sizestyle = 'width:' . $sizex[0] . 'px; height:' . $sizex[1] . 'px';
         }
 
-        $src = ($includeHTTP ? 'http://' . MAIN_DOMAIN : '') .
+        $src = (MAIN_DOMAIN) .
             '/display-image/' . $entity_type . '/' . $entity_id . '/' . $size;
 
         return $src;
