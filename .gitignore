@@ -13,3 +13,4 @@ composer.phar
 
 public/images
 public/.htaccess
+data/mails
