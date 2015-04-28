@@ -61,8 +61,6 @@ class AdController extends MyAbstractController
         $mail->_no_reply = true;
         var_dump($mail->forgotPassword("Gigi D'agostino", '123456'));*/
 
-
-
         $cars = $this->cars;
         $id = $this->getEvent()->getRouteMatch()->getParam('id', null);
 
