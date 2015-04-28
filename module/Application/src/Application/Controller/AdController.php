@@ -56,12 +56,6 @@ class AdController extends MyAbstractController
 
     public function createAction()
     {
-        var_dump(__DIR__);
-        $structure = __DIR__ . '/../../../../data/mails/' . '2015/';
-        if (!is_dir($structure)) {
-            mkdir($structure, 0777, true);
-            chmod($structure, 0777);
-        }
         /*$mail = new MailGeneral($this->getServiceLocator());
         $mail->_to = 'ileavalentin@gmail.com';
         $mail->_no_reply = true;

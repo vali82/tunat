@@ -36,6 +36,7 @@ class MailGeneral extends AbstractActionController
 
         $this->_config = $conf['email'];
         $this->_site_names = $conf['site_names'];
+        $this->_log2hdd = APPLICATION_ENV == 'development' ? true : false;
     }
 
     protected function header($action, $user_type = 'user')

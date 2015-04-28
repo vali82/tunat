@@ -177,26 +177,26 @@ class Forms extends AbstractHelper
     private static function photosMultiUpload($view, $element)
     {
         $view->headLink()
-            ->prependStylesheet('/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
-            ->prependStylesheet('/jquery-file-upload/css/jquery.fileupload.css')
-            ->appendStylesheet('/jquery-file-upload/css/jquery.fileupload-ui.css');
+            ->prependStylesheet($view->basePath() .'/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
+            ->prependStylesheet($view->basePath() .'/jquery-file-upload/css/jquery.fileupload.css')
+            ->appendStylesheet($view->basePath() .'/jquery-file-upload/css/jquery.fileupload-ui.css');
 
         $view->headScript()
             //->appendFile('/js/media.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/vendor/jquery.ui.widget.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/vendor/tmpl.min.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/vendor/load-image.min.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/vendor/canvas-to-blob.min.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/jquery.iframe-transport.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/jquery.fileupload.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/jquery.fileupload-process.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/jquery.fileupload-image.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/vendor/jquery.ui.widget.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/vendor/tmpl.min.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/vendor/load-image.min.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/vendor/canvas-to-blob.min.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/jquery.iframe-transport.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/jquery.fileupload.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/jquery.fileupload-process.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/jquery.fileupload-image.js', 'text/javascript')
 //    ->appendFile('/jquery-file-upload/js/jquery.fileupload-audio.js', 'text/javascript')
 //    ->appendFile('/jquery-file-upload/js/jquery.fileupload-video.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/jquery.fileupload-validate.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/jquery.fileupload-ui.js', 'text/javascript')
-            ->appendFile('/jquery-file-upload/js/cors/jquery.xdr-transport.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/jquery.fileupload-validate.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/jquery.fileupload-ui.js', 'text/javascript')
+            ->appendFile($view->basePath() .'/jquery-file-upload/js/cors/jquery.xdr-transport.js', 'text/javascript')
         ;
 
         ?>
