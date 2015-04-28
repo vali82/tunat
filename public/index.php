@@ -12,11 +12,11 @@ defined('APPLICATION_ENV')
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
 if (APPLICATION_ENV == 'development') {
-    define('MAIN_DOMAIN', 'http://tirbox.local');
+    define('MAIN_DOMAIN', 'http://tirbox.local/');
 } elseif (APPLICATION_ENV == 'development') {
-    define('MAIN_DOMAIN', 'http://dev.tirbox.ro');
+    define('MAIN_DOMAIN', 'http://dev.tirbox.ro/');
 } else {
-    define('MAIN_DOMAIN', 'http://www.tirbox.ro');
+    define('MAIN_DOMAIN', 'http://www.tirbox.ro/');
 }
 
 // Decline static file requests back to the PHP built-in webserver
