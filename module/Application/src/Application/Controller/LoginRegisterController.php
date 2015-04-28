@@ -321,6 +321,7 @@ class LoginRegisterController extends MyAbstractController
                         "message" => $this->translator->translate("Autentificare esuata! Email sau parola invalida!")
                     );
                 } else {
+                    General::unsetSession('AuthenticatedUserRole');
                     $userObject = $this->getUserTable()->findByEmail($data['identity']);
 
                     return $this->loggedOkUser($userObject);

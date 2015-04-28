@@ -409,7 +409,10 @@ class AdController extends MyAbstractController
                     $messageSuccess = 'Anuntul a fost sters cu success!';
 
                 } elseif ($mode == 'activate') {
+                    $expDate = General::DateTime(null, 'object');
+                    $expDate->add(new \DateInterval('P30D'));
                     $adObj
+                        ->setExpirationDate(General::DateTime($expDate))
                         ->setDateadd(General::DateTime())
                         ->setStatus('ok')
                     ;

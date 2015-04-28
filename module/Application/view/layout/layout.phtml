@@ -1,6 +1,8 @@
 <?php echo $this->doctype();
 
-$role = $this->AuthenticatedUserRole();
+//$role = $this->AuthenticatedUserRole();
+$role = \Application\libs\General::getFromSession('AuthenticatedUserRole');
+
 $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
 ?>

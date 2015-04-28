@@ -68,7 +68,7 @@ return array(
             return $dm;
         },
 
-        'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
+        /*'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
 //            $role = \Application\libs\General::getFromSession('role');
 //            if ($role === null) {
                 $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
@@ -77,6 +77,16 @@ return array(
 //                \Application\libs\General::addToSession('role', $role);
 //            }
             return $role;
+        },*/
+        'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
+            $x = \Application\Libs\General::getFromSession('AuthenticatedUserRole');
+            if ($x === null) {
+                $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
+                $roles = $pi->getIdentityRoles();
+                $x = array_pop($roles);
+                \Application\Libs\General::addToSession('AuthenticatedUserRole', $x);
+            }
+            return $x;
         },
 
         /* 'AffiliateDataMapper' => function (ServiceLocatorInterface $sm) {
