@@ -13,7 +13,7 @@ define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
 if (APPLICATION_ENV == 'development') {
     define('MAIN_DOMAIN', 'http://tirbox.local/');
-} elseif (APPLICATION_ENV == 'development') {
+} elseif (APPLICATION_ENV == 'dev') {
     define('MAIN_DOMAIN', 'http://dev.tirbox.ro/');
 } else {
     define('MAIN_DOMAIN', 'http://www.tirbox.ro/');
