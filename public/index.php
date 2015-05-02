@@ -12,13 +12,12 @@ defined('APPLICATION_ENV')
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
 if (APPLICATION_ENV == 'development') {
-    define('MAIN_DOMAIN', 'http://tirbox.local');
-} elseif (APPLICATION_ENV == 'development') {
+    define('MAIN_DOMAIN', 'http://tirbox.local/');
+} elseif (APPLICATION_ENV == 'dev') {
     define('MAIN_DOMAIN', 'http://dev.tirbox.ro/');
 } else {
     define('MAIN_DOMAIN', 'http://www.tirbox.ro/');
 }
-
 
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {
