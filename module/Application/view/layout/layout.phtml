@@ -82,7 +82,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                             <li class="dropdown">
                                 <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><?=($user !== null ? $user->getEmail() : '')?><span class="caret"></span></a>
                                 <ul role="menu" class="dropdown-menu">
-                                    <li><a href="#">Contul Meu</a></li>
+                                    <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
                                     <li><a href="#">Resetare Parola</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">Intreaba-ne!</a></li>

@@ -1,0 +1,11 @@
+<h3><?=$this->translate('Modifica Contul Meu')?></h3>
+<?php
+
+use Application\View\Helper\Forms;
+
+?>
+<div class="row">
+    <div class="col-sm-12">
+        <?php Forms::render($this, $this->form, $this->url('home/myAccount/update')); ?>
+    </div>
+</div>

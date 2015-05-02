@@ -215,7 +215,7 @@ class AdCollection
                         'tel1' => $parkObj->getTel1(),
                         'email' => $parkObj->getEmail(),
                         'url' => $parkObj->getUrl(),
-                        'location' => $parkObj->getLocation()
+                        'location' => $parkObj->generateLocation()
                     ],
                     'status' => $adObj->getStatus()
                 ]

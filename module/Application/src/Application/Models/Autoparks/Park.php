@@ -2,6 +2,8 @@
 
 namespace Application\Models\Autoparks;
 
+use Application\libs\General;
+
 class Park
 {
     /**@var int*/
@@ -13,7 +15,11 @@ class Park
     /**@var string*/
     protected $url;
     /**@var string*/
-    protected $location;
+    protected $city;
+    /**@var string*/
+    protected $state;
+    /**@var string*/
+    protected $address;
     /**@var string*/
     protected $description;
     /**@var string*/
@@ -22,6 +28,26 @@ class Park
     protected $tel2;
     /**@var string*/
     protected $tel3;
+    /**@var string*/
+    protected $logo;
+
+    /**
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     * @return Park
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
 
     /**
      * @return string
@@ -98,20 +124,57 @@ class Park
     /**
      * @return string
      */
-    public function getLocation()
+    public function getAddress()
     {
-        return $this->location;
+        return $this->address;
     }
 
     /**
-     * @param string $location
+     * @param string $address
      * @return Park
      */
-    public function setLocation($location)
+    public function setAddress($address)
     {
-        $this->location = $location;
+        $this->address = $address;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     * @return Park
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     * @return Park
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
 
     /**
      * @return string
@@ -183,5 +246,25 @@ class Park
     {
         $this->tel3 = $tel3;
         return $this;
+    }
+
+
+
+
+
+
+    public function generateLocation()
+    {
+        $x = [$this->getAddress(), $this->getCity(), $this->getState()];
+        return implode(', ', $x);
+    }
+
+    public function generateAvatar($size)
+    {
+        return General::getSimpleAvatar(
+            $this->getId() . 'xlogo',
+            $this->getLogo(),
+            $size
+        );
     }
 }

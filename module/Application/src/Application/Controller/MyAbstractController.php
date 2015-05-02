@@ -177,41 +177,44 @@ class MyAbstractController extends AbstractActionController
                 }
             }
             foreach ($adapter->getFileInfo() as $file => $info) {
-                if (!in_array($info['type'], $allowedExtensions)) {
-                    $response = $this->getResponse();
-                    $response->setStatusCode(415);
-                    $response->sendHeaders();
-                    return $response;
+                if (isset($info['name']) && $info['name'] != '') {
+                    if (!in_array($info['type'], $allowedExtensions)) {
+                        $response = $this->getResponse();
+                        $response->setStatusCode(415);
+                        $response->sendHeaders();
+                        return $response;
+                    }
+
+                    if ($info['size'] > $maxSize) {
+                        $response = $this->getResponse();
+                        $response->setStatusCode(413);
+                        $response->sendHeaders();
+                        return $response;
+                    }
+
+                    $name = rand(100, 999) . md5($info['name']);
+                    copy($info['tmp_name'], $path . $name);
+                    rename($info['tmp_name'], $path . $name);
+
+                    $files = array(
+                        'deleteType' => "DELETE",
+                        'deleteUrl' => $this->url()->fromRoute(
+                            'home/ad/upload',
+                            [
+                                'option' => 'delete',
+                                'folder' => $user_id . 'x' . implode('x', $folder),
+                                'name' => $name
+                            ]
+                        ),
+                        'name' => $info['name'],
+                        "size" => $info['size'],
+                        "type" => $info['type'],
+                        "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '800x600'),
+                        "thumbnailUrl" =>
+                            General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '100x100'),
+                        "nameDisk" => $name
+                    );
                 }
-
-                if ($info['size'] > $maxSize) {
-                    $response = $this->getResponse();
-                    $response->setStatusCode(413);
-                    $response->sendHeaders();
-                    return $response;
-                }
-
-                $name =  rand(100, 999).md5($info['name']);
-                copy($info['tmp_name'], $path.$name);
-                rename($info['tmp_name'], $path.$name);
-
-                $files = array(
-                    'deleteType' => "DELETE",
-                    'deleteUrl' => $this->url()->fromRoute(
-                        'home/ad/upload',
-                        [
-                            'option'=>'delete',
-                            'folder' => $user_id.'x'.implode('x', $folder),
-                            'name' => $name
-                        ]
-                    ),
-                    'name' => $info['name'],
-                    "size" => $info['size'],
-                    "type" => $info['type'],
-                    "url" => General::getSimpleAvatar($user_id.'x'.implode('x', $folder), $name, '800x600'),
-                    "thumbnailUrl" =>
-                        General::getSimpleAvatar($user_id.'x'.implode('x', $folder), $name, '100x100'),
-                );
             }
 
             $jsonModel = new JsonModel();

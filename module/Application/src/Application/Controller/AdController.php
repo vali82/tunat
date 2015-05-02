@@ -374,7 +374,7 @@ class AdController extends MyAbstractController
                 'tel1' => $parkObj->getTel1(),
                 'email' => $parkObj->getEmail(),
                 'url' => $parkObj->getUrl(),
-                'location' => $parkObj->getLocation()
+                'location' => $parkObj->generateLocation()
             ] : null,
             'message' => $parkObj !== null ? '' : 'Datele de contact nu au fost gasite',
         ]);

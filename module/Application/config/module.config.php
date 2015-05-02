@@ -87,7 +87,8 @@ return array(
             'Application\Controller\LoginRegister' => 'Application\Controller\LoginRegisterController',
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Simple' => 'Application\Controller\SimpleController',
-            'Application\Controller\Ad' => 'Application\Controller\AdController'
+            'Application\Controller\Ad' => 'Application\Controller\AdController',
+            'Application\Controller\MyAccount' => 'Application\Controller\MyAccountController',
         ),
     ),
     'view_manager' => array(
@@ -123,6 +124,7 @@ return array(
 
                 include __DIR__ . '/routes/acl/home.php',
                 include __DIR__ . '/routes/acl/ad.php',
+                include __DIR__ . '/routes/acl/my-account.php',
                 []
             )
         ),
