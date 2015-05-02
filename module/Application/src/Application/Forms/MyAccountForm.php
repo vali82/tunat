@@ -28,6 +28,35 @@ class MyAccountForm extends AbstractForm
             ),
         ));
 
+        $this->add(array(
+            'type' => 'checkbox',
+            'name' => 'account_type',
+            'attributes' => array(
+                'switcher' => true,
+                'id' => 'accountType',
+                'data-on-label' => '&nbsp;Parc-Auto&nbsp;',
+                'data-off-label' => '&nbsp;Particular&nbsp;',
+                'class' => 'switch-large',
+                'selected' => 'true'
+            ),
+            'options' => array(
+                'label' => 'Tip Cont',
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'name2',
+            'options' => array(
+                'label' => 'Nume si Prenume',
+            ),
+            'attributes' => array(
+//                'group' => array('size' => 'col-sm-4', 'type' => 'start'),
+                'type' => 'text',
+                'id' => 'name2',
+                //'required' => true
+            ),
+        ));
 
         $this->add(array(
             'name' => 'name',
@@ -39,6 +68,41 @@ class MyAccountForm extends AbstractForm
                 'type' => 'text',
                 'id' => 'name',
                 //'required' => true
+            ),
+        ));
+        $this->add(array(
+            'name' => 'description',
+            'options' => array(
+                'label' => 'Descriere',
+            ),
+            'attributes' => array(
+                'type' => 'textarea',
+                'id' => 'description',
+                //'required' => true
+            ),
+        ));
+        $this->add(array(
+            'name' => 'url',
+            'options' => array(
+                'label' => 'Site web',
+            ),
+            'attributes' => array(
+                'placeholder' => 'http://',
+//                'group' => array('size' => 'col-sm-4', 'type' => 'start'),
+                'type' => 'text',
+                'id' => 'url',
+                //'required' => true
+            ),
+        ));
+        $this->add(array(
+            'name' => 'imagefile',
+            'type' => 'file',
+            'options' => array(
+                'label' => 'Logo',
+            ),
+            'attributes' => array(
+                'id' => 'image-file',
+                'class' => 'x'
             ),
         ));
 
@@ -107,43 +171,11 @@ class MyAccountForm extends AbstractForm
             ),
         ));
 
-        $this->add(array(
-            'name' => 'url',
-            'options' => array(
-                'label' => 'Site web',
-            ),
-            'attributes' => array(
-                'placeholder' => 'http://',
-//                'group' => array('size' => 'col-sm-4', 'type' => 'start'),
-                'type' => 'text',
-                'id' => 'url',
-                //'required' => true
-            ),
-        ));
 
-        $this->add(array(
-            'name' => 'description',
-            'options' => array(
-                'label' => 'Descriere',
-            ),
-            'attributes' => array(
-                'type' => 'textarea',
-                'id' => 'description',
-                //'required' => true
-            ),
-        ));
 
-        $this->add(array(
-            'name' => 'imagefile',
-            'type' => 'file',
-            'options' => array(
-                'label' => 'Logo',
-            ),
-            'attributes' => array(
-                'id' => 'image-file',
-                'class' => 'x'
-            ),
-        ));
+
+
+
 
 
         $this->add(array(

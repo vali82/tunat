@@ -126,6 +126,7 @@ $.general = function() {
         });
 
 
+        $('.make-switch').bootstrapSwitch();
 
         //});
     };
@@ -501,6 +502,32 @@ $.general = function() {
 
     };
 
+    this.myAccount = {
+        update: function() {
+
+            $('#name2').parent().parent().hide();
+            /*$('#accountType').bootstrapSwitch('destroy');
+            $('#accountType').bootstrapSwitch('setSizeClass', 'switch-large');*/
+
+            $('#accountType').on('switch-change', function (e, data) {
+                var $el = $(this);
+
+                if(!data.value) {
+                    $('#name').parent().parent().hide();
+                    $('#description').parent().parent().hide();
+                    $('#image-file').parent().parent().hide();
+                    $('#url').parent().parent().hide();
+                    $('#name2').parent().parent().show();
+                } else {
+                    $('#name').parent().parent().show();
+                    $('#description').parent().parent().show();
+                    $('#image-file').parent().parent().show();
+                    $('#url').parent().parent().show();
+                    $('#name2').parent().parent().hide();
+                }
+            });
+        }
+    }
 
 };
 
