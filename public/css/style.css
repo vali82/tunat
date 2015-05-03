@@ -1,69 +1,78 @@
-body {
-    padding-top: 60px;
-    padding-bottom: 40px;
-}
-
-.zf-green {
-    color: #68b604;
-}
-
-.btn-success {
-    background-color: #57a900;
-    background-image: -moz-linear-gradient(top, #70d900, #57a900);
-    background-image: -ms-linear-gradient(top, #70d900, #57a900);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
-    background-image: -webkit-linear-gradient(top, #70d900, #57a900);
-    background-image: -o-linear-gradient(top, #70d900, #57a900);
-    background-image: linear-gradient(top, #70d900, #57a900);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
-}
-
-.btn-success:hover,
-.btn-success:active,
-.btn-success.active,
-.btn-success.disabled,
-.btn-success[disabled] {
-    background-color: #57a900;
-}
-
-.btn-success:active, .btn-success.active {
-    background-color: #57a900;
-}
-
-div.container a.brand {
-    background: url("../img/zf2-logo.png") no-repeat scroll 0 10px transparent;
-    margin-left: 0;
-    padding: 8px 20px 12px 40px;
-}
-
-div.container {
-    /*padding-bottom: 50px;*/
-}
-
-#footer {
-    margin-top: 40px;
-    position: fixed;
-    bottom: 0;
+/*header*/
+nav.navbar-inverse{
     width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 3em;
-    background-color: #f5f5f5;
-    text-align: left;
-    padding-top: 1em;
+    height: 75px;
+    background-color: #f8f6f6;
+    background-image: none;
+    -moz-box-shadow: 2px 2px 2px rgba(0,0,0,0.12);
+    -webkit-box-shadow: 2px 2px 2px rgba(0,0,0,0.12);
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.12);
+    border-bottom: none;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    color: #a2a3a5;
 }
-/*.footer {
-    background-color: #f5f5f5;
-    bottom: 0;
-    height: 60px;
-    position: absolute;
+
+.navbar-inverse .navbar-nav li a{
+    text-shadow: none;
+}
+
+.navbar-inverse .navbar-nav li a:hover{
+    color: #f9c924;
+}
+
+nav .container{
+    max-width: 1020px;
+    margin: 0 auto;
+}
+.navbar-brand{
+    padding: 0;
+}
+.navbar-header{
+    height: 75px;
+}
+.collapse.in{
+    border: none;
+    background-color: #f8f6f6;
+}
+.navbar-inverse .navbar-toggle{
+    background-color: #333;
+}
+ul.navbar-right{
+    padding-top: 12px;
+}
+.navbar-inverse .navbar-nav  a.add-offer{
+    background-image: none;
+    padding: 14px 45px; 
+    color: #fff;
+    font-weight: 500;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    background: rgb(251,203,35); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(251,203,35,1) 0%, rgba(237,193,39,1) 100%, rgba(125,185,232,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(251,203,35,1)), color-stop(100%,rgba(237,193,39,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbcb23', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+    -moz-box-shadow: inset 0 -2px 0 0  rgba(209, 176, 19, 0.57);
+    -webkit-box-shadow: inset 0 -2px 0 0p rgba(209, 176, 19, 0.57);
+    box-shadow: inset 0 -2px 0 0  rgba(209, 176, 19, 0.57);
+}
+
+.navbar-inverse .navbar-nav  a.add-offer:hover{
+    color: #a2a3a5;
+}
+
+/*banner homepage*/
+
+.banner{
+    padding-top: 75px;
     width: 100%;
-    padding: 20px;
-}*/
-
-/*
-.select2-container {
-    height: 33px;
-    padding: 3px;
 }
-*/
 
+.banner-img{
+    width: 1200px;
+    margin: 0 auto;
+}
