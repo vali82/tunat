@@ -8,9 +8,9 @@ use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class MyAccountForm extends AbstractForm
 {
-    public function changeMyAccount()
+    public function changeMyAccount($states)
     {
-        $this->setHydrator(new ClassMethodsHydrator(false))
+        $this->setHydrator(new ClassMethodsHydrator(true))
             ->setObject(new Park());
 
         $this->setAttribute('method', 'post');
@@ -54,6 +54,7 @@ class MyAccountForm extends AbstractForm
 //                'group' => array('size' => 'col-sm-4', 'type' => 'start'),
                 'type' => 'text',
                 'id' => 'name2',
+                'extraInfo' => 'obligatoriu: va aparea in detaliile anuntului'
                 //'required' => true
             ),
         ));
@@ -67,6 +68,7 @@ class MyAccountForm extends AbstractForm
 //                'group' => array('size' => 'col-sm-4', 'type' => 'start'),
                 'type' => 'text',
                 'id' => 'name',
+                'extraInfo' => 'obligatoriu: va aparea in detaliile anuntului'
                 //'required' => true
             ),
         ));
@@ -79,6 +81,7 @@ class MyAccountForm extends AbstractForm
                 'type' => 'textarea',
                 'id' => 'description',
                 //'required' => true
+                'extraInfo' => 'optional'
             ),
         ));
         $this->add(array(
@@ -92,6 +95,7 @@ class MyAccountForm extends AbstractForm
                 'type' => 'text',
                 'id' => 'url',
                 //'required' => true
+                'extraInfo' => 'optional'
             ),
         ));
         $this->add(array(
@@ -102,18 +106,20 @@ class MyAccountForm extends AbstractForm
             ),
             'attributes' => array(
                 'id' => 'image-file',
-                'class' => 'x'
+                'class' => 'x',
+                'extraInfo' => 'optional: imagine png/jpg'
             ),
         ));
 
         $this->add(array(
             'name' => 'tel1',
             'options' => array(
-                'label' => 'Telefon 1',
+                'label' => 'Telefon',
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-sm-2', 'type' => 'start'),
+                'group' => array('sizeLabel' => 'col-sm-2', 'size' => 'col-sm-4', 'type' => 'start'),
                 'type' => 'text',
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -122,8 +128,10 @@ class MyAccountForm extends AbstractForm
                 'label' => 'Telefon 2',
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-sm-2', 'type' => ''),
+                'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-sm-3', 'type' => ''),
                 'type' => 'text',
+                'noLabel' => true,
+                'extraInfo' => 'optional'
             ),
         ));
         $this->add(array(
@@ -132,8 +140,10 @@ class MyAccountForm extends AbstractForm
                 'label' => 'Telefon 3',
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-sm-2', 'type' => 'end'),
+                'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-sm-3', 'type' => 'end'),
                 'type' => 'text',
+                'noLabel' => true,
+                'extraInfo' => 'optional'
             ),
         ));
 
@@ -146,6 +156,7 @@ class MyAccountForm extends AbstractForm
             'attributes' => array(
                 'placeholder' => 'Adresa: strada, nr.',
                 'group' => array('size' => 'col-sm-4', 'type' => 'start'),
+                'extraInfo' => 'optional'
             ),
         ));
         $this->add(array(
@@ -157,17 +168,22 @@ class MyAccountForm extends AbstractForm
             'attributes' => array(
 //                'noLabel' => true,
                 'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-sm-3', 'type' => ''),
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
+            'type' => 'select',
             'name' => 'state',
-            'type' => 'text',
             'options' => array(
-                'label' => 'Adressa',
+                'label' => 'Stare',
+                'options' => $states,
             ),
             'attributes' => array(
-                'noLabel' => true,
+//                'id' => 'year_end',
                 'group' => array('size' => 'col-sm-2', 'type' => 'end'),
+                'required' => true,
+                'noLabel' => true,
+                'extraInfo' => 'obligaroriu'
             ),
         ));
 

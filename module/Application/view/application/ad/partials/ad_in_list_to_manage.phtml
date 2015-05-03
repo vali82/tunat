@@ -23,14 +23,14 @@
         <p><?=$this->description?></p>
         <p><?=$this->car?></p>
         <?php if ($this->status == 'expired') { ?>
-        <a href="<?=$this->url('home/ad/changeStatus', ['mode'=>'activate', 'id'=>$this->id, 'token'=>$this->token])?>"
+        <a href="<?=$this->url('home/myAccount/changeStatus', ['mode'=>'activate', 'id'=>$this->id, 'token'=>$this->token])?>"
            class="btn btn-primary btn-sm" role="button">Reactiveaza Anunt</a>
         <?php } else { ?>
         <a href="<?=$this->url('home/ad/create', ['id'=>$this->id])?>" class="btn btn-success btn-sm" role="button">Modifica Anunt</a>
         <?php } ?>
         <a href="javascript:;" onclick="<?=\Application\libs\General::confirmBoxJS(
             $this,
-            $this->url('home/ad/changeStatus', ['mode'=>'delete', 'id'=>$this->id, 'token'=>$this->token]),
+            $this->url('home/myAccount/changeStatus', ['mode'=>'delete', 'id'=>$this->id, 'token'=>$this->token]),
             'Vrei sa stergi definitiv acest anunt?'
         )?>"
            class="btn btn-danger btn-sm" role="button">Sterge Anunt</a>

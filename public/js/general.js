@@ -3,6 +3,13 @@ $.general = function() {
 
     this.cars = false;
 
+    var _handleBootstrapSwitch = function () {
+        if (!jQuery().bootstrapSwitch) {
+            return;
+        }
+        $('.make-switch').bootstrapSwitch();
+    };
+
     this.onLoad = function () {
 
         var thisObj = this;
@@ -125,8 +132,7 @@ $.general = function() {
             $('#LoginRegisterContainer').slideToggle();
         });
 
-
-        $('.make-switch').bootstrapSwitch();
+        _handleBootstrapSwitch();
 
         //});
     };
@@ -269,7 +275,11 @@ $.general = function() {
                     }
                     $('#loginRegisterLoading').hide();
                     setTimeout(function () {
-                        self.location.replace(data.result.redirectUrl);
+                        if (!afterRegister) {
+                            self.location.replace(data.result.redirectUrl);
+                        } else {
+                            self.location.replace(data.result.redirectUrlRegister);
+                        }
                     }, 1000);
 
 
@@ -505,25 +515,30 @@ $.general = function() {
     this.myAccount = {
         update: function() {
 
-            $('#name2').parent().parent().hide();
-            /*$('#accountType').bootstrapSwitch('destroy');
-            $('#accountType').bootstrapSwitch('setSizeClass', 'switch-large');*/
+            var _enableParcFields = function() {
+                $('#name').parent().parent().show();
+                $('#description').parent().parent().show();
+                $('#url').parent().parent().show();
+                $('#name2').parent().parent().hide();
+            };
+            var _enableParticularFields = function() {
+                $('#name').parent().parent().hide();
+                $('#description').parent().parent().hide();
+                $('#url').parent().parent().hide();
+                $('#name2').parent().parent().show();
+            };
+            if ($('#accountType').is(':checked')) {
+                _enableParcFields();
+            } else {
+                _enableParticularFields();
+            }
 
             $('#accountType').on('switch-change', function (e, data) {
                 var $el = $(this);
-
                 if(!data.value) {
-                    $('#name').parent().parent().hide();
-                    $('#description').parent().parent().hide();
-                    $('#image-file').parent().parent().hide();
-                    $('#url').parent().parent().hide();
-                    $('#name2').parent().parent().show();
+                    _enableParticularFields();
                 } else {
-                    $('#name').parent().parent().show();
-                    $('#description').parent().parent().show();
-                    $('#image-file').parent().parent().show();
-                    $('#url').parent().parent().show();
-                    $('#name2').parent().parent().hide();
+                    _enableParcFields();
                 }
             });
         }

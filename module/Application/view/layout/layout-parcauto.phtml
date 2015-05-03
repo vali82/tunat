@@ -68,7 +68,9 @@ if ($role == 'parcauto') {
                             <li>
                                 <a href="#"><?php echo $this->translate('Cerere Oferta') ?></a>
                             </li>
-                            <li><a href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
+                            <?php if ($role == 'parcauto') { ?>
+                                <li><a href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
+                            <?php } ?>
 
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
@@ -78,6 +80,7 @@ if ($role == 'parcauto') {
                             </li>
                         <?php } else { ?>
                             <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
+
                         <?php } ?>
                         </ul>
                     </div>
@@ -150,7 +153,34 @@ if ($role == 'parcauto') {
                 </div>
             <?php endif; ?>
 
-            <?php echo $this->content; ?>
+
+            <div class="row" style="margin-top: 50px">
+                <div class="col-md-3">
+                    <h3>Meniu</h3>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li role="presentation" class="active">
+                            <a href="<?=$this->url('home/myAccount')?>">Contul Meu</a>
+                        </li>
+                        <li role="presentation" class="dropdown">
+                            <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                Anunturile mele<span class="caret"></span>
+                            </a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a href="<?=$this->url('home/myAccount/myAds', ['status'=>'active'])?>">Active</a></li>
+                                <li><a href="<?=$this->url('home/myAccount/myAds', ['status'=> 'expired'])?>">Expirate</a></li>
+                            </ul>
+                        </li>
+
+                        <li role="presentation"><a href="#">Messages</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+
+                    <?php echo $this->content; ?>
+
+                </div>
+            </div>
+
         </div> <!-- /container -->
 
         <div id="footer">

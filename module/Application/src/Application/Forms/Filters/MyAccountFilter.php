@@ -10,7 +10,24 @@ class MyAccountFilter extends AbstractFilter
         $this->_filterFields = array(
             array(
                 'name' => 'name',
-                'required' => true,
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 5,
+                            'max' => 50,
+                        ),
+                    ),
+                ),
+                'filters' => array(
+                    array('name' => 'StringTrim'),
+                    array('name' => 'StripTags'),
+                ),
+            ),
+            array(
+                'name' => 'name2',
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'StringLength',
@@ -27,13 +44,64 @@ class MyAccountFilter extends AbstractFilter
             ),
             array(
                 'name' => 'description',
-                'required' => true,
+                'required' => false,
                 'validators' => array(
                     array(
                         'name' => 'StringLength',
                         'options' => array(
                             'min' => 5,
                             'max' => 1000,
+                        ),
+                    ),
+                ),
+                'filters' => array(
+                    array('name' => 'StringTrim'),
+                    array('name' => 'StripTags'),
+                ),
+            ),
+            array(
+                'name' => 'tel1',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 10,
+                            'max' => 15,
+                        ),
+                    ),
+                ),
+                'filters' => array(
+                    array('name' => 'StringTrim'),
+                    array('name' => 'StripTags'),
+                ),
+            ),
+            array(
+                'name' => 'city',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 2,
+                            'max' => 50,
+                        ),
+                    ),
+                ),
+                'filters' => array(
+                    array('name' => 'StringTrim'),
+                    array('name' => 'StripTags'),
+                ),
+            ),
+            array(
+                'name' => 'state',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'options' => array(
+                            'min' => 2,
+                            'max' => 50,
                         ),
                     ),
                 ),

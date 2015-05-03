@@ -113,17 +113,16 @@ class LoginRegisterController extends MyAbstractController
         return $this;
     }
 
-    private function loggedOkUser($userObject, $code = '1001')
+    private function loggedOkUser($userObject)
     {
-        $redirectUrl = $this->url()->fromRoute('home');
-
         $responseJSON = array(
             "error" => 0,
             "result" => [
                 'id' => $userObject->getId(),
                 //'name' => $userObject->getFirstName() . ' ' . $userObject->getLastName(),
                 'email' => $userObject->getEmail(),
-                'redirectUrl' => $redirectUrl
+                'redirectUrl' => $this->url()->fromRoute('home'),
+                'redirectUrlRegister' => $this->url()->fromRoute('home/myAccount/update'),
             ],
             "message" => $this->translator->translate('Autentificare reusita! Redirectare in contul tau...')
         );
@@ -389,7 +388,11 @@ class LoginRegisterController extends MyAbstractController
                         ->setEmail($userObject->getEmail())
                         ->setName($userObject->getEmail())
                         ->setDescription('')
-                        ->setLocation('')
+                        ->setAddress('')
+                        ->setCity('')
+                        ->setState('')
+                        ->setLogo('')
+                        ->setAccountType('parc-auto')
                         ->setTel1('')
                         ->setTel2('')
                         ->setTel3('')

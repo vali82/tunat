@@ -27,6 +27,7 @@ class MyAbstractController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $route = $this->getEvent()->getRouteMatch();
         $this->translator = $this->getServiceLocator()->get('translator');
         $this->adapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
@@ -36,6 +37,11 @@ class MyAbstractController extends AbstractActionController
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
             if ($this->role == 'parcauto') {
                 $this->myPark = $this->getServiceLocator()->get('AutoPark');
+
+                if ($this->myPark->getTel1() === '' && $route->getMatchedRouteName() != 'home/myAccount/update') {
+                    $this->flashMessenger()->addInfoMessage('Va rugam sa va completati datele de mai jos pentru a putea adauga anunturi!');
+                    return $this->redirect()->toRoute('home/myAccount/update');
+                }
             }
         }
 
@@ -96,7 +102,8 @@ class MyAbstractController extends AbstractActionController
 
         ////
 
-
+        $states = General::getConfigs($this, 'consts|states');
+        General::addToSession('states', $states);
 
         parent::onDispatch($e);
     }

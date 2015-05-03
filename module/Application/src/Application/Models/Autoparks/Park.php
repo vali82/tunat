@@ -30,6 +30,27 @@ class Park
     protected $tel3;
     /**@var string*/
     protected $logo;
+    /**@var string*/
+    protected $accountType;
+
+    /**
+     * @return string
+     */
+    public function getAccountType()
+    {
+        return $this->accountType;
+    }
+
+    /**
+     * @param string $accountType
+     * @return Park
+     */
+    public function setAccountType($accountType)
+    {
+        $this->accountType = $accountType;
+        return $this;
+    }
+
 
     /**
      * @return string
@@ -255,7 +276,8 @@ class Park
 
     public function generateLocation()
     {
-        $x = [$this->getAddress(), $this->getCity(), $this->getState()];
+        $states = General::getFromSession('states');
+        $x = [$this->getAddress(), $this->getCity(), $states[$this->getState()]];
         return implode(', ', $x);
     }
 
