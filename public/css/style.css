@@ -73,7 +73,7 @@ ul.navbar-right{
 }
 
 .banner-img{
-    width: 1200px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -84,4 +84,8 @@ li.displayOnMobile {
 .generalContainer  {
     padding-top: 75px;
     padding-bottom: 50px
+}
+
+.hideOnMobile {
+    display: block;
 }
