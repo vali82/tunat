@@ -76,3 +76,12 @@ ul.navbar-right{
     width: 1200px;
     margin: 0 auto;
 }
+
+li.displayOnMobile {
+    display: none;
+}
+
+.generalContainer  {
+    padding-top: 75px;
+    padding-bottom: 50px
+}

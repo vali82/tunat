@@ -84,7 +84,17 @@ if ($role == 'parcauto') {
                                         <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
                                     </li>
                                 <?php } else { ?>
-                                    <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
+                                    <li class="<?=($this->myAccountMenu['active'] === 'myaccount' ? ' active' : '')?>">
+                                        <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
+                                    </li>
+                                    <li role="" class="displayOnMobile<?=($this->myAccountMenu['active'] === 'addad' ? ' active' : '')?>">
+                                        <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
+                                    </li>
+                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
+                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
+                                    <li class="displayOnMobile">
+                                        <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
+                                    </li>
                                 <?php } ?>
                                 <li><a class="add-offer" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
                             </ul>
@@ -129,7 +139,7 @@ if ($role == 'parcauto') {
         <?php } ?>
 
 
-        <div class="container" style="padding-bottom: 50px">
+        <div class="container generalContainer">
 
             <?php
             if (count($this->flashMessenger()->getErrorMessages())) : ?>
