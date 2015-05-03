@@ -1,11 +1,7 @@
 <?php
-use Application\Mappers\UserDM;
 
-use Kindergartens\Mappers\KindergartenDM;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Mapper\UserHydrator;
-
-use Application\Mappers as Mappers;
 
 
 return array(
