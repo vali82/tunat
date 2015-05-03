@@ -1,0 +1,47 @@
+<?php
+$this->headLink()
+//    ->appendStylesheet('/css/bootstrap-switch-master/bootstrap-switch.css');
+;
+$this->headScript()
+//    ->appendFile('/js/bootstrap-switch-master/bootstrap-switch.js', 'text/javascript')
+//    ->prependFile($this->basePath() . '/js/newsletter.js')
+;
+
+//$this->layout()->js_call .= ' newsletterObj.loadNewsletterOptionData("'.$this->url('kindergarten/newsletter/saveNewsletterOption').'"); ';
+?>
+<h3><?=$this->translate('Contul Meu')?></h3>
+<div class="row">
+    <div class="col-sm-3">
+        <img src="<?=$this->myPark->generateAvatar('250x0')?>" class="thumbnail"/>
+    </div>
+    <div class="col-sm-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><?=$this->myPark->getName()?> <small></small></h3>
+            </div>
+            <div class="panel-body">
+                <?=$this->myPark->getDescription()?>
+                <ul class="list-group">
+
+                    <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
+                        <?=$this->myPark->getEmail()?></li>
+                    <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
+                        <?=$this->myPark->getTel1()?></li>
+                    <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
+                        <?=$this->myPark->getTel2()?></li>
+                    <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
+                        <?=$this->myPark->getTel3()?></li>
+                    <li class="list-group-item"><span class="badge"><?=$this->translate('Adresa')?></span>&nbsp;
+                        <?=$this->myPark->generateLocation()?></li>
+
+                </ul>
+
+                <a href="<?=$this->url('home/myAccount/update')?>" type="button" class="btn btn-green btn-sm"><?=$this->translate('Modifica')?></a>
+                <a href="<?=$this->url('home/myAccount/changePassword')?>" type="button" class="btn btn-pink btn-sm"><?=$this->translate('Schimba Parola')?></a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+

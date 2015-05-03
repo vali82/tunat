@@ -16,11 +16,15 @@ class ParksDM extends DataMapper
             'name',
             'email',
             'url',
-            'location',
+            'address',
+            'city',
+            'state',
             'description',
             'tel1',
             'tel2',
             'tel3',
+            'logo',
+            'account_type'
         );
 
         /*$this->_primary_key_update = array('id');

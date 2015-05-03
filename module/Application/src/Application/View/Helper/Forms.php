@@ -359,9 +359,9 @@ class Forms extends AbstractHelper
     protected static function showSwitcher($view, $element, $options)
     {
         $view->headLink()
-            ->appendStylesheet('/assets/plugins/bootstrap-switch/css/bootstrap-switch.css');
+            ->appendStylesheet('/assets/bootstrap-switch/css/bootstrap-switch.css');
         $view->headScript()
-            ->appendFile('/assets/plugins/bootstrap-switch/js/bootstrap-switch.js', 'text/javascript');
+            ->appendFile('/assets/bootstrap-switch/js/bootstrap-switch.js', 'text/javascript');
 
         ?>
 

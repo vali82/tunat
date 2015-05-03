@@ -76,7 +76,7 @@ class AdForm extends AbstractForm
 //                'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'select2CarModels',
-                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -93,7 +93,7 @@ class AdForm extends AbstractForm
 //                'disabled' => 'disabled',
 //                'noLabel' => true,
                 'id' => 'select2CarModels2',
-                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'end'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
@@ -117,7 +117,7 @@ class AdForm extends AbstractForm
 //                'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'year_start',
-                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12', 'type' => 'start'),
                 'required' => false,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -135,7 +135,7 @@ class AdForm extends AbstractForm
                 'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'year_end',
-                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => ''),
+                'group' => array('size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12', 'type' => ''),
                 'required' => false,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -150,7 +150,7 @@ class AdForm extends AbstractForm
             ),
             'attributes' => array(
 //                'id' => 'year_end',
-                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'end'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
                 'required' => false,
             ),
         ));
@@ -213,7 +213,11 @@ class AdForm extends AbstractForm
                 'label' => 'Pret',
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-lg-2 col-sm-5 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
+                'group' => array(
+                    'size' => 'col-lg-2 col-md-3 col-sm-4 col-xs-8',
+                    'sizeLabel' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
+                    'type' => 'start'
+                ),
                 'type' => 'text',
             ),
         ));
@@ -230,7 +234,11 @@ class AdForm extends AbstractForm
                 'noLabel' => true,
 //                'disabled' => 'disabled',
 //                'id' => 'year_end',
-                'group' => array('size' => 'col-lg-1 col-sm-3 col-md-2', 'type' => 'end'),
+                'group' => array(
+                    'size' => 'col-lg-1 col-md-2 col-sm-2 col-xs-4',
+                    'sizeLabel' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
+                    'type' => 'end'
+                ),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),

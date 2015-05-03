@@ -54,7 +54,7 @@ class AdCollection
                     'park_id' => $this->controller->getMyPark()->getId(),
                     'status' => $param['status']
                 ],
-                ['id' => 'DESC']
+                ['dateadd' => 'DESC']
             );
 
         } elseif ($param['place'] == 'onSearch') {
@@ -215,7 +215,7 @@ class AdCollection
                         'tel1' => $parkObj->getTel1(),
                         'email' => $parkObj->getEmail(),
                         'url' => $parkObj->getUrl(),
-                        'location' => $parkObj->getLocation()
+                        'location' => $parkObj->generateLocation()
                     ],
                     'status' => $adObj->getStatus()
                 ]

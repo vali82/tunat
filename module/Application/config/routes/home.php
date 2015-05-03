@@ -79,4 +79,17 @@ return [
         ),
         'may_terminate' => true,
     ],
+
+    'myAccount' => [
+        'type' => 'Literal',
+        'options' => array(
+            'route' => 'my-account',
+            'defaults' => array(
+                'controller' => 'Application\Controller\myAccount',
+                'action' => 'index',
+            ),
+        ),
+        'may_terminate' => true,
+        'child_routes' => include __DIR__ . '/my-account.php'
+    ],
 ];
