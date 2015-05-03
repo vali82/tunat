@@ -31,10 +31,11 @@ if ($role == 'parcauto') {
             ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
             ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
             ->prependStylesheet($this->basePath() . '/css/style.css')
+            ->prependStylesheet('http://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700')
             ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
             ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
             ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
-
+            ->prependStylesheet($this->basePath() . '/css/reset.css')
         ;
         ?>
 
@@ -52,56 +53,46 @@ if ($role == 'parcauto') {
 
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('tirbox.ro') ?></a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <div class="navbar-collapse collapse" id="navbar">
-                        <ul class="nav navbar-nav">
-                            <li>
-                                <a href="#"><?php echo $this->translate('Cerere Oferta') ?></a>
-                            </li>
-                            <li><a href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
-
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                        <?php if ($role == 'guest') { ?>
-                            <li class="pull-right">
-                                <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
-                            </li>
-                        <?php } else { ?>
-                            <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
-                            <li class="dropdown">
-                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                    <?=$name?><span class="caret"></span>
-                                </a>
-                                <ul role="menu" class="dropdown-menu">
-                                    <li role="" class="<?=($this->myAccountMenu['active'] === 'myaccount' ? 'active' : '')?>">
-                                        <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
-                                    </li>
-                                    <li role="" class="<?=($this->myAccountMenu['active'] === 'addad' ? 'active' : '')?>">
-                                        <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
-                                    </li>
-                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
-                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
-                                    <li role="menu">
-                                        <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        <?php } ?>
-                        </ul>
+        <header>
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?=$this->basePath() . '/img/logo.jpg'?>" alt="tirbox.ro" /><?php // echo $this->translate('tirbox.ro') ?></a>
                     </div>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
+                    <div class="collapse navbar-collapse">
+                        <div class="navbar-collapse collapse" id="navbar">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="#"><?php echo $this->translate('Acasa') ?></a>
+                                </li>
+                                <li>
+                                    <a href="#"><?php echo $this->translate('Cerere Oferta') ?></a>
+                                </li>
+                                <li>
+                                    <a href="#"><?php echo $this->translate('Categorii') ?></a>
+                                </li>
+                                <li>
+                                    <a href="#"><?php echo $this->translate('Contact') ?></a>
+                                </li>
+                                <?php if ($role == 'guest') { ?>
+                                    <li>
+                                        <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
+                                    </li>
+                                <?php } else { ?>
+                                    <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
+                                <?php } ?>
+                                <li><a class="add-offer" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
+                            </ul>
+                        </div>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </nav>
+        </header>
 
         <?php if ($role == 'guest') { ?>
         <div id="LoginRegisterContainer" style="display:none; margin-right: 20px; padding: 0px; width:100%; position: absolute;">
@@ -126,6 +117,15 @@ if ($role == 'parcauto') {
                 </div>
             </div>
         </div>
+        <?php } ?>
+
+        <?php // if homepage banner ?>
+        <?php if (isset($this->isHomePage)) { ?>
+            <div class="banner">
+                <div class="banner-img"><img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
+                </div>
+                <div class="banner-text"></div>
+            </div>
         <?php } ?>
 
 
