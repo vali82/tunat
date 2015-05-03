@@ -105,6 +105,7 @@ return array(
             'error/index' => __DIR__ . '/../view/error/index.phtml',
             'scn-social-auth/user/login' => __DIR__ . '/../view/scn-social-auth/user/login.phtml',
             'scn-social-auth/user/register' => __DIR__ . '/../view/scn-social-auth/user/register.phtml',
+            'zfc-user/user/changepassword' => __DIR__ . '/../view/scn-social-auth/user/changepassword.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

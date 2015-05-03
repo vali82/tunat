@@ -78,6 +78,24 @@ if ($role == 'parcauto') {
                             </li>
                         <?php } else { ?>
                             <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
+                            <li class="dropdown">
+                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                    <?=$name?><span class="caret"></span>
+                                </a>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li role="" class="<?=($this->myAccountMenu['active'] === 'myaccount' ? 'active' : '')?>">
+                                        <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
+                                    </li>
+                                    <li role="" class="<?=($this->myAccountMenu['active'] === 'addad' ? 'active' : '')?>">
+                                        <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
+                                    </li>
+                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
+                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
+                                    <li role="menu">
+                                        <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
                         <?php } ?>
                         </ul>
                     </div>
@@ -101,6 +119,10 @@ if ($role == 'parcauto') {
                 <div id="registerContainer">
                     <h4>Inregistreaza-te:</h4>
                     <?php echo $this->partial('scn-social-auth/user/register');?>
+                </div>
+                <div id="forgotContainer">
+                    <h4>Ai uitat parola?</h4>
+                    <?php echo $this->partial('scn-social-auth/user/forgot');?>
                 </div>
             </div>
         </div>
@@ -150,7 +172,42 @@ if ($role == 'parcauto') {
                 </div>
             <?php endif; ?>
 
+
+            <?php if (isset($this->myAccountMenu)) { ?>
+                <div class="row" style="margin-top: 50px">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-sm-12">
+                        <h3>Meniu</h3>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'myaccount' ? 'active' : '')?>">
+                                <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
+                            </li>
+                            <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'addad' ? 'active' : '')?>">
+                                <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
+                            </li>
+                            <li role="presentation" class="dropdown<?=($this->myAccountMenu['active'] === 'myads' ? ' active' : '')?>">
+                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                    Anunturile mele<span class="caret"></span>
+                                </a>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Active</a></li>
+                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Expirate</a></li>
+                                </ul>
+                            </li>
+
+                            <li role="presentation">
+                                <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-sm-12">
+
+                        <?php echo $this->content; ?>
+
+                    </div>
+                </div>
+            <?php } else { ?>
             <?php echo $this->content; ?>
+            <?php } ?>
         </div> <!-- /container -->
 
         <div id="footer">

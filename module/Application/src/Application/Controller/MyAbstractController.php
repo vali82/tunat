@@ -33,14 +33,23 @@ class MyAbstractController extends AbstractActionController
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
         $this->myPark = null;
         $this->myUser = null;
+
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
+
             if ($this->role == 'parcauto') {
                 $this->myPark = $this->getServiceLocator()->get('AutoPark');
 
-                if ($this->myPark->getTel1() === '' && $route->getMatchedRouteName() != 'home/myAccount/update') {
-                    $this->flashMessenger()->addInfoMessage('Va rugam sa va completati datele de mai jos pentru a putea adauga anunturi!');
-                    return $this->redirect()->toRoute('home/myAccount/update');
+
+
+                if ($this->myPark->getTel1() === '') {
+                    $this->flashMessenger()->addInfoMessage(
+                        'Va rugam sa va completati datele de mai jos pentru a putea adauga anunturi!'
+                    );
+                    if ($route->getMatchedRouteName() != 'home/myAccount/update') {
+                        return $this->redirect()->toRoute('home/myAccount/update');
+                    }
+
                 }
             }
         }

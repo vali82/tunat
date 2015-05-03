@@ -79,7 +79,17 @@ if ($role == 'parcauto') {
                                 <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
                             </li>
                         <?php } else { ?>
-                            <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
+                            <li class="dropdown">
+                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#"><?=$name?><span class="caret"></span></a>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
+                                    <li><a href="#">Resetare Parola</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Intreaba-ne!</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="<?php echo $this->url('zfcuser/logout') ?>"><?php echo $this->translate('Logout') ?></a></li>
+                                </ul>
+                            </li>
 
                         <?php } ?>
                         </ul>

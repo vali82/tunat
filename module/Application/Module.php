@@ -49,6 +49,16 @@ class Module
             $this->doThingsAfterRegisterStas($serviceManager, $user);
             // do some stuff
         });*/
+
+        if (strpos($_SERVER['REQUEST_URI'], '/user/change-password') === 0) {
+            $vm = $e->getViewModel();
+            $vm = $e->getViewModel();
+            /*$vm->setVariable('myAccountMenu', [
+                'active' => 'myaccount'
+            ]);*/
+        }
+
+
     }
 
     public function doThingsAfterRegisterStas($serviceManager, $user)

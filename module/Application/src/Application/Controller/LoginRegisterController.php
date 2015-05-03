@@ -9,30 +9,27 @@
 
 namespace Application\Controller;
 
-use Kindergartens\Subscription;
+use Application\Forms\ChangePasswordForm;
+use Application\Forms\Filters\ChangePasswordFilter;
 
+use Application\Forms\Filters\ResetPasswordFilter;
 use Application\Mail\MailGeneral;
-use Kindergartens\Educators;
-
-use Kindergartens\KgAdmins;
-use Kindergartens\Mappers as KgMappers;
-use Kindergartens\Models as KgModels;
-use Kindergartens\Children;
 
 use Application\Libs\General;
 use Application\Models;
 use Application\Mappers;
 
-use Admin\Mappers as AdminMappers;
-
 use Application\Form;
 use Application\Form\Filters;
+use Application\Models\Zuser as Zuser;
+use Zend\Crypt\Password\Bcrypt;
 use Zend\Form\Form as ZendForm;
 
 
 use Zend\Http\Response;
 use Zend\View\Model\JsonModel;
 
+use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 
 class LoginRegisterController extends MyAbstractController
@@ -121,15 +118,13 @@ class LoginRegisterController extends MyAbstractController
                 'id' => $userObject->getId(),
                 //'name' => $userObject->getFirstName() . ' ' . $userObject->getLastName(),
                 'email' => $userObject->getEmail(),
-                'redirectUrl' => $this->url()->fromRoute('home'),
+                'redirectUrl' => $this->url()->fromRoute('home/ad/myAds'),
                 'redirectUrlRegister' => $this->url()->fromRoute('home/myAccount/update'),
             ],
             "message" => $this->translator->translate('Autentificare reusita! Redirectare in contul tau...')
         );
         return new JsonModel($responseJSON);
     }
-
-
 
     public function forgotEmailAction()
     {
@@ -153,86 +148,91 @@ class LoginRegisterController extends MyAbstractController
 
     public function forgotPasswordAction()
     {
-        $this->layout('layout/homepage');
-
-        $this->layout()->cnt_title = $this->translator->translate('Recurepeaza Parola');
-
-        $form = new Form\LoginForm();
-        $form->forgotPass();
-        $request = $this->getRequest();
-
-
-        if ($request->isPost()) {
-
-            $filter = new Filters\ForgotPasswordFilter();
-            $filter->setDbAdapter($this->getServiceLocator()->get('Zend\Db\Adapter\Adapter'));
-            $form->setInputFilter($filter->getInputFilter());
-            $form->setData($request->getPost());
-
-            if ($form->isValid()) {
-                $email = $form->getInputFilter()->getValue('email');
-
-                $userMapper = new Mappers\UserDM($this->db_adapter);
-                $userObj = $userMapper->fetchByEmail($email);
-
-                if ($userObj !== false) {
-                    $hash = rand(1000, 9999) . md5(time() . rand(1000, 9999)) . rand(1000, 9999);
-                    // update
-                    $userObj->setHash($hash);
-                    $userMapper->updateRow($userObj);
-
-                    $mail = new MailGeneral($this->getServiceLocator());
-                    $mail->_to = $email;
-                    $mail->_no_reply = true;
-                    $mail->forgotPassword($userObj->getFirstName() . ' ' . $userObj->getLastName(), $hash);
-
-
-                    $this->logaction->logAction('action', $userObj->getUserId(), 'user', $this->translator->translate('resetare parola pentru: ') . $email);
-
-                    $this->flashMessenger()->addSuccessMessage($this->translator->translate('Vei primi un mail cu instructiuni de resetare a parolei!'));
-
-                    return $this->redirect()->toRoute('home');
-                }
-            }
+        $email = $_GET['email'];
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->flashMessenger()->addErrorMessage($this->translator->translate(
+                'Acest email <strong>'.$email.'</strong> este invalid'
+            ));
+            return $this->redirect()->toRoute('home');
         }
 
-        return array(
-            'form' => $form,
-        );
+        $userMapper = $this->getUserTable();
+        $userObj = $userMapper->findByEmail($email);
+
+        if ($userObj !== false) {
+            $hash = rand(1000, 9999) . md5(time() . rand(1000, 9999)) . rand(1000, 9999);
+            // update
+            $userForgotPassDM = new Zuser\UserForgotPassDM($this->adapter);
+            $userForgotPass = $userForgotPassDM->fetchOne([
+                'email' => $email
+            ]);
+            if ($userForgotPass !== null) {
+                $userForgotPass->setEmail($email)->setHash($hash);
+                $userForgotPassDM->updateRow($userForgotPass);
+            } else {
+                $userForgotPass = new Zuser\UserForgotPass();
+                $userForgotPass->setEmail($email)->setHash($hash);
+                $userForgotPassDM->createRow($userForgotPass);
+            }
+
+            $mail = new MailGeneral($this->getServiceLocator());
+            $mail->_to = $email;
+            $mail->_no_reply = true;
+            $mail->forgotPassword('', $hash);
+
+            $this->flashMessenger()->addSuccessMessage($this->translator->translate(
+                'Vei primi un mail cu instructiuni de resetare a parolei!'
+            ));
+
+
+        } else {
+            $this->flashMessenger()->addErrorMessage($this->translator->translate(
+                'Acest email <strong>'.$email.'</strong> este invalid'
+            ));
+        }
+
+        return $this->redirect()->toRoute('home');
     }
 
     public function resetPasswordAction()
     {
         $hash = $this->getEvent()->getRouteMatch()->getParam('hash');
-        $this->layout('layout/homepage');
+//        $this->layout('layout/homepage');
 
-        $this->layout()->cnt_title = $this->translator->translate('Reseteaza Parola');
+//        $this->layout()->cnt_title = $this->translator->translate('Reseteaza Parola');
 
-        $userMapper = new Mappers\UserDM($this->db_adapter);
-        $userObj = $userMapper->findByHash($hash);
+        $userForgotPassDM = new Zuser\UserForgotPassDM($this->adapter);
+        $userForgotPass = $userForgotPassDM->fetchOne(
+            ['hash' => $hash]
+        );
+
+        $userObj = null;
+
+        if ($userForgotPass !== null) {
+            $userDM = $this->getUserTable();
+            $userObj = $userDM->findByEmail($userForgotPass->getEmail());
+        }
 
         if ($userObj !== null && $hash != '') {
-
-            $form = new Form\LoginForm('change-pass');
+            $form = new ChangePasswordForm('change-pass');
             $form->resetPass();
             $request = $this->getRequest();
 
             if ($request->isPost()) {
-
-                $filter = new Form\Filters\ResetPasswordFilter();
+                $filter = new ResetPasswordFilter();
                 $form->setInputFilter($filter->getInputFilter());
                 $form->setData($request->getPost());
 
                 if ($form->isValid()) {
-
                     $newpass = $form->getInputFilter()->getValue('password');
 
                     $this->getRequest()->getPost()->set('identity', $userObj->getEmail());
                     $this->getRequest()->getPost()->set('credential', $newpass);
 
                     // update PASS
-                    $userObj->setHash('');
-                    $userMapper->updateRow($userObj, $newpass);
+                    $userForgotPassDM->deleteOne($userForgotPass);
+                    $userDataMapper = new Zuser\UserDM($this->adapter);
+                    $userDataMapper->updateRow($userObj, $newpass);
 
 
                     // authenticate
@@ -256,8 +256,11 @@ class LoginRegisterController extends MyAbstractController
 //						$this->logaction->logAction('error_log', 1, 'index/resetPassword', 'login esuat dupa resetare parola');
                         $this->flashMessenger()->addErrorMessage($this->translator->translate('Invalid Credentials. Authentification failed!'));
                         $adapter->resetAdapters();
-                        return $this->redirect()->toRoute('home/home');
+                        return $this->redirect()->toRoute('home');
                     } else {
+                        General::unsetSession('myPark');
+                        General::unsetSession('myUser');
+                        General::unsetSession('AuthenticatedUserRole');
                         $this->flashMessenger()->addSuccessMessage($this->translator->translate('Parola ta a fost schimbata cu success!'));
                         return $this->redirect()->toRoute('home');
                     }
@@ -266,15 +269,17 @@ class LoginRegisterController extends MyAbstractController
                 $form->populateValues(array('email' => $userObj->getEmail()));
             }
 
-            return array(
+            $view = new ViewModel(array(
                 'form' => $form,
                 'hash' => $hash,
 //				'email' => $userObj->getEmail()
                 //'type' => $type
-            );
+            ));
+            $view->setTemplate('application/index/reset-password');
+            return $view;
         } else {
 //			$this->logaction->logAction('error_log', 0, 'index/resetPassword', 'invalid hash : '.$hash);
-            return $this->redirect()->toRoute('home/home');
+            return $this->redirect()->toRoute('home');
         }
     }
 

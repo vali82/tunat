@@ -22,7 +22,10 @@ return array(
 	"Vrei sa stergi aceasta pagina?" => "Vrei să ștergi această pagină?",
 	"Esti sigur?" => "Ești sigur?",
 	"All rights reserved." => "Toate drepturile rezervate",
-
+    "Unable to update your password. Please try again." => "Schimbare parola nereusita. Te rugam sa mai incerci.",
+    "Current Password" => "Parola actuala",
+    "New Password" => "Noua parola",
+    "Verify New Password" => "Reintrodu parola",
 
 
 
@@ -263,7 +266,7 @@ return array(
     "The input has failed the IBAN check" => "The input has failed the IBAN check",
 
     // Zend\Validator\Identical
-    "The two given tokens do not match" => "The two given tokens do not match",
+    "The two given tokens do not match" => "Cele 2 campuri nu sunt identice",
     "No token was provided to match against" => "No token was provided to match against",
 
     // Zend\Validator\InArray

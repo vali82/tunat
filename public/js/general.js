@@ -143,6 +143,7 @@ $.general = function() {
             var thisObj = this;
 
             $('#registerContainer').hide();
+            $('#forgotContainer').hide();
 
             // rewrite login form action
             $("body").on("submit", "#loginForm", function(e){
@@ -167,7 +168,14 @@ $.general = function() {
             $(document).on("click", "#loginTab", function(e){
                 e.preventDefault();
                 $('#registerContainer').slideUp();
+                $('#forgotContainer').slideUp();
                 $('#loginContainer').slideDown();
+                $('#errorLoginRegister').hide();
+            });
+            $(document).on("click", "#forgotTab", function(e){
+                e.preventDefault();
+                $('#forgotContainer').slideDown();
+                $('#loginContainer').slideUp();
                 $('#errorLoginRegister').hide();
             });
 

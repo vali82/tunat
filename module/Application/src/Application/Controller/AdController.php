@@ -56,6 +56,9 @@ class AdController extends MyAbstractController
 
     public function createAction()
     {
+        $this->layout()->setVariable('myAccountMenu', [
+            'active' => 'addad'
+        ]);
         /*$mail = new MailGeneral($this->getServiceLocator());
         $mail->_to = 'ileavalentin@gmail.com';
         $mail->_no_reply = true;
@@ -72,6 +75,9 @@ class AdController extends MyAbstractController
 
         if ($id !== null) {
             // EDIT
+            $this->layout()->setVariable('myAccountMenu', [
+                'active' => 'editad'
+            ]);
             $adDM = new AdDM($this->adapter);
             $resourceObj = $adDM->fetchOne([
                 'id' => $id,
@@ -180,7 +186,106 @@ class AdController extends MyAbstractController
         ];
     }
 
+    public function myAdsAction()
+    {
+        $this->layout()->setVariable('myAccountMenu', [
+            'active' => 'myads'
+        ]);
+        $statusParam = $this->getEvent()->getRouteMatch()->getParam('status', 'active');
+        switch ($statusParam) {
+            case "active":
+                $status = 'ok';
+                $title = 'Anunturi Active';
+                break;
+            case "expired":
+                $title = 'Anunturi Expirate';
+                $status = 'expired';
+                break;
+            default:
+                $status = 'ok';
+        }
+        $cars = $this->cars;
+        $carCollection = new CarsCollection($this);
+        $ad = new AdCollection($this);
 
+        $token = md5(time().'asdfqwer'.rand(1000, 9999));
+        General::addToSession('token', $token);
+        $content = $ad->adListHTML([
+            'place' => 'myAds',
+            'status' => $status,
+            'token' => $token
+        ]);
+
+        $adList = $content['list'];
+        $ads = $content['ads'];
+        return [
+            'adList' => $adList,
+            'ads' => $ads,
+            'carCollection' => $carCollection,
+            'statusParam' => $statusParam,
+            'title' => $title
+        ];
+    }
+
+    public function changeStatusAction()
+    {
+        $token = $this->getEvent()->getRouteMatch()->getParam('token', '');
+        $id = $this->getEvent()->getRouteMatch()->getParam('id', '');
+        $mode = $this->getEvent()->getRouteMatch()->getParam('mode', '');
+        $messageError = '';
+        $messageSuccess = '';
+        $error = 0;
+        $statusRedirect = 'active';
+
+        if ($token == General::getFromSession('token')) {
+            $adDM = new AdDM($this->adapter);
+            /** @var $adObj \Application\Models\Ads\Ad*/
+            $adObj = $adDM->fetchOne([
+                'id' => $id,
+                'park_id' => $this->myPark->getId()
+            ]);
+            if ($adObj !== null) {
+                if ($mode == 'delete') {
+                    $adDM->deleteOne($adObj);
+                    $file_path = PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/' . $id;
+                    foreach (glob($file_path . "/*") as $filefound) {
+                        @unlink($filefound);
+                    }
+                    rmdir($file_path);
+
+                    $messageSuccess = 'Anuntul a fost sters cu success!';
+
+                } elseif ($mode == 'activate') {
+                    $expDate = General::DateTime(null, 'object');
+                    $expDate->add(new \DateInterval('P30D'));
+                    $adObj
+                        ->setExpirationDate(General::DateTime($expDate))
+                        ->setDateadd(General::DateTime())
+                        ->setStatus('ok')
+                    ;
+                    $adDM->updateRow($adObj);
+                    $messageSuccess = 'Anuntul a fost activat cu success!';
+                    $statusRedirect = 'expired';
+                }
+            } else {
+                $error = 1;
+                $messageError = 'Anunt invalid!';
+            }
+
+
+        } else {
+            $messageError = 'Token invalid!';
+            $error = 1;
+        }
+
+        if ($error) {
+            $this->flashMessenger()->addErrorMessage($messageError);
+        } else {
+            $this->flashMessenger()->addSuccessMessage($messageSuccess);
+        }
+
+        $this->redirect()->toRoute('home/ad/myAds', ['status' => $statusRedirect]);
+    }
 
     public function pieseAction()
     {

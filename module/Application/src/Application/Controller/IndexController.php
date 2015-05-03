@@ -24,6 +24,8 @@ class IndexController extends MyAbstractController
     {
         $ad = new AdCollection($this);
 
+//        General::echop($this->myUser);
+
         return [
             'adList' => $ad->adListHTML([
                 'place' => 'homepage'

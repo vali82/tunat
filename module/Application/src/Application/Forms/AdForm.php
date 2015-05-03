@@ -235,7 +235,7 @@ class AdForm extends AbstractForm
 //                'disabled' => 'disabled',
 //                'id' => 'year_end',
                 'group' => array(
-                    'size' => 'col-lg-1 col-md-2 col-sm-2 col-xs-4',
+                    'size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-4',
                     'sizeLabel' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
                     'type' => 'end'
                 ),

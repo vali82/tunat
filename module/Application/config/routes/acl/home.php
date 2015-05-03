@@ -13,6 +13,14 @@ return array(
         'route' => 'home/register',
         'roles' => array('guest')
     ),
+    [
+        'route' => 'home/forgotPassword',
+        'roles' => ['guest']
+    ],
+    [
+        'route' => 'home/resetPassword',
+        'roles' => ['guest']
+    ],
     array(
         'route' => 'scn-social-auth-user',
         'roles' => array('parcauto', 'user')

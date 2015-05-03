@@ -30,6 +30,34 @@ return [
         ),
     ),
 
+    'forgotPassword' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route'    => 'forgot-password',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'forgotPassword',
+            ),
+            'constraints' => array(
+//                'iHash' => '[a-zA-Z0-9]+'
+            ),
+        ),
+    ),
+
+    'resetPassword' => array(
+        'type' => 'Segment',
+        'options' => array(
+            'route'    => 'reset-password[/:hash]',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'resetPassword',
+            ),
+            'constraints' => array(
+//                'iHash' => '[a-zA-Z0-9]+'
+            ),
+        ),
+    ),
+
     'ad' => [
         'type' => 'Literal',
         'options' => array(
