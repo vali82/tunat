@@ -23,8 +23,9 @@ nav.navbar-inverse{
 }
 
 nav .container{
-    max-width: 1020px;
+    /*max-width: 1020px;*/
     margin: 0 auto;
+    padding: 0 30px;
 }
 .navbar-brand{
     padding: 0;
@@ -73,7 +74,17 @@ ul.navbar-right{
 }
 
 .banner-img{
-    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 100%;
+}
+
+.banner-img img {
+    width: 100%;
+    max-height: 396px;
+    min-height: 100px;
+    max-width: 1500px;
+    min-width: 320px;
     margin: 0 auto;
 }
 
