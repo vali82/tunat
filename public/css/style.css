@@ -100,3 +100,42 @@ li.displayOnMobile {
 .hideOnMobile {
     display: block;
 }
+
+#LoginRegisterContainer {
+    display:none;
+    /*
+    top: 75px;
+    margin-right: 20px;
+    padding: 0px;
+    width:100%;
+    position: absolute;
+    z-index: 9999;
+
+    border: 1px solid red;*/
+    margin: 0 -15px;
+    padding: 0;
+}
+
+#LoginRegisterContainer .contentLoginRegister {
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    float: right;
+    padding:20px;
+    width: 320px;
+}
+
+#LoginRegisterContainer h3 {
+    margin-top: 0px;
+}
+
+.socialLogin {
+    border-top: 1px solid #DADADA;
+    margin-top: 20px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.socialLogin img.facebook {
+    width: 20px;
+    margin-top: -3px;
+}

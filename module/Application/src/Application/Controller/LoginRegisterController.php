@@ -10,19 +10,14 @@
 namespace Application\Controller;
 
 use Application\Forms\ChangePasswordForm;
-use Application\Forms\Filters\ChangePasswordFilter;
 
 use Application\Forms\Filters\ResetPasswordFilter;
 use Application\Mail\MailGeneral;
 
 use Application\Libs\General;
 use Application\Models;
-use Application\Mappers;
 
-use Application\Form;
-use Application\Form\Filters;
 use Application\Models\Zuser as Zuser;
-use Zend\Crypt\Password\Bcrypt;
 use Zend\Form\Form as ZendForm;
 
 
@@ -39,11 +34,6 @@ class LoginRegisterController extends MyAbstractController
     private $userService;
     /** @var \ZfcUser\Mapper\User */
     private $userTable;
-
-    /*public function onDispatch(\Zend\Mvc\MvcEvent $e)
-    {
-        return parent::onDispatch($e);
-    }*/
 
     private function getUserTable()
     {
@@ -116,34 +106,12 @@ class LoginRegisterController extends MyAbstractController
             "error" => 0,
             "result" => [
                 'id' => $userObject->getId(),
-                //'name' => $userObject->getFirstName() . ' ' . $userObject->getLastName(),
                 'email' => $userObject->getEmail(),
-                'redirectUrl' => $this->url()->fromRoute('home/ad/myAds'),
-                'redirectUrlRegister' => $this->url()->fromRoute('home/myAccount/update'),
+                'redirectUrl' => $this->url()->fromRoute('home/afterlogin'),
             ],
             "message" => $this->translator->translate('Autentificare reusita! Redirectare in contul tau...')
         );
         return new JsonModel($responseJSON);
-    }
-
-    public function forgotEmailAction()
-    {
-        if (self::$role !== 'guest') {
-            return $this->redirect()->toRoute('home/explore');
-        }
-
-        $this->layout('layout/homepage');
-
-        $form = new Form\LoginForm();
-        $form->forgotEmail();
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $form->get('phone')->setMessages(array(0 => $this->translator->translate('Eroare: Nr de telefon nu a fost gasit!')));
-        }
-
-        return array(
-            'form' => $form
-        );
     }
 
     public function forgotPasswordAction()
@@ -186,9 +154,9 @@ class LoginRegisterController extends MyAbstractController
 
 
         } else {
-            $this->flashMessenger()->addErrorMessage($this->translator->translate(
-                'Acest email <strong>'.$email.'</strong> este invalid'
-            ));
+            $this->flashMessenger()->addErrorMessage(sprintf($this->translator->translate(
+                'Acest email <strong>%s</strong> este invalid'
+            )), $email);
         }
 
         return $this->redirect()->toRoute('home');
@@ -197,9 +165,6 @@ class LoginRegisterController extends MyAbstractController
     public function resetPasswordAction()
     {
         $hash = $this->getEvent()->getRouteMatch()->getParam('hash');
-//        $this->layout('layout/homepage');
-
-//        $this->layout()->cnt_title = $this->translator->translate('Reseteaza Parola');
 
         $userForgotPassDM = new Zuser\UserForgotPassDM($this->adapter);
         $userForgotPass = $userForgotPassDM->fetchOne(
@@ -212,6 +177,7 @@ class LoginRegisterController extends MyAbstractController
             $userDM = $this->getUserTable();
             $userObj = $userDM->findByEmail($userForgotPass->getEmail());
         }
+
 
         if ($userObj !== null && $hash != '') {
             $form = new ChangePasswordForm('change-pass');
@@ -245,24 +211,25 @@ class LoginRegisterController extends MyAbstractController
 
                     // Return early if an adapter returned a response
                     if ($result instanceof Response) {
-                        //$this->logaction->logAction('users', 0, 'registeruser__err', 'user login after register failed, '.$email);
                         return $result;
                     }
 
                     $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
 
                     if (!$auth->isValid()) {
-                        //$this->logaction->logAction('users', 0, 'registeruser__err', 'user login after register failed, '.$email);
-//						$this->logaction->logAction('error_log', 1, 'index/resetPassword', 'login esuat dupa resetare parola');
-                        $this->flashMessenger()->addErrorMessage($this->translator->translate('Invalid Credentials. Authentification failed!'));
+                        $this->flashMessenger()->addErrorMessage(
+                            $this->translator->translate('Invalid Credentials. Authentification failed!')
+                        );
                         $adapter->resetAdapters();
                         return $this->redirect()->toRoute('home');
                     } else {
                         General::unsetSession('myPark');
                         General::unsetSession('myUser');
                         General::unsetSession('AuthenticatedUserRole');
-                        $this->flashMessenger()->addSuccessMessage($this->translator->translate('Parola ta a fost schimbata cu success!'));
-                        return $this->redirect()->toRoute('home');
+                        $this->flashMessenger()->addSuccessMessage(
+                            $this->translator->translate('Parola ta a fost schimbata cu success!')
+                        );
+                        return $this->redirect()->toRoute('home/ad/myAds');
                     }
                 }
             } else {
@@ -272,13 +239,10 @@ class LoginRegisterController extends MyAbstractController
             $view = new ViewModel(array(
                 'form' => $form,
                 'hash' => $hash,
-//				'email' => $userObj->getEmail()
-                //'type' => $type
             ));
             $view->setTemplate('application/index/reset-password');
             return $view;
         } else {
-//			$this->logaction->logAction('error_log', 0, 'index/resetPassword', 'invalid hash : '.$hash);
             return $this->redirect()->toRoute('home');
         }
     }
@@ -325,9 +289,7 @@ class LoginRegisterController extends MyAbstractController
                         "message" => $this->translator->translate("Autentificare esuata! Email sau parola invalida!")
                     );
                 } else {
-                    General::unsetSession('AuthenticatedUserRole');
                     $userObject = $this->getUserTable()->findByEmail($data['identity']);
-
                     return $this->loggedOkUser($userObject);
                 }
             }
@@ -416,181 +378,6 @@ class LoginRegisterController extends MyAbstractController
         }
     }
 
-    private function registerFromInvite($inviteObj, $userObject = null)
-    {
-        $this->user = ($userObject !== null ? $userObject : $this->user);
-
-        if ($inviteObj->getAccountType() == 'parinte') {
-            // create user
-            $dataMapper = new Mappers\UserDM($this->db_adapter);
-            //$userObj = new Models\User();
-            $this->user
-                ->setLastKindergarten($inviteObj->getKindergartenId());
-            $dataMapper->updateRow($this->user);
-
-            $parentDM = new Children\ChildParentDM($this->db_adapter);
-            $parentObj = $parentDM->fetchOne($inviteObj->getParentId());
-
-            // set parent user_role
-            $dm = new Mappers\UserRoleCustomizedDM($this->db_adapter);
-            $dm->updateRow($this->user->getUserId(), 5);
-
-            //delete from invites
-            $inviteDM = new Mappers\InviteForRegisterDM($this->db_adapter);
-            $inviteDM->deleteOne($inviteObj);
-
-            $parentObj
-                ->setEmailInfo($this->user->getEmail())
-                ->setUserId($this->user->getUserId())
-                ->setProfilePhoto($this->user->getProfilePhoto());
-            $parentDM->updateRow($parentObj);
-
-            @copy(
-                __DIR__ . '/../../../../../public/upload/avatars/users/' . $this->user->getProfilePhoto(),
-                __DIR__ . '/../../../../../public/upload/avatars/parent/' . $this->user->getProfilePhoto()
-            );
-            @unlink(__DIR__ . '/../../../../../public/upload/avatars/users/' . $this->user->getProfilePhoto());
-
-            General::unsetSession('invite_hash');
-            General::unsetSession('myUserObj');
-            General::unsetSession('userObj');
-            General::unsetSession('kindergarten_logged_in');
-            General::unsetSession('another_accounts');
-
-        } elseif ($inviteObj->getAccountType() == 'educator') {
-            // create user
-            $dataMapper = new Mappers\UserDM($this->db_adapter);
-            //$userObj = new Models\User();
-            $this->user
-                ->setLastKindergarten($inviteObj->getKindergartenId());
-            $dataMapper->updateRow($this->user);
-
-            $educatorDM = new Educators\EducatorDM($this->db_adapter);
-            $educatorObj = $educatorDM->fetchOne($inviteObj->getParentId());
-
-            // set parent user_role
-            $dm = new Mappers\UserRoleCustomizedDM($this->db_adapter);
-            $dm->updateRow($this->user->getUserId(), 4);
-
-            //delete from invites
-            $inviteDM = new Mappers\InviteForRegisterDM($this->db_adapter);
-            $inviteDM->deleteOne($inviteObj);
-
-            $educatorObj
-                ->setEmailInfo($this->user->getEmail())
-                ->setUserId($this->user->getUserId())
-                ->setProfilePhoto($this->user->getProfilePhoto());
-            $educatorDM->updateRow($educatorObj);
-
-            @copy(
-                __DIR__ . '/../../../../../public/upload/avatars/users/' . $this->user->getProfilePhoto(),
-                __DIR__ . '/../../../../../public/upload/avatars/educator/' . $this->user->getProfilePhoto()
-            );
-            @unlink(__DIR__ . '/../../../../../public/upload/avatars/users/' . $this->user->getProfilePhoto());
-
-            General::unsetSession('invite_hash');
-            General::unsetSession('myUserObj');
-            General::unsetSession('userObj');
-            General::unsetSession('kindergarten_logged_in');
-            General::unsetSession('another_accounts');
-        }
-    }
-
-    public function hashInviteAction()
-    {
-        $response = $this->getResponse();
-        $response->setStatusCode(200);
-        $hash = $this->getEvent()->getRouteMatch()->getParam('hash');
-        $type = $this->getEvent()->getRouteMatch()->getParam('type');
-        $role = self::$role;
-
-        if ($type == 'register') {
-            $inviteDM = new Mappers\InviteForRegisterDM($this->db_adapter);
-            $inviteObj = $inviteDM->fetchByHash($hash);
-            if ($inviteObj !== null) {
-                if ($inviteObj->getAccountType() == 'parinte') {
-                    // check if child has a valid parent
-                    $childDM = new Children\ChildDM($this->db_adapter);
-                    $childObj = $childDM->fetchByDBId($inviteObj->getChildId());
-
-                    if ($childObj !== null) {
-                        if ($childObj->getParentUserId() == 0) {
-                            General::addToSession('invite_hash', $inviteObj);
-
-                            if ($role == 'parinte') {
-                                return $this->redirect()->toRoute('kindergarten');
-
-                            } elseif ($role == 'guest') {
-                                $kgDM = new KgMappers\KindergartenDM($this->db_adapter);
-                                $kgObj = $kgDM->fetchOne($inviteObj->getKindergartenId());
-
-                                General::addToSession(
-                                    'invite_hash_details',
-                                    array('child' => $childObj, 'kindergarten' => $kgObj)
-                                );
-
-                                return $this->redirect()->toRoute('home/register');
-
-                            } elseif ($role == 'user') {
-                                $this->registerFromInvite($inviteObj);
-                                return $this->redirect()->toRoute('kindergarten');
-
-                            } else {
-                                return $this->redirect()->toRoute('kindergarten');
-                            }
-                        } else {
-                            $this->flashMessenger()->addInfoMessage(
-                                $this->translator->translate(
-                                    $childObj->getFullName() . $this->translator->translate(' este deja asignat parintelui ') .
-                                    $childObj->getParentFullName()
-                                )
-                            );
-                            /*if ($role == 'parinte') {
-
-                                $kindergarten_logged_in = General::getFromSession('kindergarten_logged_in');
-                                if ($kindergarten_logged_in->getId() != null) {
-                                    return $this->redirect()->toRoute(self::$route_prefix.'/home');
-                                }
-                            }*/
-                            return $this->redirect()->toRoute('kindergarten');
-
-                        }
-                    } else {
-                        $this->flashMessenger()->addErrorMessage(
-                            $this->translator->translate('A aparut o eroare! Te rugam sa ne contactezi')
-                        );
-                        return $this->redirect()->toRoute('kindergarten');
-                    }
-
-                } elseif ($inviteObj->getAccountType() == 'educator') {
-                    General::addToSession('invite_hash', $inviteObj);
-
-                    if ($role == 'educator') {
-                        return $this->redirect()->toRoute('kindergarten');
-
-                    } elseif ($role == 'user') {
-                        $this->registerFromInvite($inviteObj);
-                        return $this->redirect()->toRoute('kindergarten');
-
-                    } elseif ($role == 'guest') {
-                        $kgDM = new KgMappers\KindergartenDM($this->db_adapter);
-                        $kgObj = $kgDM->fetchOne($inviteObj->getKindergartenId());
-
-                        General::addToSession('invite_hash_details', array('kindergarten' => $kgObj));
-
-                        return $this->redirect()->toRoute('home/register');
-
-                    } else {
-                        return $this->redirect()->toRoute('kindergarten');
-                    }
-
-                }
-            }
-        }
-
-        return $this->redirect()->toRoute('home');
-    }
-
     public function afterLoginAction()
     {
         $auth = $this->getServiceLocator()->get('zfcuser_auth_service');
@@ -600,30 +387,17 @@ class LoginRegisterController extends MyAbstractController
             $user_id = 0;
         }
 
-        $DM = new Mappers\UserRoleCustomizedDM($this->db_adapter);
-        $usrole = $DM->fetchByUserId($user_id);
+        $userRoleLinkerDM = $this->getServiceLocator()->get('getUserRoleLinkerDB');
+        $usrole = $userRoleLinkerDM->fetchByUserId($user_id);
 
-        if ($usrole['role_id'] == '6') {
-            $inviteObj = General::getFromSession('invite_hash');
-            if ($inviteObj !== null) {
-                $this->registerFromInvite($inviteObj);
-                return $this->redirect()->toRoute('kindergarten');
-            }
-            return $this->redirect()->toRoute('home/explore');
-
-        } elseif ($usrole['role_id'] == '2' || $usrole['role_id'] == '7' || $usrole['role_id'] == '8') {
-            return $this->redirect()->toRoute('adminkp/home');
-
-        } elseif ($usrole['role_id'] == '4') {
-            $inviteObj = General::getFromSession('invite_hash');
-            if ($inviteObj !== null) {
-                return $this->redirect()->toRoute('kindergarten');
-            } else {
-                return $this->redirect()->toRoute('home/profile/home', ['id'=>'wall']);
-            }
+        if ($usrole['role_id'] == 'parcauto') {
+            General::unsetSession('AuthenticatedUserRole');
+            General::unsetSession('myPark');
+            General::unsetSession('myUser');
+            return $this->redirect()->toRoute('home/ad/myAds');
 
         } else {
-            return $this->redirect()->toRoute('kindergarten');
+            return $this->redirect()->toRoute('home');
         }
 
     }

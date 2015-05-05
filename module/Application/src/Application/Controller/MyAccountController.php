@@ -130,14 +130,17 @@ class MyAccountController extends MyAbstractController
 
             } else {
                 $form->populateValues(array(
-                    'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'
+                    'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
+                        ($this->myPark->getLogo() !== '' ? ' <a href="#">[x] sterge logo</a>' : '')
                 ));
             }
 
         } else {
             $form->populateValues(array(
-                'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />',
-                'account_type' => $this->myPark->getAccountType() === 'particular' ? 0 : 1
+                'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
+                    ($this->myPark->getLogo() !== '' ? ' <a href="#">[x] sterge logo</a>' : ''),
+                'account_type' => $this->myPark->getAccountType() === 'particular' ? 0 : 1,
+                'name2' => $this->myPark->getName()
             ));
         }
 

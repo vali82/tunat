@@ -10,8 +10,15 @@ return [
                 'controller' => 'Application\Controller\LoginRegister',
                 'action'     => 'login',
             ),
-            'constraints' => array(
-//                'iHash' => '[a-zA-Z0-9]+'
+        ),
+    ),
+    'afterlogin' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route'    => 'after-login',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'afterLogin',
             ),
         ),
     ),
@@ -24,9 +31,6 @@ return [
                 'controller' => 'Application\Controller\LoginRegister',
                 'action'     => 'register',
             ),
-            'constraints' => array(
-//                'iHash' => '[a-zA-Z0-9]+'
-            ),
         ),
     ),
 
@@ -37,9 +41,6 @@ return [
             'defaults' => array(
                 'controller' => 'Application\Controller\LoginRegister',
                 'action'     => 'forgotPassword',
-            ),
-            'constraints' => array(
-//                'iHash' => '[a-zA-Z0-9]+'
             ),
         ),
     ),
