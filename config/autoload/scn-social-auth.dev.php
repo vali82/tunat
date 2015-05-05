@@ -11,14 +11,14 @@ $settings = array(
      *
      * Please specify a Facebook Client ID
      */
-    'facebook_client_id' => '839888486066952',
+    'facebook_client_id' => '840038689385265',
 
     /**
      * Facebook Secret
      *
      * Please specify a Facebook Secret
      */
-    'facebook_secret' => 'c6995162cea2aa56628cad937bdcce97',
+    'facebook_secret' => 'b5d2d519f71ab1206856b1e82388bc74',
 
     /**
      * Foursquare Client ID
