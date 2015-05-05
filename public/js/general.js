@@ -129,7 +129,12 @@ $.general = function() {
 
 
         $('#loginNavMenuButton').on('click', function(){
-            $('#LoginRegisterContainer').slideToggle();
+            $('#LoginRegisterContainer').slideToggle('fast', function(){
+                if ($('.navbar-toggle').is(':visible') && $('#LoginRegisterContainer').is(':visible')) {
+                    $(".navbar-collapse").collapse('hide');
+                }
+
+            });
         });
 
         _handleBootstrapSwitch();
@@ -143,6 +148,7 @@ $.general = function() {
             var thisObj = this;
 
             $('#registerContainer').hide();
+            $('#forgotContainer').hide();
 
             // rewrite login form action
             $("body").on("submit", "#loginForm", function(e){
@@ -167,7 +173,14 @@ $.general = function() {
             $(document).on("click", "#loginTab", function(e){
                 e.preventDefault();
                 $('#registerContainer').slideUp();
+                $('#forgotContainer').slideUp();
                 $('#loginContainer').slideDown();
+                $('#errorLoginRegister').hide();
+            });
+            $(document).on("click", "#forgotTab", function(e){
+                e.preventDefault();
+                $('#forgotContainer').slideDown();
+                $('#loginContainer').slideUp();
                 $('#errorLoginRegister').hide();
             });
 
@@ -178,8 +191,9 @@ $.general = function() {
                 $('#errorLoginRegister').slideDown();
                 $('#errorLoginRegister').html('Autentificare prin '+socialMediaType+'...');
                 $('#errorLoginRegister').css('font-size', '16px');
-                $('#loginForm').slideUp();
-                $('#loginSocialContainer').fadeOut();
+                $('#loginContainer').slideUp();
+                $('#registerContainer').slideUp();
+                $('#registerSocialContainer').fadeOut();
             });
             ////
         },
@@ -275,11 +289,7 @@ $.general = function() {
                     }
                     $('#loginRegisterLoading').hide();
                     setTimeout(function () {
-                        if (!afterRegister) {
-                            self.location.replace(data.result.redirectUrl);
-                        } else {
-                            self.location.replace(data.result.redirectUrlRegister);
-                        }
+                        self.location.replace(data.result.redirectUrl);
                     }, 1000);
 
 

@@ -9,6 +9,7 @@
 
 namespace Application;
 
+use Application\libs\General;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Validator\AbstractValidator;
@@ -29,61 +30,85 @@ class Module
         date_default_timezone_set($config['timezone']);
         \Locale::setDefault($config['translator']['locale']);
 
-//          if (1==1 ||  (!defined('_CRONJOB_') || _CRONJOB_ == false) && $user === null) {
-            // for simple register
-        $events = $e->getApplication()->getEventManager()->getSharedManager();
-        // Handle login
-        /*$events->attach('ZfcUser\Authentication\Adapter\AdapterChain', 'authenticate.success', function($e) use ($serviceManager) {
-            $user = $e->getIdentity();
-            $this->doThingsAfterRegisterStas($serviceManager, $user);
-            // do some stuff
-        });*/
-//        $auth = $sm->get('zfcuser_auth_service');
-        /*$events->attach('ZfcUser\Service\User', 'register.post', function($e) use ($serviceManager) {
-            $user = $e->getParam('user');
-            $this->doThingsAfterRegisterStas($serviceManager, $user);
-            // do some stuff
-        });*/
-        /*$events->attach('ScnSocialAuth\Authentication\Adapter\HybridAuth', 'registerViaProvider.post', function($e) use ($serviceManager) {
-            $user = $e->getParam('user');
-            $this->doThingsAfterRegisterStas($serviceManager, $user);
-            // do some stuff
-        });*/
+        // for register via SNC
+        $e->getApplication()->getEventManager()->getSharedManager()->attach(
+            'ScnSocialAuth\Authentication\Adapter\HybridAuth',
+            'registerViaProvider.post',
+            function ($e) use ($serviceManager) {
+                // User account object
+                $user = $e->getParam('user');
+                $this->doThingsAfterRegisterSocial($serviceManager, $user);
+            }
+        );
+        ////
+
     }
 
-    public function doThingsAfterRegisterStas($serviceManager, $user)
+    protected function doThingsAfterRegisterSocial($serviceManager, $user)
     {
-        /*$fp = fopen( PUBLIC_IMG_PATH . 'data.txt', 'a');
-        fwrite($fp, 'do after register');
-        fwrite($fp, '---'."\r\n");
-        fclose($fp);*/
 
+        $hybridAuth = null;
+        try {
+            $hybridAuth = $serviceManager->get('HybridAuth');
+            //
+        } catch (\Exception $e) {
+            //header('Location: http://'.MAIN_DOMAIN);
+            die ('ScnSocialAuth coulnd\'t be initialized');
+        }
 
-//        $userDM = $serviceManager->get('UserDataMapper');
+        // FACEBOOK
+        $facebook = $hybridAuth->getAdapter("Facebook");
+        if ($facebook->isUserConnected()) {
+            $userProfile = $facebook->getUserProfile();
 
-        /*$userRoleLinkerDM = $serviceManager->get('getUserRoleLinkerDB');
-        $userRoleLinkerDM->createRow(array(
-            'user_id' => 102,
-            'role_id' => 'user'
-        ));*/
+            $userRoleLinkerDM = $serviceManager->get('getUserRoleLinkerDB');
+            $userRoleLinkerDM->createRow(array(
+                'user_id' => $user->getId(),
+                'role_id' => 'parcauto'
+            ));
 
-        $parkDM = $serviceManager->get('AutoParkDM');
-        $autoPark = new Models\Autoparks\Park();
-        $autoPark
-            ->setEmail($user->getEmail())
-            ->setName($user->getEmail())
-            ->setDescription('')
-            ->setLocation('')
-        ;
-        $park_id = $parkDM->createRow($autoPark);
+            $parkDM = $serviceManager->get('AutoParkDM');
+            $autoPark = new Models\Autoparks\Park();
+            $autoPark
+                ->setEmail($user->getEmail())
+                ->setName($userProfile->firstName.' '.$userProfile->lastName)
+                ->setDescription('')
+                ->setAddress('')
+                ->setCity('')
+                ->setState('')
+                ->setLogo('')
+                ->setAccountType('particular')
+                ->setTel1('')
+                ->setTel2('')
+                ->setTel3('')
+                ->setUrl('')
+            ;
+            $park_id = $parkDM->createRow($autoPark);
 
-        $userParkDM = $serviceManager->get('AutoParkUserDM');
-        $userParkDM->createFromArray($user->getId(), $park_id);
+            $userParkDM = $serviceManager->get('AutoParkUserDM');
+            $userParkDM->createFromArray($user->getId(), $park_id);
 
+            $path = PUBLIC_IMG_PATH . $park_id . '/';
+            if (!is_dir($path)) {
+                mkdir($path);
+                chmod($path, 0755);
+            }
+            $path .= 'logo/';
+            if (!is_dir($path)) {
+                mkdir($path);
+                chmod($path, 0755);
+            }
 
-        // in order to save api_key
-        //$myuser = $userDM->fetchByDBId($user->getId());
-        //$userDM->updateRow($myuser);
+            $hash = $park_id . '_' . md5(time() . $park_id);
+            $content = file_get_contents($userProfile->photoURL);
+            file_put_contents(PUBLIC_IMG_PATH . $park_id . '/logo/' . $hash, $content);
+
+            $autoPark->setId($park_id);
+            $autoPark->setLogo($hash);
+            $parkDM->updateRow($autoPark);
+
+        }
+        //
     }
 
     public function getConfig()

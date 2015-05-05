@@ -206,7 +206,7 @@ class MailGeneral extends AbstractActionController
 
 	    if ($this->method === 'mandrill') {
 
-		    if (APPLICATION_ENV != 'development' || 1==1) {
+		    if (APPLICATION_ENV != 'development' || 1==2) {
 			    $response = $this->mandrillAction();
 		    } else {
 			    $response = array('error'=>false, 'message'=>'');
@@ -301,7 +301,7 @@ class MailGeneral extends AbstractActionController
 
     public function forgotPassword($name, $hash)
     {
-        $this->_subject = $this->translator->translate('Reseatare Parola Kinderpedia');
+        $this->_subject = $this->translator->translate('Reseatare Parola Tirbox');
         $this->_message =
             $this->header(array(array('href' => $this->_site_names['http'] . '/reset-password/' . $hash . '', 'name' => 'Reseteaza Parola')), 'user') . '
 Hello -<BR>' . $name . '</h1>

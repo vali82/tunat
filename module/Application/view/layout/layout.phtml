@@ -84,48 +84,63 @@ if ($role == 'parcauto') {
                                         <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
                                     </li>
                                 <?php } else { ?>
-                                    <li><a href="<?=$this->url('home/myAccount')?>">Contul Meu</a></li>
+                                    <li class="<?=($this->myAccountMenu['active'] === 'myaccount' ? ' active' : '')?>">
+                                        <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
+                                    </li>
+                                    <li role="" class="displayOnMobile<?=($this->myAccountMenu['active'] === 'addad' ? ' active' : '')?>">
+                                        <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
+                                    </li>
+                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
+                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
+                                    <li class="displayOnMobile">
+                                        <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
+                                    </li>
                                 <?php } ?>
                                 <li><a class="add-offer" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
                             </ul>
                         </div>
                     </div><!--/.nav-collapse -->
+                    <?php if ($role == 'guest') { ?>
+                        <div id="LoginRegisterContainer">
+                            <div class="contentLoginRegister">
+                                <div style="min-height: 60px;">
+                                    <h3>Vrei sa vinzi piese?</h3>
+                                    <img id="loginRegisterLoading" src="/img/loading.gif" style="display:none; height: 20px; padding-top: 0px">
+                                    <div id="errorLoginRegister" style="color:#000; font-size: 12px; font-weight: normal"></div>
+                                </div>
+                                <div id="loginContainer">
+                                    <h4>Login:</h4>
+                                    <?php echo $this->partial('scn-social-auth/user/login');?>
+                                </div>
+                                <div id="registerContainer">
+                                    <h4>Inregistreaza-te:</h4>
+                                    <?php echo $this->partial('scn-social-auth/user/register');?>
+                                </div>
+                                <div id="forgotContainer">
+                                    <h4>Ai uitat parola?</h4>
+                                    <?php echo $this->partial('scn-social-auth/user/forgot');?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
                 </div>
             </nav>
         </header>
 
-        <?php if ($role == 'guest') { ?>
-        <div id="LoginRegisterContainer" style="display:none; margin-right: 20px; padding: 0px; width:100%; position: absolute;">
-            <div style="background-color: #fff; border: 1px solid #eaeaea; float: right;
-            margin-right: 5%; padding:0 20px 20px 20px; width: 300px;">
-                <div style="min-height: 60px;">
-                    <h3>Vrei sa vinzi piese?</h3>
-                    <img id="loginRegisterLoading" src="/img/loading.gif" style="display:none; height: 20px; padding-top: 0px">
-                    <div id="errorLoginRegister" style="color:#000; font-size: 12px; font-weight: normal"></div>
-                </div>
-                <div id="loginContainer">
-                    <h4>Login:</h4>
-                    <?php echo $this->partial('scn-social-auth/user/login');?>
-                </div>
-                <div id="registerContainer">
-                    <h4>Inregistreaza-te:</h4>
-                    <?php echo $this->partial('scn-social-auth/user/register');?>
-                </div>
-            </div>
-        </div>
-        <?php } ?>
+
 
         <?php // if homepage banner ?>
         <?php if (isset($this->isHomePage)) { ?>
             <div class="banner">
-                <div class="banner-img"><img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
+                <div class="banner-img">
+                    <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
                 </div>
                 <div class="banner-text"></div>
             </div>
         <?php } ?>
 
 
-        <div class="container" style="padding-bottom: 50px">
+        <div class="container generalContainer">
 
             <?php
             if (count($this->flashMessenger()->getErrorMessages())) : ?>
@@ -168,7 +183,42 @@ if ($role == 'parcauto') {
                 </div>
             <?php endif; ?>
 
+
+            <?php if (isset($this->myAccountMenu)) { ?>
+                <div class="row" style="margin-top: 50px">
+                    <div class="hideOnMobile col-lg-3 col-md-3 col-sm-3 col-sm-12">
+                        <h3>Meniu</h3>
+                        <ul class="nav nav-pills nav-stacked">
+                            <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'myaccount' ? 'active' : '')?>">
+                                <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
+                            </li>
+                            <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'addad' ? 'active' : '')?>">
+                                <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
+                            </li>
+                            <li role="presentation" class="dropdown<?=($this->myAccountMenu['active'] === 'myads' ? ' active' : '')?>">
+                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                    Anunturile mele<span class="caret"></span>
+                                </a>
+                                <ul role="menu" class="dropdown-menu">
+                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Active</a></li>
+                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Expirate</a></li>
+                                </ul>
+                            </li>
+
+                            <li role="presentation">
+                                <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-sm-12">
+
+                        <?php echo $this->content; ?>
+
+                    </div>
+                </div>
+            <?php } else { ?>
             <?php echo $this->content; ?>
+            <?php } ?>
         </div> <!-- /container -->
 
         <div id="footer">

@@ -10,8 +10,15 @@ return [
                 'controller' => 'Application\Controller\LoginRegister',
                 'action'     => 'login',
             ),
-            'constraints' => array(
-//                'iHash' => '[a-zA-Z0-9]+'
+        ),
+    ),
+    'afterlogin' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route'    => 'after-login',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'afterLogin',
             ),
         ),
     ),
@@ -23,6 +30,28 @@ return [
             'defaults' => array(
                 'controller' => 'Application\Controller\LoginRegister',
                 'action'     => 'register',
+            ),
+        ),
+    ),
+
+    'forgotPassword' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route'    => 'forgot-password',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'forgotPassword',
+            ),
+        ),
+    ),
+
+    'resetPassword' => array(
+        'type' => 'Segment',
+        'options' => array(
+            'route'    => 'reset-password[/:hash]',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'resetPassword',
             ),
             'constraints' => array(
 //                'iHash' => '[a-zA-Z0-9]+'

@@ -21,14 +21,11 @@ use Zend\View\Model\JsonModel;
 
 class MyAccountController extends MyAbstractController
 {
-    public function onDispatch(MvcEvent $e)
-    {
-        $this->layout()->setTemplate('layout-parcauto');
-        parent::onDispatch($e);
-    }
-
     public function indexAction()
     {
+        $this->layout()->setVariable('myAccountMenu', [
+            'active' => 'myaccount'
+        ]);
         return [
             'myPark' => $this->myPark,
         ];
@@ -36,6 +33,9 @@ class MyAccountController extends MyAbstractController
 
     public function updateAction()
     {
+        $this->layout()->setVariable('myAccountMenu', [
+            'active' => 'myaccount'
+        ]);
         $request = $this->getRequest();
         $error = false;
 
@@ -130,14 +130,17 @@ class MyAccountController extends MyAbstractController
 
             } else {
                 $form->populateValues(array(
-                    'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'
+                    'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
+                        ($this->myPark->getLogo() !== '' ? ' <a href="#">[x] sterge logo</a>' : '')
                 ));
             }
 
         } else {
             $form->populateValues(array(
-                'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />',
-                'account_type' => $this->myPark->getAccountType() === 'particular' ? 0 : 1
+                'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
+                    ($this->myPark->getLogo() !== '' ? ' <a href="#">[x] sterge logo</a>' : ''),
+                'account_type' => $this->myPark->getAccountType() === 'particular' ? 0 : 1,
+                'name2' => $this->myPark->getName()
             ));
         }
 
@@ -146,103 +149,5 @@ class MyAccountController extends MyAbstractController
             'form' => $form
         );
 
-    }
-
-    public function myAdsAction()
-    {
-        $statusParam = $this->getEvent()->getRouteMatch()->getParam('status', 'active');
-        switch ($statusParam) {
-            case "active":
-                $status = 'ok';
-                $title = 'Anunturi Active';
-                break;
-            case "expired":
-                $title = 'Anunturi Expirate';
-                $status = 'expired';
-                break;
-            default:
-                $status = 'ok';
-        }
-        $cars = $this->cars;
-        $carCollection = new CarsCollection($this);
-        $ad = new AdCollection($this);
-
-        $token = md5(time().'asdfqwer'.rand(1000, 9999));
-        General::addToSession('token', $token);
-        $content = $ad->adListHTML([
-            'place' => 'myAds',
-            'status' => $status,
-            'token' => $token
-        ]);
-
-        $adList = $content['list'];
-        $ads = $content['ads'];
-        return [
-            'adList' => $adList,
-            'ads' => $ads,
-            'carCollection' => $carCollection,
-            'statusParam' => $statusParam,
-            'title' => $title
-        ];
-    }
-
-    public function changeStatusAction()
-    {
-        $token = $this->getEvent()->getRouteMatch()->getParam('token', '');
-        $id = $this->getEvent()->getRouteMatch()->getParam('id', '');
-        $mode = $this->getEvent()->getRouteMatch()->getParam('mode', '');
-        $messageError = '';
-        $messageSuccess = '';
-        $error = 0;
-        $statusRedirect = 'active';
-
-        if ($token == General::getFromSession('token')) {
-            $adDM = new AdDM($this->adapter);
-            /** @var $adObj \Application\Models\Ads\Ad*/
-            $adObj = $adDM->fetchOne([
-                'id' => $id,
-                'park_id' => $this->myPark->getId()
-            ]);
-            if ($adObj !== null) {
-                if ($mode == 'delete') {
-                    $adDM->deleteOne($adObj);
-                    $file_path = PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/' . $id;
-                    foreach (glob($file_path . "/*") as $filefound) {
-                        @unlink($filefound);
-                    }
-                    rmdir($file_path);
-
-                    $messageSuccess = 'Anuntul a fost sters cu success!';
-
-                } elseif ($mode == 'activate') {
-                    $expDate = General::DateTime(null, 'object');
-                    $expDate->add(new \DateInterval('P30D'));
-                    $adObj
-                        ->setExpirationDate(General::DateTime($expDate))
-                        ->setDateadd(General::DateTime())
-                        ->setStatus('ok')
-                    ;
-                    $adDM->updateRow($adObj);
-                    $messageSuccess = 'Anuntul a fost activat cu success!';
-                    $statusRedirect = 'expired';
-                }
-            } else {
-                $error = 1;
-                $messageError = 'Anunt invalid!';
-            }
-
-
-        } else {
-            $messageError = 'Token invalid!';
-            $error = 1;
-        }
-
-        if ($error) {
-            $this->flashMessenger()->addErrorMessage($messageError);
-        } else {
-            $this->flashMessenger()->addSuccessMessage($messageSuccess);
-        }
-
-        $this->redirect()->toRoute('home/myAccount/myAds', ['status' => $statusRedirect]);
     }
 }

@@ -93,7 +93,7 @@ $settings = array(
      *
      * Please specify if Google is enabled
      */
-    'google_enabled' => true,
+    'google_enabled' => false,
 
     /**
      * Google Scope
@@ -118,7 +118,7 @@ $settings = array(
      *
      * Please specify if Twitter is enabled
      */
-    'twitter_enabled' => true,
+    'twitter_enabled' => false,
 
     /**
      * Yahoo! Enabled

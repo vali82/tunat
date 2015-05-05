@@ -1,12 +1,8 @@
 <?php
-use Application\Mappers\UserDM;
 
-use Kindergartens\Mappers\KindergartenDM;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Mapper\UserHydrator;
-
-use Application\Mappers as Mappers;
-
+use Application\libs\General;
 
 return array(
     'factories' => array(
@@ -41,7 +37,7 @@ return array(
         },
 
         'AutoPark' => function (ServiceLocatorInterface $sm) {
-            $park = \Application\libs\General::getFromSession('myPark');
+            $park = General::getFromSession('myPark');
             if ($park === null) {
                 $auth = $sm->get('zfcuser_auth_service');
                 $user = $auth->getIdentity();
@@ -51,7 +47,7 @@ return array(
                 $x = array_values($parkUsers)[0];
                 $dm = new \Application\Models\Autoparks\ParksDM($dbAdapter);
                 $park = $dm->fetchOne($x['park_id']);
-                \Application\libs\General::addToSession('myPark', $park !== null ? $park : false);
+                General::addToSession('myPark', $park !== null ? $park : false);
             }
             return $park;
         },
@@ -79,12 +75,12 @@ return array(
             return $role;
         },*/
         'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
-            $x = \Application\Libs\General::getFromSession('AuthenticatedUserRole');
+            $x = General::getFromSession('AuthenticatedUserRole');
             if ($x === null) {
                 $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
                 $roles = $pi->getIdentityRoles();
                 $x = array_pop($roles);
-                \Application\Libs\General::addToSession('AuthenticatedUserRole', $x);
+                General::addToSession('AuthenticatedUserRole', $x);
             }
             return $x;
         },
