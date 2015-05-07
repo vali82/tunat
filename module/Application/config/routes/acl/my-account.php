@@ -12,5 +12,9 @@ return [
     [
         'route' => 'zfcuser/changepassword',
         'roles' => ['parcauto']
+    ],
+    [
+        'route' => 'home/myAccount/removeLogo',
+        'roles' => ['parcauto']
     ]
 ];

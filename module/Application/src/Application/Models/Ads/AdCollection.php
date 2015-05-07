@@ -166,7 +166,7 @@ class AdCollection
         /** @var $adObj \Application\Models\Ads\Ad*/
         $adObj = $adDM->fetchOne([
             'id' => $id,
-            'status' => 'ok'
+            //'status' => 'ok'
         ]);
         if ($adObj !== null) {
             // increment view counter
@@ -185,41 +185,44 @@ class AdCollection
 
             $adImgs = unserialize($adObj->getImages());
 
-            return $partial(
-                'application/ad/view-ad.phtml',
-                [
-                    'imgSrc' => General::getSimpleAvatar(
-                        $adObj->getParkId() . 'xadsx'.$adObj->getId(),
-                        (count($adImgs) > 0 ? $adImgs[0] : ''),
-                        '300x300'
-                    ),
-                    'imgSrcBig' => General::getSimpleAvatar(
-                        $adObj->getParkId() . 'xadsx'.$adObj->getId(),
-                        (count($adImgs) > 0 ? $adImgs[0] : ''),
-                        '2000x2000'
-                    ),
-                    'images' => $adImgs,
-                    'id' => $adObj->getId(),
-                    'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
-                    'title' => $adObj->getPartName(),
-                    'description' => $adObj->getDescription(),
-                    'stare' => $adObj->getStare(),
-                    'href' => '#',
-                    'car' => [
-                        'category' => $cars['categories'][$adObj->getCarCategory()],
-//                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
-                        'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']
-                    ],
-                    'park' => [
-                        'name' => $parkObj->getName(),
-                        'tel1' => $parkObj->getTel1(),
-                        'email' => $parkObj->getEmail(),
-                        'url' => $parkObj->getUrl(),
-                        'location' => $parkObj->generateLocation()
-                    ],
-                    'status' => $adObj->getStatus()
-                ]
-            );
+            return [
+                $partial(
+                    'application/ad/view-ad.phtml',
+                    [
+                        'imgSrc' => General::getSimpleAvatar(
+                            $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                            (count($adImgs) > 0 ? $adImgs[0] : ''),
+                            '300x300'
+                        ),
+                        'imgSrcBig' => General::getSimpleAvatar(
+                            $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                            (count($adImgs) > 0 ? $adImgs[0] : ''),
+                            '2000x2000'
+                        ),
+                        'images' => $adImgs,
+                        'id' => $adObj->getId(),
+                        'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                        'title' => $adObj->getPartName(),
+                        'description' => $adObj->getDescription(),
+                        'stare' => $adObj->getStare(),
+                        'href' => '#',
+                        'car' => [
+                            'category' => $cars['categories'][$adObj->getCarCategory()],
+    //                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
+                            'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']
+                        ],
+                        'park' => [
+                            'name' => $parkObj->getName(),
+                            'tel1' => $parkObj->getTel1(),
+                            'email' => $parkObj->getEmail(),
+                            'url' => $parkObj->getUrl(),
+                            'location' => $parkObj->generateLocation()
+                        ],
+                        'status' => $adObj->getStatus()
+                    ]
+                ),
+                $adObj
+            ];
 
         } else {
             return null;

@@ -2,12 +2,13 @@
 
 <h4><?=$this->breadcrump?></h4>
 
+<!--Categoria si Marca-->
 <div class="row">
     <div class="col-md-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    Marca Masina
+                    Categoria
                 </h3>
             </div>
             <div class="panel-body">
@@ -26,7 +27,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    Clasa
+                    Marca
                 </h3>
             </div>
             <div class="panel-body">
@@ -45,9 +46,11 @@
         </div>
     </div>
 </div>
+<!--end Categoria si Marca-->
 
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
 
+    <!--Filtrare Anunturi-->
     <div class="row">
         <div class="col-md-12" style="padding-bottom: 20px">
             <form class="form-inline" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
@@ -72,7 +75,9 @@
             </form>
         </div>
     </div>
+    <!--end Filtrare Anunturi-->
 
+    <!--Listing Anunturi-->
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
@@ -95,6 +100,12 @@
             <?php } ?>
         </div>
     </div>
+    <!--end Listing Anunturi-->
+
 <?php } elseif ($this->carModelId !== null && $this->adView !== null) { ?>
+
+    <!--Pagina Anunt-->
     <?=$this->adView?>
+    <!--end Pagina Anunt-->
+
 <?php } ?>

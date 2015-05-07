@@ -96,7 +96,7 @@ if ($role == 'parcauto') {
                                         <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
                                     </li>
                                 <?php } ?>
-                                <li><a class="add-offer" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
+                                <li><a class="add-offer<?=($role == 'guest' ? ' loginActionCreateAd' : '')?>" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
                             </ul>
                         </div>
                     </div><!--/.nav-collapse -->

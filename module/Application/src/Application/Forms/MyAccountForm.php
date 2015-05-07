@@ -17,6 +17,22 @@ class MyAccountForm extends AbstractForm
 
 
         $this->add(array(
+            'type' => 'checkbox',
+            'name' => 'account_type',
+            'attributes' => array(
+                'switcher' => true,
+                'id' => 'accountType',
+                'data-on-label' => '&nbsp;Parc-Auto&nbsp;',
+                'data-off-label' => '&nbsp;Particular&nbsp;',
+                'class' => 'switch-large',
+                'selected' => 'true',
+            ),
+            'options' => array(
+                'label' => 'Tip Cont',
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'email',
             'attributes' => array(
                 'type' => 'text',
@@ -29,32 +45,15 @@ class MyAccountForm extends AbstractForm
         ));
 
         $this->add(array(
-            'type' => 'checkbox',
-            'name' => 'account_type',
-            'attributes' => array(
-                'switcher' => true,
-                'id' => 'accountType',
-                'data-on-label' => '&nbsp;Parc-Auto&nbsp;',
-                'data-off-label' => '&nbsp;Particular&nbsp;',
-                'class' => 'switch-large',
-                'selected' => 'true'
-            ),
-            'options' => array(
-                'label' => 'Tip Cont',
-            ),
-        ));
-
-
-        $this->add(array(
             'name' => 'name2',
             'options' => array(
-                'label' => 'Nume si Prenume',
+                'label' => 'Nume',
             ),
             'attributes' => array(
 //                'group' => array('size' => 'col-sm-4', 'type' => 'start'),
                 'type' => 'text',
                 'id' => 'name2',
-                'extraInfo' => 'obligatoriu: va aparea in detaliile anuntului'
+//                'extraInfo' => 'obligatoriu: va aparea in detaliile anuntului'
                 //'required' => true
             ),
         ));

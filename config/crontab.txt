@@ -1,0 +1,9 @@
+/* CRON JOBS available
+
+pt fiecare server exista un cronjob... de ex pt developing este cronjob_developing.php, iar pt dev server este cronjob_dev.php
+
+*/
+
+// marcarea anunturilor ce au expirat
+- generate bills
+00 07 * * * php cronjob_development.php inactivate-old-ads

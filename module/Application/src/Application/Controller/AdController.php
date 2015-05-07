@@ -345,7 +345,6 @@ class AdController extends MyAbstractController
         }
         ////
 
-//        var_dump($cars['model'][$carcategoriesId]); die();
 
 
         // detect Ad ID
@@ -359,10 +358,19 @@ class AdController extends MyAbstractController
             if ($adView === null) {
                 //$this->flashMessenger()->addInfoMessage('Anuntul #'.$adId.' a expirat');
                 return $this->redirect()->toRoute('home');
+            } else {
+                // Id anunt este modificat sau nume piesa url diferita => redirect la pagina anuntului propriu-zis
+                $adObj = $adView[1];
+                if ($carModelId != $adObj->getCarMake() ||
+                    $carCollection->getUrlize($adObj->getPartName()).'-'.$adObj->getId() != $adParam
+                ) {
+                    $route = $carCollection->urlizeAD($adObj, true);
+                    return $this->redirect()->toRoute($route[0], $route[1]);
+                }
+                $adView = $adView[0];
             }
         }
         ////
-
 
 
         // get ADs list
@@ -447,5 +455,10 @@ class AdController extends MyAbstractController
             ] : null,
             'message' => $parkObj !== null ? '' : 'Datele de contact nu au fost gasite',
         ]);
+    }
+
+    public function cronInactivateOldAdsAction()
+    {
+        echo "herexx";
     }
 }
