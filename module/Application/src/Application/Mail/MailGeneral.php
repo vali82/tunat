@@ -304,7 +304,7 @@ class MailGeneral extends AbstractActionController
         $this->_subject = $this->translator->translate('Reseatare Parola Tirbox');
         $this->_message =
             $this->header(array(array('href' => $this->_site_names['http'] . '/reset-password/' . $hash . '', 'name' => 'Reseteaza Parola')), 'user') . '
-Hello -<BR>' . $name . '</h1>
+Buna -<BR>' . $name . '</h1>
 <div style="font-family: \'Source Sans Pro\', Arial;float: left; width: 100%;">&nbsp;</div>
 <p style="font-family: \'Source Sans Pro\', Arial;float: left; margin: 30px 0 0; background: none repeat scroll 0px 0px rgb(237, 237, 244);color: #4A4A4A;padding: 2%; width: 96%; border-bottom: 1px solid rgb(221, 221, 221);">
 	Poti sa iti schimbi parola <a href="' . $this->_site_names['http'] . '/reset-password/' . $hash . '">aici</a>.
@@ -313,6 +313,26 @@ Hello -<BR>' . $name . '</h1>
                 $this->footer();
 
 	    return $this->sendAction();
+    }
+
+    public function inactivateAd($name)
+    {
+        $this->_subject = $this->translator->translate('Anuntul tau a expirat');
+        $this->_message =
+            $this->header(array(array('href' => $this->_site_names['http'] . '/ad/my-ads/expired', 'name' => 'Reactiveaza-ti anunturile')), 'user') . '
+Buna -<BR>' . $name . '</h1>
+<div style="font-family: \'Source Sans Pro\', Arial;float: left; width: 100%;">&nbsp;</div>
+<p style="font-family: \'Source Sans Pro\', Arial;float: left; margin: 30px 0 0; background: none repeat scroll 0px 0px rgb(237, 237, 244);color: #4A4A4A;padding: 2%; width: 96%; border-bottom: 1px solid rgb(221, 221, 221);">
+	Anuntul tau a expirat!<br />
+	Reactivaza-ti anunturile pentru inca 30 de zile GRATUIT!<br />
+
+	<a href="'.$this->_site_names['http'] . '/ad/my-ads/expired'.'">Intra in contul tau Tirbox.ro</a>
+
+</p></div>' .
+
+            $this->footer();
+
+        return $this->sendAction();
     }
 
 }

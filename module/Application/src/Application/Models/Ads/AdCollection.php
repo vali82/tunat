@@ -3,6 +3,7 @@
 namespace Application\Models\Ads;
 
 use Application\libs\General;
+use Application\Mail\MailGeneral;
 use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsCollection;
 use Application\Models\DataMapper;
@@ -237,4 +238,35 @@ class AdCollection
         }
         return $years;
     }
+
+    public function inactivateExpiredAds($limit)
+    {
+        $adDM = new AdDM($this->controller->getAdapter());
+        /** @var $ads \Application\Models\Ads\Ad[]|null*/
+        $ads = null;
+        $ads = $adDM->fetchAllDefault([
+            'status' => 'ok',
+            'expiration_date' => DataMapper::expression(
+                'expiration_date < "'.General::DateTime().'"'
+            )
+        ], null, [1, $limit]);
+
+        if ($ads !== null) {
+            foreach ($ads as $adObj) {
+                $parkDM = new ParksDM($this->controller->getAdapter());
+                $parkObj = $parkDM->fetchOne($adObj->getParkId());
+
+                // send mail
+                $mail = new MailGeneral($this->controller->getServiceLocator());
+                $mail->_to = $parkObj->getEmail();
+                $mail->_no_reply = true;
+                $mail->inactivateAd($parkObj->getName());
+                ////
+
+            }
+        }
+
+        return $ads;
+    }
+
 }

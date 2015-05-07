@@ -459,6 +459,7 @@ class AdController extends MyAbstractController
 
     public function cronInactivateOldAdsAction()
     {
-        echo "herexx";
+        $adCollection = new AdCollection($this);
+        $adCollection->inactivateExpiredAds(10);
     }
 }
