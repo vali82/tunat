@@ -146,7 +146,7 @@ class LoginRegisterController extends MyAbstractController
             $mail = new MailGeneral($this->getServiceLocator());
             $mail->_to = $email;
             $mail->_no_reply = true;
-            $mail->forgotPassword('', $hash);
+            $mail->forgotPassword($userObj->getDisplayName(), $hash);
 
             $this->flashMessenger()->addSuccessMessage($this->translator->translate(
                 'Vei primi un mail cu instructiuni de resetare a parolei!'

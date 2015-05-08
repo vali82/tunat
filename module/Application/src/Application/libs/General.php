@@ -217,6 +217,10 @@ class General
             case "iso":
                 return $d->format('Y-m-d H:i:s');
                 break;
+            // 2015-02-23 12:02:20
+            case "iso-short":
+                return $d->format('Y-m-d');
+                break;
             // datetime object
             case "object":
                 return $d;

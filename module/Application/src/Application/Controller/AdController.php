@@ -261,6 +261,7 @@ class AdController extends MyAbstractController
                     $adObj
                         ->setExpirationDate(General::DateTime($expDate))
                         ->setDateadd(General::DateTime())
+                        ->setUpdatedAt(General::DateTime())
                         ->setStatus('ok')
                     ;
                     $adDM->updateRow($adObj);

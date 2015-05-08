@@ -7,6 +7,7 @@ use Application\Mail\MailGeneral;
 use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsCollection;
 use Application\Models\DataMapper;
+use Application\Models\Newsletter\NewsletterCollection;
 use Zend\Db\Sql\Predicate\Expression;
 
 class AdCollection
@@ -249,24 +250,41 @@ class AdCollection
             'expiration_date' => DataMapper::expression(
                 'expiration_date < "'.General::DateTime().'"'
             )
-        ], null, [1, $limit]);
+        ], null, [1, $limit], 'park_id');
 
         if ($ads !== null) {
             foreach ($ads as $adObj) {
                 $parkDM = new ParksDM($this->controller->getAdapter());
                 $parkObj = $parkDM->fetchOne($adObj->getParkId());
 
-                // send mail
-                $mail = new MailGeneral($this->controller->getServiceLocator());
-                $mail->_to = $parkObj->getEmail();
-                $mail->_no_reply = true;
-                $mail->inactivateAd($parkObj->getName());
-                ////
+                // gasire alte anunturi ce trebuie inactivate si trimitere in email
+                $ads4thisParkAll = $adDM->fetchAllDefault([
+                    'status' => 'ok',
+                    'park_id' => $parkObj->getId(),
+                    'expiration_date' => DataMapper::expression(
+                        'expiration_date < "'.General::DateTime().'"'
+                    )
+                ]);
+                if ($ads4thisParkAll !== null) {
+                    $adsInMAil = [];
+                    foreach ($ads4thisParkAll as $ad4thisPark) {
+                        // marcare ad ca expirat
+                        $ad4thisPark->setStatus('expired');
+                        $adDM->updateRow($ad4thisPark);
+                        $adsInMAil[] = [
+                            'name' => $ad4thisPark->getPartName()
+                        ];
+                    }
 
+                    // trimite mail la parc auto cum ca anuntul a fost inactivat
+                    if ($parkObj !== null) {
+                        $newsletterCollection = new NewsletterCollection($this->controller);
+                        $newsletterCollection->sendMail('inactivate_ad', $adsInMAil, $parkObj);
+                    }
+
+                }
             }
         }
-
-        return $ads;
     }
 
 }

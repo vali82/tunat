@@ -363,9 +363,14 @@ abstract class DataMapper implements MMDataMapperInterface
      *
      * @return $this->_model[]|null
      */
-    public function fetchAllDefault($selectKey, $orderBy = null, $limit = null)
+    public function fetchAllDefault($selectKey, $orderBy = null, $limit = null, $groupBy = null)
     {
-        $results = $this->getTableGateway()->select(function (Select $select) use ($selectKey, $orderBy, $limit) {
+        $results = $this->getTableGateway()->select(function (Select $select) use (
+            $selectKey,
+            $orderBy,
+            $limit,
+            $groupBy
+        ) {
 
             if (count($this->columns) > 0) {
                 $select->columns($this->columns);
@@ -385,6 +390,10 @@ abstract class DataMapper implements MMDataMapperInterface
             }
             if ($limit !== null) {
                 $select->limit($limit[1])->offset(((int)$limit[0]-1)*$limit[1]);
+            }
+
+            if ($groupBy !== null) {
+                $select->group($groupBy);
             }
 
 
