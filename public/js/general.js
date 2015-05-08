@@ -128,15 +128,6 @@ $.general = function() {
         };
 
 
-        $('#loginNavMenuButton').on('click', function(){
-            $('#LoginRegisterContainer').slideToggle('fast', function(){
-                if ($('.navbar-toggle').is(':visible') && $('#LoginRegisterContainer').is(':visible')) {
-                    $(".navbar-collapse").collapse('hide');
-                }
-
-            });
-        });
-
         _handleBootstrapSwitch();
 
         //});
@@ -146,6 +137,7 @@ $.general = function() {
         init: function()
         {
             var thisObj = this;
+            var _openLogin
 
             $('#registerContainer').hide();
             $('#forgotContainer').hide();
@@ -196,6 +188,26 @@ $.general = function() {
                 $('#registerSocialContainer').fadeOut();
             });
             ////
+
+            // login button opens login/register form
+            $('#loginNavMenuButton').on('click', function(){
+                thisObj._openMainContainer();
+            });
+
+            // create ad for unlogged users
+            $('.loginActionCreateAd').on('click', function(e) {
+                e.preventDefault();
+                thisObj._openMainContainer();
+            });
+        },
+
+        _openMainContainer: function()
+        {
+            $('#LoginRegisterContainer').slideToggle('fast', function(){
+                if ($('.navbar-toggle').is(':visible') && $('#LoginRegisterContainer').is(':visible')) {
+                    $(".navbar-collapse").collapse('hide');
+                }
+            });
         },
 
         _doRegisterDefault: function (form)
@@ -529,14 +541,17 @@ $.general = function() {
                 $('#name').parent().parent().show();
                 $('#description').parent().parent().show();
                 $('#url').parent().parent().show();
-                $('#name2').parent().parent().hide();
+                //$('#name2').parent().parent().hide();
+                //$('#name2').next().html('obligatoriu: nu va aparea nicaieri pe site');
             };
             var _enableParticularFields = function() {
                 $('#name').parent().parent().hide();
                 $('#description').parent().parent().hide();
                 $('#url').parent().parent().hide();
-                $('#name2').parent().parent().show();
+                //$('#name2').parent().parent().show();
+                //$('#name2').next().html('obligatoriu: va aparea in detaliile anuntului');
             };
+            $('#accountType').parent().parent().css('width', '200px');
             if ($('#accountType').is(':checked')) {
                 _enableParcFields();
             } else {

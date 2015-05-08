@@ -3,9 +3,11 @@
 namespace Application\Models\Ads;
 
 use Application\libs\General;
+use Application\Mail\MailGeneral;
 use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsCollection;
 use Application\Models\DataMapper;
+use Application\Models\Newsletter\NewsletterCollection;
 use Zend\Db\Sql\Predicate\Expression;
 
 class AdCollection
@@ -166,7 +168,7 @@ class AdCollection
         /** @var $adObj \Application\Models\Ads\Ad*/
         $adObj = $adDM->fetchOne([
             'id' => $id,
-            'status' => 'ok'
+            //'status' => 'ok'
         ]);
         if ($adObj !== null) {
             // increment view counter
@@ -185,41 +187,44 @@ class AdCollection
 
             $adImgs = unserialize($adObj->getImages());
 
-            return $partial(
-                'application/ad/view-ad.phtml',
-                [
-                    'imgSrc' => General::getSimpleAvatar(
-                        $adObj->getParkId() . 'xadsx'.$adObj->getId(),
-                        (count($adImgs) > 0 ? $adImgs[0] : ''),
-                        '300x300'
-                    ),
-                    'imgSrcBig' => General::getSimpleAvatar(
-                        $adObj->getParkId() . 'xadsx'.$adObj->getId(),
-                        (count($adImgs) > 0 ? $adImgs[0] : ''),
-                        '2000x2000'
-                    ),
-                    'images' => $adImgs,
-                    'id' => $adObj->getId(),
-                    'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
-                    'title' => $adObj->getPartName(),
-                    'description' => $adObj->getDescription(),
-                    'stare' => $adObj->getStare(),
-                    'href' => '#',
-                    'car' => [
-                        'category' => $cars['categories'][$adObj->getCarCategory()],
-//                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
-                        'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']
-                    ],
-                    'park' => [
-                        'name' => $parkObj->getName(),
-                        'tel1' => $parkObj->getTel1(),
-                        'email' => $parkObj->getEmail(),
-                        'url' => $parkObj->getUrl(),
-                        'location' => $parkObj->generateLocation()
-                    ],
-                    'status' => $adObj->getStatus()
-                ]
-            );
+            return [
+                $partial(
+                    'application/ad/view-ad.phtml',
+                    [
+                        'imgSrc' => General::getSimpleAvatar(
+                            $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                            (count($adImgs) > 0 ? $adImgs[0] : ''),
+                            '300x300'
+                        ),
+                        'imgSrcBig' => General::getSimpleAvatar(
+                            $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                            (count($adImgs) > 0 ? $adImgs[0] : ''),
+                            '2000x2000'
+                        ),
+                        'images' => $adImgs,
+                        'id' => $adObj->getId(),
+                        'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                        'title' => $adObj->getPartName(),
+                        'description' => $adObj->getDescription(),
+                        'stare' => $adObj->getStare(),
+                        'href' => '#',
+                        'car' => [
+                            'category' => $cars['categories'][$adObj->getCarCategory()],
+    //                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
+                            'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']
+                        ],
+                        'park' => [
+                            'name' => $parkObj->getName(),
+                            'tel1' => $parkObj->getTel1(),
+                            'email' => $parkObj->getEmail(),
+                            'url' => $parkObj->getUrl(),
+                            'location' => $parkObj->generateLocation()
+                        ],
+                        'status' => $adObj->getStatus()
+                    ]
+                ),
+                $adObj
+            ];
 
         } else {
             return null;
@@ -234,4 +239,52 @@ class AdCollection
         }
         return $years;
     }
+
+    public function inactivateExpiredAds($limit)
+    {
+        $adDM = new AdDM($this->controller->getAdapter());
+        /** @var $ads \Application\Models\Ads\Ad[]|null*/
+        $ads = null;
+        $ads = $adDM->fetchAllDefault([
+            'status' => 'ok',
+            'expiration_date' => DataMapper::expression(
+                'expiration_date < "'.General::DateTime().'"'
+            )
+        ], null, [1, $limit], 'park_id');
+
+        if ($ads !== null) {
+            foreach ($ads as $adObj) {
+                $parkDM = new ParksDM($this->controller->getAdapter());
+                $parkObj = $parkDM->fetchOne($adObj->getParkId());
+
+                // gasire alte anunturi ce trebuie inactivate si trimitere in email
+                $ads4thisParkAll = $adDM->fetchAllDefault([
+                    'status' => 'ok',
+                    'park_id' => $parkObj->getId(),
+                    'expiration_date' => DataMapper::expression(
+                        'expiration_date < "'.General::DateTime().'"'
+                    )
+                ]);
+                if ($ads4thisParkAll !== null) {
+                    $adsInMAil = [];
+                    foreach ($ads4thisParkAll as $ad4thisPark) {
+                        // marcare ad ca expirat
+                        $ad4thisPark->setStatus('expired');
+                        $adDM->updateRow($ad4thisPark);
+                        $adsInMAil[] = [
+                            'name' => $ad4thisPark->getPartName()
+                        ];
+                    }
+
+                    // trimite mail la parc auto cum ca anuntul a fost inactivat
+                    if ($parkObj !== null) {
+                        $newsletterCollection = new NewsletterCollection($this->controller);
+                        $newsletterCollection->sendMail('inactivate_ad', $adsInMAil, $parkObj);
+                    }
+
+                }
+            }
+        }
+    }
+
 }

@@ -21,4 +21,8 @@ return [
         'route' => 'home/ad/changeStatus',
         'roles' => array('parcauto')
     ),
+    [
+        'route' => 'cronInactivateOldAds',
+        'roles' => array('guest')
+    ]
 ];

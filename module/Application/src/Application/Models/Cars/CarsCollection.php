@@ -70,11 +70,9 @@ class CarsCollection
      * @param \Application\Models\Ads\Ad $ad
      * @return string
      */
-    public function urlizeAD($ad)
+    public function urlizeAD($ad, $returnRoute = false)
     {
         $cars = $this->controller->getCars();
-
-
 
         $categoryId = $ad->getCarCategory();
         $modelId = $ad->getCarMake();
@@ -87,16 +85,25 @@ class CarsCollection
         $categ = $cars['model'][$categoryId][$modelId]['categ'];
 //        $part = $cars['partsMain'][$partId];
 
-        return $this->controller->url()->fromRoute(
+        $routeArray = [
             'home/piese',
             [
                 'categories' => $carcategories,
                 'car_class' => $this->urlize($categ),
-//                'car_model' => $this->urlize($model).'-'.$modelId,
-//                'parts_main' => $this->urlize($part).'-'.$partId,
+                //                'car_model' => $this->urlize($model).'-'.$modelId,
+                //                'parts_main' => $this->urlize($part).'-'.$partId,
                 //'p' => 1,
                 'ad_id' => $this->urlize($ad->getPartName()).'-'.$ad->getId()
             ]
+        ];
+
+        if ($returnRoute) {
+            return $routeArray;
+        }
+
+        return $this->controller->url()->fromRoute(
+            $routeArray[0],
+            $routeArray[1]
         );
     }
 

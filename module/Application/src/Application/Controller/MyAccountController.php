@@ -18,6 +18,7 @@ use Application\Models\Autoparks\ParksDM;
 use Application\Models\Cars\CarsCollection;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\JsonModel;
+use Zend\View\Model\ViewModel;
 
 class MyAccountController extends MyAbstractController
 {
@@ -28,14 +29,18 @@ class MyAccountController extends MyAbstractController
         ]);
         return [
             'myPark' => $this->myPark,
+            'myUser' => $this->myUser
         ];
     }
 
     public function updateAction()
     {
+        $token = md5(time().'asdfqwer'.rand(1000, 9999));
+        General::addToSession('token', $token);
         $this->layout()->setVariable('myAccountMenu', [
             'active' => 'myaccount'
         ]);
+        $urlRemoveLogo = 'confirm(\'Esti sigur?<br />Vrei sa stergi imaginea?\',\'url:' . $this->url()->fromRoute('home/myAccount/removeLogo', ['token' => $token]) . '\');';
         $request = $this->getRequest();
         $error = false;
 
@@ -121,26 +126,34 @@ class MyAccountController extends MyAbstractController
                     }
                     $DM->updateRow($this->myPark);
 
+                    $userDM = $this->getServiceLocator()->get('UserDataMapper');
+                    $userDM->findById($this->myUser->getId());
+                    $this->myUser->setDisplayName($form->getInputFilter()->getValue('name2'));
+                    $userDM->update($this->myUser);
+
                     $this->flashMessenger()->addSuccessMessage(
                         $this->translator->translate('Contul tau a fost modificat cu success')
                     );
                     General::unsetSession('myPark');
+                    General::unsetSession('myUser');
                     return $this->redirect()->toRoute('home/myAccount');
                 }
 
             } else {
                 $form->populateValues(array(
                     'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
-                        ($this->myPark->getLogo() !== '' ? ' <a href="#">[x] sterge logo</a>' : '')
+                        ($this->myPark->getLogo() !== '' ?
+                            '<br /><a href="javascript:;" style="display: block; margin-bottom: 10px;" onclick="'.$urlRemoveLogo.'"><span class="glyphicon glyphicon-trash"></span> sterge logo</a>' : '')
                 ));
             }
 
         } else {
             $form->populateValues(array(
                 'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
-                    ($this->myPark->getLogo() !== '' ? ' <a href="#">[x] sterge logo</a>' : ''),
+                    ($this->myPark->getLogo() !== '' ?
+                        '<br /><a href="javascript:;" style="display: block; margin-bottom: 10px;" onclick="'.$urlRemoveLogo.'"><span class="glyphicon glyphicon-trash"></span> sterge logo</a>' : ''),
                 'account_type' => $this->myPark->getAccountType() === 'particular' ? 0 : 1,
-                'name2' => $this->myPark->getName()
+                'name2' => $this->myUser->getDisplayName()
             ));
         }
 
@@ -149,5 +162,39 @@ class MyAccountController extends MyAbstractController
             'form' => $form
         );
 
+    }
+
+    public function removeLogoAction()
+    {
+        $error = 0;
+        $messageError = '';
+        $messageSuccess = '';
+        $token = $this->getEvent()->getRouteMatch()->getParam('token', '');
+
+        if ($token == General::getFromSession('token')) {
+            $DM = new ParksDM($this->adapter);
+
+            $this->getEvent()->getRouteMatch()->setParam('name', $this->myPark->getLogo());
+            $this->getEvent()->getRouteMatch()->setParam('folder', $this->myPark->getId() . 'xlogo');
+
+            $responseJson = $this->deleteAdImages($this->myPark->getId(), $this->myPark->getEmail());
+            $this->myPark
+                ->setLogo('')
+            ;
+            $DM->updateRow($this->myPark);
+
+            $messageSuccess = 'Logo-ul a fost sters';
+        } else {
+            $messageError = 'Token invalid!';
+            $error = 1;
+        }
+
+        if ($error) {
+            $this->flashMessenger()->addErrorMessage($messageError);
+        } else {
+            $this->flashMessenger()->addSuccessMessage($messageSuccess);
+        }
+
+        $this->redirect()->toRoute('home/myAccount/update');
     }
 }

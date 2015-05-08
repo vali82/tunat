@@ -252,6 +252,7 @@ class MyAbstractController extends AbstractActionController
 
             // this has been customized to remove only specific images in certain user_id folders
             // you should modify that to your needs
+
             $file_path = PUBLIC_IMG_PATH . str_replace('x', '/', $folder). '/'. $file_name;
             $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
 

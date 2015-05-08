@@ -117,7 +117,7 @@ return array(
     // Placeholder for console routes
     'console' => array(
         'router' => array(
-            'routes' => array(),
+            'routes' => include __DIR__ . '/routes/console.php'
         ),
     ),
     'bjyauthorize' => array(

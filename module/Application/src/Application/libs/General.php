@@ -195,6 +195,7 @@ class General
                 break;
             // 12 Martie 2015
             case "LONG":
+//                return $d->format('d.m.Y') .', '. ($time === null ? '' : $d->format('H:i'));
                 $fmt = datefmt_create(
                     Locale::getDefault(),
                     IntlDateFormatter::LONG,
@@ -204,7 +205,7 @@ class General
                 break;
             // 12.02.15
             case "SHORT":
-                //return $d->format('d.m.y'). ', ' . ($time === null ? '' : $d->format('H:i'));
+//                return $d->format('d.m.y'). ', ' . ($time === null ? '' : $d->format('H:i'));
                 $ftm = new IntlDateFormatter(
                     Locale::getDefault(),
                     IntlDateFormatter::SHORT,
@@ -215,6 +216,10 @@ class General
             // 2015-02-23 12:02:20
             case "iso":
                 return $d->format('Y-m-d H:i:s');
+                break;
+            // 2015-02-23 12:02:20
+            case "iso-short":
+                return $d->format('Y-m-d');
                 break;
             // datetime object
             case "object":

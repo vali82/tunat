@@ -13,27 +13,43 @@ $this->headScript()
     <div class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><?=$this->myPark->getName()?> <small></small></h3>
+                <h3 class="panel-title"><?=$this->myUser->getDisplayName()?> <small></small></h3>
             </div>
             <div class="panel-body">
-                <img src="<?=$this->myPark->generateAvatar('100x0')?>" class="thumbnail"/>
-                <?=$this->myPark->getDescription()?>
-                <ul class="list-group">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <img src="<?=$this->myPark->generateAvatar('160x160')?>" class="thumbnail img-responsive"/>
+                    </div>
+                    <div class="col-sm-9">
+                        <ul class="list-group">
 
-                    <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
-                        <?=$this->myPark->getEmail()?></li>
-                    <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
-                        <?=$this->myPark->getTel1()?></li>
-                    <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
-                        <?=$this->myPark->getTel2()?></li>
-                    <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
-                        <?=$this->myPark->getTel3()?></li>
-                    <li class="list-group-item"><span class="badge"><?=$this->translate('Adresa')?></span>&nbsp;
-                        <?=$this->myPark->generateLocation()?></li>
-                </ul>
+                            <li class="list-group-item">
+                                <span class="badge">
+                                    <?=($this->myPark->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?>
+                                </span>&nbsp;
+                                <?=$this->myPark->getName()?>
+                            </li>
+                            <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
+                                <?=$this->myPark->getEmail()?>
+                            </li>
+                            <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
+                                <?=$this->myPark->getTel1()?> <?=$this->myPark->getTel2()?> <?=$this->myPark->getTel3()?>
+                            </li>
+                            <li class="list-group-item"><span class="badge"><?=$this->translate('Adresa')?></span>&nbsp;
+                                <?=$this->myPark->generateLocation()?>
+                            </li>
+                        </ul>
+                    </div>
 
-                <a href="<?=$this->url('home/myAccount/update')?>" type="button" class="btn btn-green btn-sm"><?=$this->translate('Modifica')?></a>
-                <a href="<?=$this->url('zfcuser/changepassword')?>" type="button" class="btn btn-pink btn-sm"><?=$this->translate('Schimba Parola')?></a>
+                </div>
+
+                <p>
+                    <?=$this->myPark->getDescription()?>
+                </p>
+
+
+                <a href="<?=$this->url('home/myAccount/update')?>" type="button" class="btn btn-success"><?=$this->translate('Modifica')?></a>
+                <a href="<?=$this->url('zfcuser/changepassword')?>" type="button" class="btn btn-primary"><?=$this->translate('Schimba Parola')?></a>
             </div>
 
         </div>
