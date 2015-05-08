@@ -1,4 +1,8 @@
 /*header*/
+body{
+    background-color: #f8f6f6;
+    font-family: 'Ubuntu', sans-serif;
+}
 nav.navbar-inverse{
     width: 100%;
     height: 75px;
@@ -93,8 +97,6 @@ li.displayOnMobile {
 }
 
 .generalContainer  {
-    padding-top: 75px;
-    padding-bottom: 50px
 }
 
 .hideOnMobile {
@@ -138,4 +140,48 @@ li.displayOnMobile {
 .socialLogin img.facebook {
     width: 20px;
     margin-top: -3px;
+}
+.panel-default{
+    position: relative;
+    top: -67px;
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.05)
+}
+.panel-default .category{
+    text-align: center;
+}
+.category{
+    padding: 0;
+}
+
+.category:hover{
+    background-color: #243045;
+    color: #fff;
+}
+
+.category img{
+    max-height: 35px;
+    width: auto;
+    margin: 0 auto;
+}
+
+.category a {
+    display: block;
+    padding: 30px 0;
+    font-size: 18px;
+    color: #243045;
+}
+.category a:hover{
+    color: #fff;
+    text-decoration: none;
+}
+.category a span{
+    display: block;
+    padding-top: 14px;
+}
+
+.panel-body{
+    padding-top: 0;
+    padding-bottom: 0;
 }

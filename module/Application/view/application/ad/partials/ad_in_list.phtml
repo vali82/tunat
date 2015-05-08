@@ -1,12 +1,13 @@
-<div class="media">
-    <div class="media-left">
+<div class="announcement row">
+    <div class="picture col-md-3">
         <a href="<?=$this->href?>">
             <img class="media-object" src="<?=$this->imgSrc?>" data-holder-rendered="true">
         </a>
     </div>
-    <div class="media-body">
+    <div class="description col-md-6">
         <h4 class="media-heading"><a href="<?=$this->href?>"><?=$this->title?></a></h4>
         <p><?=$this->description?></p>
         <p><?=$this->car?> <?=$this->model?> (<?=$this->yearStart?> - <?=$this->yearEnd?>)</p>
     </div>
+    <div class="price col-md-3">500euro</div>
 </div>
