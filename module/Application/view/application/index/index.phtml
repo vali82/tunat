@@ -3,20 +3,45 @@ $this->layout()->setVariable(
     'isHomePage', true
 );
 ?>
-<div class="panel panel-default" style="margin-top: -150px; position: relative;">
-    <div class="panel-heading">
-        <h3 class="panel-title">Masini populare</h3>
-    </div>
-    <div class="panel-body">
-        <a href="<?= $this->url('home/piese', ['categories' => 'camioane']) ?>">Camioane</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'dube']) ?>">Dube</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'remorci']) ?>">Remorci</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-agricole']) ?>">Utilaje Agricole</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'autobuse']) ?>">Autobuse</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-constructii']) ?>">Utilaje Constructii</a>,
-    </div>
+<div class="panel panel-default row">
+        <div class="col-md-2 col-sm-4 col-xs-4 category">
+            <a href="<?= $this->url('home/piese', ['categories' => 'camioane']) ?>">
+                <img class="img-responsive" src="<?=$this->basePath() . '/img/camioane.png'?>"/>
+                <span>Camioane</span>
+            </a>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4 category">
+            <a href="<?= $this->url('home/piese', ['categories' => 'dube']) ?>">
+                <img class="img-responsive" src="<?=$this->basePath() . '/img/dube.png'?>"/>
+                <span>Dube</span>
+            </a>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4 category">
+            <a href="<?= $this->url('home/piese', ['categories' => 'remorci']) ?>">
+                <img class="img-responsive" src="<?=$this->basePath() . '/img/remorci.png'?>"/>
+                <span>Remorci</span>
+            </a>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4 category">
+            <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-agricole']) ?>">
+                <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-agricole.png'?>"/>
+                <span>Utilaje Agricole</span>
+            </a>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4 category">
+            <a href="<?= $this->url('home/piese', ['categories' => 'autobuse']) ?>">
+                <img class="img-responsive" src="<?=$this->basePath() . '/img/autobuse.png'?>"/>
+                <span>Autobuse</span>
+            </a>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4 category">
+            <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-constructii']) ?>">
+                <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-constructii.png'?>"/>
+                <span>Utilaje Constructii</span>
+            </a>
+        </div>
 </div>
 
-<div>
-    <?= $this->adList ?>
+<div class="col-md-9">
+    <div><?= $this->adList ?></div>
 </div>
