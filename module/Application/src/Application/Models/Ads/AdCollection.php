@@ -268,11 +268,17 @@ class AdCollection
                 if ($ads4thisParkAll !== null) {
                     $adsInMAil = [];
                     foreach ($ads4thisParkAll as $ad4thisPark) {
+                        $adImgs = unserialize($ad4thisPark->getImages());
                         // marcare ad ca expirat
                         $ad4thisPark->setStatus('expired');
                         $adDM->updateRow($ad4thisPark);
                         $adsInMAil[] = [
-                            'name' => $ad4thisPark->getPartName()
+                            'name' => $ad4thisPark->getPartName(),
+                            'photo' => General::getSimpleAvatar(
+                                $ad4thisPark->getParkId() . 'xadsx'.$ad4thisPark->getId(),
+                                (count($adImgs) > 0 ? $adImgs[0] : ''),
+                                '100x100'
+                            )
                         ];
                     }
 
