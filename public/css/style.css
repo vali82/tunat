@@ -75,6 +75,26 @@ ul.navbar-right{
 .banner{
     padding-top: 75px;
     width: 100%;
+    position: relative;
+}
+.banner-text{
+    position: absolute;
+    top: 45%;
+    left: 0;
+    width: 50%;
+    text-align: right;
+    padding: 15px 25px;
+    background-color: rgba(36, 48, 69, 0.55)
+}
+.banner-text span:first-child{
+    color: #fff;
+    font-size: 36px
+}
+.banner-text span{
+    font-size: 25px;
+    color: #fff;
+    display: block;
+
 }
 
 .banner-img{
@@ -189,12 +209,85 @@ li.displayOnMobile {
 }
 .announcement.panel{
     padding: 15px 17px;
+    margin-left: 0;
 }
 .announcement .description .about{
     height: 39px;
     overflow: hidden;
     margin-bottom: 15px;
+    font: 13px/19px 'Ubuntu', sans-serif;
+    color: #6c727e;
 }
 .announcement .description .model{
-    font-weight: 600;
+    font-weight: 300;
+    font: 16px/23px 'Ubuntu', sans-serif;
+    color: #a2a3a5;
+}
+.announcement .price{
+    font: 500 19px/25px 'Ubuntu', sans-serif; 
+    color: #243045;
+    line-height: 6.8;
+}
+.announcement .picture{
+    padding: 0;
+}
+.announcement .picture img{
+    min-width: 130px;
+    height: auto;
+}
+
+.right-pic{
+    padding: 15px;
+}
+
+.description .media-heading a{
+    font: 19px/25px 'Ubuntu', sans-serif;
+    color: #243045;
+    font-weight: 500;
+}
+
+
+
+
+footer{
+    background-color: #243045;
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+.social-media li{
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    margin-right: 18px;   
+}
+.social-media li.google{
+    margin-right: 0;
+}
+.social-media li a{
+    background-image: url(../img/social-media.png);
+    display: block;
+    width: 100%;
+    height: 100%;
+
+}
+.social-media li.fb a{
+    background-position: 0 0; 
+}
+.social-media li.tw a{
+    background-position: 146px 0;;
+}
+.social-media li.rss a{
+    background-position: 91px 0;;
+}
+.social-media li.google a{
+    background-position: 36px 0;;
+}
+.info h3, .info2 h3, .mobile-app h3, .social-media h3{
+    font: 300 22px/28px 'Ubuntu', sans-serif;
+    color: #fff;
+    margin-top: 0;
+}
+.info a, .info2 a, .mobile-app a, .social-media a{
+    color: #a2aec2;
+    font: 300 13px/19px 'Ubuntu', sans-serif;
 }
