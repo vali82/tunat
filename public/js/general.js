@@ -130,7 +130,6 @@ $.general = function() {
 
         _handleBootstrapSwitch();
 
-        //});
 
         // category click animation
         $("#categoryContainer .category a").on('click', function () {
@@ -145,8 +144,6 @@ $.general = function() {
             //$(".banner .banner-text").fadeOut();
         });
         ///
-
-
 
     };
 
