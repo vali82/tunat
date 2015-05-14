@@ -155,15 +155,13 @@ if ($role == 'parcauto') {
                 <div class="banner-img" style="height: 180px">
                     <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
                 </div>
-                <div class="banner-text">
-                    <span>Cauti sau vinzi piese de schimb?</span>
-                    <span>Ai ajuns unde trebuie!</span>
-                </div>
             </div>
         <?php } ?>
 
 
-        <div class="container generalContainer">
+        <div class="container generalContainer"
+             <?php if (!isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>style="padding-top: 150px"<?php } ?>
+            >
 
             <?php
             if (count($this->flashMessenger()->getErrorMessages())) : ?>
