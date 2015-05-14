@@ -150,6 +150,16 @@ if ($role == 'parcauto') {
                     <span>Ai ajuns unde trebuie!</span>
                 </div>
             </div>
+        <?php } elseif (isset($this->isCategoryPage)) { ?>
+            <div class="banner">
+                <div class="banner-img" style="height: 180px">
+                    <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
+                </div>
+                <div class="banner-text">
+                    <span>Cauti sau vinzi piese de schimb?</span>
+                    <span>Ai ajuns unde trebuie!</span>
+                </div>
+            </div>
         <?php } ?>
 
 

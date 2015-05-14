@@ -131,6 +131,16 @@ $.general = function() {
         _handleBootstrapSwitch();
 
         //});
+
+        // category click
+        $(".homepage .category a").on('click', function () {
+
+            $(".banner-img").animate({
+                height: "180px"
+            });
+
+        });
+
     };
 
     this.loginRegister = {
