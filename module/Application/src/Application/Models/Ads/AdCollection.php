@@ -36,7 +36,7 @@ class AdCollection
             $ads = $adDM->fetchAllDefault(
                 ['status' => 'ok'],
                 ['id' => 'DESC'],
-                [1, 5]
+                [1, 3]
             );
 
         } elseif ($param['place'] == 'myAds') {
