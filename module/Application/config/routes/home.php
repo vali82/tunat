@@ -121,4 +121,38 @@ return [
         'may_terminate' => true,
         'child_routes' => include __DIR__ . '/my-account.php'
     ],
+
+    'terms' => [
+        'type' => 'Literal',
+        'options' => array(
+            'route' => 'termeni-si-conditii',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Index',
+                'action' => 'terms',
+            ),
+        ),
+        'may_terminate' => true,
+    ],
+    'privacy' => [
+        'type' => 'Literal',
+        'options' => array(
+            'route' => 'confidentialitate',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Index',
+                'action' => 'privacy',
+            ),
+        ),
+        'may_terminate' => true,
+    ],
+    'contact' => [
+        'type' => 'Literal',
+        'options' => array(
+            'route' => 'contact',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Index',
+                'action' => 'contact',
+            ),
+        ),
+        'may_terminate' => true,
+    ]
 ];

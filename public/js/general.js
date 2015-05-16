@@ -130,7 +130,21 @@ $.general = function() {
 
         _handleBootstrapSwitch();
 
-        //});
+
+        // category click animation
+        $("#categoryContainer .category a").on('click', function () {
+            $(".banner-img").animate({
+                height: "180px"
+            });
+            $(".banner .banner-text").fadeOut();
+        });
+        $("a.marca-link").on('click', function () {
+            $(".banner-img").slideUp('slow');
+            $('#categoryContainer').fadeOut('slow');
+            //$(".banner .banner-text").fadeOut();
+        });
+        ///
+
     };
 
     this.loginRegister = {

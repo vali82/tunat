@@ -33,5 +33,18 @@ class IndexController extends MyAbstractController
         ];
     }
 
+    public function termsAction()
+    {
+        return [];
+    }
 
+    public function privacyAction()
+    {
+        return [];
+    }
+
+    public function contactAction()
+    {
+        return [];
+    }
 }

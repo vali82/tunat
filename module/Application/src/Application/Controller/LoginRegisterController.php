@@ -250,58 +250,58 @@ class LoginRegisterController extends MyAbstractController
     public function loginAction()
     {
         if (!isset($_POST) || !isset($_POST['data'])) {
-            return $this->redirect()->toRoute('home/home');
-        }
+            return $this->redirect()->toRoute('home');
 
-        $this->data = ($_POST['data']);
+        } else {
+            $this->data = ($_POST['data']);
 
-        if (isset($this->data['username']) && isset($this->data['password'])) {
-            $data = array(
-                'identity' => $this->data['username'],
-                'credential' => $this->data['password'],
-            );
+            if (isset($this->data['username']) && isset($this->data['password'])) {
+                $data = array(
+                    'identity' => $this->data['username'],
+                    'credential' => $this->data['password'],
+                );
 
-            $this->getRequest()->getPost()->set('identity', $data['identity']);
-            $this->getRequest()->getPost()->set('credential', $data['credential']);
+                $this->getRequest()->getPost()->set('identity', $data['identity']);
+                $this->getRequest()->getPost()->set('credential', $data['credential']);
 
-            $form = $this->getLoginForm();
+                $form = $this->getLoginForm();
 
-            $form->setData($data);
+                $form->setData($data);
 
-            if (!$form->isValid()) {
+                if (!$form->isValid()) {
+                    $responseJSON = array(
+                        "error" => 1,
+                        "result" => null,
+                        "message" => $this->translator->translate("Autentificare esuata! Parola si email-ul obligatorii!")
+                    );
+                } else {
+                    $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+                    $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+                    $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+                    $adapter->prepareForAuthentication($this->getRequest());
+                    $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
+
+                    if (!$auth->isValid()) {
+                        $adapter->resetAdapters();
+                        $responseJSON = array(
+                            "error" => 1,
+                            "result" => null,
+                            "message" => $this->translator->translate("Autentificare esuata! Email sau parola invalida!")
+                        );
+                    } else {
+                        $userObject = $this->getUserTable()->findByEmail($data['identity']);
+                        return $this->loggedOkUser($userObject);
+                    }
+                }
+            } else {
                 $responseJSON = array(
                     "error" => 1,
                     "result" => null,
                     "message" => $this->translator->translate("Autentificare esuata! Parola si email-ul obligatorii!")
                 );
-            } else {
-                $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-                $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-                $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
-                $adapter->prepareForAuthentication($this->getRequest());
-                $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
-
-                if (!$auth->isValid()) {
-                    $adapter->resetAdapters();
-                    $responseJSON = array(
-                        "error" => 1,
-                        "result" => null,
-                        "message" => $this->translator->translate("Autentificare esuata! Email sau parola invalida!")
-                    );
-                } else {
-                    $userObject = $this->getUserTable()->findByEmail($data['identity']);
-                    return $this->loggedOkUser($userObject);
-                }
             }
-        } else {
-            $responseJSON = array(
-                "error" => 1,
-                "result" => null,
-                "message" => $this->translator->translate("Autentificare esuata! Parola si email-ul obligatorii!")
-            );
+            return new JsonModel($responseJSON);
         }
-
-        return new JsonModel($responseJSON);
     }
 
     public function registerAction()

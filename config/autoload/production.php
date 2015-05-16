@@ -75,20 +75,19 @@ return array(
         ),
         'contactformto' => 'contact@tirbox.ro',
         'contactformcc' => array(
-//            'office@mindmagnetsoftware.com',
-//            'office@mindmagnet.ro',
+    //            'office@mindmagnetsoftware.com',
+    //            'office@mindmagnet.ro',
         ),
         'mandrill' => array(
             'key' => 'rQUJH3gglPTL_T4BmX6IuQ'
         )
     ),
     'site_names' => array(
-        'http'=>'http://tirbox.local',
+        'http'=>'http://www.tirbox.ro',
         'name' => 'Tirbox',
-        'cool_url' => 'tirbox.local',
-        'entity_zone' => 'http://tirbox.local/%1$s/%2$s',
-        'domain' => 'tirbox.local'
+        'cool_url' => 'www.tirbox.ro',
+        'entity_zone' => 'http://www.tirbox.ro/%1$s/%2$s',
+        'domain' => 'www.tirbox.ro'
     ),
-
     // ...
 );
