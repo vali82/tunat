@@ -126,7 +126,7 @@ class MyAccountController extends MyAbstractController
                     }
                     $DM->updateRow($this->myPark);
 
-                    $userDM = $this->getServiceLocator()->get('UserDataMapper');
+                    $userDM = $this->getServiceLocator()->get('zfcuser_user_mapper');
                     $userDM->findById($this->myUser->getId());
                     $this->myUser->setDisplayName($form->getInputFilter()->getValue('name2'));
                     $userDM->update($this->myUser);

@@ -1,25 +1,17 @@
 <?php
-namespace Application\Models\Zuser;
 
-//use Zend\Paginator\Paginator;
+namespace Application\Models\Zuser;
 
 use Application\Models;
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
-use Zend\Db\ResultSet\HydratingResultSet;
-use Zend\Stdlib\Hydrator\ClassMethods;
-use Zend\Db\TableGateway\TableGateway;
 use Zend\Paginator\Adapter as PaginatorAdapter;
 use Zend\Paginator as Paginator;
-
-use ZfcUser\Entity\User;
-use ZfcUser\Entity\UserInterface;
 
 use ZfcUser\Mapper\User as ZfcUserMapper;
 use Zend\Crypt\Password\Bcrypt;
 use ZfcUser\Options\ModuleOptions as ZfcUserModuleOptions;
-
 
 class UserDM extends ZfcUserMapper
 {
@@ -27,10 +19,11 @@ class UserDM extends ZfcUserMapper
     protected $_adapter;
     protected $_table_name = 'user';
     protected $_fields = array(
-        'user_id',
+        'id',
         'email',
         'password',
-        'state'
+        'state',
+        'hash_login'
     );
 
     public function __construct($adapter)
@@ -53,29 +46,12 @@ class UserDM extends ZfcUserMapper
     }
 
     /**
-     * @param int $id
-     *
-     * @return Models\User|null
-     */
-    public function fetchByDBId($id)
-    {
-        $results = $this->getTableGateway()->select(array('user_id' => (int)$id));
-        if (count($results) == 0) {
-            return null;
-        } elseif (count($results) > 1) {
-            return null;
-        } else {
-            return $results->current();
-        }
-    }
-
-    /**
      * @param string $hash
      * @return Models\User|null
      */
-    public function findByHash($hash)
+    public function findByHashLogin($hash)
     {
-        $results = $this->getTableGateway()->select(array('hash' => (string)$hash));
+        $results = $this->getTableGateway()->select(array('hash_login' => (string)$hash));
         if (count($results) == 0) {
             return null;
         } elseif (count($results) > 1) {
@@ -85,23 +61,7 @@ class UserDM extends ZfcUserMapper
         }
     }
 
-    /**
-     * @param string $email
-     * @return Models\User|null
-     */
-    public function fetchByEmail($email)
-    {
-        $results = $this->getTableGateway()->select(array('email' => (string)$email));
-        if (count($results) == 0) {
-            return null;
-        } elseif (count($results) > 1) {
-            return null;
-        } else {
-            return $results->current();
-        }
-    }
-
-    public function createRow(User $element)
+    /*public function createRow(User $element)
     {
         $insert = new \Zend\Db\Sql\Insert($this->_table_name);
 
@@ -130,7 +90,7 @@ class UserDM extends ZfcUserMapper
         $results = $statement->execute();
         $id = $results->getGeneratedValue();
         return $id;
-    }
+    }*/
 
     public function updateRow(User $element, $pass_modified = '')
     {
@@ -143,9 +103,9 @@ class UserDM extends ZfcUserMapper
             foreach ($x as $y) {
                 $fieldMethod .= ucfirst($y);
             }
-            if ($fieldMethod == 'getUserId') {
+            /*if ($fieldMethod == 'getUserId') {
                 $fieldMethod = 'getId';
-            }
+            }*/
             if (method_exists($element, $fieldMethod)) {
                 if ($field == 'password') {
                     if ($pass_modified != '') {
@@ -224,5 +184,4 @@ class UserDM extends ZfcUserMapper
         $bcrypt->setCost($this->getZfcModuleOptions()->getPasswordCost());
         return $bcrypt->create($password);
     }
-
 }

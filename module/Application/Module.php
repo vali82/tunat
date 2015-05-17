@@ -10,6 +10,7 @@
 namespace Application;
 
 use Application\libs\General;
+use Application\Models\Zuser\ForceLogin;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Validator\AbstractValidator;
@@ -30,18 +31,32 @@ class Module
         date_default_timezone_set($config['timezone']);
         \Locale::setDefault($config['translator']['locale']);
 
-        // for register via SNC
-        $e->getApplication()->getEventManager()->getSharedManager()->attach(
-            'ScnSocialAuth\Authentication\Adapter\HybridAuth',
-            'registerViaProvider.post',
-            function ($e) use ($serviceManager) {
-                // User account object
-                $user = $e->getParam('user');
-                $this->doThingsAfterRegisterSocial($serviceManager, $user);
-            }
-        );
-        ////
+        if ((!defined('_CRONJOB_') || _CRONJOB_ == false) && $serviceManager->get('AuthenticatedUserRole') == "guest") {
+            // for register via SNC
+            $e->getApplication()->getEventManager()->getSharedManager()->attach(
+                'ScnSocialAuth\Authentication\Adapter\HybridAuth',
+                'registerViaProvider.post',
+                function ($e) use ($serviceManager) {
+                    // User account object
+                    $user = $e->getParam('user');
+                    $this->doThingsAfterRegisterSocial($serviceManager, $user);
+                }
+            );
+            ////
 
+            // if cookie remember me
+            if (isset($_COOKIE['tbroacc']) && $_COOKIE['tbroacc'] != '') {
+                General::unsetSession('AuthenticatedUserRole');
+                // gasesc row-ul de user
+                $user = $serviceManager->get('UserDataMapper')->findByHashLogin($_COOKIE['tbroacc']);
+                // acesta e userObj
+                $userObj = $serviceManager->get('zfcuser_user_mapper')->findByEmail($user->getEmail());
+                // fortarea autentificarii
+                $serviceManager->get('zfcuser_auth_service')->authenticate(new ForceLogin($userObj));
+            }
+            ////
+
+        }
     }
 
     protected function doThingsAfterRegisterSocial($serviceManager, $user)

@@ -97,13 +97,8 @@ return array(
         }, */
 
         'UserDataMapper' => function (ServiceLocatorInterface $sm) {
-            $dm = new \ZfcUser\Mapper\User();
-
-            $dm->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
-            $zfcUserOptions = $sm->get('zfcuser_module_options');
-            $entityClass = $zfcUserOptions->getUserEntityClass();
-            $dm->setEntityPrototype(new $entityClass);
-            $dm->setHydrator(new UserHydrator());
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $dm = new \Application\Models\Zuser\UserDM($dbAdapter);
             return $dm;
         },
 

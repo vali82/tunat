@@ -10,6 +10,10 @@ return array(
         'roles' => array('guest')
     ),
     array(
+        'route' => 'home/logout',
+        'roles' => array('parcauto')
+    ),
+    array(
         'route' => 'home/afterlogin',
         'roles' => array('parcauto')
     ),
