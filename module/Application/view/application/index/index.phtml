@@ -4,46 +4,52 @@ $this->layout()->setVariable(
 );
 ?>
 <div id="categoryContainer" class="panel panel-default row">
-    <div class="col-md-2 col-sm-4 col-xs-4 category">
+    <div class="col-md-2 col-sm-2 col-xs-4 category">
         <a href="<?= $this->url('home/piese', ['categories' => 'camioane']) ?>">
             <img class="img-responsive" src="<?=$this->basePath() . '/img/camioane.png'?>"/>
             <span>Camioane</span>
         </a>
     </div>
-    <div class="col-md-2 col-sm-4 col-xs-4 category">
+    <div class="col-md-2 col-sm-2 col-xs-4 category">
         <a href="<?= $this->url('home/piese', ['categories' => 'dube']) ?>">
             <img class="img-responsive" src="<?=$this->basePath() . '/img/dube.png'?>"/>
             <span>Dube</span>
         </a>
     </div>
-    <div class="col-md-2 col-sm-4 col-xs-4 category">
+    <div class="col-md-2 col-sm-2 col-xs-4 category">
         <a href="<?= $this->url('home/piese', ['categories' => 'remorci']) ?>">
             <img class="img-responsive" src="<?=$this->basePath() . '/img/remorci.png'?>"/>
             <span>Remorci</span>
         </a>
     </div>
-    <div class="col-md-2 col-sm-4 col-xs-4 category">
+    <div class="col-md-2 col-sm-2 col-xs-4 category">
         <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-agricole']) ?>">
             <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-agricole.png'?>"/>
             <span>Utilaje Agricole</span>
         </a>
     </div>
-    <div class="col-md-2 col-sm-4 col-xs-4 category">
+    <div class="col-md-2 col-sm-2 col-xs-4 category">
         <a href="<?= $this->url('home/piese', ['categories' => 'autobuse']) ?>">
             <img class="img-responsive" src="<?=$this->basePath() . '/img/autobuse.png'?>"/>
             <span>Autobuse</span>
         </a>
     </div>
-    <div class="col-md-2 col-sm-4 col-xs-4 category">
+    <div class="col-md-2 col-sm-2 col-xs-4 category">
         <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-constructii']) ?>">
             <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-constructii.png'?>"/>
             <span>Utilaje Constructii</span>
         </a>
     </div>
 </div>
+
 <div class="row">
+    <div class="col-md-12 offer">
+        <span>Vrei sa primesti o oferta personaliazata completa? Cere-o acum!</span>
+        <button class="btn btn-danger"><a href="#">Cere oferta</a></button>
+    </div>
+    <h3 class="col-md-12 new">Cele mai noi anunturi</h3>
     <div class="col-md-9">
-        <div><?= $this->adList ?></div>
+        <?= $this->adList ?>
     </div>
     <div class="col-md-3">
        
