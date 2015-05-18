@@ -87,7 +87,7 @@ if ($role == 'parcauto') {
                     <div class="collapse navbar-collapse">
                         <div class="navbar-collapse collapse" id="navbar">
                             <ul class="nav navbar-nav navbar-right">
-                                <li>
+                                <li class="active">
                                     <a href="<?=$this->url('home')?>"><?php echo $this->translate('Acasa') ?></a>
                                 </li>
                                 <li>
@@ -253,10 +253,20 @@ if ($role == 'parcauto') {
         </div> <!-- /container -->
 
         <footer>
+            <div class="newsletter">
+                <p>
+                    <span>Aboneaza-te la newsletter</span>
+                    <span>Afla informatii despre oferte si partenerii nostri</span>
+                </p>
+                <form action="">
+                    <div class="form-group has-success has-feedback">
+                        <input type="text" class="form-control" name="adress" placeholder="Adresa de e-mail">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                </form>
+                <button class="btn btn-success btn-newsletter"><a href="#">Abonare</a></button>
+            </div>
             <div class="container">
-                <!-- <p class="text-muted">
-                    &copy; <?php echo date('Y') ?> by <a href="<?php echo $this->url('home') ?>">tirbox.ro</a>. <?php echo $this->translate('All rights reserved.') ?>
-                </p> -->
                 <div class="row">
                     <div class="col-md-2 col-sm-2 logo">
                         <img src="<?=$this->basePath() . '/img/logo-footer.png'?>" />
@@ -285,8 +295,8 @@ if ($role == 'parcauto') {
                     <div class="col-md-3 col-sm-4 mobile-app">
                         <h3>Descarca aplicatia</h3>
                         <ul>
-                            <li><a href="#"><img src="<?=$this->basePath() . '/img/google-play.png'?>"/></a></li>
-                            <li><a href="#"><img src="<?=$this->basePath() . '/img/app-store.png'?>"/></a></li>
+                            <li class="ggl-play"><a href="#"></a></li>
+                            <li class="app-store"><a href="#"></a></li>
                         </ul>
                     </div>
                     <div class="col-md-3 col-sm-12 social-media">

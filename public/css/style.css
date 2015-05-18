@@ -22,8 +22,8 @@ nav.navbar-inverse{
     text-shadow: none;
 }
 
-.navbar-inverse .navbar-nav li a:hover{
-    color: #f9c924;
+.navbar-inverse .navbar-nav li a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #243045;
 }
 
 nav .container{
@@ -49,27 +49,32 @@ ul.navbar-right{
 }
 .navbar-inverse .navbar-nav  a.add-offer{
     background-image: none;
-    padding: 14px 20px;
+    padding: 14px 45px;
     color: #fff;
     font-weight: 500;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-    background: rgb(251,203,35); /* Old browsers */
-    background: -moz-linear-gradient(top, rgba(251,203,35,1) 0%, rgba(237,193,39,1) 100%, rgba(125,185,232,1) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(251,203,35,1)), color-stop(100%,rgba(237,193,39,1)), color-stop(100%,rgba(125,185,232,1))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* IE10+ */
-    background: linear-gradient(to bottom, rgba(251,203,35,1) 0%,rgba(237,193,39,1) 100%,rgba(125,185,232,1) 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbcb23', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+    background-image: linear-gradient(to bottom, #fbcb23 0px, #edc127 100%);
     -moz-box-shadow: inset 0 -2px 0 0  rgba(209, 176, 19, 0.57);
-    -webkit-box-shadow: inset 0 -2px 0 0p rgba(209, 176, 19, 0.57);
+    -webkit-box-shadow: inset 0 -2px 0 0 rgba(209, 176, 19, 0.57);
     box-shadow: inset 0 -2px 0 0  rgba(209, 176, 19, 0.57);
+    background-color: #edc127;
+    background-repeat: repeat-x;
 }
-
+.navbar-nav > li > a{
+    padding-bottom: 14px;
+    padding-top: 14px;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {
+    background-color: #243045;
+    color: #fff;
+    background-image: linear-gradient(to bottom, #243045 0px, #0f0f0f 100%);
+    background-repeat: repeat-x;
+}
 .navbar-inverse .navbar-nav  a.add-offer:hover{
-    color: #a2a3a5;
+    background-color: #edc127;
+    background-position: 0 -15px;
+    color: #fff;
 }
-
 /*banner homepage*/
 
 .banner{
@@ -207,6 +212,41 @@ li.displayOnMobile {
     padding-top: 0;
     padding-bottom: 0;
 }
+.offer span{
+    font: 22px/50px 'Ubuntu', sans-serif;
+    padding-left: 71px;
+    position: relative;
+    color: #243045;
+
+}
+.offer span:before{
+    content:"";
+    width: 51px;
+    height: 55px;
+    background: url(../img/list-icon.png) no-repeat;
+    position: absolute;
+    left: 0;
+    top: -50%;
+}
+.offer button{
+    float: right;
+    border-radius: 0;
+    padding: 12px 73px;
+    box-shadow: inset 0 -2px 0 0  rgba(162, 46, 46, 0.9);
+    -moz-box-shadow: inset 0 -2px 0 0  rgba(162, 46, 46, 0.9);
+    -webkit-box-shadow: inset 0 -2px 0 0 rgba(162, 46, 46, 0.9);
+}
+.offer button a{
+    color: #fff;
+    font: 500 18px/24px 'Ubuntu', sans-serif;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.43);
+}
+h3.new{
+    color: #545454;
+    font: 300 22px/28px 'Ubuntu', sans-serif;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
 .announcement.panel{
     padding: 15px 17px;
     margin-left: 0;
@@ -227,6 +267,7 @@ li.displayOnMobile {
     font: 500 19px/25px 'Ubuntu', sans-serif; 
     color: #243045;
     line-height: 6.8;
+    text-align: right;
 }
 .announcement .picture{
     padding: 0;
@@ -251,8 +292,92 @@ li.displayOnMobile {
 
 footer{
     background-color: #243045;
-    padding-top: 40px;
     padding-bottom: 60px;
+    margin-top: 50px;
+}
+footer .container{
+    padding-top: 40px;
+}
+.newsletter{
+    background-color: #fff;
+    padding: 22px 138px 13px;
+    overflow: hidden;
+}
+.newsletter p{
+    float: left;
+    text-align: right;
+}
+.newsletter p span:first-child{
+    font-size: 22px;
+    color: #424242;
+}
+.newsletter span{
+    display: block;
+    color: #9b9a9a;
+    font-size: 14px;
+}
+.newsletter .form-group{
+    float: left;
+    margin-right: 10px;
+    margin-left: 80px;
+}
+.newsletter .form-control{
+    border-radius: 0;
+    border-color: #dfdede;
+    height: 47px;
+    min-width: 370px;
+    padding-left: 42.5px;
+}
+.has-success span.form-control-feedback{
+    left: 0;
+    color: #989696;
+    top: 7px;
+}
+.form-control::-webkit-input-placeholder {
+   color: #c5c5c5;
+   font-size: 17px;
+   font-weight: 300;
+}
+
+.form-control:-moz-placeholder { /* Firefox 18- */
+   color: #c5c5c5;
+   font-size: 17px;
+   font-weight: 300;  
+}
+
+.form-control::-moz-placeholder {  /* Firefox 19+ */
+   color: #c5c5c5;
+   font-size: 17px;
+   font-weight: 300; 
+}
+
+.form-control:-ms-input-placeholder {  
+   color: #c5c5c5;
+   font-size: 17px;
+   font-weight: 300;  
+}
+.has-success .form-control:focus {
+    border-color: #989696;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #989696;
+}
+.btn-success.btn-newsletter{
+    float: left;
+    padding: 13px 43px;
+    border: 0;
+    border-radius: 0;
+    background-image: linear-gradient(to bottom, #63c848 0px, #5cb943 100%);
+    box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
+}
+.btn-success.btn-newsletter a{
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 20px
+}
+.btn-success:focus, .btn-success:hover {
+    background-color: #5cb943 ;
 }
 .social-media li{
     display: inline-block;
@@ -270,7 +395,7 @@ footer{
     height: 100%;
 
 }
-.social-media li.fb a{
+/*.social-media li.fb a{
     background-position: 0 0; 
 }
 .social-media li.tw a{
@@ -281,6 +406,23 @@ footer{
 }
 .social-media li.google a{
     background-position: 36px 0;;
+}*/
+.mobile-app .ggl-play a{
+    background-image: url(../img/google-play.png);
+    width: 121px;
+    height: 41px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    display: block;
+    margin-bottom: 10px;
+}
+.mobile-app .app-store a{
+    background-image: url(../img/app-store.png);
+    width: 121px;
+    height: 41px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    display: block;  
 }
 .info h3, .info2 h3, .mobile-app h3, .social-media h3{
     font: 300 22px/28px 'Ubuntu', sans-serif;
@@ -290,4 +432,57 @@ footer{
 .info a, .info2 a, .mobile-app a, .social-media a{
     color: #a2aec2;
     font: 300 13px/19px 'Ubuntu', sans-serif;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*responsive design*/
+@media screen and (max-width: 1200px){
+
+}
+
+@media screen and (max-width: 1024px){
+    .navbar-inverse .navbar-nav  a.add-offer{
+        padding: 14px 20px;
+    }
+}
+@media screen and (max-width: 980px){
+   
+}
+@media screen and (max-width: 756px){
+    /*#categoryContainer{
+        width: 75%;
+    }
+    .category a{
+        padding: 12px 0;
+        font-size: 15px;
+    }*/
+    .banner-text{
+        width: 75%;
+    }
+    .banner-text span{
+        font-size: 20px;
+        line-height: 26px;
+    }
+    .banner-text span:first-child{
+        font-size: 30px;
+        line-height: 36px;
+    }
+}
+@media screen and (max-width: 640px){
+   
+}
+@media screen and (max-width: 480px){
+   
+}
+@media screen and (max-width: 320px){
+   
 }
