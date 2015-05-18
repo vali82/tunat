@@ -21,6 +21,7 @@ use Application\Models\Zuser as Zuser;
 use Zend\Form\Form as ZendForm;
 
 
+use Zend\Http\Header\SetCookie;
 use Zend\Http\Response;
 use Zend\View\Model\JsonModel;
 
@@ -39,7 +40,7 @@ class LoginRegisterController extends MyAbstractController
     {
         if (!$this->userTable) {
             $sm = $this->getServiceLocator();
-            $this->userTable = $sm->get('UserDataMapper');
+            $this->userTable = $sm->get('zfcuser_user_mapper');
         }
         return $this->userTable;
     }
@@ -197,7 +198,7 @@ class LoginRegisterController extends MyAbstractController
 
                     // update PASS
                     $userForgotPassDM->deleteOne($userForgotPass);
-                    $userDataMapper = new Zuser\UserDM($this->adapter);
+                    $userDataMapper = $this->getServiceLocator()->get('UserDataMapper');
                     $userDataMapper->updateRow($userObj, $newpass);
 
 
@@ -290,6 +291,19 @@ class LoginRegisterController extends MyAbstractController
                         );
                     } else {
                         $userObject = $this->getUserTable()->findByEmail($data['identity']);
+
+                        // remember me
+                        if (isset($this->data['rememberme']) && $this->data['rememberme'] == 1) {
+                            $hash = md5('asd'.time() . $userObject->getId());
+
+                            $userObject->setHashLogin($hash);
+                            $this->getUserTable()->update($userObject);
+
+                            $cookie = new SetCookie('tbroacc', $hash, time() + 14 * 60 * 60 * 24); // now + 2 weeks
+                            $response = $this->getResponse()->getHeaders();
+                            $response->addHeader($cookie);
+                        }
+                        ////
                         return $this->loggedOkUser($userObject);
                     }
                 }
@@ -400,5 +414,18 @@ class LoginRegisterController extends MyAbstractController
             return $this->redirect()->toRoute('home');
         }
 
+    }
+
+    public function logoutAction()
+    {
+        $headers = $this->getResponse()->getHeaders();
+        $cookie = $this->getRequest()->getCookie();
+        if ($cookie->offsetExists('tbroacc')) {
+            $new_cookie= new SetCookie('tbroacc', '');//<---empty value and the same 'name'
+            $new_cookie->setExpires((time() - 14 * 60 * 60 * 24));
+            $headers->addHeader($new_cookie);
+        }
+
+        $this->redirect()->toRoute('zfcuser/logout');
     }
 }

@@ -283,7 +283,10 @@ $.general = function() {
                         ,
                         password: afterRegister ?
                             $('#globalRegisterFieldPass').val() :
-                            $('#globalLoginFieldPass').val()
+                            $('#globalLoginFieldPass').val(),
+                        rememberme: afterRegister ? 0 : (
+                            $('#globalLoginFieldRemember').is(':checked') ? 1 : 0
+                        )
 
                     }
                 },

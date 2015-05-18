@@ -12,6 +12,16 @@ return [
             ),
         ),
     ),
+    'logout' => array(
+        'type' => 'Literal',
+        'options' => array(
+            'route'    => 'logout',
+            'defaults' => array(
+                'controller' => 'Application\Controller\LoginRegister',
+                'action'     => 'logout',
+            ),
+        ),
+    ),
     'afterlogin' => array(
         'type' => 'Literal',
         'options' => array(
