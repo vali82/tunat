@@ -8,8 +8,8 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
 
 if ($role == 'parcauto') {
-    $myPark = \Application\libs\General::getFromSession('myPark');
-    $name = $myPark->getName();
+    $myAdvertiserObj = \Application\libs\General::getFromSession('myAdvertiserObj');
+    $name = $myAdvertiserObj->getName();
 } else {
     $name = $user !== null ? $user->getEmail() : '';
 }
@@ -87,7 +87,7 @@ if ($role == 'parcauto') {
                     <div class="collapse navbar-collapse">
                         <div class="navbar-collapse collapse" id="navbar">
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="active">
+                                <li>
                                     <a href="<?=$this->url('home')?>"><?php echo $this->translate('Acasa') ?></a>
                                 </li>
                                 <li>
@@ -104,12 +104,8 @@ if ($role == 'parcauto') {
                                         <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
                                     </li>
                                 <?php } else { ?>
-                                    <li class="<?=($this->myAccountMenu['active'] === 'myaccount' ? ' active' : '')?>">
-                                        <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
-                                    </li>
-                                    <li role="" class="displayOnMobile<?=($this->myAccountMenu['active'] === 'addad' ? ' active' : '')?>">
-                                        <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
-                                    </li>
+                                    <li><a href="<?=$this->url('home/myAccount')?>">Contul meu</a></li>
+                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a></li>
                                     <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
                                     <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
                                     <li class="displayOnMobile">

@@ -16,7 +16,7 @@ use Application\Mail\MailGeneral;
 use Application\Models\Ads\Ad;
 use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
-use Application\Models\Autoparks\ParksDM;
+use Application\Models\Advertiser\AdvertiserDM;
 use Application\Models\Cars\CarsCollection;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -34,7 +34,7 @@ class AdController extends MyAbstractController
 
         if ($option == '' && $this->getRequest()->isPost()) {
             return $this->uploadAdImages(
-                $this->myPark->getId(),
+                $this->myAdvertiserObj->getId(),
                 $this->myUser->getEmail(),
                 ['ads', General::getFromSession('adTmpId')],
                 ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
@@ -43,13 +43,13 @@ class AdController extends MyAbstractController
         }
         if ($this->getRequest()->isGet()) {
             return  $this->uploadAdGetUploaded(
-                $this->myPark->getId(),
+                $this->myAdvertiserObj->getId(),
                 $this->myUser->getEmail(),
                 ['ads', General::getFromSession('adTmpId')]
             );
         }
         if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
-            return $this->deleteAdImages($this->myPark->getId(), $this->myUser->getEmail());
+            return $this->deleteAdImages($this->myAdvertiserObj->getId(), $this->myUser->getEmail());
         }
         exit;
     }
@@ -81,7 +81,7 @@ class AdController extends MyAbstractController
             $adDM = new AdDM($this->adapter);
             $resourceObj = $adDM->fetchOne([
                 'id' => $id,
-                'park_id' => $this->myPark->getId()
+                'advertiser_id' => $this->myAdvertiserObj->getId()
             ]);
             if ($resourceObj === null) {
                 $this->flashMessenger()->addErrorMessage('A aparut o eroare! Anunt invalid!');
@@ -108,7 +108,7 @@ class AdController extends MyAbstractController
             $resourceObj = new Ad();
         }
 
-        $file_path = PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/'. $adTmpId . '/' ;
+        $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/'. $adTmpId . '/' ;
 
         $form = new AdForm();
         $form->setCancelRoute('back');
@@ -117,7 +117,7 @@ class AdController extends MyAbstractController
 
         $form->bind($resourceObj);
 
-        $resourceObj->setParkId($this->myPark->getId());
+        $resourceObj->setAdvertiserId($this->myAdvertiserObj->getId());
 
         if ($request->isPost()) {
             $filter = new AdFilter();
@@ -158,7 +158,7 @@ class AdController extends MyAbstractController
 
 
                     if ($adId && is_dir($file_path)) {
-                        rename($file_path, PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/' . $adId . '/');
+                        rename($file_path, PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/' . $adId . '/');
                     }
                     $this->flashMessenger()->addSuccessMessage('Anuntul a fost adaugat cu success!');
 
@@ -242,12 +242,12 @@ class AdController extends MyAbstractController
             /** @var $adObj \Application\Models\Ads\Ad*/
             $adObj = $adDM->fetchOne([
                 'id' => $id,
-                'park_id' => $this->myPark->getId()
+                'advertiser_id' => $this->myAdvertiserObj->getId()
             ]);
             if ($adObj !== null) {
                 if ($mode == 'delete') {
                     $adDM->deleteOne($adObj);
-                    $file_path = PUBLIC_IMG_PATH . $this->myPark->getId() . '/ads/' . $id;
+                    $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/' . $id;
                     foreach (glob($file_path . "/*") as $filefound) {
                         @unlink($filefound);
                     }
@@ -429,15 +429,15 @@ class AdController extends MyAbstractController
             'id' => $id,
             'status' => 'ok'
         ]);
-        $parkObj = null;
+        $advertiserObj = null;
         if ($adObj !== null) {
-            $parkDM = new ParksDM($this->getAdapter());
-            /** @var $parkObj \Application\Models\Autoparks\Park */
-            $parkObj = $parkDM->fetchOne($adObj->getParkId());
+            $advertiserDM = new AdvertiserDM($this->getAdapter());
+            /** @var $advertiserObj \Application\Models\Advertiser\Advertiser */
+            $advertiserObj = $advertiserDM->fetchOne($adObj->getAdvertiserId());
 
             // count number of view contacts
-            if ($this->myPark === null ||
-                $this->myPark->getId() !== $adObj->getParkId()) {
+            if ($this->myAdvertiserObj === null ||
+                $this->myAdvertiserObj->getId() !== $adObj->getAdvertiserId()) {
                 $adObj->setContactDisplayed($adObj->getContactDisplayed() + 1);
                 $adDM->updateRow($adObj);
             }
@@ -446,15 +446,15 @@ class AdController extends MyAbstractController
 
 
         return new JsonModel([
-            'error' => $parkObj !== null ? 0 : 1,
-            'result' =>  $parkObj !== null ? [
-                'name' => $parkObj->getName(),
-                'tel1' => $parkObj->getTel1(),
-                'email' => $parkObj->getEmail(),
-                'url' => $parkObj->getUrl(),
-                'location' => $parkObj->generateLocation()
+            'error' => $advertiserObj !== null ? 0 : 1,
+            'result' =>  $advertiserObj !== null ? [
+                'name' => $advertiserObj->getName(),
+                'tel1' => $advertiserObj->getTel1(),
+                'email' => $advertiserObj->getEmail(),
+                'url' => $advertiserObj->getUrl(),
+                'location' => $advertiserObj->generateLocation()
             ] : null,
-            'message' => $parkObj !== null ? '' : 'Datele de contact nu au fost gasite',
+            'message' => $advertiserObj !== null ? '' : 'Datele de contact nu au fost gasite',
         ]);
     }
 

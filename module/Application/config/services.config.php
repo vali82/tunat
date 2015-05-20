@@ -36,31 +36,31 @@ return array(
             return $user;
         },
 
-        'AutoPark' => function (ServiceLocatorInterface $sm) {
-            $park = General::getFromSession('myPark');
-            if ($park === null) {
+        'AdvertiserObj' => function (ServiceLocatorInterface $sm) {
+            $advertiser = General::getFromSession('myAdvertiserObj');
+            if ($advertiser === null) {
                 $auth = $sm->get('zfcuser_auth_service');
                 $user = $auth->getIdentity();
                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                $dm = new \Application\Models\Autoparks\ParkUsersDM($dbAdapter);
-                $parkUsers = $dm->fetchResultsArray(['user_id' => $user->getId()]);
-                $x = array_values($parkUsers)[0];
-                $dm = new \Application\Models\Autoparks\ParksDM($dbAdapter);
-                $park = $dm->fetchOne($x['park_id']);
-                General::addToSession('myPark', $park !== null ? $park : false);
+                $dm = new \Application\Models\Advertiser\AdvertiserUsersDM($dbAdapter);
+                $advertiserUsers = $dm->fetchResultsArray(['user_id' => $user->getId()]);
+                $x = array_values($advertiserUsers)[0];
+                $dm = new \Application\Models\Advertiser\AdvertiserDM($dbAdapter);
+                $advertiser = $dm->fetchOne($x['advertiser_id']);
+                General::addToSession('myAdvertiserObj', $advertiser !== null ? $advertiser : false);
             }
-            return $park;
+            return $advertiser;
         },
 
-        'AutoParkUserDM'  => function (ServiceLocatorInterface $sm) {
+        'AdvertiserUserDM'  => function (ServiceLocatorInterface $sm) {
             $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-            $dm = new \Application\Models\Autoparks\ParkUsersDM($dbAdapter);
+            $dm = new \Application\Models\Advertiser\AdvertiserUsersDM($dbAdapter);
             return $dm;
         },
 
-        'AutoParkDM' => function (ServiceLocatorInterface $sm) {
+        'AdvertiserDM' => function (ServiceLocatorInterface $sm) {
             $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-            $dm = new \Application\Models\Autoparks\ParksDM($dbAdapter);
+            $dm = new \Application\Models\Advertiser\AdvertiserDM($dbAdapter);
             return $dm;
         },
 

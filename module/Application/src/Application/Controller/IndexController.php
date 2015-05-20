@@ -9,6 +9,7 @@
 
 namespace Application\Controller;
 
+use Application\Forms\ContactForm;
 use Application\libs\General;
 use Application\Models\Ads\Ad;
 use Application\Models\Ads\AdCollection;
@@ -23,8 +24,6 @@ class IndexController extends MyAbstractController
     public function indexAction()
     {
         $ad = new AdCollection($this);
-
-//        General::echop($this->myUser);
 
         return [
             'adList' => $ad->adListHTML([
@@ -45,6 +44,17 @@ class IndexController extends MyAbstractController
 
     public function contactAction()
     {
-        return [];
+        $form = new ContactForm();
+//        $form->setCancelRoute('back');
+        $form->contact();
+
+        $request = $this->getRequest();
+
+        if ($request->isPost()) {
+
+        }
+        return [
+            'form' => $form
+        ];
     }
 }

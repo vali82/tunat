@@ -4,7 +4,10 @@ namespace Application\Models\Ads;
 
 use Application\Models\DataMapper;
 use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
+use Zend\Paginator\Adapter as PaginatorAdapter;
+use Zend\Paginator as Paginator;
 
 class AdDM extends DataMapper {
 
@@ -15,7 +18,7 @@ class AdDM extends DataMapper {
         $this->table_name = 'ads';
 
         $this->fields = array(
-            'park_id',
+            'advertiser_id',
             'car_category',
             'car_make',
             'car_model',
@@ -32,7 +35,8 @@ class AdDM extends DataMapper {
             'views',
             'contact_displayed',
             'expiration_date',
-            'stare'
+            'stare',
+            'code_oem'
         );
 
         /*$this->_primary_key_update = array('id');

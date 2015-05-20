@@ -14,7 +14,7 @@ use Application\Forms\MyAccountForm;
 use Application\libs\General;
 use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
-use Application\Models\Autoparks\ParksDM;
+use Application\Models\Advertiser\AdvertiserDM;
 use Application\Models\Cars\CarsCollection;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model\JsonModel;
@@ -28,7 +28,7 @@ class MyAccountController extends MyAbstractController
             'active' => 'myaccount'
         ]);
         return [
-            'myPark' => $this->myPark,
+            'myAdvertiserObj' => $this->myAdvertiserObj,
             'myUser' => $this->myUser
         ];
     }
@@ -49,7 +49,7 @@ class MyAccountController extends MyAbstractController
         $form = new MyAccountForm();
         $form->setCancelRoute('back');
         $form->changeMyAccount($states);
-        $form->bind($this->myPark);
+        $form->bind($this->myAdvertiserObj);
 
         if ($request->isPost()) {
             $filter = new MyAccountFilter();
@@ -62,21 +62,21 @@ class MyAccountController extends MyAbstractController
             if ($form->isValid()) {
                 if (isset($_FILES['imagefile']) && $_FILES['imagefile']['name'] !== '') {
                     $uploadResponse = $this->uploadAdImages(
-                        $this->myPark->getId(),
-                        $this->myPark->getEmail(),
+                        $this->myAdvertiserObj->getId(),
+                        $this->myAdvertiserObj->getEmail(),
                         ['logo'],
                         ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
                         2 * 1024 * 1024
                     );
                     if ($uploadResponse instanceof JsonModel) {
                         $file_name = $uploadResponse->getVariable('files')[0]['nameDisk'];
-                        $file_path = PUBLIC_IMG_PATH . $this->myPark->getId() . '/logo';
+                        $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/logo';
                         foreach (glob($file_path . "/*") as $filefound) {
                             if (strpos($filefound, $file_name) === false) {
                                 @unlink($filefound);
                             }
                         }
-                        $this->myPark->setLogo($file_name);
+                        $this->myAdvertiserObj->setLogo($file_name);
 
                     } else {
                         $form->setMessages(array(
@@ -90,7 +90,7 @@ class MyAccountController extends MyAbstractController
                 }
 
 
-                if ($this->myPark->getAccountType() == 1) {
+                if ($this->myAdvertiserObj->getAccountType() == 1) {
                     if ($form->getInputFilter()->getValue('name') === '') {
                         $form->setMessages(array(
                             'name' => array(
@@ -113,18 +113,18 @@ class MyAccountController extends MyAbstractController
                 }
 
                 if (!$error) {
-                    $DM = new ParksDM($this->adapter);
-                    if ($this->myPark->getAccountType() == 1) {
-                        $this->myPark->setAccountType('parc-auto');
+                    $DM = new AdvertiserDM($this->adapter);
+                    if ($this->myAdvertiserObj->getAccountType() == 1) {
+                        $this->myAdvertiserObj->setAccountType('parc-auto');
                     } else {
-                        $this->myPark
+                        $this->myAdvertiserObj
                             ->setName($form->getInputFilter()->getValue('name2'))
                             ->setUrl('')
                             ->setDescription('')
                         ;
-                        $this->myPark->setAccountType('particular');
+                        $this->myAdvertiserObj->setAccountType('particular');
                     }
-                    $DM->updateRow($this->myPark);
+                    $DM->updateRow($this->myAdvertiserObj);
 
                     $userDM = $this->getServiceLocator()->get('zfcuser_user_mapper');
                     $userDM->findById($this->myUser->getId());
@@ -134,25 +134,25 @@ class MyAccountController extends MyAbstractController
                     $this->flashMessenger()->addSuccessMessage(
                         $this->translator->translate('Contul tau a fost modificat cu success')
                     );
-                    General::unsetSession('myPark');
+                    General::unsetSession('myAdvertiserObj');
                     General::unsetSession('myUser');
                     return $this->redirect()->toRoute('home/myAccount');
                 }
 
             } else {
                 $form->populateValues(array(
-                    'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
-                        ($this->myPark->getLogo() !== '' ?
+                    'imagefile' => '<img src="' . $this->myAdvertiserObj->generateAvatar('100x100') . '" />'.
+                        ($this->myAdvertiserObj->getLogo() !== '' ?
                             '<br /><a href="javascript:;" style="display: block; margin-bottom: 10px;" onclick="'.$urlRemoveLogo.'"><span class="glyphicon glyphicon-trash"></span> sterge logo</a>' : '')
                 ));
             }
 
         } else {
             $form->populateValues(array(
-                'imagefile' => '<img src="' . $this->myPark->generateAvatar('100x100') . '" />'.
-                    ($this->myPark->getLogo() !== '' ?
+                'imagefile' => '<img src="' . $this->myAdvertiserObj->generateAvatar('100x100') . '" />'.
+                    ($this->myAdvertiserObj->getLogo() !== '' ?
                         '<br /><a href="javascript:;" style="display: block; margin-bottom: 10px;" onclick="'.$urlRemoveLogo.'"><span class="glyphicon glyphicon-trash"></span> sterge logo</a>' : ''),
-                'account_type' => $this->myPark->getAccountType() === 'particular' ? 0 : 1,
+                'account_type' => $this->myAdvertiserObj->getAccountType() === 'particular' ? 0 : 1,
                 'name2' => $this->myUser->getDisplayName()
             ));
         }
@@ -172,16 +172,16 @@ class MyAccountController extends MyAbstractController
         $token = $this->getEvent()->getRouteMatch()->getParam('token', '');
 
         if ($token == General::getFromSession('token')) {
-            $DM = new ParksDM($this->adapter);
+            $DM = new AdvertiserDM($this->adapter);
 
-            $this->getEvent()->getRouteMatch()->setParam('name', $this->myPark->getLogo());
-            $this->getEvent()->getRouteMatch()->setParam('folder', $this->myPark->getId() . 'xlogo');
+            $this->getEvent()->getRouteMatch()->setParam('name', $this->myAdvertiserObj->getLogo());
+            $this->getEvent()->getRouteMatch()->setParam('folder', $this->myAdvertiserObj->getId() . 'xlogo');
 
-            $responseJson = $this->deleteAdImages($this->myPark->getId(), $this->myPark->getEmail());
-            $this->myPark
+            $responseJson = $this->deleteAdImages($this->myAdvertiserObj->getId(), $this->myAdvertiserObj->getEmail());
+            $this->myAdvertiserObj
                 ->setLogo('')
             ;
-            $DM->updateRow($this->myPark);
+            $DM->updateRow($this->myAdvertiserObj);
 
             $messageSuccess = 'Logo-ul a fost sters';
         } else {

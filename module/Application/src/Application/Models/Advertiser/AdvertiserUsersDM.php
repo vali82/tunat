@@ -1,22 +1,22 @@
 <?php
 
-namespace Application\Models\Autoparks;
+namespace Application\Models\Advertiser;
 
 use Application\Models\DataMapper;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Sql;
 
-class ParkUsersDM extends DataMapper
+class AdvertiserUsersDM extends DataMapper
 {
     public function __construct($adapter)
     {
         $this->adapter = $adapter;
         $this->model = null;
-        $this->table_name = 'autopark_users';
+        $this->table_name = 'advertiser_users';
 
         $this->fields = array(
             'user_id',
-            'park_id',
+            'advertiser_id',
         );
 
         /*$this->_primary_key_update = array('id');
@@ -24,13 +24,13 @@ class ParkUsersDM extends DataMapper
 
     }
 
-    public function createFromArray($user_id, $park_id)
+    public function createFromArray($user_id, $advertiser_id)
     {
         $insert = new Insert($this->table_name);
 
         $values = array(
             'user_id' => $user_id,
-            'park_id' => $park_id
+            'advertiser_id' => $advertiser_id
         );
         $insert->values($values);
         $sql = new Sql($this->adapter);
@@ -39,6 +39,4 @@ class ParkUsersDM extends DataMapper
 
         return $results->getGeneratedValue();
     }
-
-
 }

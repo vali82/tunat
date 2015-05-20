@@ -4,7 +4,7 @@ namespace Application\Models\Ads;
 
 use Application\libs\General;
 use Application\Mail\MailGeneral;
-use Application\Models\Autoparks\ParksDM;
+use Application\Models\Advertiser\AdvertiserDM;
 use Application\Models\Cars\CarsCollection;
 use Application\Models\DataMapper;
 use Application\Models\Newsletter\NewsletterCollection;
@@ -53,7 +53,7 @@ class AdCollection
 
             $ads = $adDM->fetchAllDefault(
                 [
-                    'park_id' => $this->controller->getMyPark()->getId(),
+                    'advertiser_id' => $this->controller->getMyAdvertiserObj()->getId(),
                     'status' => $param['status']
                 ],
                 ['dateadd' => 'DESC']
@@ -104,6 +104,15 @@ class AdCollection
                 ];
             }
 
+            // inner join Advertiser
+            $adDM->setJoins([
+                'advertiser' => [
+                    'name' => array('ap' => 'advertiser'),
+                    'on' => 'ap.id = ads.advertiser_id',
+                    'columns' => array('state_id' => 'state'),
+                    'type' => 'inner'
+                ]
+            ]);
 
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
@@ -127,7 +136,7 @@ class AdCollection
                 $content.= $partial('application/ad/partials/'.$ad_in_list.'.phtml',
                     [
                         'imgSrc' => General::getSimpleAvatar(
-                            $ad->getParkId() . 'xadsx'.$ad->getId(),
+                            $ad->getAdvertiserId() . 'xadsx'.$ad->getId(),
                             (count($adImg) > 0 ? $adImg[0] : ''),
                             '100x100'
                         ),
@@ -145,7 +154,8 @@ class AdCollection
                         'token' => isset($param['token']) ? $param['token'] : '',
                         'views' => $ad->getViews(),
                         'contactDisplayed' => $ad->getContactDisplayed(),
-                        'expirationDate' => General::DateTime($ad->getExpirationDate(), 'LONG')
+                        'expirationDate' => General::DateTime($ad->getExpirationDate(), 'LONG'),
+                        'state_id' => $ad->getStateId()
                     ]
                 );
             }
@@ -172,16 +182,16 @@ class AdCollection
         ]);
         if ($adObj !== null) {
             // increment view counter
-            if ($this->controller->getMyPark() === null ||
-                $this->controller->getMyPark()->getId() !== $adObj->getParkId()) {
+            if ($this->controller->getMyAdvertiserObj() === null ||
+                $this->controller->getMyAdvertiserObj()->getId() !== $adObj->getAdvertiserId()) {
                 $adObj->setViews($adObj->getViews() + 1);
                 $adDM->updateRow($adObj);
             }
             ////
 
-            $parkDM = new ParksDM($this->controller->getAdapter());
-            /** @var $parkObj \Application\Models\Autoparks\Park*/
-            $parkObj = $parkDM->fetchOne($adObj->getParkId());
+            $advertiserDM = new AdvertiserDM($this->controller->getAdapter());
+            /** @var $advertiserObj \Application\Models\Advertiser\Advertiser*/
+            $advertiserObj = $advertiserDM->fetchOne($adObj->getAdvertiserId());
 
             $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
 
@@ -192,18 +202,18 @@ class AdCollection
                     'application/ad/view-ad.phtml',
                     [
                         'imgSrc' => General::getSimpleAvatar(
-                            $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                            $adObj->getAdvertiserId() . 'xadsx'.$adObj->getId(),
                             (count($adImgs) > 0 ? $adImgs[0] : ''),
                             '300x300'
                         ),
                         'imgSrcBig' => General::getSimpleAvatar(
-                            $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                            $adObj->getAdvertiserId() . 'xadsx'.$adObj->getId(),
                             (count($adImgs) > 0 ? $adImgs[0] : ''),
                             '2000x2000'
                         ),
                         'images' => $adImgs,
                         'id' => $adObj->getId(),
-                        'folder' => $adObj->getParkId() . 'xadsx'.$adObj->getId(),
+                        'folder' => $adObj->getAdvertiserId() . 'xadsx'.$adObj->getId(),
                         'title' => $adObj->getPartName(),
                         'description' => $adObj->getDescription(),
                         'stare' => $adObj->getStare(),
@@ -213,12 +223,12 @@ class AdCollection
     //                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
                             'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']
                         ],
-                        'park' => [
-                            'name' => $parkObj->getName(),
-                            'tel1' => $parkObj->getTel1(),
-                            'email' => $parkObj->getEmail(),
-                            'url' => $parkObj->getUrl(),
-                            'location' => $parkObj->generateLocation()
+                        'advertiser' => [
+                            'name' => $advertiserObj->getName(),
+                            'tel1' => $advertiserObj->getTel1(),
+                            'email' => $advertiserObj->getEmail(),
+                            'url' => $advertiserObj->getUrl(),
+                            'location' => $advertiserObj->generateLocation()
                         ],
                         'status' => $adObj->getStatus()
                     ]
@@ -250,32 +260,32 @@ class AdCollection
             'expiration_date' => DataMapper::expression(
                 'expiration_date < "'.General::DateTime().'"'
             )
-        ], null, [1, $limit], 'park_id');
+        ], null, [1, $limit], 'advertiser_id');
 
         if ($ads !== null) {
             foreach ($ads as $adObj) {
-                $parkDM = new ParksDM($this->controller->getAdapter());
-                $parkObj = $parkDM->fetchOne($adObj->getParkId());
+                $advertiserDM = new AdvertiserDM($this->controller->getAdapter());
+                $advertiserObj = $advertiserDM->fetchOne($adObj->getAdvertiserId());
 
                 // gasire alte anunturi ce trebuie inactivate si trimitere in email
-                $ads4thisParkAll = $adDM->fetchAllDefault([
+                $ads4thisAdvertiserAll = $adDM->fetchAllDefault([
                     'status' => 'ok',
-                    'park_id' => $parkObj->getId(),
+                    'advertiser_id' => $advertiserObj->getId(),
                     'expiration_date' => DataMapper::expression(
                         'expiration_date < "'.General::DateTime().'"'
                     )
                 ]);
-                if ($ads4thisParkAll !== null) {
+                if ($ads4thisAdvertiserAll !== null) {
                     $adsInMAil = [];
-                    foreach ($ads4thisParkAll as $ad4thisPark) {
-                        $adImgs = unserialize($ad4thisPark->getImages());
+                    foreach ($ads4thisAdvertiserAll as $ad4thisAdvertiser) {
+                        $adImgs = unserialize($ad4thisAdvertiser->getImages());
                         // marcare ad ca expirat
-                        $ad4thisPark->setStatus('expired');
-                        $adDM->updateRow($ad4thisPark);
+                        $ad4thisAdvertiser->setStatus('expired');
+                        $adDM->updateRow($ad4thisAdvertiser);
                         $adsInMAil[] = [
-                            'name' => $ad4thisPark->getPartName(),
+                            'name' => $ad4thisAdvertiser->getPartName(),
                             'photo' => General::getSimpleAvatar(
-                                $ad4thisPark->getParkId() . 'xadsx'.$ad4thisPark->getId(),
+                                $ad4thisAdvertiser->getAdvertiserId() . 'xadsx'.$ad4thisAdvertiser->getId(),
                                 (count($adImgs) > 0 ? $adImgs[0] : ''),
                                 '100x100'
                             )
@@ -283,9 +293,9 @@ class AdCollection
                     }
 
                     // trimite mail la parc auto cum ca anuntul a fost inactivat
-                    if ($parkObj !== null) {
+                    if ($advertiserObj !== null) {
                         $newsletterCollection = new NewsletterCollection($this->controller);
-                        $newsletterCollection->sendMail('inactivate_ad', $adsInMAil, $parkObj);
+                        $newsletterCollection->sendMail('inactivate_ad', $adsInMAil, $advertiserObj);
                     }
 
                 }

@@ -9,7 +9,7 @@ class NewsletterLogs
     /**@var string*/
     protected $emailType;
     /**@var int*/
-    protected $parkId;
+    protected $advertiserId;
     /**@var string*/
     protected $dateadd;
 
@@ -52,18 +52,18 @@ class NewsletterLogs
     /**
      * @return int
      */
-    public function getParkId()
+    public function getAdvertiserId()
     {
-        return $this->parkId;
+        return $this->advertiserId;
     }
 
     /**
-     * @param int $parkId
+     * @param int $advertiserId
      * @return NewsletterLogs
      */
-    public function setParkId($parkId)
+    public function setAdvertiserId($advertiserId)
     {
-        $this->parkId = $parkId;
+        $this->advertiserId = $advertiserId;
         return $this;
     }
 

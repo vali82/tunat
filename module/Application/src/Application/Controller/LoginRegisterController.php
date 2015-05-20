@@ -224,7 +224,7 @@ class LoginRegisterController extends MyAbstractController
                         $adapter->resetAdapters();
                         return $this->redirect()->toRoute('home');
                     } else {
-                        General::unsetSession('myPark');
+                        General::unsetSession('myAdvertiserObj');
                         General::unsetSession('myUser');
                         General::unsetSession('AuthenticatedUserRole');
                         $this->flashMessenger()->addSuccessMessage(
@@ -363,9 +363,9 @@ class LoginRegisterController extends MyAbstractController
                 } else {
                     $userObject = $this->getUserTable()->findByEmail($data['email']);
                     $sm = $this->getServiceLocator();
-                    $parkDM = $sm->get('AutoParkDM');
-                    $autoPark = new Models\Autoparks\Park();
-                    $autoPark
+                    $advertiserDM = $sm->get('AdvertiserDM');
+                    $advertiser = new Models\Advertiser\Advertiser();
+                    $advertiser
                         ->setEmail($userObject->getEmail())
                         ->setName($userObject->getEmail())
                         ->setDescription('')
@@ -379,10 +379,10 @@ class LoginRegisterController extends MyAbstractController
                         ->setTel3('')
                         ->setUrl('')
                     ;
-                    $park_id = $parkDM->createRow($autoPark);
+                    $advertiser_id = $advertiserDM->createRow($advertiser);
 
-                    $userParkDM = $sm->get('AutoParkUserDM');
-                    $userParkDM->createFromArray($userObject->getId(), $park_id);
+                    $AdvertiserUserDM = $sm->get('AdvertiserUserDM');
+                    $AdvertiserUserDM->createFromArray($userObject->getId(), $advertiser_id);
 
                     return $this->loggedOkUser($userObject);
                 }
@@ -406,7 +406,7 @@ class LoginRegisterController extends MyAbstractController
 
         if ($usrole['role_id'] == 'parcauto') {
             General::unsetSession('AuthenticatedUserRole');
-            General::unsetSession('myPark');
+            General::unsetSession('myAdvertiserObj');
             General::unsetSession('myUser');
             return $this->redirect()->toRoute('home/ad/myAds');
 

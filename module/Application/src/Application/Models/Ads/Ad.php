@@ -7,7 +7,7 @@ class Ad
     /**@var int*/
     protected $id;
     /**@var int*/
-    protected $parkId;
+    protected $advertiserId;
     /**@var string*/
     protected $partName;
     /**@var int*/
@@ -42,6 +42,50 @@ class Ad
     protected $expirationDate;
     /**@var string*/
     protected $stare;
+    /**@var string*/
+    protected $codeOem;
+
+    // from joins
+    protected $stateId;
+
+
+
+
+    /**
+     * @return string
+     */
+    public function getCodeOem()
+    {
+        return $this->codeOem;
+    }
+
+    /**
+     * @param string $codeOem
+     * @return Ad
+     */
+    public function setCodeOem($codeOem)
+    {
+        $this->codeOem = $codeOem;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStateId()
+    {
+        return $this->stateId;
+    }
+
+    /**
+     * @param mixed $stateId
+     * @return Ad
+     */
+    public function setStateId($stateId)
+    {
+        $this->stateId = $stateId;
+        return $this;
+    }
 
     /**
      * @return string
@@ -53,7 +97,7 @@ class Ad
 
     /**
      * @param string $stare
-     * @return $this
+     * @return Ad
      */
     public function setStare($stare)
     {
@@ -232,18 +276,18 @@ class Ad
     /**
      * @return int
      */
-    public function getParkId()
+    public function getAdvertiserId()
     {
-        return $this->parkId;
+        return $this->advertiserId;
     }
 
     /**
-     * @param int $parkId
+     * @param int $advertiserId
      * @return Ad
      */
-    public function setParkId($parkId)
+    public function setAdvertiserId($advertiserId)
     {
-        $this->parkId = $parkId;
+        $this->advertiserId = $advertiserId;
         return $this;
     }
 

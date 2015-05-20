@@ -35,6 +35,7 @@ abstract class DataMapper implements MMDataMapperInterface
     protected $log_action_interested_fields = null;
 
     protected $columns = [];
+    protected $joins = [];
 
     public function getTableName()
     {
@@ -64,6 +65,11 @@ abstract class DataMapper implements MMDataMapperInterface
     public function setColumns($col)
     {
         $this->columns = $col;
+    }
+
+    public function setJoins($joins)
+    {
+        $this->joins = $joins;
     }
 
     /**
@@ -120,7 +126,7 @@ abstract class DataMapper implements MMDataMapperInterface
      *
      * @return \Zend\Db\Sql\Select
      */
-    private function constructWhere($select, $key, $value)
+    protected function constructWhere($select, $key, $value)
     {
         if (strpos($value, '__expression[:]') !== false) {
             $x = explode('[:]', $value);
@@ -374,6 +380,17 @@ abstract class DataMapper implements MMDataMapperInterface
 
             if (count($this->columns) > 0) {
                 $select->columns($this->columns);
+            }
+
+            if (count($this->joins) > 0) {
+                foreach ($this->joins as $join) {
+                    $select->join(
+                        $join['name'],
+                        $join['on'],
+                        $join['columns'],
+                        $join['type']
+                    );
+                }
             }
 
             if (is_array($selectKey)) {

@@ -14,7 +14,7 @@ class NewsletterLogsDM extends DataMapper
         $this->table_name = 'newsletter_logs';
 
         $this->fields = array(
-            'park_id',
+            'advertiser_id',
             'email_type',
             'dateadd',
         );

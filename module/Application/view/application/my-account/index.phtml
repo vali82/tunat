@@ -18,25 +18,25 @@ $this->headScript()
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <img src="<?=$this->myPark->generateAvatar('160x160')?>" class="thumbnail img-responsive"/>
+                        <img src="<?=$this->myAdvertiserObj->generateAvatar('160x160')?>" class="thumbnail img-responsive"/>
                     </div>
                     <div class="col-sm-9">
                         <ul class="list-group">
 
                             <li class="list-group-item">
                                 <span class="badge">
-                                    <?=($this->myPark->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?>
+                                    <?=($this->myAdvertiserObj->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?>
                                 </span>&nbsp;
-                                <?=$this->myPark->getName()?>
+                                <?=$this->myAdvertiserObj->getName()?>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
-                                <?=$this->myPark->getEmail()?>
+                                <?=$this->myAdvertiserObj->getEmail()?>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
-                                <?=$this->myPark->getTel1()?> <?=$this->myPark->getTel2()?> <?=$this->myPark->getTel3()?>
+                                <?=$this->myAdvertiserObj->getTel1()?> <?=$this->myAdvertiserObj->getTel2()?> <?=$this->myAdvertiserObj->getTel3()?>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Adresa')?></span>&nbsp;
-                                <?=$this->myPark->generateLocation()?>
+                                <?=$this->myAdvertiserObj->generateLocation()?>
                             </li>
                         </ul>
                     </div>
@@ -44,7 +44,7 @@ $this->headScript()
                 </div>
 
                 <p>
-                    <?=$this->myPark->getDescription()?>
+                    <?=$this->myAdvertiserObj->getDescription()?>
                 </p>
 
 

@@ -82,9 +82,9 @@ class Module
                 'role_id' => 'parcauto'
             ));
 
-            $parkDM = $serviceManager->get('AutoParkDM');
-            $autoPark = new Models\Autoparks\Park();
-            $autoPark
+            $advertiserDM = $serviceManager->get('AdvertiserDM');
+            $advertiser = new Models\Advertiser\Advertiser();
+            $advertiser
                 ->setEmail($user->getEmail())
                 ->setName($userProfile->firstName.' '.$userProfile->lastName)
                 ->setDescription('')
@@ -98,12 +98,12 @@ class Module
                 ->setTel3('')
                 ->setUrl('')
             ;
-            $park_id = $parkDM->createRow($autoPark);
+            $advertiser_id = $advertiserDM->createRow($advertiser);
 
-            $userParkDM = $serviceManager->get('AutoParkUserDM');
-            $userParkDM->createFromArray($user->getId(), $park_id);
+            $userAdvertiserDM = $serviceManager->get('AdvertiserUserDM');
+            $userAdvertiserDM->createFromArray($user->getId(), $advertiser_id);
 
-            $path = PUBLIC_IMG_PATH . $park_id . '/';
+            $path = PUBLIC_IMG_PATH . $advertiser_id . '/';
             if (!is_dir($path)) {
                 mkdir($path);
                 chmod($path, 0755);
@@ -114,13 +114,13 @@ class Module
                 chmod($path, 0755);
             }
 
-            $hash = $park_id . '_' . md5(time() . $park_id);
+            $hash = $advertiser_id . '_' . md5(time() . $advertiser_id);
             $content = file_get_contents($userProfile->photoURL);
-            file_put_contents(PUBLIC_IMG_PATH . $park_id . '/logo/' . $hash, $content);
+            file_put_contents(PUBLIC_IMG_PATH . $advertiser_id . '/logo/' . $hash, $content);
 
-            $autoPark->setId($park_id);
-            $autoPark->setLogo($hash);
-            $parkDM->updateRow($autoPark);
+            $advertiser->setId($advertiser_id);
+            $advertiser->setLogo($hash);
+            $advertiserDM->updateRow($advertiser);
 
         }
         //

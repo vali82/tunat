@@ -177,7 +177,22 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'select2CarPartsSub',
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'extraInfo' => 'numele piesei'
+
+            ),
+        ));
+
+        $this->add(array(
+            'type' => 'text',
+            'name' => 'code_oem',
+            'options' => array(
+                'label' => 'Cod Piesa',
+//                'disable_inarray_validator' => true
+            ),
+            'attributes' => array(
+                'id' => 'code_oem',
+                'required' => false,
+                'extraInfo' => 'Cod unic de origine, OEM'
 
             ),
         ));
@@ -190,8 +205,7 @@ class AdForm extends AbstractForm
                 'label' => 'Descriere',
             ),
             'attributes' => array(
-                'extraInfo' => 'Detalii masina daca este cazul. Ex: Audi A4 sedan 1.9TDI, sau: piesa e compatibila cu
-                toate modele Audi A4 2001-2005'
+                'extraInfo' => 'detalii anunt, descriere generala a prodului de vanzare, sau orice caracteristica importanta'
                 //'group' => array('size'=> 'col-sm-4','type'=>'end'),
 //				'id' => 'last_name',
             ),

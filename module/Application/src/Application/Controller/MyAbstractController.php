@@ -3,7 +3,7 @@
 namespace Application\Controller;
 
 use Application\libs\General;
-use Application\Models\Autoparks\ParksDM;
+use Application\Models\Advertiser\AdvertiserDM;
 use Application\Models\Cars\CarsCategoriesDM;
 use Application\Models\Cars\CarsModelsDM;
 use Application\Models\Cars\CarsPartsMainDM;
@@ -17,8 +17,8 @@ use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
 class MyAbstractController extends AbstractActionController
 {
-    /** @var \Application\Models\Autoparks\Park*/
-    protected $myPark;
+    /** @var \Application\Models\Advertiser\Advertiser*/
+    protected $myAdvertiserObj;
     protected $myUser;
     protected $role;
     protected $adapter;
@@ -31,18 +31,19 @@ class MyAbstractController extends AbstractActionController
         $this->translator = $this->getServiceLocator()->get('translator');
         $this->adapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
-        $this->myPark = null;
+        $this->myAdvertiserObj = null;
         $this->myUser = null;
+
 
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
 
             if ($this->role == 'parcauto') {
-                $this->myPark = $this->getServiceLocator()->get('AutoPark');
+                $this->myAdvertiserObj = $this->getServiceLocator()->get('AdvertiserObj');
 
 
 
-                if ($this->myPark->getTel1() === '') {
+                if ($this->myAdvertiserObj->getTel1() === '') {
                     $this->flashMessenger()->addInfoMessage(
                         'Va rugam sa va completati datele de mai jos pentru a putea adauga anunturi!'
                     );
@@ -55,7 +56,7 @@ class MyAbstractController extends AbstractActionController
         }
 
 //        General::echop($this->role);
-//        General::echop($this->myPark);
+//        General::echop($this->myAdvertiserObj);
 
         // layout variables
         $this->layout()->myUser = $this->myUser;
@@ -127,9 +128,9 @@ class MyAbstractController extends AbstractActionController
         return $this->adapter;
     }
 
-    public function getMyPark()
+    public function getMyAdvertiserObj()
     {
-        return $this->myPark;
+        return $this->myAdvertiserObj;
     }
 
     protected function uploadAdGetUploaded($user_id, $email, $folder)

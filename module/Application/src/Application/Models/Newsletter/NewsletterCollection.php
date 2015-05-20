@@ -17,11 +17,11 @@ class NewsletterCollection
 
     }
 
-    public function sendMail($emailType, $adsInMAil, $parkObj)
+    public function sendMail($emailType, $adsInMAil, $advertiserObj)
     {
         $newsletterLogsDM = new NewsletterLogsDM($this->controller->getAdapter());
         $alreadySentToday = $newsletterLogsDM->fetchOne([
-            'park_id' => $parkObj->getId(),
+            'advertiser_id' => $advertiserObj->getId(),
             'email_type' => $emailType,
             'dateadd'   => DataMapper::expression(
                 'dateadd like "'.General::DateTime(null, 'iso-short').' %"'
@@ -31,16 +31,16 @@ class NewsletterCollection
             $newsletterLogObj = new NewsletterLogs();
             $newsletterLogObj
                 ->setEmailType($emailType)
-                ->setParkId($parkObj->getId())
+                ->setAdvertiserId($advertiserObj->getId())
             ;
             $newsletterLogsDM->createRow($newsletterLogObj);
 
             if ($emailType === 'inactivate_ad') {
                 // send mail
                 $mail = new MailGeneral($this->controller->getServiceLocator());
-                $mail->_to = $parkObj->getEmail();
+                $mail->_to = $advertiserObj->getEmail();
                 $mail->_no_reply = true;
-                $mail->inactivateAd($parkObj->getName(), $adsInMAil);
+                $mail->inactivateAd($advertiserObj->getName(), $adsInMAil);
                 ////
             }
         }

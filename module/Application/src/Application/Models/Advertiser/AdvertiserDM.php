@@ -1,16 +1,16 @@
 <?php
 
-namespace Application\Models\Autoparks;
+namespace Application\Models\Advertiser;
 
 use Application\Models\DataMapper;
 
-class ParksDM extends DataMapper
+class AdvertiserDM extends DataMapper
 {
     public function __construct($adapter)
     {
         $this->adapter = $adapter;
-        $this->model = new Park();
-        $this->table_name = 'autoparks';
+        $this->model = new Advertiser();
+        $this->table_name = 'advertiser';
 
         $this->fields = array(
             'name',

@@ -3,7 +3,7 @@
 namespace Application\Forms;
 
 
-use Application\Models\Autoparks\Park;
+use Application\Models\Advertiser\Advertiser;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class MyAccountForm extends AbstractForm
@@ -11,7 +11,7 @@ class MyAccountForm extends AbstractForm
     public function changeMyAccount($states)
     {
         $this->setHydrator(new ClassMethodsHydrator(true))
-            ->setObject(new Park());
+            ->setObject(new Advertiser());
 
         $this->setAttribute('method', 'post');
 

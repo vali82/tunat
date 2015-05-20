@@ -1,10 +1,10 @@
 <?php
 
-namespace Application\Models\Autoparks;
+namespace Application\Models\Advertiser;
 
 use Application\libs\General;
 
-class Park
+class Advertiser
 {
     /**@var int*/
     protected $id;
@@ -43,7 +43,7 @@ class Park
 
     /**
      * @param string $accountType
-     * @return Park
+     * @return Advertiser
      */
     public function setAccountType($accountType)
     {
@@ -62,7 +62,7 @@ class Park
 
     /**
      * @param string $logo
-     * @return Park
+     * @return Advertiser
      */
     public function setLogo($logo)
     {
@@ -80,7 +80,7 @@ class Park
 
     /**
      * @param string $email
-     * @return Park
+     * @return Advertiser
      */
     public function setEmail($email)
     {
@@ -98,7 +98,7 @@ class Park
 
     /**
      * @param int $id
-     * @return Park
+     * @return Advertiser
      */
     public function setId($id)
     {
@@ -116,7 +116,7 @@ class Park
 
     /**
      * @param string $name
-     * @return Park
+     * @return Advertiser
      */
     public function setName($name)
     {
@@ -134,7 +134,7 @@ class Park
 
     /**
      * @param string $url
-     * @return Park
+     * @return Advertiser
      */
     public function setUrl($url)
     {
@@ -152,7 +152,7 @@ class Park
 
     /**
      * @param string $address
-     * @return Park
+     * @return Advertiser
      */
     public function setAddress($address)
     {
@@ -170,7 +170,7 @@ class Park
 
     /**
      * @param string $city
-     * @return Park
+     * @return Advertiser
      */
     public function setCity($city)
     {
@@ -188,7 +188,7 @@ class Park
 
     /**
      * @param string $state
-     * @return Park
+     * @return Advertiser
      */
     public function setState($state)
     {
@@ -207,7 +207,7 @@ class Park
 
     /**
      * @param string $description
-     * @return Park
+     * @return Advertiser
      */
     public function setDescription($description)
     {
@@ -225,7 +225,7 @@ class Park
 
     /**
      * @param string $tel1
-     * @return Park
+     * @return Advertiser
      */
     public function setTel1($tel1)
     {
@@ -243,7 +243,7 @@ class Park
 
     /**
      * @param string $tel2
-     * @return Park
+     * @return Advertiser
      */
     public function setTel2($tel2)
     {
@@ -261,7 +261,7 @@ class Park
 
     /**
      * @param string $tel3
-     * @return Park
+     * @return Advertiser
      */
     public function setTel3($tel3)
     {
