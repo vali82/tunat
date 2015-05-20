@@ -11,10 +11,7 @@ $this->headScript()
 <h3><?=$this->translate('Contul Meu')?></h3>
 <div class="row">
     <div class="col-sm-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?=$this->myUser->getDisplayName()?> <small></small></h3>
-            </div>
+        <div class="panel">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-3">
@@ -28,6 +25,9 @@ $this->headScript()
                                     <?=($this->myAdvertiserObj->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?>
                                 </span>&nbsp;
                                 <?=$this->myAdvertiserObj->getName()?>
+                            </li>
+                            <li class="list-group-item"><span class="badge"><?=$this->translate('nume')?></span>&nbsp;
+                                <?=$this->myUser->getDisplayName()?>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
                                 <?=$this->myAdvertiserObj->getEmail()?>

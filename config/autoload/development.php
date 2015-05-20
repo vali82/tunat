@@ -73,11 +73,6 @@ return array(
             'email' => "contact@tirbox.ro",
             'name' => "Tirbox",
         ),
-        'contactformto' => 'contact@tirbox.ro',
-        'contactformcc' => array(
-//            'office@mindmagnetsoftware.com',
-//            'office@mindmagnet.ro',
-        ),
         'mandrill' => array(
             'key' => 'rQUJH3gglPTL_T4BmX6IuQ'
         )

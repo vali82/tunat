@@ -289,6 +289,16 @@ class MailGeneral extends AbstractActionController
 
 
 
+    public function contact($name, $subject, $message)
+    {
+        $this->_subject = $subject;
+        $this->_message = 'Mesaj de la '.$name.' &lt;'.$this->_from['email'].'&gt;, '.
+            General::DateTime(null, 'LONG', true).'<hr>'.
+            $message
+        ;
+
+        return $this->sendAction();
+    }
 
     public function forgotPassword($name, $hash)
     {

@@ -47,7 +47,7 @@ class ContactForm extends AbstractForm
 
         $this->add(array(
             'type' => 'text',
-            'name' => 'subiect',
+            'name' => 'subject',
             'options' => array(
                 'label' => 'Subiect',
             ),
@@ -58,7 +58,7 @@ class ContactForm extends AbstractForm
 
 
         $this->add(array(
-            'name' => 'mesaj',
+            'name' => 'message',
             'type' => 'textarea',
             'options' => array(
                 'label' => 'Descriere',
