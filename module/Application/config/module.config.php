@@ -128,7 +128,7 @@ return array(
                 include __DIR__ . '/routes/acl/home.php',
                 include __DIR__ . '/routes/acl/ad.php',
                 include __DIR__ . '/routes/acl/my-account.php',
-                []
+                include __DIR__ . '/routes/acl/offers.php'
             )
         ),
     ),

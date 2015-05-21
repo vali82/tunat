@@ -17,26 +17,6 @@ class AdForm extends AbstractForm
         $this->setAttribute('id', 'fileupload');
 
 
-        //--------------------------------------------------------- DETALII PIESA--------------
-
-        /*$this->add(array(
-            'type' => 'select',
-            'name' => 'part_categ',
-            'options' => array(
-                'label' => 'Categorie',
-                'options' => ['' => ''] + $partsMain,
-            ),
-            'attributes' => array(
-                'id' => 'select2CarPartsMain',
-                    'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
-//                    'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
-
-            ),
-        ));*/
-
-
-
-
 //-------------------------- DETALII MASINA--------------------
         $this->add(array(
             'type' => 'hidden',
@@ -57,6 +37,7 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'select2CarMake',
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
@@ -76,7 +57,7 @@ class AdForm extends AbstractForm
 //                'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'select2CarModels',
-                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -126,13 +107,13 @@ class AdForm extends AbstractForm
             'type' => 'select',
             'name' => 'year_end',
             'options' => array(
-                'label' => '-',
+                'label' => '&nbsp;',
                 'options' => ['' => 'pana la '] + $years,
                 //'empty_option' => '--- Selecteaza Parinte ---',
 //                'disable_inarray_validator' => true
             ),
             'attributes' => array(
-                'noLabel' => true,
+//                'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'year_end',
                 'group' => array('size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12', 'type' => ''),
@@ -177,6 +158,7 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'select2CarPartsSub',
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+                'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'start'),
                 'extraInfo' => 'numele piesei'
 
             ),
@@ -192,8 +174,8 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'code_oem',
                 'required' => false,
-                'extraInfo' => 'Cod unic de origine, OEM'
-
+                'extraInfo' => 'Cod unic de origine, OEM',
+                'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'end'),
             ),
         ));
 
@@ -239,13 +221,13 @@ class AdForm extends AbstractForm
             'type' => 'select',
             'name' => 'currency',
             'options' => array(
-//                'label' => '-',
+                'label' => '&nbsp;',
                 'options' => ['RON' => 'RON', 'EUR' => 'EUR', 'USD' => 'USD'],
                 //'empty_option' => '--- Selecteaza Parinte ---',
 //                'disable_inarray_validator' => true
             ),
             'attributes' => array(
-                'noLabel' => true,
+//                'noLabel' => true,
 //                'disabled' => 'disabled',
 //                'id' => 'year_end',
                 'group' => array(

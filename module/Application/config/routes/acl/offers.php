@@ -3,6 +3,6 @@
 return [
     array(
         'route' => 'home/offers/create',
-        'roles' => array('parcauto', 'user')
+        'roles' => array('parcauto', 'guest')
     ),
 ];

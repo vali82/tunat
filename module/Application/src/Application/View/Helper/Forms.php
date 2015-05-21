@@ -7,20 +7,20 @@ use Zend\View\Helper\AbstractHelper;
 class Forms extends AbstractHelper
 {
 
-    private static $_label_size;
-    private static $_input_size;
+    private static $label_size;
+    private static $input_size;
     private static $elementClass;
 
     public static function render($view, $form, $url, $options = array())
     {
-        self::$_label_size = isset($options['label_size']) ? $options['label_size'] : 'col-md-2 col-sm-4';
-        self::$_input_size = isset($options['input_size']) ? $options['input_size'] : 'col-md-10 col-sm-8';
+        self::$label_size = isset($options['label_size']) ? $options['label_size'] : 'col-md-2 col-sm-4';
+        self::$input_size = isset($options['input_size']) ? $options['input_size'] : 'col-md-10 col-sm-8';
         self::$elementClass = isset($options['element_class']) ? $options['element_class'] : 'form-control';
 
         $form->setAttribute('action', $url);
         $form->setAttribute('method', 'post');
         $form->setAttribute('role', 'form');
-        $form->setAttribute('class', 'form-horizontal');
+        //$form->setAttribute('class', 'form-horizontal');
 
 
         $form->prepare();
@@ -79,19 +79,18 @@ class Forms extends AbstractHelper
                     <div class="form-group <?php if ($view->formElementErrors($element)) echo "has-error" ?><?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>"><?php
                 } ?>
 
-                <?php if ($element->getAttribute('type') != 'hidden' && !$element->getAttribute('noLabel')) { ?>
-                    <label class="<?= ($group != null ?
-                            (
-                                (isset($group['sizeLabel']) ? $group['sizeLabel'] : self::$_label_size) .
-                                ($view->formElementErrors($element) ? ' has-error' : '')
-                            ) :
-                            self::$_label_size).' control-label'
-                        ?>"><?= $view->translate($element->getLabel()); ?></label>
+
+
+                <?php if ($group != null) { ?>
+                <div
+                    class="<?= ($group != null ? ($group['size'] . ($view->formElementErrors($element) ? ' has-error' : '')) : self::$input_size) ?>">
                 <?php } ?>
 
-                <?php //if (!isset($options['label_above_input'])) { ?>
-                <div
-                    class="<?= ($group != null ? ($group['size'] . ($view->formElementErrors($element) ? ' has-error' : '')) : self::$_input_size) ?>">
+                <?php if ($element->getAttribute('type') != 'hidden' && !$element->getAttribute('noLabel')) { ?>
+                    <label class="<?= 'control-label'?>">
+                        <?= $view->translate($element->getLabel()); ?>
+                    </label>
+                <?php } ?>
 
                     <?php if ($element->getName() == 'no_element') { ?>
                         &nbsp;
@@ -133,7 +132,9 @@ class Forms extends AbstractHelper
 
                     <?php } ?>
 
+                <?php if ($group != null) { ?>
                 </div>
+                <?php } ?>
 
                 <?php
             if ($container !== null) {
@@ -153,7 +154,7 @@ class Forms extends AbstractHelper
 
         if ($found_submit_element) { ?>
             <div class="form-group">
-                <div class="col-md-offset-2 <?= self::$_input_size ?><?= $formButtonsAlign ?>">
+                <div class="<?= $formButtonsAlign ?>">
                     <?php echo $view->formElement($found_submit_element); ?>
                     <?php if ($found_submit_element->getAttribute('cancelLink')) { ?>
                         <input type="button" value="<?= $view->translate('Anuleaza') ?>" class="btn btn-default"
@@ -374,9 +375,8 @@ class Forms extends AbstractHelper
 
     protected static function customSpacerElement($element)
     {
-        if (!$element->getAttribute('no_form_group')) { ?>
-            <div class="form-group" style="padding:0 15px">
-        <?php }?>
+        ?>
+        <div class="form-group">
         <?php if ($element->getAttribute('pureHtml')) { ?>
         <?= $element->getAttribute('pureHtml') ?>
         <?php } else { ?>
@@ -393,11 +393,9 @@ class Forms extends AbstractHelper
                     <?= $element->getAttribute('textBellow') ?>
                 </p>
             <?php } ?>
-        <?php }
-        if (!$element->getAttribute('no_form_group')) { ?>
-            </div>
-        <?php }
-
+        <?php } ?>
+        </div>
+        <?php
     }
 
     static function showDatePicker($view, $element, $setTime = false)
