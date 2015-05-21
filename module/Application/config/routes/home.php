@@ -82,6 +82,19 @@ return [
         'child_routes' => include __DIR__ . '/ad.php'
     ],
 
+    'offers' => [
+        'type' => 'Literal',
+        'options' => array(
+            'route' => 'oferte',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Offers',
+                'action' => 'index',
+            ),
+        ),
+        'may_terminate' => false,
+        'child_routes' => include __DIR__ . '/offers.php'
+    ],
+
     'piese' => [
         'type' => 'Segment',
         'options' => array(

@@ -89,6 +89,7 @@ return array(
             'Application\Controller\Simple' => 'Application\Controller\SimpleController',
             'Application\Controller\Ad' => 'Application\Controller\AdController',
             'Application\Controller\MyAccount' => 'Application\Controller\MyAccountController',
+            'Application\Controller\Offers' => 'Application\Controller\OffersController',
         ),
     ),
     'view_manager' => array(

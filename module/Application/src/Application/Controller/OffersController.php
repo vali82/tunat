@@ -21,30 +21,9 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
-class IndexController extends MyAbstractController
+class OffersController extends MyAbstractController
 {
-    public function indexAction()
-    {
-        $ad = new AdCollection($this);
-
-        return [
-            'adList' => $ad->adListHTML([
-                'place' => 'homepage'
-            ])
-        ];
-    }
-
-    public function termsAction()
-    {
-        return [];
-    }
-
-    public function privacyAction()
-    {
-        return [];
-    }
-
-    public function contactAction()
+    public function createAction()
     {
         $form = new ContactForm();
         $form->contact();
