@@ -4,7 +4,7 @@ return [
     'create' => [
         'type' => 'Segment',
         'options' => array(
-            'route' => '/create[/:id]',
+            'route' => '/cerere[/:id]',
             'defaults' => array(
                 'controller' => 'Application\Controller\Offers',
                 'action' => 'create',

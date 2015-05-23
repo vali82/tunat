@@ -31,6 +31,7 @@ class ContactForm extends AbstractForm
 //                'options' => [''=>''],
             ),
             'attributes' => array(
+                'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'start'),
             ),
         ));
 
@@ -42,6 +43,7 @@ class ContactForm extends AbstractForm
             ),
             'attributes' => array(
                 'required' => true,
+                'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'end'),
             ),
         ));
 

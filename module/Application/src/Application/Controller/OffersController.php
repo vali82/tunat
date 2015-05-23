@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Application\Forms\ContactForm;
 use Application\Forms\Filters\ContactFilter;
+use Application\Forms\OffersForm;
 use Application\libs\General;
 use Application\Mail\MailGeneral;
 use Application\Models\Ads\Ad;
@@ -25,8 +26,8 @@ class OffersController extends MyAbstractController
 {
     public function createAction()
     {
-        $form = new ContactForm();
-        $form->contact();
+        $form = new OffersForm();
+        $form->create();
         $request = $this->getRequest();
 
         if ($request->isPost()) {
