@@ -259,6 +259,7 @@ class AdForm extends AbstractForm
             ],
             'attributes' => array(
                 'maxFileSize' => '2MB',
+                'maxNumberOfFiles' => 10,
                 'acceptedFileType' => 'jpeg, png, gif'
 //                'noLabel' => true,
                 //'textAbove' => 'Detalii Anunt',

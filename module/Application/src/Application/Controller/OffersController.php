@@ -24,11 +24,53 @@ use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
 class OffersController extends MyAbstractController
 {
+    public function uploadAction()
+    {
+        $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
+
+        if ($option == '' && $this->getRequest()->isPost()) {
+            return $this->uploadAdImages(
+                "general",
+                "offers",
+                ['offers', General::getFromSession('offerTmpId')],
+                ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
+                2*1024*1024
+            );
+        }
+        if ($this->getRequest()->isGet()) {
+            return  $this->uploadAdGetUploaded(
+                "general",
+                "offers",
+                ['offers', General::getFromSession('offerTmpId')]
+            );
+        }
+        if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+            return $this->deleteAdImages($this->myAdvertiserObj->getId(), $this->myUser->getEmail());
+        }
+        exit;
+    }
+
     public function createAction()
     {
+        $this->layout()->js_call .= ' generalObj.offers.create("'.$this->url()->fromRoute("home/offers/upload").'"); ';
+
+        $request = $this->getRequest();
+
+        // ADD
+        if ($request->isPost()) {
+            $offerTmpId = General::getFromSession('offerTmpId');
+        } else {
+            if (General::getFromSession('offerTmpId') == null) {
+                $offerTmpId = 'tmp'.rand(10000, 99999);
+                General::addToSession('offerTmpId', $offerTmpId);
+            } else {
+                $offerTmpId = General::getFromSession('offerTmpId');
+            }
+        }
+
         $form = new OffersForm();
         $form->create();
-        $request = $this->getRequest();
+
 
         if ($request->isPost()) {
             $filter = new ContactFilter();
@@ -57,10 +99,11 @@ class OffersController extends MyAbstractController
 
             }
         } else {
-            if ($this->myUser !== null) {
+            if ($this->myUser !== null && $this->myAdvertiserObj !== null) {
                 $form->populateValues([
                     'name' => $this->myUser->getDisplayName(),
-                    'email' => $this->myUser->getEmail()
+                    'email' => $this->myUser->getEmail(),
+                    'phone' => $this->myAdvertiserObj->getTel1()
                 ]);
             }
         }

@@ -12,4 +12,16 @@ return [
         ),
         'may_terminate' => true,
     ],
+    'upload' => [
+        'type' => 'Segment',
+        'options' => array(
+            'route' => '/upload[/:option][/:folder][/:name]',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Offers',
+                'action' => 'upload',
+            ),
+        ),
+        'may_terminate' => true,
+    ],
+
 ];

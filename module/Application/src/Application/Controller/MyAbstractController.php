@@ -193,12 +193,32 @@ class MyAbstractController extends AbstractActionController
                     chmod($path, 0755);
                 }
             }
+            $cnt = 0;
+            if ($folder[0] == 'ads') {
+                foreach (glob($path . "/*") as $filefound) {
+                    if (strpos($filefound, '_') === false) {
+                        $cnt++;
+                    }
+                }
+            }
+
             foreach ($adapter->getFileInfo() as $file => $info) {
+                if ($folder[0] == 'ads') {
+                    $cnt++;
+                    if ($cnt > 10) {
+                        $response = $this->getResponse();
+                        $response->setStatusCode(403);
+                        $response->sendHeaders();
+                        return $response;
+                    }
+                }
+
                 if (isset($info['name']) && $info['name'] != '') {
                     if (!in_array($info['type'], $allowedExtensions)) {
                         $response = $this->getResponse();
                         $response->setStatusCode(415);
                         $response->sendHeaders();
+
                         return $response;
                     }
 
