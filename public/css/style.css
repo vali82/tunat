@@ -177,7 +177,7 @@ li.displayOnMobile {
     padding: 0;
 }
 
-.category:hover{
+.category:hover, .active{
     background-color: #243045;
     color: #fff;
 }
@@ -194,7 +194,7 @@ li.displayOnMobile {
     font-size: 18px;
     color: #243045;
 }
-.category a:hover{
+.category a:hover, .active a{
     color: #fff;
     text-decoration: none;
 }
@@ -522,6 +522,48 @@ input#globalLoginFieldRemember{
     font: 300 12px/17px 'Ubuntu', sans-serif;
 }
 /*end login popup*/
+
+
+/*category page*/
+.car-brand >h3{
+    font: 300 25px/30px 'Ubuntu', sans-serif;
+    color: #545454;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+.popular-brands,.car-brand-list{
+    float: left;
+    margin-bottom: 25px;
+    width: 100%;
+}
+.popular-brands .brand{
+    width: 10.75%;
+    float: left;
+    margin-right: 2%;
+    background-color: #fff;
+    height: 100px;
+    text-align: center;
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.05);
+}
+.popular-brands div:last-child{
+    margin-right: 0;
+}
+.brand img{
+    min-height: 100px
+}
+.brand h3{
+    margin-top: 30%;
+}
+.car-brand-list a{
+   font: 300 14px/20px 'Ubuntu', sans-serif;
+   color: #545454;
+}
+#searchAds{
+    margin-bottom: 20px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+/*end category page*/
 
 
 
