@@ -61,9 +61,8 @@ class MyAccountController extends MyAbstractController
 
             if ($form->isValid()) {
                 if (isset($_FILES['imagefile']) && $_FILES['imagefile']['name'] !== '') {
-                    $uploadResponse = $this->uploadAdImages(
+                    $uploadResponse = $this->uploadImages(
                         $this->myAdvertiserObj->getId(),
-                        $this->myAdvertiserObj->getEmail(),
                         ['logo'],
                         ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
                         2 * 1024 * 1024
@@ -177,7 +176,7 @@ class MyAccountController extends MyAbstractController
             $this->getEvent()->getRouteMatch()->setParam('name', $this->myAdvertiserObj->getLogo());
             $this->getEvent()->getRouteMatch()->setParam('folder', $this->myAdvertiserObj->getId() . 'xlogo');
 
-            $responseJson = $this->deleteAdImages($this->myAdvertiserObj->getId(), $this->myAdvertiserObj->getEmail());
+            $responseJson = $this->uploadDeleteImages();
             $this->myAdvertiserObj
                 ->setLogo('')
             ;

@@ -10,6 +10,63 @@ $.general = function() {
         $('.make-switch').bootstrapSwitch();
     };
 
+    var _uploadImages = function (uploadUrl)
+    {
+        // Initialize the jQuery File Upload widget:
+        $('#fileupload').fileupload({
+            disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+            autoUpload:true,
+            imageMaxWidth: 2000,
+            imageMaxHeight: 2000,
+            maxFileSize:2*1024*1024,
+            maxFileCount:5,
+            acceptFileTypes:/(\.|\/)(jpe?g|png|gif)$/i,
+            messages:{
+                maxNumberOfFiles:'Numarul maxim de fisiere depasit',
+                acceptFileTypes:'Tipul fisierului nu este admis',
+                maxFileSize:'Fisierul depaseste marimea admisa',
+                minFileSize:'Fisierul este sub marimea admisa'
+            },
+            formData:{
+                //dinselect:$("#selectDoi").val(),
+                //album_id:albumId
+            },
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url:uploadUrl
+        });
+
+        // Demo settings:
+        //$('#fileupload').fileupload('option', {
+        //    url:$('#fileupload').fileupload('option', 'url'),
+        //    // Enable image resizing, except for Android and Opera,
+        //    // which actually support image resizing, but fail to
+        //    // send Blob objects via XHR requests:
+        //    //disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+        //    //maxFileSize:10000000,
+        //
+        //});
+
+        // Load & display existing files:
+        $('#fileupload').addClass('fileupload-processing');
+        $(document).ready(function() {
+            $.ajax({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: uploadUrl,
+                dataType: 'json',
+                context: $('#fileupload')[0]
+            }).always(function () {
+                $(this).removeClass('fileupload-processing');
+            }).done(function (result) {
+                $(this).fileupload('option', 'done')
+                    .call(this, $.Event('done'), {result: result});
+            });
+        });
+
+
+    };
+
     this.onLoad = function () {
 
         var thisObj = this;
@@ -380,78 +437,15 @@ $.general = function() {
 
 
             if ($('#select2CarMake').length > 0 && this.cars !== false) {
-
                 $('#select2CarMake').bind('change', function (i,v) {
                     thisObj.changeClass(0);
                 });
-
                 $('#select2CarModels').bind('change', function(i,v) {
                     thisObj.changeModel('');
                 });
 
             }
-
-            /*$("#select2CarMake").select2({
-                placeholder: "Alege Categoria",
-            });*/
-            /*$("#select2CarPartsMain").select2({
-                placeholder: "Alege Categorie",
-            });*/
-
-            // Initialize the jQuery File Upload widget:
-            $('#fileupload').fileupload({
-                disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-                autoUpload:false,
-                imageMaxWidth: 2000,
-                imageMaxHeight: 2000,
-                maxFileSize:2*1024*1024,
-                acceptFileTypes:/(\.|\/)(jpe?g|png|gif)$/i,
-                messages:{
-                    maxNumberOfFiles:'Numarul maxim de fisiere depasit',
-                    acceptFileTypes:'Tipul fisierului nu este admis',
-                    maxFileSize:'Fisierul depaseste marimea admisa',
-                    minFileSize:'Fisierul este sub marimea admisa'
-                },
-                formData:{
-                    //dinselect:$("#selectDoi").val(),
-                    //album_id:albumId
-                },
-                // Uncomment the following to send cross-domain cookies:
-                //xhrFields: {withCredentials: true},
-                url:uploadUrl
-            });
-
-            // Demo settings:
-            $('#fileupload').fileupload('option', {
-                url:$('#fileupload').fileupload('option', 'url'),
-                // Enable image resizing, except for Android and Opera,
-                // which actually support image resizing, but fail to
-                // send Blob objects via XHR requests:
-                //disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-                //maxFileSize:10000000,
-
-            });
-
-            // Load & display existing files:
-            $('#fileupload').addClass('fileupload-processing');
-            $.ajax({
-                // Uncomment the following to send cross-domain cookies:
-                //xhrFields: {withCredentials: true},
-                url:uploadUrl,
-                dataType:'json',
-                context:$('#fileupload')[0]
-            }).always(function () {
-                $(this).removeClass('fileupload-processing');
-            }).done(function (result) {
-                $(this).fileupload('option', 'done')
-                    .call(this, $.Event('done'), {result:result});
-            });
-
-
-
-            // Upload server status check for browsers with CORS support:
-
-
+            _uploadImages(uploadUrl);
 
         },
 
@@ -549,6 +543,65 @@ $.general = function() {
         }
 
 
+    };
+
+    this.offers = {
+        cars: false,
+
+        changeClass: function (selected) {
+            var thisObj = this;
+            var carId = $('#select2CarMake').val();
+            var userList= '<option value="">Marca</option>';
+            $("#select2CarModels").attr('disabled',false);
+            $("#select2CarModels2").attr('disabled',true);
+            $("#select2CarModels2").val('');
+            if (thisObj.cars.model[carId] != undefined) {
+                $.each(thisObj.cars.model[carId], function (i, v) {
+                    userList += ('<option value="' + i + '">' + v.categ + '</option>');
+                });
+            }
+            $('#select2CarModels').html(userList);
+            $('#select2CarModels').val(selected == 0 ? '' : selected);
+        },
+
+        changeModel: function (selected) {
+            var thisObj = this;
+            var carId = $('#select2CarMake').val();
+            var carCategId = $('#select2CarModels').val();
+            $("#select2CarModels2").attr('disabled',false);
+            /*var userList= '<option value="">Model</option>';
+             $("#select2CarModels2").attr('disabled',false);
+             if (thisObj.cars.model[carId] != undefined && thisObj.cars.model[carId] != undefined) {
+             $.each(thisObj.cars.model[carId], function (i, v) {
+             if (v.categ == carCategId) {
+             userList += ('<option value="' + i + '">' + v.model + '</option>');
+             }
+
+             });
+             }*/
+            $('#select2CarModels2').val(selected);
+            $("#year_start").attr('disabled',false);
+            $("#year_end").attr('disabled',false);
+            //$('#select2CarModels2').val(selected == 0 ? '' : selected);
+        },
+
+        create: function(uploadUrl) {
+            this.cars = generalObj.cars;
+            var thisObj = this;
+
+
+            if ($('#select2CarMake').length > 0 && this.cars !== false) {
+                $('#select2CarMake').bind('change', function (i,v) {
+                    thisObj.changeClass(0);
+                });
+                $('#select2CarModels').bind('change', function(i,v) {
+                    thisObj.changeModel('');
+                });
+
+            }
+            _uploadImages(uploadUrl);
+
+        }
     };
 
     this.myAccount = {

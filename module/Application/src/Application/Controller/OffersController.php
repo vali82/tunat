@@ -24,11 +24,48 @@ use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
 class OffersController extends MyAbstractController
 {
+    public function uploadAction()
+    {
+        $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
+
+        if ($option == '' && $this->getRequest()->isPost()) {
+            return $this->uploadImages(
+                "0",
+                ['offers', General::getFromSession('offerTmpId')],
+                ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
+                2*1024*1024
+            );
+        }
+        if ($this->getRequest()->isGet()) {
+            return  $this->uploadGetUploaded(
+                "0",
+                ['offers', General::getFromSession('offerTmpId')]
+            );
+        }
+        if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
+            return $this->uploadDeleteImages();
+        }
+        exit;
+    }
+
     public function createAction()
     {
-        $form = new OffersForm();
-        $form->create();
+        $this->layout()->js_call .= ' generalObj.cars = '.json_encode($this->cars).'; ';
+        $this->layout()->js_call .= ' generalObj.offers.create("'.$this->url()->fromRoute("home/offers/upload").'"); ';
+
         $request = $this->getRequest();
+
+        // ADD
+        $offerTmpId = General::getFromSession('offerTmpId');
+
+        if ($offerTmpId == null) {
+            $offerTmpId = 'tmp'.rand(10000, 99999);
+            General::addToSession('offerTmpId', $offerTmpId);
+        }
+
+        $form = new OffersForm();
+        $form->create($this->cars['categories']);
+
 
         if ($request->isPost()) {
             $filter = new ContactFilter();
@@ -57,10 +94,11 @@ class OffersController extends MyAbstractController
 
             }
         } else {
-            if ($this->myUser !== null) {
+            if ($this->myUser !== null && $this->myAdvertiserObj !== null) {
                 $form->populateValues([
                     'name' => $this->myUser->getDisplayName(),
-                    'email' => $this->myUser->getEmail()
+                    'email' => $this->myUser->getEmail(),
+                    'phone' => $this->myAdvertiserObj->getTel1()
                 ]);
             }
         }

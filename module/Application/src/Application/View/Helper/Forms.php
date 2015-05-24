@@ -154,6 +154,7 @@ class Forms extends AbstractHelper
 
         if ($found_submit_element) { ?>
             <div class="form-group">
+                <hr style="margin:10px 0">
                 <div class="<?= $formButtonsAlign ?>">
                     <?php echo $view->formElement($found_submit_element); ?>
                     <?php if ($found_submit_element->getAttribute('cancelLink')) { ?>
@@ -205,15 +206,15 @@ class Forms extends AbstractHelper
             <div class="row fileupload-buttonbar">
                 <div class="col-lg-7">
                     <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
-                    <input type="file" multiple="" name="files[]">
-                </span>
-                    <button class="btn btn-primary start" type="submit">
+                    <span class="btn btn-success fileinput-button">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>adauga poze...</span>
+                        <input type="file" multiple="" name="files[]">
+                    </span>
+                    <!--<button class="btn btn-primary start" type="submit">
                         <i class="glyphicon glyphicon-upload"></i>
                         <span>Start upload</span>
-                    </button>
+                    </button>-->
                     <!-- The global file processing state -->
                     <span class="fileupload-process"></span>
                 </div>
@@ -230,27 +231,18 @@ class Forms extends AbstractHelper
                         &nbsp;
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <p class="photo-uploader-note">
+                        Nr maxim de poze adminse: <?=$element->getAttribute('maxNumberOfFiles')?>. Pozele trebuie sa aiba maximum <strong><?=$element->getAttribute('maxFileSize')?></strong>
+                        . Sunt admise doar fisiere (<strong><?=$element->getAttribute('acceptedFileType')?></strong>).
+                    </p>
+                </div>
             </div>
             <!-- The table listing the files available for upload/download -->
             <table role="presentation" class="table table-striped clearfix">
                 <tbody class="files">
                 </tbody>
             </table>
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title">Note</h3>
-            </div>
-            <div class="panel-body">
-                <ul>
-                    <li>
-                        Pozele trebuie sa aiba maximum <strong><?=$element->getAttribute('maxFileSize')?></strong>.
-                    </li>
-                    <li>
-                        Sunt admise doar fisiere (<strong><?=$element->getAttribute('acceptedFileType')?></strong>).
-                    </li>
-                </ul>
-            </div>
-        </div>
         <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
         <script id="template-upload" type="text/x-tmpl">
     {% for (var i=0, file; file=o.files[i]; i++) { %}
@@ -321,7 +313,7 @@ class Forms extends AbstractHelper
         </td>
         <td>
             {% if (file.deleteUrl) { %}
-            <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"
+            <button class="btn btn-danger delete pull-right" onclick="$(this).button('loading')" data-loading-text="Loading..." data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"
             {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
             <i class="fa fa-trash-o"></i>
             <span>Sterge</span>

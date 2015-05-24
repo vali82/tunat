@@ -33,23 +33,21 @@ class AdController extends MyAbstractController
         $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
 
         if ($option == '' && $this->getRequest()->isPost()) {
-            return $this->uploadAdImages(
+            return $this->uploadImages(
                 $this->myAdvertiserObj->getId(),
-                $this->myUser->getEmail(),
                 ['ads', General::getFromSession('adTmpId')],
                 ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
                 2*1024*1024
             );
         }
         if ($this->getRequest()->isGet()) {
-            return  $this->uploadAdGetUploaded(
+            return  $this->uploadGetUploaded(
                 $this->myAdvertiserObj->getId(),
-                $this->myUser->getEmail(),
                 ['ads', General::getFromSession('adTmpId')]
             );
         }
         if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
-            return $this->deleteAdImages($this->myAdvertiserObj->getId(), $this->myUser->getEmail());
+            return $this->uploadDeleteImages();
         }
         exit;
     }
@@ -102,6 +100,7 @@ class AdController extends MyAbstractController
                 $adTmpId = General::getFromSession('adTmpId');
             } else {
                 $adTmpId = 'tmp'.rand(10000, 99999);
+
                 General::addToSession('adTmpId', $adTmpId);
             }
 
