@@ -546,9 +546,61 @@ $.general = function() {
     };
 
     this.offers = {
-        create: function(uploadUrl) {
+        cars: false,
 
+        changeClass: function (selected) {
+            var thisObj = this;
+            var carId = $('#select2CarMake').val();
+            var userList= '<option value="">Marca</option>';
+            $("#select2CarModels").attr('disabled',false);
+            $("#select2CarModels2").attr('disabled',true);
+            $("#select2CarModels2").val('');
+            if (thisObj.cars.model[carId] != undefined) {
+                $.each(thisObj.cars.model[carId], function (i, v) {
+                    userList += ('<option value="' + i + '">' + v.categ + '</option>');
+                });
+            }
+            $('#select2CarModels').html(userList);
+            $('#select2CarModels').val(selected == 0 ? '' : selected);
+        },
+
+        changeModel: function (selected) {
+            var thisObj = this;
+            var carId = $('#select2CarMake').val();
+            var carCategId = $('#select2CarModels').val();
+            $("#select2CarModels2").attr('disabled',false);
+            /*var userList= '<option value="">Model</option>';
+             $("#select2CarModels2").attr('disabled',false);
+             if (thisObj.cars.model[carId] != undefined && thisObj.cars.model[carId] != undefined) {
+             $.each(thisObj.cars.model[carId], function (i, v) {
+             if (v.categ == carCategId) {
+             userList += ('<option value="' + i + '">' + v.model + '</option>');
+             }
+
+             });
+             }*/
+            $('#select2CarModels2').val(selected);
+            $("#year_start").attr('disabled',false);
+            $("#year_end").attr('disabled',false);
+            //$('#select2CarModels2').val(selected == 0 ? '' : selected);
+        },
+
+        create: function(uploadUrl) {
+            this.cars = generalObj.cars;
+            var thisObj = this;
+
+
+            if ($('#select2CarMake').length > 0 && this.cars !== false) {
+                $('#select2CarMake').bind('change', function (i,v) {
+                    thisObj.changeClass(0);
+                });
+                $('#select2CarModels').bind('change', function(i,v) {
+                    thisObj.changeModel('');
+                });
+
+            }
             _uploadImages(uploadUrl);
+
         }
     };
 

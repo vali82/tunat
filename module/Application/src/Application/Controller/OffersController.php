@@ -29,47 +29,42 @@ class OffersController extends MyAbstractController
         $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
 
         if ($option == '' && $this->getRequest()->isPost()) {
-            return $this->uploadAdImages(
-                "general",
-                "offers",
+            return $this->uploadImages(
+                "0",
                 ['offers', General::getFromSession('offerTmpId')],
                 ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
                 2*1024*1024
             );
         }
         if ($this->getRequest()->isGet()) {
-            return  $this->uploadAdGetUploaded(
-                "general",
-                "offers",
+            return  $this->uploadGetUploaded(
+                "0",
                 ['offers', General::getFromSession('offerTmpId')]
             );
         }
         if ($this->getRequest()->isDelete() || $_SERVER['REQUEST_METHOD'] == 'DELETE') {
-            return $this->deleteAdImages($this->myAdvertiserObj->getId(), $this->myUser->getEmail());
+            return $this->uploadDeleteImages();
         }
         exit;
     }
 
     public function createAction()
     {
+        $this->layout()->js_call .= ' generalObj.cars = '.json_encode($this->cars).'; ';
         $this->layout()->js_call .= ' generalObj.offers.create("'.$this->url()->fromRoute("home/offers/upload").'"); ';
 
         $request = $this->getRequest();
 
         // ADD
-        if ($request->isPost()) {
-            $offerTmpId = General::getFromSession('offerTmpId');
-        } else {
-            if (General::getFromSession('offerTmpId') == null) {
-                $offerTmpId = 'tmp'.rand(10000, 99999);
-                General::addToSession('offerTmpId', $offerTmpId);
-            } else {
-                $offerTmpId = General::getFromSession('offerTmpId');
-            }
+        $offerTmpId = General::getFromSession('offerTmpId');
+
+        if ($offerTmpId == null) {
+            $offerTmpId = 'tmp'.rand(10000, 99999);
+            General::addToSession('offerTmpId', $offerTmpId);
         }
 
         $form = new OffersForm();
-        $form->create();
+        $form->create($this->cars['categories']);
 
 
         if ($request->isPost()) {

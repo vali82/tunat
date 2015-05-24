@@ -2,12 +2,13 @@
 
 namespace Application\Forms;
 
+use Application\libs\General;
 use Application\Models\Ads\Ad;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class OffersForm extends AbstractForm
 {
-    public function create()
+    public function create($categories)
     {
         $this->setAttribute('method', 'post');
         $this->setName('fileupload');
@@ -31,7 +32,7 @@ class OffersForm extends AbstractForm
 //                'options' => [''=>''],
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => 'start'),
             ),
         ));
         $this->add(array(
@@ -42,7 +43,7 @@ class OffersForm extends AbstractForm
 //                'options' => [''=>''],
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
+                'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => ''),
             ),
         ));
         $this->add(array(
@@ -53,7 +54,21 @@ class OffersForm extends AbstractForm
             ),
             'attributes' => array(
                 'required' => true,
-                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
+                'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => ''),
+            ),
+        ));
+        $this->add(array(
+            'type' => 'select',
+            'name' => 'state',
+            'options' => array(
+                'label' => 'Judet',
+                'options' => General::getFromSession('states')
+            ),
+            'attributes' => array(
+//                'id' => 'year_end',
+                'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => 'end'),
+                'required' => true,
+//                'noLabel' => true,
             ),
         ));
         ////
@@ -69,29 +84,56 @@ class OffersForm extends AbstractForm
             )
         ));
 
-
         $this->add(array(
-            'type' => 'text',
-            'name' => 'make',
+            'type' => 'select',
+            'name' => 'car_category',
             'options' => array(
-                'label' => 'Marca',
+                'label' => 'Piesa Pentru',
+                'options' => ['0' => 'Alege Categoria'] + $categories,
             ),
             'attributes' => array(
-                'required' => true,
+                'id' => 'select2CarMake',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
-                'extraInfo' => 'ex: Camion Volvo VNX 430'
+                'required' => true,
+//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+
+            ),
+        ));
+        $this->add(array(
+            'type' => 'select',
+            'name' => 'car_make',
+            'options' => array(
+                'label' => 'Marca',
+                'options' => ['' => 'Marca'],
+                //'empty_option' => '--- Selecteaza Parinte ---',
+                'disable_inarray_validator' => true
+            ),
+            'attributes' => array(
+//                'noLabel' => true,
+//                'disabled' => 'disabled',
+                'id' => 'select2CarModels',
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
+                'required' => true,
+//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
         ));
         $this->add(array(
             'type' => 'text',
-            'name' => 'model',
+            'name' => 'car_model',
             'options' => array(
                 'label' => 'Model',
+//                'disable_inarray_validator' => true
             ),
             'attributes' => array(
+                'placeholder' => 'Model',
+//                'disabled' => 'disabled',
+//                'noLabel' => true,
+                'id' => 'select2CarModels2',
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
                 'required' => true,
-                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
-                'extraInfo' => 'ex: Camion Volvo VNX 430'
+//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+
             ),
         ));
         $years = [];
@@ -109,8 +151,23 @@ class OffersForm extends AbstractForm
             ),
             'attributes' => array(
                 'required' => true,
-                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
 //                'extraInfo' => 'ex: 2012-2015'
+            ),
+        ));
+        $this->add(array(
+            'type' => 'text',
+            'name' => 'sasiu',
+            'options' => array(
+                'label' => 'Serie Sasiu',
+            ),
+            'attributes' => array(
+                'placeholder' => 'Serie Sasiu',
+                'id' => 'select2CarModels2',
+                'group' => array('size' => 'col-lg-8 col-md-8 col-sm-8 col-xs-12', 'type' => 'end'),
+                'required' => true,
+//                'extraInfo' => 'optional'
+
             ),
         ));
         ////
@@ -153,7 +210,7 @@ class OffersForm extends AbstractForm
                 'label' => 'Descriere',
             ),
             'attributes' => array(
-                'rows' => 6
+                'rows' => 2
             ),
         ));
 
@@ -165,7 +222,7 @@ class OffersForm extends AbstractForm
             ],
             'attributes' => array(
                 'maxFileSize' => '2MB',
-                'maxNumberOfFiles' => 2,
+                'maxNumberOfFiles' => 10,
                 'acceptedFileType' => 'jpeg, png, gif'
 //                'noLabel' => true,
                 //'textAbove' => 'Detalii Anunt',
