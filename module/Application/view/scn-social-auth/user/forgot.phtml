@@ -2,7 +2,7 @@
 ?>
 <form id="forgotForm" action = "<?=$this->url('home/forgotPassword')?>"
       data-bing-action-uri="#" data-form-code="KPGSF" target="_self" method="GET">
-	<div class="">
+	<div class="ForgotForm">
 
 		<label style="display: block;"><?=$this->translate('email utilizator')?></label>
 		<input type="email" style="width:100%;"
@@ -11,10 +11,10 @@
 
 	</div>
 	<div class="">
-		<a id="forgotButton" href="javascript:;" onclick="$('#forgotForm').submit()" class="btn btn-success">Resetare Parola</a>
+		<a id="forgotButton" href="javascript:;" onclick="$('#forgotForm').submit()">Resetare Parola</a>
 		<br /><input type="submit" style="float: right;visibility: hidden;">
 	</div>
 
 </form>
 
-<a href="javascript:;" id="loginTab">login</a>
+<a href="javascript:;" id="loginTab">Log in</a>

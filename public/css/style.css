@@ -148,7 +148,7 @@ li.displayOnMobile {
     border: 1px solid #eaeaea;
     float: right;
     padding:20px;
-    width: 320px;
+    width: 297px;
 }
 
 #LoginRegisterContainer h3 {
@@ -156,16 +156,11 @@ li.displayOnMobile {
 }
 
 .socialLogin {
-    border-top: 1px solid #DADADA;
     margin-top: 20px;
     padding-top: 10px;
     text-align: center;
 }
 
-.socialLogin img.facebook {
-    width: 20px;
-    margin-top: -3px;
-}
 .panel-default{
     position: relative;
     top: -67px;
@@ -433,6 +428,100 @@ footer .container{
     color: #a2aec2;
     font: 300 13px/19px 'Ubuntu', sans-serif;
 }
+
+
+/*login popup*/
+#loginForm, .loginForm{
+    overflow: hidden;
+}
+#loginContainer h4, 
+#registerContainer h4,
+#forgotContainer h4{
+    font: 600 21px/26px 'Ubuntu', sans-serif;
+    color: #243045;
+    margin-top: 0;
+}
+.loginForm input{
+    border: 1px solid #c4c7cc;
+    height: 30px;
+    padding: 0 10px;
+}
+.loginForm label, .ForgotForm label{
+    font: 300 15px/20px 'Ubuntu', sans-serif;
+    color: #243045;
+    margin-bottom: 0;
+}
+.ForgotForm input{
+    margin-bottom: 20px;
+    border: 1px solid #c4c7cc;
+    height: 30px;
+    padding: 0 10px;
+}
+#loginForm div:nth-child(odd), #registerForm div{
+    margin-bottom: 20px;
+}
+#loginButton, #registerButton, #forgotButton{
+    padding: 9px 40px;
+    background-image: linear-gradient(to bottom, #63c848 0px, #5cb943 100%);
+    box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
+    color: #fff;
+    font: 500 17px/22px 'Ubuntu', sans-serif;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    background-color: #63c848;
+}
+label[for=globalLoginFieldPass]{
+    width: 50%;
+    float: left;
+}
+label[for=globalLoginFieldRemember]{
+    width: 90%;
+    float: left;
+    line-height: 34px;
+    padding-left: 10px;
+    font-size: 13px;
+    color: #778192;
+}
+input#globalLoginFieldRemember{
+    width: 6%;
+    float: left;
+}
+#forgotTab{
+    float: right;
+    color: #778192;
+    font: 300 12px/17px 'Ubuntu', sans-serif;
+}
+#loginContainer .register{
+    text-align: center;
+}
+#loginContainer .register a{
+    font: 17px/23px 'Ubuntu', sans-serif;
+    color: #243045;
+}
+#loginOptionFacebook{
+    background-image: url(../img/fb-login.jpg);
+    width: 100%;
+    height: 47px;
+    display: block;
+    padding: 12px;
+    color: #fff;
+    font: 500 17px/22px 'Ubuntu', sans-serif;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+#loginOptionFacebook:hover{
+    text-decoration: none;
+}
+#loginTab{
+    font: 17px/23px 'Ubuntu', sans-serif;
+    color: #243045;
+    margin-top: 10px;
+    display: block;
+}
+#errorLoginRegister{
+    font: 300 12px/17px 'Ubuntu', sans-serif;
+}
+/*end login popup*/
 
 
 
