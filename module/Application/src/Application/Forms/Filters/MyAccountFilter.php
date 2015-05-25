@@ -100,7 +100,7 @@ class MyAccountFilter extends AbstractFilter
                     array(
                         'name' => 'Int',
                         'options' => array(
-                            'min' => 2,
+                            'min' => 1,
                             'max' => 50,
                         ),
                     ),

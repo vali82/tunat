@@ -601,6 +601,19 @@ $.general = function() {
             }
             _uploadImages(uploadUrl);
 
+            $(document).on('click', "a[data-clone]", function(){
+                if ($(this).data('clone') == 'piesa') {
+                    console.log('asdsad');
+
+                    var row = $(this).parent();
+                    $.each($('div.piesa'), function(i,v){
+                        var x  =$(v).clone();
+                        $(x).removeClass('piesa');
+                        $(x).insertBefore(row);
+                    });
+                }
+            });
+
         }
     };
 

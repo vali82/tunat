@@ -32,6 +32,7 @@ class OffersForm extends AbstractForm
 //                'options' => [''=>''],
             ),
             'attributes' => array(
+                'required' => true,
                 'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => 'start'),
             ),
         ));
@@ -43,6 +44,7 @@ class OffersForm extends AbstractForm
 //                'options' => [''=>''],
             ),
             'attributes' => array(
+                'required' => true,
                 'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => ''),
             ),
         ));
@@ -165,7 +167,6 @@ class OffersForm extends AbstractForm
                 'placeholder' => 'Serie Sasiu',
                 'id' => 'select2CarModels2',
                 'group' => array('size' => 'col-lg-8 col-md-8 col-sm-8 col-xs-12', 'type' => 'end'),
-                'required' => true,
 //                'extraInfo' => 'optional'
 
             ),
@@ -179,21 +180,23 @@ class OffersForm extends AbstractForm
             'attributes' => array(
                 'textAbove' => 'Detalii Piesa',
                 'custom_form_spacer' => true,
+                'containerClass' => 'piesa'
             )
         ));
 
         $this->add(array(
-            'name' => 'part_name',
+            'name' => 'part_name[]',
             'type' => 'text',
             'options' => array(
                 'label' => 'Nume piesa',
             ),
             'attributes' => array(
                 'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'start'),
+                'containerClass' => 'piesa'
             ),
         ));
         $this->add(array(
-            'name' => 'part_code',
+            'name' => 'part_code[]',
             'type' => 'text',
             'options' => array(
                 'label' => 'Cod piesa',
@@ -204,16 +207,35 @@ class OffersForm extends AbstractForm
         ));
 
         $this->add(array(
-            'name' => 'message',
+            'name' => 'part_descr[]',
             'type' => 'textarea',
             'options' => array(
                 'label' => 'Descriere',
             ),
             'attributes' => array(
-                'rows' => 2
+                'rows' => 2,
+                "containerClass" => 'piesa'
             ),
         ));
+        $this->add(array(
+            'name' => 'x6',
+            'type' => 'hidden',
+            'attributes' => array(
+                'pureHtml' => '<a href="javascript:;" data-clone="piesa" class="btn btn-success pull-right">adauga piesa noua</a>',
+                'custom_form_spacer' => true,
+            )
+        ));
+        ////
 
+        // --- FOTOGRAFII ---
+        $this->add(array(
+            'name' => 'x5',
+            'type' => 'hidden',
+            'attributes' => array(
+                'textAbove' => 'Poze',
+                'custom_form_spacer' => true,
+            )
+        ));
         $this->add(array(
             'name' => 'photosMultiUpload',
             'type' => 'text',
@@ -235,7 +257,7 @@ class OffersForm extends AbstractForm
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Trimite',
+                'value' => 'Trimite Cererea',
                 'id' => 'submitbutton',
                 'cancelLink' => $this->_cancel_route
             ),
