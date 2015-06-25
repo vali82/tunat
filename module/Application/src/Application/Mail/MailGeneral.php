@@ -16,6 +16,7 @@ class MailGeneral extends AbstractActionController
     public $_to;
     public $_from;
 	public $_no_reply;
+    public $bcc = null;
     protected $_subject;
     protected $_message;
     protected $_content;
@@ -113,7 +114,7 @@ class MailGeneral extends AbstractActionController
 				'url_strip_qs' => null,
 				'preserve_recipients' => null,
 				'view_content_link' => null,
-				//'bcc_address' => 'message.bcc_address@example.com',
+				'bcc_address' => $this->bcc,
 				'tracking_domain' => null,
 				'signing_domain' => null,
 				'return_path_domain' => null,
@@ -152,8 +153,8 @@ class MailGeneral extends AbstractActionController
 						'name' => 'myfile.txt',
 						'content' => 'ZXhhbXBsZSBmaWxl'
 					)
-				),
-				'images' => array(
+				),*/
+				/*'images' => array(
 					array(
 						'type' => 'image/png',
 						'name' => 'IMAGECID',
@@ -197,7 +198,7 @@ class MailGeneral extends AbstractActionController
 
 	    if ($this->method === 'mandrill') {
 
-		    if (APPLICATION_ENV != 'development' || 1==2) {
+		    if (APPLICATION_ENV != 'development' || 1==1) {
 			    $response = $this->mandrillAction();
 		    } else {
 			    $response = array('error'=>false, 'message'=>'');
@@ -295,6 +296,40 @@ class MailGeneral extends AbstractActionController
         $this->_message = 'Mesaj de la '.$name.' &lt;'.$this->_from['email'].'&gt;, '.
             General::DateTime(null, 'LONG', true).'<hr>'.
             $message
+        ;
+
+        return $this->sendAction();
+    }
+
+    public function requestOffer($from, $car, $parts, $folder, $user_id)
+    {
+        $this->_subject = 'Cerere Oferta Noua';
+        $partshtml = '';
+        foreach($parts[0] as $k => $partname) {
+            $partshtml[] = ($k+1).'. <strong>'.$partname . '</strong>, cod: '.$parts[1][$k].'<br />'.$parts[2][$k];
+        }
+
+        $path = PUBLIC_IMG_PATH . $user_id. '/' . implode('/', $folder);
+        foreach (glob($path . "/*") as $filefound) {
+            $x = explode("/", $filefound);
+            $imageFile = $x[count($x)-1];
+            if (strpos($imageFile, '_') === false ) {
+                $photos[] = '<a href="'.General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $imageFile, '9999x9999').'">
+                    <img style="padding:10px; float:left" src="'.General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $imageFile, '100x100').'">
+                    </a>';
+            }
+        }
+
+        $this->_message = 'Cerere oferta de la '.$from['name']. ', ' .
+            General::DateTime(null, 'LONG', true) . '<br />mail:&lt;'.$this->_from['email'].'&gt;, tel: '.
+            $from['phone']. ', judet: '.$from['state']. '<hr>'.
+            '<strong>Masina:</strong><br/>' .
+            'categorie: '.$car['category'].', marca: '. $car['make'].', model: '.$car['model'].', an: '.$car['year'].
+            ', serie sasiu: '.$car['sasiu'].'<hr>'.
+            '<strong>Piese:</strong><br/>' .
+            implode('<br>', $partshtml).'<hr>'.
+            '<strong>Poze:</strong><br/>' .
+            '<div style="overflow:hidden">'. implode('', $photos) . '</photos>'
         ;
 
         return $this->sendAction();

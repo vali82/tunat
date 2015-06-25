@@ -32,7 +32,7 @@ class Forms extends AbstractHelper
         $found_submit_element = false;
 
         foreach ($form as $element) {
-
+            $elementClass = self::$elementClass;
             $group = $element->getAttribute('group');
             $container = $element->getAttribute('container');
 
@@ -42,10 +42,10 @@ class Forms extends AbstractHelper
 
             } else {
                 if ($element->getAttribute('class')) {
-                    self::$elementClass .= ' '.$element->getAttribute('class');
+                    $elementClass .= ' ' . $element->getAttribute('class');
                 }
                 if ($element->getAttribute('type') != 'submit') {
-                    $element->setAttribute('class', self::$elementClass);
+                    $element->setAttribute('class', $elementClass);
 
                 } else {
                     if ($element->getAttribute('id') == 'cancelbutton') {
@@ -368,7 +368,7 @@ class Forms extends AbstractHelper
     protected static function customSpacerElement($element)
     {
         ?>
-        <div class="form-group">
+        <div class="form-group<?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>">
         <?php if ($element->getAttribute('pureHtml')) { ?>
         <?= $element->getAttribute('pureHtml') ?>
         <?php } else { ?>

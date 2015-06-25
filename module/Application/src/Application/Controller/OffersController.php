@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Application\Forms\ContactForm;
 use Application\Forms\Filters\ContactFilter;
+use Application\Forms\Filters\OffersFilter;
 use Application\Forms\OffersForm;
 use Application\libs\General;
 use Application\Mail\MailGeneral;
@@ -30,7 +31,7 @@ class OffersController extends MyAbstractController
 
         if ($option == '' && $this->getRequest()->isPost()) {
             return $this->uploadImages(
-                "0",
+                $this->myAdvertiserObj !== null ? $this->myAdvertiserObj->getId() : "0",
                 ['offers', General::getFromSession('offerTmpId')],
                 ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
                 2*1024*1024
@@ -38,7 +39,7 @@ class OffersController extends MyAbstractController
         }
         if ($this->getRequest()->isGet()) {
             return  $this->uploadGetUploaded(
-                "0",
+                $this->myAdvertiserObj !== null ? $this->myAdvertiserObj->getId() : "0",
                 ['offers', General::getFromSession('offerTmpId')]
             );
         }
@@ -55,7 +56,7 @@ class OffersController extends MyAbstractController
 
         $request = $this->getRequest();
 
-        // ADD
+
         $offerTmpId = General::getFromSession('offerTmpId');
 
         if ($offerTmpId == null) {
@@ -66,31 +67,51 @@ class OffersController extends MyAbstractController
         $form = new OffersForm();
         $form->create($this->cars['categories']);
 
-
         if ($request->isPost()) {
-            $filter = new ContactFilter();
+            $filter = new OffersFilter();
             $form->setInputFilter($filter->getInputFilter());
 
             $form->setData($request->getPost());
             if ($form->isValid()) {
+                $states = General::getFromSession('states');
+
                 $mail = new MailGeneral($this->getServiceLocator());
-                $mail->_to = 'contact@tirbox.ro';
+                $mail->_to = 'vanzari@tirbox.ro';
+                $mail->bcc = 'contact@tirbox.ro';
                 $mail->_from = [
                     'email' => $form->get('email')->getValue(),
                     'name' => $form->get('name')->getValue()
                 ];
                 $mail->_no_reply = false;
-                $mail->contact(
-                    $form->get('name')->getValue(),
-                    $form->get('subject')->getValue(),
-                    $form->get('message')->getValue()
+                $mail->requestOffer(
+                    [
+                        'name' => $form->get('name')->getValue(),
+                        'phone' => $form->get('phone')->getValue(),
+                        'state' => $states[$form->get('state')->getValue()],
+                    ],
+                    [
+                        'category' => $this->cars['categories'][$form->get('car_category')->getValue()],
+                        'make' => $this->cars['model'][$form->get('car_category')->getValue()][$form->get('car_make')->getValue()]['categ'],
+                        'model' => $form->get('car_model')->getValue(),
+                        'year' => $form->get('year_start')->getValue(),
+                        'sasiu' => $form->get('sasiu')->getValue(),
+                    ],
+                    [
+                        $_POST['part_name'],
+                        $_POST['part_code'],
+                        $_POST['part_descr'],
+                    ],
+                    ['offers', $offerTmpId],
+                    ($this->myAdvertiserObj !== null ? $this->myAdvertiserObj->getId() : "0")
                 );
 
                 $this->flashMessenger()->addSuccessMessage(
-                    $this->translator->translate('Mesajul dvs. a fost trimis! Va vom contacta in cel mai scurt timp posibil!')
+                    $this->translator->translate('Cererea dvs. a fost trimisa! Va vom contacta in cel mai scurt timp posibil!')
                 );
 
-                $this->redirect()->toRoute('home/contact');
+
+                General::unsetSession('offerTmpId');
+                $this->redirect()->toRoute('home/offers/create');
 
             }
         } else {

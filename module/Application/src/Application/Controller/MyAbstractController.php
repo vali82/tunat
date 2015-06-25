@@ -41,13 +41,13 @@ class MyAbstractController extends AbstractActionController
             if ($this->role == 'parcauto') {
                 $this->myAdvertiserObj = $this->getServiceLocator()->get('AdvertiserObj');
 
-
-
                 if ($this->myAdvertiserObj->getTel1() === '') {
                     $this->flashMessenger()->addInfoMessage(
-                        'Va rugam sa va completati datele de mai jos pentru a putea adauga anunturi!'
+                        'Va rugam sa va completati datele de mai jos pentru a putea continua!'
                     );
-                    if ($route->getMatchedRouteName() != 'home/myAccount/update') {
+                    if ($route->getMatchedRouteName() != 'home/myAccount/update' &&
+                        $route->getMatchedRouteName() != 'home/logout'
+                    ) {
                         return $this->redirect()->toRoute('home/myAccount/update');
                     }
 
@@ -144,7 +144,13 @@ class MyAbstractController extends AbstractActionController
                 $files[] = array(
                     'deleteType' => "DELETE",
                     'deleteUrl' => $this->url()->fromRoute(
-                        'home/ad/upload',
+                        ($folder[0] == 'ads' ?
+                            'home/ad/upload' :
+                            ($folder[0] == 'offers' ?
+                                'home/offers/upload' :
+                                'home'
+                            )
+                        ),
                         [
                             'option' => 'delete',
                             'folder' => $user_id . 'x' . implode('x', $folder),
@@ -228,7 +234,13 @@ class MyAbstractController extends AbstractActionController
                 $files = array(
                     'deleteType' => "DELETE",
                     'deleteUrl' => $this->url()->fromRoute(
-                        'home/ad/upload',
+                        ($folder[0] == 'ads' ?
+                            'home/ad/upload' :
+                            ($folder[0] == 'offers' ?
+                                'home/offers/upload' :
+                                'home'
+                            )
+                        ),
                         [
                             'option' => 'delete',
                             'folder' => $user_id . 'x' . implode('x', $folder),
