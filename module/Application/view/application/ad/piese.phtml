@@ -97,15 +97,15 @@
 
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 filters">
     <h3>Filtre</h3>
     <!--Filtrare Anunturi-->
-        <form class="form-inline panel row" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
-                <div class="key-words col-md-12">
+        <form class="form-inline panel col-md-12" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
+                <div class="key-words">
                     <label>Cuvinte cheie</label>
                     <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50" class="form-control" type="text">
                 </div>
-                <div class="made-year col-md-6">
+                <div class="made-year">
                     <label>An fabricatie</label>
                     <select class="form-control" id="searchYear">
                         <option value="0">orice an</option>
@@ -114,7 +114,7 @@
                         <?php }?>
                     </select>
                 </div>
-                <div class="part-look col-md-6">
+                <div class="part-look ">
                     <label>Stare piesa</label>
                     <select class="form-control" id="searchYear">
                         <option value="0">Nou</option>
@@ -128,7 +128,7 @@
                             <option></option>
                     </select>
                 </div>
-                    <button type="submit" class="">Cauta!</button>
+                    <button type="submit" class="btn-green">Aplica</button>
         </form>
 <!--end Filtrare Anunturi-->
 
@@ -144,7 +144,7 @@
     </div>
 
 <!--Listing Anunturi-->  
-    <div class="col-md-9">
+    <div class="col-md-9 brand-listing">
         <h3>Anunturi Piese</h3>
         <?php if ($this->adList !== null) { ?>
             <?=$this->adList?>

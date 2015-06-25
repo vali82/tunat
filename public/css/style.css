@@ -75,8 +75,25 @@ ul.navbar-right{
     background-position: 0 -15px;
     color: #fff;
 }
-/*banner homepage*/
 
+/*general buttons*/
+.btn-green{
+    background-image: linear-gradient(to bottom, #63c848 0px, #5cb943 100%);
+    box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
+    color: #fff;
+    font: 500 17px/22px 'Ubuntu', sans-serif;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    background-color: #63c848;
+    border: 0;
+}
+/*end general buttons*/
+
+
+
+
+/*banner homepage*/
 .banner{
     padding-top: 75px;
     width: 100%;
@@ -355,17 +372,11 @@ footer .container{
     border-color: #989696;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #989696;
 }
-.btn-success.btn-newsletter{
+.btn-newsletter{
     float: left;
-    padding: 13px 43px;
-    border: 0;
-    border-radius: 0;
-    background-image: linear-gradient(to bottom, #63c848 0px, #5cb943 100%);
-    box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
-    -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
-    -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
+    padding: 12px 43px;
 }
-.btn-success.btn-newsletter a{
+.btn-newsletter a{
     color: #fff;
     font-size: 17px;
     font-weight: 500;
@@ -462,14 +473,9 @@ footer .container{
 }
 #loginButton, #registerButton, #forgotButton{
     padding: 9px 40px;
-    background-image: linear-gradient(to bottom, #63c848 0px, #5cb943 100%);
-    box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
-    -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
-    -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
-    color: #fff;
-    font: 500 17px/22px 'Ubuntu', sans-serif;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-    background-color: #63c848;
+}
+#loginButton:hover, #registerButton:hover, #forgotButton:hover{
+    color: #ffff;
 }
 label[for=globalLoginFieldPass]{
     width: 50%;
@@ -563,6 +569,49 @@ input#globalLoginFieldRemember{
     padding: 15px;
     box-sizing: border-box;
 }
+.brand-listing .announcement{
+    margin-right: 0;
+    margin-left: -15px;
+}
+.brand-listing h3, .filters h3{
+    font: 300 21px/26px 'Ubuntu', sans-serif;
+    color: #545454;
+}
+.key-words #searchInput{
+    width: 100%;
+}
+.made-year, .part-look{
+    width: 50%;
+    float: left;
+}
+.region select#searchYear{
+    width: 100%;
+}
+#searchAds button{
+    width: 100%;
+    padding: 13px;
+    margin-top: 20px;
+}
+#searchAds label{
+   font: 600 14px/20px 'Ubuntu', sans-serif;
+   color: #243045;
+   margin-bottom: 12px;
+   margin-top: 22px;
+}
+#searchAds .key-words label{
+    margin-top: 0;
+}
+#searchAds input, #searchAds select{
+    border-radius: 0;
+    background-color: #e9e9e9;
+    height: 34px;
+}
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 /*end category page*/
 
 
