@@ -302,10 +302,14 @@ class AdController extends MyAbstractController
 
         $searchWords = '';
         $searchYear = '';
+        $searchStare = '';
+        $searchCounty = '';
         if (strpos($searchParam, ":") !== false) {
             $search = explode(":", $searchParam);
             $searchWords = $search[0];
             $searchYear = $search[1];
+            $searchStare = $search[2];
+            $searchCounty = $search[3];
         } elseif ($searchParam != '') {
             $searchWords = $searchParam;
         }
@@ -383,6 +387,8 @@ class AdController extends MyAbstractController
                 'partMainId' => 0,
                 'search' => General::generateQueryWords($searchWords),
                 'searchYear' => $searchYear,
+                'searchCounty' => $searchCounty,
+                'searchStare' => $searchStare
             ]);
 
             $adList = $content['list'];
@@ -412,10 +418,13 @@ class AdController extends MyAbstractController
             'searchValues' => [
                 'input' => str_replace("+", " ", $searchWords),
                 'year' => $searchYear,
+                'county' => $searchCounty,
+                'stare' => $searchStare
             ],
 //            'searchValue' => str_replace("+", " ", $search[0]),
 //            'searchYearStart' => ($search[1]),
-            'years' => $adCollection->getYears()
+            'years' => $adCollection->getYears(),
+            'states' => General::getFromSession('states')
         ];
     }
 

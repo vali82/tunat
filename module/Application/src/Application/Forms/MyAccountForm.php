@@ -129,7 +129,7 @@ class MyAccountForm extends AbstractForm
             'attributes' => array(
                 'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-sm-3', 'type' => ''),
                 'type' => 'text',
-                'noLabel' => true,
+//                'noLabel' => true,
                 'extraInfo' => 'optional'
             ),
         ));
@@ -141,7 +141,7 @@ class MyAccountForm extends AbstractForm
             'attributes' => array(
                 'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-sm-3', 'type' => 'end'),
                 'type' => 'text',
-                'noLabel' => true,
+//                'noLabel' => true,
                 'extraInfo' => 'optional'
             ),
         ));
@@ -174,14 +174,14 @@ class MyAccountForm extends AbstractForm
             'type' => 'select',
             'name' => 'state',
             'options' => array(
-                'label' => 'Stare',
+                'label' => 'Judet',
                 'options' => $states,
             ),
             'attributes' => array(
 //                'id' => 'year_end',
-                'group' => array('size' => 'col-sm-2', 'type' => 'end'),
+                'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-sm-3', 'type' => 'end'),
                 'required' => true,
-                'noLabel' => true,
+//                'noLabel' => true,
                 'extraInfo' => 'obligaroriu'
             ),
         ));

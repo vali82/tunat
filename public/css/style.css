@@ -591,9 +591,6 @@ input#globalLoginFieldRemember{
     width: 50%;
     float: left;
 }
-.region select#searchYear{
-    width: 100%;
-}
 #searchAds button{
     width: 100%;
     padding: 13px;

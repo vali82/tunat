@@ -493,9 +493,13 @@ $.general = function() {
                 });
                 $('#searchAds').bind('submit', function() {
                     var searchQuery = $('#searchInput').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
-                    if ($('#searchYear').val() > 0 ) {
-                        searchQuery += ':' + $('#searchYear').val();
-                    }
+                    //if ($('#searchYear').val() > 0 ) {
+                    searchQuery += ':' + $('#searchYear').val();
+                    //}
+                    //if ($('#searchCounty').val() > 0 ) {
+                    searchQuery += ':' + $('#searchStare').val();
+                    searchQuery += ':' + $('#searchCounty').val();
+                    //}
                     var actionForm = $('#searchAds').attr('action').
                         replace(
                             '__search__',

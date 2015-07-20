@@ -73,7 +73,7 @@ class AdCollection
                         'MATCH (`part_name`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
                     ),
                     'description_match' => new Expression(
-                        'MATCH (`description`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                        'MATCH (ads.`description`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
                     ),
                     'model_match' => new Expression(
                         'MATCH (`car_model`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
@@ -85,7 +85,7 @@ class AdCollection
                     )
                 );
                 $sql_where = DataMapper::expression(
-                    'MATCH (`part_name`, `description`, car_model) AGAINST ("' . implode(' ', $param['search']) .
+                    'MATCH (ads.`part_name`, ads.`description`, ads.car_model) AGAINST ("' . implode(' ', $param['search']) .
                     '" IN BOOLEAN MODE)'
                 );
             } else {
@@ -94,13 +94,29 @@ class AdCollection
             }
 
             $sql_years = null;
-            if ($param['searchYear'] > 0) {
+            $sql_county = null;
+            $sql_stare = null;
+            if ($param['searchYear'] != '') {
                 $x = DataMapper::expression(
                     'year_start <= '.$param['searchYear'].' AND year_end >= '.$param['searchYear']
                 );
 
                 $sql_years = [
                     'years_query' => $x
+                ];
+            }
+            if ($param['searchCounty'] != '') {
+                $sql_county = [
+                    'county_query' => DataMapper::expression(
+                        'ap.state = '.(int)$param['searchCounty']
+                    )
+                ];
+            }
+            if ($param['searchStare'] != '') {
+                $sql_stare = [
+                    'stare_query' => DataMapper::expression(
+                        'ads.stare = "'.$param['searchStare'].'"'
+                    )
                 ];
             }
 
@@ -117,14 +133,17 @@ class AdCollection
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
                 'page' => $page,
-                'items_per_page' => 2,
+                'items_per_page' => 10,
             ));
             $ads = $adDM->fetchAllDefault(
                 [
                     'status' => 'ok',
                     'car_make' => $param['carModelId'],
-                ] + ($sql_where !== null ? ['search' => $sql_where] : [])
-                + ($sql_years !== null ? $sql_years : []),
+                ]
+                + ($sql_where !== null ? ['search' => $sql_where] : [])
+                + ($sql_years !== null ? $sql_years : [])
+                + ($sql_stare !== null ? $sql_stare : [])
+                + ($sql_county !== null ? $sql_county : []),
                 $order
             );
         }

@@ -45,6 +45,7 @@ class MyAccountController extends MyAbstractController
         $error = false;
 
         $states = General::getFromSession('states');
+        unset($states[0]); // delete the "oricare" value
 
         $form = new MyAccountForm();
         $form->setCancelRoute('back');

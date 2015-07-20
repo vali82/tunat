@@ -415,7 +415,7 @@ abstract class DataMapper implements MMDataMapperInterface
 
 
         });
-//		var_dump($results->getDataSource()->getResource()->queryString);
+//		General::echop($results->getDataSource()->getResource()->queryString);
 
         if (count($results) == 0) {
             $res = null;

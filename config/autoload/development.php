@@ -24,6 +24,7 @@ return array(
         ],
         // lista asta tre sa ramana in aceasta ordine forever
         'states' => [
+            'Oricare',
             'Bucuresti',
             'Alba',
             'Arad',
