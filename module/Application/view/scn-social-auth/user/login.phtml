@@ -5,7 +5,7 @@
       data-bing-action-uri="#" data-form-code="KPGSF" target="_self" method="POST">
 	<div class="loginForm">
 
-		<label for="globalLoginFieldIdentity" style="display: block;"><?=$this->translate('email utilizator')?></label>
+		<label for="globalLoginFieldIdentity" style="display: block;"><?=$this->translate('E-mail')?></label>
 		<input type="email" style="width:100%;"
                maxlength="250" value="" spellcheck="false"
                name="identity" id="globalLoginFieldIdentity">
@@ -13,7 +13,8 @@
 	</div>
 	<div class="loginForm">
 
-		<label for="globalLoginFieldPass" style="display: block;"><?=$this->translate('parola')?></label>
+		<label for="globalLoginFieldPass" style="display: block;"><?=$this->translate('Parola')?></label>
+		<a href="javascript:;" id="forgotTab">Ai uitat parola?</a>
 		<input type="password" style="width:100%;"
                maxlength="250" value="" spellcheck="false"
                name="credential" id="globalLoginFieldPass">
@@ -26,23 +27,19 @@
     </div>
 
 	<div class="loginButtons">
-
-		<a id="loginButton" href="javascript:;" onclick="$('#loginForm').submit()" class="btn btn-success">Login</a>
+		<a id="loginButton" class="btn-green" href="javascript:;" onclick="$('#loginForm').submit()">Login</a>
 		<br /><input type="submit" style="float: right;visibility: hidden;">
 	</div>
 
 </form>
 
-<a href="javascript:;" id="registerTab">nu ai cont? inregistreaza-te</a> |
-<a href="javascript:;" id="forgotTab">ai uitat parola?</a>
-
-
+<div class="register"><a href="javascript:;" id="registerTab">Nu ai cont? Inregistreaza-te</a></div>
 
 <div id = "loginSocialContainer" class="socialLogin">
 
 	<a href="/user/login/facebook" id="loginOptionFacebook" class="cellBtn rotX180 autoExecCenter">
-        sau login cu FaceBook
-        <img class="facebook" src="<?=$this->basePath('/img/facebookLogin.png')?>" />
+         Log in cu Facebook
+        
 	</a>
 
 </div>

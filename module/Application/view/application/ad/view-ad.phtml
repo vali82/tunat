@@ -13,23 +13,37 @@ $this->headScript()
     </div>
 <?php } ?>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">
+<div class="product-details row">
+        <h3>
             <?= $this->title ?> pentru <?= $this->car['class'] ?>
         </h3>
-    </div>
-    <div class="panel-body">
-        <div class="col-md-4 col-sm-12">
-
-            <div class="col-md-12">
+    <div class="product-images col-md-8">
+        <div class="col-md-12 panel">
+        <?php
+            if (count($this->images) > 0) {
+                $img = $this->images[0];
+            } else {
+                $img = 0;
+            }
+            ?>
+                <a href="<?=
+                \Application\libs\General::getSimpleAvatar(
+                    $this->folder,
+                    $img,
+                    '2000x2000'
+                ) ?>" type="" title=""
+                   download="" data-gallery>
+                    <img class="img-responsive" src="<?=
+                    \Application\libs\General::getSimpleAvatar(
+                        $this->folder,
+                        $img,
+                        '300x300'
+                    ) ?>">
+                </a>
                 <?php
-                if (count($this->images) > 0) {
-                    $img = $this->images[0];
-                } else {
-                    $img = 0;
-                }
-                ?>
+            if (count ($this->images) > 0) {
+                foreach ($this->images as $img) { ?>
+                <div class="col-md-4" style="padding-top: 15px">
                     <a href="<?=
                     \Application\libs\General::getSimpleAvatar(
                         $this->folder,
@@ -41,71 +55,37 @@ $this->headScript()
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
                             $img,
-                            '300x300'
+                            '70x70'
                         ) ?>">
                     </a>
 
-            </div>
-
-            <div class="clearfix"></div>
-
-            <div class="row col-md-12">
-                <?php
-                if (count ($this->images) > 0) {
-                    foreach ($this->images as $img) { ?>
-                    <div class="col-md-4" style="padding-top: 15px">
-                        <a href="<?=
-                        \Application\libs\General::getSimpleAvatar(
-                            $this->folder,
-                            $img,
-                            '2000x2000'
-                        ) ?>" type="" title=""
-                           download="" data-gallery>
-                            <img class="img-responsive" src="<?=
-                            \Application\libs\General::getSimpleAvatar(
-                                $this->folder,
-                                $img,
-                                '70x70'
-                            ) ?>">
-                        </a>
-
-                    </div>
-                <?php } } ?>
-            </div>
-
-        </div>
-        <div class="col-md-8 col-sm-12">
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="well well-lg">
-                        <h4><?=$this->advertiser['name']?></h4>
-                        <a href="<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
-                    </div></div>
-                <div class="col-lg-6">
-                    <div class="well well-lg">
-                        <div id = "contactParkContainer" style="display: none">
-                            Telefon: <span id="contactParkPhone"></span><br />
-                            Email: <span id="contactParkEmail"></span><br />
-                            Adresa: <span id="contactParkAddress"></span><br />
-                        </div>
-                        <a id="adGetContactButton" href="javascript:;" role="button" class="btn btn-success"
-                           data-loading-text="se incarca..."
-                           style="padding: 20px; width: 100%">Vezi date de contact!</a>
-                    </div>
                 </div>
+            <?php } } ?>
             </div>
-
-            <p><?= $this->description ?></p>
-
-            <p>Masina: <?=$this->car['category']?> <?=$this->car['class']?></p>
-            <p>Model: <?=$this->car['class']?></p>
-
-            <p>Stare: <?=$this->stare?></p>
-
-
+            
+            
+      </div>
+        
+    <div class="product-info panel col-md-4">
+        <div class="seller">
+            <h4><?=$this->advertiser['name']?></h4>
+            <a href="<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
         </div>
-    </div>
+        <p>Masina: <?=$this->car['category']?> <?=$this->car['class']?></p>
+        <p>Model: <?=$this->car['class']?></p>
+        <p>Stare: <?=$this->stare?></p>
+        <p><?= $this->description ?></p>
+        <div class="contact">
+            <div id = "contactParkContainer" style="display: none">
+                Telefon: <span id="contactParkPhone"></span><br />
+                Email: <span id="contactParkEmail"></span><br />
+                Adresa: <span id="contactParkAddress"></span><br />
+            </div>
+            <a id="adGetContactButton" href="javascript:;" role="button" class="btn-green"
+               data-loading-text="se incarca..."
+               style="padding: 20px; width: 100%">Vezi date de contact!</a>
+        </div>
+    </div>   
 </div>
 
 

@@ -48,103 +48,119 @@
 <?php } ?>
 
 <!--Marca-->
-<br /><br />
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    Marca
-                </h3>
+<div class="row"> 
+    <?php
+    // listare toate marcile
+    if (($this->class) === null) { ?>
+        <div class="col-md-12 car-brand">
+            <h3>Alegeti o marca</h3>
+            <div class="popular-brands">
+                <div class="brand"><a href="#"><h3>Iveco</h3></a></div>
+                <div class="brand"><a href="#"><h3>Renault</h3></a></div>
+                <div class="brand"><a href="#"><h3>Mercedes</h3></a></div>
+                <div class="brand"><a href="#"><h3>Roman</h3></a></div>
+                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
+                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
+                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
+                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
             </div>
-            <div class="panel-body">
-                <br /><br />
+            <div class="car-brand-list">
                 <?php
-                // listare toate marcile
-                if (($this->class) === null) { ?>
-                    <?php
-                    foreach ($this->layout()->cars['categ'][$this->carcategoriesId] as $categ) {
-                        ?><a class="marca-link" href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $categ)?>"><?=$categ?></a>, <?php
-                    }
-                    ?>
-                <?php } else {
-                    // listare categorie + marca
-                    ?>
-
-                    <?=$this->layout()->cars['categories'][$this->carcategoriesId]?>
-                    -
-                    <a href="#" id="changeCarMakeButton">schimba</a>
-                    <div id="allCarsContainer" style="display: none">
-                        <?php foreach ($this->layout()->cars['categories'] as $categoriesId=>$categories) { ?>
-                            <a href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>"><?=$categories?></a>
-                        <?php } ?>
-                    </div>
-
-                    :::
-
-                    <?=$this->class?>
-                    -
-                    <a href="<?=$this->carCollection->urlizeCarcategories($this->carcategoriesId)?>">schimba</a>
-                <?php } ?>
-                <br /><br />
+                foreach ($this->layout()->cars['categ'][$this->carcategoriesId] as $categ) {
+                    ?><a class="marca-link" href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $categ)?>"><?=$categ?></a>, <?php
+                }
+                ?>
             </div>
         </div>
-    </div>
+    <?php } else {
+        // listare categorie + marca
+        ?>
+        <div class="col-md-12" style="padding-bottom:30px">
+            <?=$this->layout()->cars['categories'][$this->carcategoriesId]?>
+            -
+            <a href="#" id="changeCarMakeButton">schimba</a>
+            <div id="allCarsContainer" style="display: none">
+                <?php foreach ($this->layout()->cars['categories'] as $categoriesId=>$categories) { ?>
+                    <a href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>"><?=$categories?></a>
+                <?php } ?>
+            </div>
+
+            :::
+
+            <?=$this->class?>
+            -
+            <a href="<?=$this->carCollection->urlizeCarcategories($this->carcategoriesId)?>">schimba</a>
+        </div>
+    <?php } ?>
 </div>
 <!--end Marca-->
 
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
-
+<div class="row">
+    <div class="col-md-3 filters">
+    <h3>Filtre</h3>
     <!--Filtrare Anunturi-->
-    <div class="row">
-        <div class="col-md-12" style="padding-bottom: 20px">
-            <form class="form-inline" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
-                <div class="input-group">
-
-                    <div class="form-group">
-                        <input id ="searchInput" value="<?=$this->searchValues['input']?>" size="50" maxlength="50" class="form-control" type="text">
-
-                        <select class="form-control" id="searchYear">
-                            <option value="0">orice an</option>
-                            <?php foreach ($this->years as $year) {?>
-                                <option value="<?=$year?>"<?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
-                            <?php }?>
-                        </select>
-
-
-                    </div>
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default">Cauta!</button>
-                    </span>
+        <form class="form-inline panel col-md-12" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
+                <div class="key-words">
+                    <label>Cuvinte cheie</label>
+                    <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50" class="form-control" type="text">
                 </div>
-            </form>
-        </div>
-    </div>
-    <!--end Filtrare Anunturi-->
+                <div class="made-year">
+                    <label>An fabricatie</label>
+                    <select class="form-control" id="searchYear">
+                        <option value="0">orice an</option>
+                        <?php foreach ($this->years as $year) {?>
+                            <option value="<?=$year?>"<?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
+                        <?php }?>
+                    </select>
+                </div>
+                <div class="part-look ">
+                    <label>Stare piesa</label>
+                    <select class="form-control" id="searchYear">
+                        <option value="0">Nou</option>
+                        <option>Second</option>
+                    </select>
+                </div>
+                <div class="region">
+                    <label>Judet</label>
+                    <select class="form-control" id="searchYear">
+                        <option value="0">Judet</option>
+                            <option></option>
+                    </select>
+                </div>
+                    <button type="submit" class="btn-green">Aplica</button>
+        </form>
+<!--end Filtrare Anunturi-->
 
-    <!--Listing Anunturi-->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                Anunturi Piese
-            </h3>
+<!-- reclame -->
+        <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
+            <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
         </div>
-        <div class="panel-body">
-            <?php if ($this->adList !== null) { ?>
-                <?=$this->adList?>
-                <?=
-                $this->paginationControl(
-                    $this->ads,
-                    'Sliding',
-                    'application/partials/list_pagination.phtml',
-                    $this->carCollection->urlizePageListAds($this->carcategoriesId, $this->carModelId, null)
-                );
-                ?>
-            <?php } else { ?>
-                <p>Nu sunt anunturi in aceasta categorie</p>
-            <?php } ?>
+
+        <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
+            <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
         </div>
+<!-- end reclame -->
     </div>
+
+<!--Listing Anunturi-->  
+    <div class="col-md-9 brand-listing">
+        <h3>Anunturi Piese</h3>
+        <?php if ($this->adList !== null) { ?>
+            <?=$this->adList?>
+            <?=
+            $this->paginationControl(
+                $this->ads,
+                'Sliding',
+                'application/partials/list_pagination.phtml',
+                $this->carCollection->urlizePageListAds($this->carcategoriesId, $this->carModelId, null)
+            );
+            ?>
+        <?php } else { ?>
+            <p>Nu sunt anunturi in aceasta categorie</p>
+        <?php } ?>
+    </div>
+</div>
     <!--end Listing Anunturi-->
 
 <?php } elseif ($this->carModelId !== null && $this->adView !== null) { ?>

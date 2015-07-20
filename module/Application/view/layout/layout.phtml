@@ -119,13 +119,12 @@ if ($role == 'parcauto') {
                     <?php if ($role == 'guest') { ?>
                         <div id="LoginRegisterContainer">
                             <div class="contentLoginRegister">
-                                <div style="min-height: 60px;">
-                                    <h3>Vrei sa vinzi piese?</h3>
+                                <div>
                                     <img id="loginRegisterLoading" src="/img/loading.gif" style="display:none; height: 20px; padding-top: 0px">
-                                    <div id="errorLoginRegister" style="color:#000; font-size: 12px; font-weight: normal"></div>
+                                    <div id="errorLoginRegister"></div>
                                 </div>
                                 <div id="loginContainer">
-                                    <h4>Login:</h4>
+                                    <h4>Log in:</h4>
                                     <?php echo $this->partial('scn-social-auth/user/login');?>
                                 </div>
                                 <div id="registerContainer">
@@ -259,7 +258,7 @@ if ($role == 'parcauto') {
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                 </form>
-                <button class="btn btn-success btn-newsletter"><a href="#">Abonare</a></button>
+                <button class="btn-green btn-newsletter"><a href="#">Abonare</a></button>
             </div>
             <div class="container">
                 <div class="row">

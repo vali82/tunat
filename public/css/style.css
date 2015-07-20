@@ -75,8 +75,27 @@ ul.navbar-right{
     background-position: 0 -15px;
     color: #fff;
 }
-/*banner homepage*/
 
+/*general buttons*/
+.btn-green{
+    display: inline-block;
+    background-image: linear-gradient(to bottom, #63c848 0px, #5cb943 100%);
+    box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
+    -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
+    color: #fff;
+    font: 500 17px/22px 'Ubuntu', sans-serif;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    background-color: #63c848;
+    border: 0;
+    text-align: center;
+}
+/*end general buttons*/
+
+
+
+
+/*banner homepage*/
 .banner{
     padding-top: 75px;
     width: 100%;
@@ -148,7 +167,7 @@ li.displayOnMobile {
     border: 1px solid #eaeaea;
     float: right;
     padding:20px;
-    width: 320px;
+    width: 297px;
 }
 
 #LoginRegisterContainer h3 {
@@ -156,16 +175,11 @@ li.displayOnMobile {
 }
 
 .socialLogin {
-    border-top: 1px solid #DADADA;
     margin-top: 20px;
     padding-top: 10px;
     text-align: center;
 }
 
-.socialLogin img.facebook {
-    width: 20px;
-    margin-top: -3px;
-}
 .panel-default{
     position: relative;
     top: -67px;
@@ -182,7 +196,7 @@ li.displayOnMobile {
     padding: 0;
 }
 
-.category:hover{
+.category:hover, .active{
     background-color: #243045;
     color: #fff;
 }
@@ -199,7 +213,7 @@ li.displayOnMobile {
     font-size: 18px;
     color: #243045;
 }
-.category a:hover{
+.category a:hover, .active a{
     color: #fff;
     text-decoration: none;
 }
@@ -264,10 +278,15 @@ h3.new{
     color: #a2a3a5;
 }
 .announcement .price{
-    font: 500 19px/25px 'Ubuntu', sans-serif; 
+    font: 500 19px/1.2 'Ubuntu', sans-serif; 
     color: #243045;
-    line-height: 6.8;
     text-align: right;
+    display: table;
+    height: 130px;
+}
+.announcement .price span{
+    display: table-cell;
+    vertical-align: middle;
 }
 .announcement .picture{
     padding: 0;
@@ -360,17 +379,11 @@ footer .container{
     border-color: #989696;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #989696;
 }
-.btn-success.btn-newsletter{
+.btn-newsletter{
     float: left;
-    padding: 13px 43px;
-    border: 0;
-    border-radius: 0;
-    background-image: linear-gradient(to bottom, #63c848 0px, #5cb943 100%);
-    box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
-    -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
-    -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
+    padding: 12px 43px;
 }
-.btn-success.btn-newsletter a{
+.btn-newsletter a{
     color: #fff;
     font-size: 17px;
     font-weight: 500;
@@ -435,6 +448,180 @@ footer .container{
 }
 
 
+/*login popup*/
+#loginForm, .loginForm{
+    overflow: hidden;
+}
+#loginContainer h4, 
+#registerContainer h4,
+#forgotContainer h4{
+    font: 600 21px/26px 'Ubuntu', sans-serif;
+    color: #243045;
+    margin-top: 0;
+}
+.loginForm input{
+    border: 1px solid #c4c7cc;
+    height: 30px;
+    padding: 0 10px;
+}
+.loginForm label, .ForgotForm label{
+    font: 300 15px/20px 'Ubuntu', sans-serif;
+    color: #243045;
+    margin-bottom: 0;
+}
+.ForgotForm input{
+    margin-bottom: 20px;
+    border: 1px solid #c4c7cc;
+    height: 30px;
+    padding: 0 10px;
+}
+#loginForm div:nth-child(odd), #registerForm div{
+    margin-bottom: 20px;
+}
+#loginButton, #registerButton, #forgotButton{
+    padding: 9px 40px;
+}
+#loginButton:hover, #registerButton:hover, #forgotButton:hover{
+    color: #ffff;
+}
+label[for=globalLoginFieldPass]{
+    width: 50%;
+    float: left;
+}
+label[for=globalLoginFieldRemember]{
+    width: 90%;
+    float: left;
+    line-height: 34px;
+    padding-left: 10px;
+    font-size: 13px;
+    color: #778192;
+}
+input#globalLoginFieldRemember{
+    width: 6%;
+    float: left;
+}
+#forgotTab{
+    float: right;
+    color: #778192;
+    font: 300 12px/17px 'Ubuntu', sans-serif;
+}
+#loginContainer .register{
+    text-align: center;
+}
+#loginContainer .register a{
+    font: 17px/23px 'Ubuntu', sans-serif;
+    color: #243045;
+}
+#loginOptionFacebook{
+    background-image: url(../img/fb-login.jpg);
+    width: 100%;
+    height: 47px;
+    display: block;
+    padding: 12px;
+    color: #fff;
+    font: 500 17px/22px 'Ubuntu', sans-serif;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+#loginOptionFacebook:hover{
+    text-decoration: none;
+}
+#loginTab{
+    font: 17px/23px 'Ubuntu', sans-serif;
+    color: #243045;
+    margin-top: 10px;
+    display: block;
+}
+#errorLoginRegister{
+    font: 300 12px/17px 'Ubuntu', sans-serif;
+}
+/*end login popup*/
+
+
+/*category page*/
+.car-brand >h3{
+    font: 300 25px/30px 'Ubuntu', sans-serif;
+    color: #545454;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+.popular-brands,.car-brand-list{
+    float: left;
+    margin-bottom: 25px;
+    width: 100%;
+}
+.popular-brands .brand{
+    width: 10.75%;
+    float: left;
+    margin-right: 2%;
+    background-color: #fff;
+    height: 100px;
+    text-align: center;
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.05);
+}
+.popular-brands div:last-child{
+    margin-right: 0;
+}
+.brand img{
+    min-height: 100px
+}
+.brand h3{
+    margin-top: 30%;
+}
+.car-brand-list a{
+   font: 300 14px/20px 'Ubuntu', sans-serif;
+   color: #545454;
+}
+#searchAds{
+    margin-bottom: 20px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+.brand-listing .announcement{
+    margin-right: 0;
+    margin-left: -15px;
+}
+.brand-listing h3, .filters h3{
+    font: 300 21px/26px 'Ubuntu', sans-serif;
+    color: #545454;
+}
+.key-words #searchInput{
+    width: 100%;
+}
+.made-year, .part-look{
+    width: 50%;
+    float: left;
+}
+.region select#searchYear{
+    width: 100%;
+}
+#searchAds button{
+    width: 100%;
+    padding: 13px;
+    margin-top: 20px;
+}
+#searchAds label{
+   font: 600 14px/20px 'Ubuntu', sans-serif;
+   color: #243045;
+   margin-bottom: 12px;
+   margin-top: 22px;
+}
+#searchAds .key-words label{
+    margin-top: 0;
+}
+#searchAds input, #searchAds select{
+    border-radius: 0;
+    background-color: #e9e9e9;
+    height: 34px;
+}
+select{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/*end category page*/
+
+
 
 
 
@@ -446,6 +633,13 @@ footer .container{
 
 /*responsive design*/
 @media screen and (max-width: 1200px){
+    .announcement .price{
+        height: 117px;
+    }
+    .announcement .picture img {
+        min-width: 100%;
+    }
+
 
 }
 
@@ -457,7 +651,7 @@ footer .container{
 @media screen and (max-width: 980px){
    
 }
-@media screen and (max-width: 756px){
+@media screen and (max-width: 768px){
     /*#categoryContainer{
         width: 75%;
     }
@@ -475,6 +669,18 @@ footer .container{
     .banner-text span:first-child{
         font-size: 30px;
         line-height: 36px;
+    }
+    .announcement .picture img{
+        min-width: 35%;
+        margin: 0 auto;
+    }
+    .announcement .description{
+        text-align: center;
+        margin-top: 20px;
+    }
+    .announcement .price{
+        text-align: center;
+        height: 50px;
     }
 }
 @media screen and (max-width: 640px){
