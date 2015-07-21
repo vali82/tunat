@@ -10,7 +10,12 @@
             <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
         </h4>
         <p class="about"><?=$this->description?></p>
-        <p class="model"><?=$this->car?> <?=$this->model?> (<?=$this->yearStart?> - <?=$this->yearEnd?>)</p>
+        <p class="model">
+            <span class="category-icon">
+                <img src="<?=$this->basePath()?>/img/<?=$this->carCategory?>.png" />
+            </span>
+            <?=$this->car?> <?=$this->model?> (<?=$this->yearStart?> - <?=$this->yearEnd?>)
+        </p>
     </div>
     <div class="col-md-2 col-sm-2 col-xs-12">
         <span class="price"><?=$this->price?></span>

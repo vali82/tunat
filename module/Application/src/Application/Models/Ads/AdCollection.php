@@ -34,6 +34,15 @@ class AdCollection
         $ads = null;
         if ($param['place'] == 'homepage') {
             // HOME PAGE ADS
+            // inner join Advertiser
+            $adDM->setJoins([
+                'advertiser' => [
+                    'name' => array('ap' => 'advertiser'),
+                    'on' => 'ap.id = ads.advertiser_id',
+                    'columns' => array('state_id' => 'state'),
+                    'type' => 'inner'
+                ]
+            ]);
             $ads = $adDM->fetchAllDefault(
                 ['status' => 'ok'],
                 ['id' => 'DESC'],
@@ -189,7 +198,8 @@ class AdCollection
                         'price' =>
                             ($ad->getPrice() == round($ad->getPrice()) ? round($ad->getPrice()) : $ad->getPrice()) .
                             ' ' . $ad->getCurrency(),
-                        'stare' => $ad->getStare()
+                        'stare' => $ad->getStare(),
+                        'carCategory' => strtolower($carCollection->getUrlize($cars['categories'][$ad->getCarCategory()]))
                     ]
                 );
             }
