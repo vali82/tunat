@@ -282,11 +282,14 @@ h3.new{
     color: #243045;
     text-align: right;
     display: table;
-    height: 130px;
+    margin-top: 50px;
+    width: 100%;
 }
-.announcement .price span{
-    display: table-cell;
-    vertical-align: middle;
+.announcement .county{
+    color: #8E929F;
+    text-align: right;
+    display: table;
+    width: 100%;
 }
 .announcement .picture{
     padding: 0;
@@ -300,12 +303,22 @@ h3.new{
     padding: 15px;
 }
 
-.description .media-heading a{
+.announcement .description .media-heading {
+    margin-top: 10px;
+}
+
+.announcement .description .media-heading a{
     font: 19px/25px 'Ubuntu', sans-serif;
     color: #243045;
     font-weight: 500;
 }
 
+.announcement .description .stare {
+    color: #A2A3A5;
+    padding-left: 20px;
+    font-weight: normal;
+    font-size: 15px;
+}
 
 
 
@@ -630,9 +643,9 @@ select{
 
 /*responsive design*/
 @media screen and (max-width: 1200px){
-    .announcement .price{
+    /*.announcement .price{
         height: 117px;
-    }
+    }*/
     .announcement .picture img {
         min-width: 100%;
     }

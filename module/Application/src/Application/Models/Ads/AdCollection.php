@@ -25,6 +25,7 @@ class AdCollection
         $cars = $this->controller->getCars();
         $carCollection = new CarsCollection($this->controller);
         $ad_in_list = 'ad_in_list';
+        $counties = General::getFromSession('states');
 
         $partial = $this->controller->getServiceLocator()->get('viewhelpermanager')->get('partial');
 
@@ -50,6 +51,16 @@ class AdCollection
                 'page' => $page,
                 'items_per_page' => 10,
             ));
+
+            // inner join Advertiser
+            $adDM->setJoins([
+                'advertiser' => [
+                    'name' => array('ap' => 'advertiser'),
+                    'on' => 'ap.id = ads.advertiser_id',
+                    'columns' => array('state_id' => 'state'),
+                    'type' => 'inner'
+                ]
+            ]);
 
             $ads = $adDM->fetchAllDefault(
                 [
@@ -105,7 +116,7 @@ class AdCollection
                     'years_query' => $x
                 ];
             }
-            if ($param['searchCounty'] != '') {
+            if ($param['searchCounty'] > 0) {
                 $sql_county = [
                     'county_query' => DataMapper::expression(
                         'ap.state = '.(int)$param['searchCounty']
@@ -174,7 +185,11 @@ class AdCollection
                         'views' => $ad->getViews(),
                         'contactDisplayed' => $ad->getContactDisplayed(),
                         'expirationDate' => General::DateTime($ad->getExpirationDate(), 'LONG'),
-                        'state_id' => $ad->getStateId()
+                        'county' => $counties[$ad->getStateId()],
+                        'price' =>
+                            ($ad->getPrice() == round($ad->getPrice()) ? round($ad->getPrice()) : $ad->getPrice()) .
+                            ' ' . $ad->getCurrency(),
+                        'stare' => $ad->getStare()
                     ]
                 );
             }
