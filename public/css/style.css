@@ -3,6 +3,9 @@ body{
     background-color: #f8f6f6;
     font-family: 'Ubuntu', sans-serif;
 }
+.panel {
+    border-radius: 0;
+}
 nav.navbar-inverse{
     width: 100%;
     height: 75px;
@@ -647,7 +650,47 @@ select{
 /*end category page*/
 
 
+/*product page*/
 
+.change-categories >a{
+    padding: 20px 15px;
+    border-radius: 0;
+    color: #424242;
+    font-size: 15px;
+    text-decoration: underline;
+    font-weight: 500;
+}
+.change-categories a:first-child{
+    margin-right: 20px;
+}
+
+
+.change-categories img{
+    max-height: 30px;
+    width: auto;
+    display: inline;
+    padding-right: 10px;
+}
+.product-images{
+    width: 60%;
+    float: left;
+    margin-right: 15px;
+    padding: 15px;
+}
+.product-info{
+    width: calc(40% - 15px);
+    float: left;
+    padding: 15px;
+}
+
+.product-images img{
+    width: 100%;
+    height: auto;
+}
+.product-images .big-image img{
+    height: 370px;
+}
+/*end product page*/
 
 
 
