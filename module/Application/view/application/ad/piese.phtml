@@ -77,22 +77,20 @@
     <?php } else {
         // listare categorie + marca
         ?>
-        <div class="col-md-12" style="padding-bottom:30px">
-            <?=$this->layout()->cars['categories'][$this->carcategoriesId]?>
-            -
-            <a href="#" id="changeCarMakeButton">schimba</a>
-            <div id="allCarsContainer" style="display: none">
-                <?php foreach ($this->layout()->cars['categories'] as $categoriesId=>$categories) { ?>
-                    <a href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>"><?=$categories?></a>
-                <?php } ?>
+            <div class="change-categories col-md-6">
+                <a href="#" class="panel" id="changeCarMakeButton">
+                    <img src="<?=$this->basePath() . '/img/dube.png'?>"/><?=$this->layout()->cars['categories'][$this->carcategoriesId]?>
+                </a>
+                <a href="<?=$this->carCollection->urlizeCarcategories($this->carcategoriesId)?>" class="panel">
+                    <img src="<?=$this->basePath() . '/img/dube.png'?>"/><?=$this->class?>
+                </a>
+                <div class="change-categories" id="allCarsContainer" style="display: none">
+                    <?php foreach ($this->layout()->cars['categories'] as $categoriesId=>$categories) { ?>
+                        <a class="panel" href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>"><?=$categories?></a>
+                    <?php } ?>
+                </div>
             </div>
-
-            :::
-
-            <?=$this->class?>
-            -
-            <a href="<?=$this->carCollection->urlizeCarcategories($this->carcategoriesId)?>">schimba</a>
-        </div>
+            <div class="offer col-md-6"><a href="<?=$this->url('home/offers/create')?>"><button class="btn btn-danger">Cere oferta</button></a></div>
     <?php } ?>
 </div>
 <!--end Marca-->

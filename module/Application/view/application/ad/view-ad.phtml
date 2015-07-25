@@ -13,12 +13,11 @@ $this->headScript()
     </div>
 <?php } ?>
 
-<div class="product-details row">
+<div class="product-details">
         <h3>
             <?= $this->title ?> pentru <?= $this->car['class'] ?>
         </h3>
-    <div class="product-images col-md-8">
-        <div class="col-md-12 panel">
+    <div class="product-images panel">
         <?php
             if (count($this->images) > 0) {
                 $img = $this->images[0];
@@ -26,24 +25,7 @@ $this->headScript()
                 $img = 0;
             }
             ?>
-                <a href="<?=
-                \Application\libs\General::getSimpleAvatar(
-                    $this->folder,
-                    $img,
-                    '2000x2000'
-                ) ?>" type="" title=""
-                   download="" data-gallery>
-                    <img class="img-responsive" src="<?=
-                    \Application\libs\General::getSimpleAvatar(
-                        $this->folder,
-                        $img,
-                        '300x300'
-                    ) ?>">
-                </a>
-                <?php
-            if (count ($this->images) > 0) {
-                foreach ($this->images as $img) { ?>
-                <div class="col-md-4" style="padding-top: 15px">
+                <div class="big-image">
                     <a href="<?=
                     \Application\libs\General::getSimpleAvatar(
                         $this->folder,
@@ -55,18 +37,36 @@ $this->headScript()
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
                             $img,
-                            '70x70'
+                            '300x200'
                         ) ?>">
                     </a>
-
                 </div>
-            <?php } } ?>
-            </div>
-            
-            
-      </div>
+
+                <div class="row">
+                <?php
+                if (count ($this->images) > 0) {
+                    foreach ($this->images as $img) { ?>
+                    <div class="col-md-3" style="padding-top: 15px">
+                        <a href="<?=
+                        \Application\libs\General::getSimpleAvatar(
+                            $this->folder,
+                            $img,
+                            '2000x2000'
+                        ) ?>" type="" title=""
+                           download="" data-gallery>
+                            <img class="img-responsive" src="<?=
+                            \Application\libs\General::getSimpleAvatar(
+                                $this->folder,
+                                $img,
+                                '60x40'
+                            ) ?>">
+                        </a>
+                    </div>    
+                <?php } } ?>
+                </div>
+        </div>
         
-    <div class="product-info panel col-md-4">
+    <div class="product-info panel">
         <div class="seller">
             <h4><?=$this->advertiser['name']?></h4>
             <a href="<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
