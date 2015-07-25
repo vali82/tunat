@@ -625,16 +625,16 @@ $.general = function() {
         update: function() {
 
             var _enableParcFields = function() {
-                $('#name').parent().parent().show();
-                $('#description').parent().parent().show();
-                $('#url').parent().parent().show();
+                $('#name').parent().slideDown();
+                $('#description').parent().slideDown();
+                $('#url').parent().slideDown();
                 //$('#name2').parent().parent().hide();
                 //$('#name2').next().html('obligatoriu: nu va aparea nicaieri pe site');
             };
             var _enableParticularFields = function() {
-                $('#name').parent().parent().hide();
-                $('#description').parent().parent().hide();
-                $('#url').parent().parent().hide();
+                $('#name').parent().slideUp();
+                $('#description').parent().slideUp();
+                $('#url').parent().slideUp();
                 //$('#name2').parent().parent().show();
                 //$('#name2').next().html('obligatoriu: va aparea in detaliile anuntului');
             };

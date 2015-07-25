@@ -177,5 +177,17 @@ return [
             ),
         ),
         'may_terminate' => true,
+    ],
+    'pages' => [
+        'type' => 'Literal',
+        'options' => array(
+            'route' => 'p',
+            'defaults' => array(
+                'controller' => 'Application\Controller\Index',
+                'action' => 'index',
+            ),
+        ),
+        'may_terminate' => true,
+        'child_routes' => include __DIR__ . '/pages.php'
     ]
 ];

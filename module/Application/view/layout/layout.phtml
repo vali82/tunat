@@ -268,12 +268,12 @@ if ($role == 'parcauto') {
                     <div class="col-md-2 col-sm-3 info">
                         <h3>Informatii</h3>
                         <ul>
-                            <li><a href="#">Aplicatii mobile</a></li>
+                            <li><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')">Aplicatii mobile</a></li>
                             <li><a href="#">Cautari frecvente</a></li>
-                            <li><a href="#">Anunturi promovate</a></li>
-                            <li><a href="#">Harta site</a></li>
-                            <li><a href="#">ANPC</a></li>
-                            <li><a href="#">Parteneri </a></li>
+                            <li><a href="javascript:;" onclick="alert('Momentan anunturile nu pot fi promovate!<br />Functie in lucru!')">Anunturi promovate</a></li>
+                            <li><a href="<?=$this->url('home/pages/sitemap')?>">Harta site</a></li>
+                            <li><a href="http://www.anpc.gov.ro">ANPC</a></li>
+                            <li><a href="<?=$this->url('home/pages/partners')?>">Parteneri </a></li>
                         </ul>
                     </div>
                     <div class="col-md-2 col-sm-3 info2">
@@ -289,8 +289,8 @@ if ($role == 'parcauto') {
                     <div class="col-md-3 col-sm-4 mobile-app">
                         <h3>Descarca aplicatia</h3>
                         <ul>
-                            <li class="ggl-play"><a href="#"></a></li>
-                            <li class="app-store"><a href="#"></a></li>
+                            <li class="ggl-play"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
+                            <li class="app-store"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
                         </ul>
                     </div>
                     <div class="col-md-3 col-sm-12 social-media">

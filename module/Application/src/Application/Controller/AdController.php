@@ -300,6 +300,8 @@ class AdController extends MyAbstractController
         $searchParam = $this->getEvent()->getRouteMatch()->getParam('search', '');
 
 
+        $relatedAds = null;
+
         $searchWords = '';
         $searchYear = '';
         $searchStare = '';
@@ -372,6 +374,11 @@ class AdController extends MyAbstractController
                     return $this->redirect()->toRoute($route[0], $route[1]);
                 }
                 $adView = $adView[0];
+                $relatedAds = $adCollection->adListHTML([
+                    'place' => 'related',
+                    'carModelId' => $carModelId,
+                    'notThisID' => $adId
+                ]);
             }
         }
         ////
@@ -424,7 +431,8 @@ class AdController extends MyAbstractController
 //            'searchValue' => str_replace("+", " ", $search[0]),
 //            'searchYearStart' => ($search[1]),
             'years' => $adCollection->getYears(),
-            'states' => General::getFromSession('states')
+            'states' => General::getFromSession('states'),
+            'relatedAds' => $relatedAds['list']
         ];
     }
 

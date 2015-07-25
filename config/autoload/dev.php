@@ -22,7 +22,7 @@ return array(
             'hibrid',
             'electric'
         ],
-        // lista asta tre sa ramana in aceasta ordine forever
+        // lista asta tre sa ramana in aceasta ordine forever pt ca se salveaza in baza de date cheia
         'states' => [
             'Oricare',
             'Bucuresti',
