@@ -17,6 +17,11 @@ $this->headScript()
         <h3>
             <?= $this->title ?> pentru <?= $this->car['class'] ?>
         </h3>
+        <div class="info-dates">
+            <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:15522</span>
+            <span><span class="glyphicon glyphicon-calendar"></span>Expira la 15.06.2015</span>
+            <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la 17.08.1956</span>
+        </div>
     <div class="product-images panel">
         <?php
             if (count($this->images) > 0) {
@@ -42,11 +47,11 @@ $this->headScript()
                     </a>
                 </div>
 
-                <div class="row">
+                <div class="row tumb-img">
                 <?php
                 if (count ($this->images) > 0) {
                     foreach ($this->images as $img) { ?>
-                    <div class="col-md-3" style="padding-top: 15px">
+                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top: 15px">
                         <a href="<?=
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
@@ -68,13 +73,34 @@ $this->headScript()
         
     <div class="product-info panel">
         <div class="seller">
+            <span>Vanzator</span>
             <h4><?=$this->advertiser['name']?></h4>
             <a href="<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
         </div>
-        <p>Masina: <?=$this->car['category']?> <?=$this->car['class']?></p>
-        <p>Model: <?=$this->car['class']?></p>
-        <p>Stare: <?=$this->stare?></p>
-        <p><?= $this->description ?></p>
+        <div class="price-box">
+            <span class="price">3000 eur</span>
+            <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
+        </div>
+        <div class="info-details">
+            <p>
+                <span class="category-icon">
+                    <img src="<?=$this->basePath()?>/img/<?=$this->carCategory?>.png" />
+                </span>Categorie:
+                <span><?=$this->car['category']?> <?=$this->car['class']?></span>
+            </p>
+            <p>
+                <span class="category-icon">
+                    <img src="<?=$this->basePath()?>/img/<?=$this->carCategory?>.png" />
+                </span>Marca si model:
+                <span><?=$this->car['class']?></span>
+            </p>
+           <?php /*<p>Stare: <?=$this->stare?></p>*/ ?>
+            <p><span class="glyphicon glyphicon-calendar"></span> An <span>2013 - 2015</span></p>
+            <p>Cod: <span>4sa5dfd4sadf</span></p>
+            <p>Cantitate: <span>500</span></p>
+            <p class="description"><?= $this->description ?></p>
+
+        </div>
         <div class="contact">
             <div id = "contactParkContainer" style="display: none">
                 Telefon: <span id="contactParkPhone"></span><br />
@@ -83,7 +109,7 @@ $this->headScript()
             </div>
             <a id="adGetContactButton" href="javascript:;" role="button" class="btn-green"
                data-loading-text="se incarca..."
-               style="padding: 20px; width: 100%">Vezi date de contact!</a>
+               style="padding: 20px; width: 100%">Contacteaza vanzator</a>
         </div>
     </div>   
 </div>

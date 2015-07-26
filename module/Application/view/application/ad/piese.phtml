@@ -67,51 +67,17 @@ $cars = $this->layout()->cars;
                     <img src="<?=$this->basePath()?>/img/<?=strtolower($this->carCollection->getUrlize($cars['categories'][$this->carcategoriesId]))?>.png" />
                     <?=$this->class?>
                 </a>
-
+                <a href="<?=$this->carCollection->urlizeCarcategories($this->carcategoriesId)?>" class="panel">
+                    <img src="<?=$this->basePath() . '/img/dube.png'?>"/><?=$this->class?>
+                </a>
+                <div class="change-categories" id="allCarsContainer" style="display: none">
+                    <?php foreach ($this->layout()->cars['categories'] as $categoriesId=>$categories) { ?>
+                        <a class="panel" href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>"><?=$categories?></a>
+                    <?php } ?>
+                </div>
             </div>
-            <div class="offer col-md-9"><a href="<?=$this->url('home/offers/create')?>"><button class="btn btn-danger">Cere oferta</button></a></div>
-            <div class="col-md-12 change-categories" id="allCarsContainer" style="display: none">
-                <?php foreach ($cars['categories'] as $categoriesId=>$categories) { ?>
-                    <div class="row">
-                        <div class="change-categories col-md-3">
-                            <a class="panel"
-                               title = "Piese <?=$cars['categories'][$categoriesId]?>"
-                               href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
-                                <img src="<?=$this->basePath()?>/img/<?=strtolower($this->carCollection->getUrlize($cars['categories'][$categoriesId]))?>.png" />
-                                <?=$categories?>
-                            </a>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="popular-brands">
-                                <?php
-                                foreach ($cars['model'][$categoriesId] as $modelId=>$model) {
-                                    if ($model['popular']) {
-                                        $modelName = $model['categ'];
-                                        $modelNameUrlized = $this->carCollection->getUrlize($modelName);
-                                        ?>
-                                        <div class="brand">
-                                            <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
-                                                href="<?= $this->carCollection->urlizeCarClass($categoriesId, $modelName) ?>">
-                                                <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
-                                                    <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
-                                                <?php } else { ?>
-                                                    <h3><?= $modelName ?></h3>
-                                                <?php } ?>
-                                            </a>
-                                        </div>
-                                    <?php } ?>
-                                <?php }
-                                ?>
-                                <div class="brand">
-                                <a href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
-                                    <h3>Altele</h3>
-                                </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php } ?>
-
+            <div class="offer2 col-md-6">
+                <a class="btn-red" href="<?=$this->url('home/offers/create')?>">Cere oferta</a>
             </div>
     <?php } ?>
 </div>
