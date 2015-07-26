@@ -162,6 +162,7 @@ class AdCollection
             $sql_years = null;
             $sql_county = null;
             $sql_stare = null;
+            $sql_oem = null;
             if ($param['searchYear'] != '') {
                 $x = DataMapper::expression(
                     'year_start <= '.$param['searchYear'].' AND year_end >= '.$param['searchYear']
@@ -182,6 +183,13 @@ class AdCollection
                 $sql_stare = [
                     'stare_query' => DataMapper::expression(
                         'ads.stare = "'.$param['searchStare'].'"'
+                    )
+                ];
+            }
+            if ($param['searchOem'] != '') {
+                $sql_oem = [
+                    'oem_query' => DataMapper::expression(
+                        'ads.code_oem = "'.$param['searchOem'].'"'
                     )
                 ];
             }
@@ -206,6 +214,7 @@ class AdCollection
                     'status' => 'ok',
                     'car_make' => $param['carModelId'],
                 ]
+                + ($sql_oem !== null ? $sql_oem : [])
                 + ($sql_where !== null ? ['search' => $sql_where] : [])
                 + ($sql_years !== null ? $sql_years : [])
                 + ($sql_stare !== null ? $sql_stare : [])
@@ -245,7 +254,9 @@ class AdCollection
                             ($ad->getPrice() == round($ad->getPrice()) ? round($ad->getPrice()) : $ad->getPrice()) .
                             ' ' . $ad->getCurrency(),
                         'stare' => $ad->getStare(),
-                        'carCategory' => strtolower($carCollection->getUrlize($cars['categories'][$ad->getCarCategory()]))
+                        'carCategory' => strtolower($carCollection->getUrlize($cars['categories'][$ad->getCarCategory()])),
+                        'urlFilter1' => $carCollection->urlizeCarClass($ad->getCarCategory(), $cars['model'][$ad->getCarCategory()][$ad->getCarMake()]['categ']),
+                        'urlFilter2' => $carCollection->urlizeSearchAds($ad->getCarCategory(), $ad->getCarMake())
                     ]
                 );
             }

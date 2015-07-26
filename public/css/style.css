@@ -37,6 +37,9 @@ nav .container{
 .navbar-brand{
     padding: 0;
 }
+.navbar-brand  img {
+    z-index: 9999;
+}
 .navbar-header{
     height: 75px;
 }
@@ -278,6 +281,9 @@ h3.new{
 .announcement .description .model{
     font-weight: 300;
     font: 16px/23px 'Ubuntu', sans-serif;
+    color: #a2a3a5;
+}
+.announcement .description .model a {
     color: #a2a3a5;
 }
 .announcement .price{
@@ -598,6 +604,21 @@ input#globalLoginFieldRemember{
 .brand h3{
     margin-top: 30%;
 }
+.change-categories .popular-brands {
+    margin-bottom: 0px;
+}
+.change-categories .popular-brands .brand {
+    height: 60px;
+    margin: 5px;
+    width: 9.75%;
+}
+.change-categories .brand img {
+    min-height: 60px;
+    padding-right: 0;
+}
+.change-categories .brand h3 {
+    font-size: 11px;
+}
 .car-brand-list a{
    font: 300 14px/20px 'Ubuntu', sans-serif;
    color: #545454;
@@ -652,13 +673,22 @@ select{
 
 /*product page*/
 
+#allCarsContainer {
+    position: relative;
+    z-index: 999;
+}
 .change-categories >a{
-    padding: 20px 15px;
     border-radius: 0;
     color: #424242;
+    display: block;
     font-size: 15px;
-    text-decoration: underline;
     font-weight: 500;
+    margin-bottom: 2px;
+    padding: 20px 15px;
+    text-decoration: underline;
+    /*width: 250px;*/
+    margin-right: 0px;
+    width: 100%;
 }
 .change-categories a:first-child{
     margin-right: 20px;

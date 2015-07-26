@@ -29,6 +29,7 @@ if ($role == 'parcauto') {
         <?php
         echo $this
             ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+            ->prependStylesheet($this->basePath() . '/js/nprogress-master/nprogress.css')
             ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
             ->prependStylesheet($this->basePath() . '/css/style.css')
             ->prependStylesheet('http://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700')
@@ -41,6 +42,7 @@ if ($role == 'parcauto') {
 
         <!-- Scripts -->
         <?php echo $this->headScript()
+            ->prependFile($this->basePath() . '/js/nprogress-master/nprogress.js')
             ->prependFile($this->basePath() . '/js/general.js')
             ->prependFile($this->basePath() . '/js/bootbox/bootbox.min.js')
             ->prependFile($this->basePath() . '/js/select2/select2.full.js')
@@ -63,6 +65,13 @@ if ($role == 'parcauto') {
         </script>
     </head>
     <body>
+    <script>
+//        NProgress.configure({ minimum: 0.5, easing: 'ease', speed: 500 });
+
+        //NProgress.start();
+        NProgress.set(0.5);
+        NProgress.inc(0.2);
+    </script
     <div id="fb-root"></div>
         <script>
             (function(d, s, id) {
@@ -314,14 +323,12 @@ if ($role == 'parcauto') {
             </div>
         </footer>
 
-        <?php echo $this->inlineScript()->prependScript(
+    <?php echo $this->inlineScript()->prependScript(
             ' $(document).ready(function() { '.
                 ' generalObj.onLoad(); '.
                 $this->js_call.
-
             ' ;});'
         );
         ?>
-
     </body>
 </html>

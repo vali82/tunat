@@ -3,44 +3,16 @@ $this->layout()->setVariable(
     'isHomePage', true
 );
 ?>
-<div id="categoryContainer" class="panel panel-default row">
-    <div class="col-md-2 col-sm-2 col-xs-4 category">
-        <a href="<?= $this->url('home/piese', ['categories' => 'camioane']) ?>">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/camioane.png'?>"/>
-            <span>Camioane</span>
-        </a>
-    </div>
-    <div class="col-md-2 col-sm-2 col-xs-4 category">
-        <a href="<?= $this->url('home/piese', ['categories' => 'dube']) ?>">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/dube.png'?>"/>
-            <span>Dube</span>
-        </a>
-    </div>
-    <div class="col-md-2 col-sm-2 col-xs-4 category">
-        <a href="<?= $this->url('home/piese', ['categories' => 'remorci']) ?>">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/remorci.png'?>"/>
-            <span>Remorci</span>
-        </a>
-    </div>
-    <div class="col-md-2 col-sm-2 col-xs-4 category">
-        <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-agricole']) ?>">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-agricole.png'?>"/>
-            <span>Utilaje Agricole</span>
-        </a>
-    </div>
-    <div class="col-md-2 col-sm-2 col-xs-4 category">
-        <a href="<?= $this->url('home/piese', ['categories' => 'autobuse']) ?>">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/autobuse.png'?>"/>
-            <span>Autobuse</span>
-        </a>
-    </div>
-    <div class="col-md-2 col-sm-2 col-xs-4 category">
-        <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-constructii']) ?>">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-constructii.png'?>"/>
-            <span>Utilaje Constructii</span>
-        </a>
-    </div>
-</div>
+<!--Category-->
+<?=
+$this->partial(
+    'application/ad/partials/categoriesBox.phtml',
+    [
+        'carCollection' => $this->carCollection,
+        'carcategoriesId' => 0
+    ]
+)?>
+<!--end Category-->
 
 <div class="row">
     <div class="col-md-12 offer">
@@ -51,13 +23,12 @@ $this->layout()->setVariable(
     <div class="col-md-9">
         <?= $this->adList ?>
     </div>
-    <div class="col-md-3">
-        <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
-        </div>
 
-        <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
-        </div>
+    <div class="col-md-3">
+        <?=
+        $this->partial(
+            'application/ad/partials/partners.phtml',
+            []
+        )?>
     </div>
 </div>

@@ -26,11 +26,13 @@ class IndexController extends MyAbstractController
     public function indexAction()
     {
         $ad = new AdCollection($this);
+        $carCollection = new CarsCollection($this);
 
         return [
             'adList' => $ad->adListHTML([
                 'place' => 'homepage'
-            ])
+            ]),
+            'carCollection' => $carCollection,
         ];
     }
 

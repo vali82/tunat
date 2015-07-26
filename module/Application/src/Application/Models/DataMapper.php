@@ -510,7 +510,7 @@ abstract class DataMapper implements MMDataMapperInterface
         return null;
     }
 
-    public function fetchResultsArray($selectKey = null)
+    public function fetchResultsArray($selectKey = null, $orderBy = null)
     {
         $sql = new Sql($this->adapter);
         $select = $sql->select();
@@ -529,12 +529,16 @@ abstract class DataMapper implements MMDataMapperInterface
             ->from($this->table_name)
         ;
 
+        if ($orderBy !== null) {
+            $select->order($orderBy);
+        }
+
         $statement = $sql->prepareStatementForSqlObject($countSelect);
         $result = $statement->execute();
         $return = [];
         $id = count($this->primary_key_update) == 1 ? $this->primary_key_update[0] : null;
         $cnt = 0;
-        foreach($result as $r) {
+        foreach ($result as $r) {
             $return[($id !== null ? $r[$id] : $cnt)] = $r;
             $cnt++;
         }

@@ -188,6 +188,8 @@ $.general = function() {
         _handleBootstrapSwitch();
 
 
+
+
         // category click animation
         $("#categoryContainer .category a").on('click', function () {
             $(".banner-img").animate({
@@ -195,12 +197,29 @@ $.general = function() {
             });
             $(".banner .banner-text").fadeOut();
         });
-        $("a.marca-link").on('click', function () {
+        /*$("a.marca-link", "div.brand a").on('click', function () {
             $(".banner-img").slideUp('slow');
             $('#categoryContainer').fadeOut('slow');
             //$(".banner .banner-text").fadeOut();
-        });
+        });*/
         ///
+
+        // show page effect on beforeload page
+        $(window).bind('beforeunload', function(){
+            NProgress.configure({ minimum: 0.1, easing: 'ease', speed: 500 });
+            NProgress.start();
+            NProgress.inc(0.3);
+        });
+        ////
+
+        // hide page load effect
+        setTimeout(
+            function() {
+                NProgress.done();
+            },
+            3000
+        );
+        ////
 
     };
 
@@ -499,6 +518,7 @@ $.general = function() {
                     //if ($('#searchCounty').val() > 0 ) {
                     searchQuery += ':' + $('#searchStare').val();
                     searchQuery += ':' + $('#searchCounty').val();
+                    searchQuery += ':' + $('#searchOem').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
                     //}
                     var actionForm = $('#searchAds').attr('action').
                         replace(
@@ -511,7 +531,12 @@ $.general = function() {
                 });
             },
             _changeCarMake: function () {
-                $('#allCarsContainer').show();
+                if ($('#allCarsContainer').is(':visible')) {
+                    $('#allCarsContainer').slideUp();
+                } else {
+                    $('#allCarsContainer').slideDown();
+                }
+
             },
             _getContact: function()
             {

@@ -68,7 +68,7 @@ class MyAbstractController extends AbstractActionController
         if ($cars === null || 1==2) {
             $carMake = [];
             $carsMakeDM = new CarsCategoriesDM($this->adapter);
-            foreach ($carsMakeDM->fetchResultsArray() as $k => $r) {
+            foreach ($carsMakeDM->fetchResultsArray(null, ['ord' => 'ASC']) as $k => $r) {
                 $carMake[$r['id']] = $r['category'];
             }
             $carModel = [];
@@ -82,7 +82,7 @@ class MyAbstractController extends AbstractActionController
                 $carModel[$r['category_id']][$r['id']] = [
                     //'model' => $r['model'],
                     'categ' => $r['car_make'],
-//                    'popularity' => $r['popularity']
+                    'popular' => $r['popular']
                 ];
 
             }

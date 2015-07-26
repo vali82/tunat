@@ -28,7 +28,7 @@ class CarsCollection
         );
     }
 
-    public function urlizeCarModel($categoryId, $modelId)
+    /*public function urlizeCarModel($categoryId, $modelId)
     {
         $cars = $this->controller->getCars();
 
@@ -44,7 +44,7 @@ class CarsCollection
                 'car_model' => $this->urlize($model).'-'.$modelId
             ]
         );
-    }
+    }*/
 
     public function urlizePartMain($categoryId, $modelId, $partId)
     {
@@ -180,7 +180,7 @@ class CarsCollection
     }
 
 
-    public function breadcrump($carcategoriesId, $categ = null, $modelId = null, $partId = null)
+    /*public function breadcrump($carcategoriesId, $categ = null, $modelId = null, $partId = null)
     {
         $cars = $this->controller->getCars();
         $carcategories = strtolower($this->urlize($cars['categories'][$carcategoriesId]));
@@ -210,5 +210,5 @@ class CarsCollection
             )
 
             ;
-    }
+    }*/
 }

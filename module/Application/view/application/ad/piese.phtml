@@ -1,50 +1,21 @@
+<?php
+$cars = $this->layout()->cars;
+?>
+
 <?php if (($this->class) === null) { ?>
-    <?php
-    $this->layout()->setVariable(
-        'isCategoryPage', true
-    );
-    ?>
+    <?php $this->layout()->setVariable('isCategoryPage', true); ?>
 
     <!--Category-->
-    <div id="categoryContainer" class="panel panel-default row">
-        <div class="col-md-2 col-sm-4 col-xs-4 category <?=($this->carcategoriesId == '2' ? 'active' : '')?>">
-            <a href="<?= $this->url('home/piese', ['categories' => 'camioane']) ?>">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/camioane.png'?>"/>
-                <span>Camioane</span>
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-4 category <?=($this->carcategoriesId == '1' ? 'active' : '')?>">
-            <a href="<?= $this->url('home/piese', ['categories' => 'dube']) ?>">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/dube.png'?>"/>
-                <span>Dube</span>
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-4 category <?=($this->carcategoriesId == '3' ? 'active' : '')?>">
-            <a href="<?= $this->url('home/piese', ['categories' => 'remorci']) ?>">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/remorci.png'?>"/>
-                <span>Remorci</span>
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-4 category <?=($this->carcategoriesId == '4' ? 'active' : '')?>">
-            <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-agricole']) ?>">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-agricole.png'?>"/>
-                <span>Utilaje Agricole</span>
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-4 category <?=($this->carcategoriesId == '5' ? 'active' : '')?>">
-            <a href="<?= $this->url('home/piese', ['categories' => 'autobuse']) ?>">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/autobuse.png'?>"/>
-                <span>Autobuse</span>
-            </a>
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-4 category <?=($this->carcategoriesId == '6' ? 'active' : '')?>">
-            <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-constructii']) ?>">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/utilaje-constructii.png'?>"/>
-                <span>Utilaje Constructii</span>
-            </a>
-        </div>
-    </div>
+    <?=
+    $this->partial(
+        'application/ad/partials/categoriesBox.phtml',
+        [
+            'carCollection' => $this->carCollection,
+            'carcategoriesId' => $this->carcategoriesId
+        ]
+    )?>
     <!--end Category-->
+
 <?php } ?>
 
 <!--Marca-->
@@ -54,22 +25,36 @@
     if (($this->class) === null) { ?>
         <div class="col-md-12 car-brand">
             <h3>Alegeti o marca</h3>
-            <?php if ($this->carcategoriesId == '2') { ?>
             <div class="popular-brands">
-                <div class="brand"><a href="<?=$this->carCollection->urlizeCarClass(2, 'Iveco')?>"><h3>Iveco</h3></a></div>
-                <div class="brand"><a href="#"><h3>Renault</h3></a></div>
-                <div class="brand"><a href="#"><h3>Mercedes</h3></a></div>
-                <div class="brand"><a href="#"><h3>Roman</h3></a></div>
-                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
-                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
-                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
-                <div class="brand"><a href="#"><img class="img-responsive" src="<?=$this->basePath() . '/img/iveco-brand.jpg'?>"/></a></div>
+                <?php
+                foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
+                    if ($model['popular']) {
+                        $modelName = $model['categ'];
+                        $modelNameUrlized = $this->carCollection->getUrlize($modelName);
+                        ?>
+                        <div class="brand">
+                        <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $modelName) ?>"
+                            title="Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $modelName ?>">
+                            <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
+                                <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
+                            <?php } else { ?>
+                            <h3><?= $modelName ?></h3>
+                            <?php } ?>
+                        </a>
+                        </div><?php
+                    }
+                }
+                ?>
             </div>
-            <?php } ?>
             <div class="car-brand-list">
                 <?php
-                foreach ($this->layout()->cars['categ'][$this->carcategoriesId] as $categ) {
-                    ?><a class="marca-link" href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $categ)?>"><?=$categ?></a>, <?php
+                foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
+                    ?>
+                    <a class="marca-link"
+                       title = "Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $model['categ'] ?>"
+                       href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ'])?>">
+                        <?=$model['categ']?>
+                    </a>, <?php
                 }
                 ?>
             </div>
@@ -77,20 +62,57 @@
     <?php } else {
         // listare categorie + marca
         ?>
-            <div class="change-categories col-md-6">
+            <div class="change-categories col-md-3">
                 <a href="#" class="panel" id="changeCarMakeButton">
-                    <img src="<?=$this->basePath() . '/img/dube.png'?>"/><?=$this->layout()->cars['categories'][$this->carcategoriesId]?>
+                    <img src="<?=$this->basePath()?>/img/<?=strtolower($this->carCollection->getUrlize($cars['categories'][$this->carcategoriesId]))?>.png" />
+                    <?=$this->class?>
                 </a>
-                <a href="<?=$this->carCollection->urlizeCarcategories($this->carcategoriesId)?>" class="panel">
-                    <img src="<?=$this->basePath() . '/img/dube.png'?>"/><?=$this->class?>
-                </a>
-                <div class="change-categories" id="allCarsContainer" style="display: none">
-                    <?php foreach ($this->layout()->cars['categories'] as $categoriesId=>$categories) { ?>
-                        <a class="panel" href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>"><?=$categories?></a>
-                    <?php } ?>
-                </div>
+
             </div>
-            <div class="offer col-md-6"><a href="<?=$this->url('home/offers/create')?>"><button class="btn btn-danger">Cere oferta</button></a></div>
+            <div class="offer col-md-9"><a href="<?=$this->url('home/offers/create')?>"><button class="btn btn-danger">Cere oferta</button></a></div>
+            <div class="col-md-12 change-categories" id="allCarsContainer" style="display: none">
+                <?php foreach ($cars['categories'] as $categoriesId=>$categories) { ?>
+                    <div class="row">
+                        <div class="change-categories col-md-3">
+                            <a class="panel"
+                               title = "Piese <?=$cars['categories'][$categoriesId]?>"
+                               href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
+                                <img src="<?=$this->basePath()?>/img/<?=strtolower($this->carCollection->getUrlize($cars['categories'][$categoriesId]))?>.png" />
+                                <?=$categories?>
+                            </a>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="popular-brands">
+                                <?php
+                                foreach ($cars['model'][$categoriesId] as $modelId=>$model) {
+                                    if ($model['popular']) {
+                                        $modelName = $model['categ'];
+                                        $modelNameUrlized = $this->carCollection->getUrlize($modelName);
+                                        ?>
+                                        <div class="brand">
+                                            <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
+                                                href="<?= $this->carCollection->urlizeCarClass($categoriesId, $modelName) ?>">
+                                                <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
+                                                    <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
+                                                <?php } else { ?>
+                                                    <h3><?= $modelName ?></h3>
+                                                <?php } ?>
+                                            </a>
+                                        </div>
+                                    <?php } ?>
+                                <?php }
+                                ?>
+                                <div class="brand">
+                                <a href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
+                                    <h3>Altele</h3>
+                                </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+
+            </div>
     <?php } ?>
 </div>
 <!--end Marca-->
@@ -101,47 +123,50 @@
     <h3>Filtre</h3>
     <!--Filtrare Anunturi-->
         <form class="form-inline panel col-md-12" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
-                <div class="key-words">
-                    <label>Cuvinte cheie</label>
-                    <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50" class="form-control" type="text">
-                </div>
-                <div class="made-year">
-                    <label>An fabricatie</label>
-                    <select class="form-control" id="searchYear">
-                        <option value="">orice an</option>
-                        <?php foreach ($this->years as $year) {?>
-                            <option value="<?=$year?>" <?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
-                        <?php }?>
-                    </select>
-                </div>
-                <div class="part-look ">
-                    <label>Stare piesa</label>
-                    <select class="form-control" id="searchStare">
-                        <option value="" <?=('' == $this->searchValues['stare'] ? 'selected' : '')?>>oricare</option>
-                        <option value="nou" <?=('nou' == $this->searchValues['stare'] ? 'selected' : '')?>>Noua</option>
-                        <option value="second" <?=('second' == $this->searchValues['stare'] ? 'selected' : '')?>>Second</option>
-                    </select>
-                </div>
-                <div class="region">
-                    <label>Judet</label>
-                    <select class="form-control" id="searchCounty">
-                        <?php foreach ($this->states as $k=>$state) { ?>
-                            <option value="<?=$k?>" <?=($k == $this->searchValues['county'] ? 'selected' : '')?>><?=$state?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-                    <button type="submit" class="btn-green">Aplica</button>
+            <div class="key-words">
+                <label>Cuvinte cheie</label>
+                <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50" class="form-control" type="text">
+            </div>
+            <div class="made-year">
+                <label>An fabricatie</label>
+                <select class="form-control" id="searchYear">
+                    <option value="">orice an</option>
+                    <?php foreach ($this->years as $year) {?>
+                        <option value="<?=$year?>" <?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
+                    <?php }?>
+                </select>
+            </div>
+            <div class="part-look ">
+                <label>Stare piesa</label>
+                <select class="form-control" id="searchStare">
+                    <option value="" <?=('' == $this->searchValues['stare'] ? 'selected' : '')?>>oricare</option>
+                    <option value="nou" <?=('nou' == $this->searchValues['stare'] ? 'selected' : '')?>>Noua</option>
+                    <option value="second" <?=('second' == $this->searchValues['stare'] ? 'selected' : '')?>>Second</option>
+                </select>
+            </div>
+            <div class="region">
+                <label>Judet</label>
+                <select class="form-control" id="searchCounty">
+                    <?php foreach ($this->states as $k=>$state) { ?>
+                        <option value="<?=$k?>" <?=($k == $this->searchValues['county'] ? 'selected' : '')?>><?=$state?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="key-words">
+                <label>Cod piesa, OEM</label>
+                <input id ="searchOem" value="<?=$this->searchValues['oem']?>"  maxlength="50" class="form-control" type="text">
+            </div>
+
+            <button type="submit" class="btn-green">Aplica</button>
         </form>
 <!--end Filtrare Anunturi-->
 
 <!-- reclame -->
-        <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
-        </div>
-
-        <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
-            <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
-        </div>
+        <?=
+        $this->partial(
+            'application/ad/partials/partners.phtml',
+            []
+        )?>
 <!-- end reclame -->
     </div>
 
@@ -178,13 +203,11 @@
             <?= $this->relatedAds ?>
         </div>
         <div class="col-md-3">
-            <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
-            </div>
-
-            <div class="col-md-12 col-sm-6 col-xs-6 right-pic panel">
-                <img class="img-responsive" src="<?=$this->basePath() . '/img/comercials-right.jpg'?>"/>
-            </div>
+            <?=
+            $this->partial(
+                'application/ad/partials/partners.phtml',
+                []
+            )?>
         </div>
     </div>
     <!-- end anunturi related -->

@@ -306,12 +306,14 @@ class AdController extends MyAbstractController
         $searchYear = '';
         $searchStare = '';
         $searchCounty = '';
+        $searchOem = '';
         if (strpos($searchParam, ":") !== false) {
             $search = explode(":", $searchParam);
             $searchWords = $search[0];
             $searchYear = $search[1];
             $searchStare = $search[2];
             $searchCounty = $search[3];
+            $searchOem = $search[4];
         } elseif ($searchParam != '') {
             $searchWords = $searchParam;
         }
@@ -395,7 +397,8 @@ class AdController extends MyAbstractController
                 'search' => General::generateQueryWords($searchWords),
                 'searchYear' => $searchYear,
                 'searchCounty' => $searchCounty,
-                'searchStare' => $searchStare
+                'searchStare' => $searchStare,
+                'searchOem' => $searchOem
             ]);
 
             $adList = $content['list'];
@@ -417,7 +420,7 @@ class AdController extends MyAbstractController
             'models' => $models,
             'carModelId' => $carModelId,
 //            'partMainId' => $partMainId,
-            'breadcrump' => $carCollection->breadcrump($carcategoriesId, $class, null, null),
+//            'breadcrump' => $carCollection->breadcrump($carcategoriesId, $class, null, null),
             'carCollection' => $carCollection,
             'adList' => $adList,
             'ads' => $ads,
@@ -426,7 +429,8 @@ class AdController extends MyAbstractController
                 'input' => str_replace("+", " ", $searchWords),
                 'year' => $searchYear,
                 'county' => $searchCounty,
-                'stare' => $searchStare
+                'stare' => $searchStare,
+                'oem' => $searchOem
             ],
 //            'searchValue' => str_replace("+", " ", $search[0]),
 //            'searchYearStart' => ($search[1]),

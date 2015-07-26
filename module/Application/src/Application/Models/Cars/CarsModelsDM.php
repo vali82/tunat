@@ -18,7 +18,7 @@ class CarsModelsDM extends DataMapper {
             'model',
             'year_start',
             'year_end',
-            'popularity'
+            'popular'
         );
 
         /*$this->_primary_key_update = array('id');
