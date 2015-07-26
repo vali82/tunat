@@ -612,14 +612,16 @@ input#globalLoginFieldRemember{
 }
 .change-categories .popular-brands {
     margin-bottom: 0px;
+    margin-left: 20px;
 }
 .change-categories .popular-brands .brand {
     height: 60px;
     margin: 5px;
     width: 9.75%;
+    padding: 5px;
 }
 .change-categories .brand img {
-    min-height: 60px;
+    min-height: 50px;
     padding-right: 0;
 }
 .change-categories .brand h3 {
@@ -696,8 +698,11 @@ select{
     margin-right: 0px;
     width: 100%;
 }
-.change-categories a:first-child {
-    margin-right: 20px;
+.change-categories a.selected {
+    margin: 0 20px 10px 0;
+    height:60px;
+    line-height: 3.7;
+    padding: 0 15px;
 }
 
 .change-categories img{
