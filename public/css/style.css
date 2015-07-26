@@ -187,7 +187,6 @@ li.displayOnMobile {
     position: relative;
     top: -67px;
     border: none;
-    border-radius: 0;
     box-shadow: 0 3px 2px rgba(0, 0, 0, 0.05);
     width: 100%;
     margin: 0 auto;
@@ -654,7 +653,6 @@ select{
 
 .change-categories >a{
     padding: 20px 15px;
-    border-radius: 0;
     color: #424242;
     font-size: 15px;
     text-decoration: underline;
