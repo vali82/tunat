@@ -88,4 +88,14 @@ class IndexController extends MyAbstractController
             'form' => $form
         ];
     }
+
+    public function partnersAction()
+    {
+
+    }
+
+    public function sitemapAction()
+    {
+
+    }
 }

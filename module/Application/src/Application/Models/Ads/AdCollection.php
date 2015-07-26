@@ -49,6 +49,52 @@ class AdCollection
                 [1, 3]
             );
 
+        } elseif ($param['place'] == 'related') {
+            // HOME PAGE ADS
+            $param['search'] = General::generateQueryWords('pompa de circulare');
+
+            $adDM->setColumns(array(
+                '*',
+                'part_name_match' => new Expression(
+                    'MATCH (`part_name`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                ),
+                'description_match' => new Expression(
+                    'MATCH (ads.`description`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                ),
+                'model_match' => new Expression(
+                    'MATCH (`car_model`) AGAINST ("' . implode(' ', $param['search']) . '" IN BOOLEAN MODE)'
+                ),
+            ));
+            $order = array(
+                new Expression(
+                    'RAND() DESC'
+                )
+            );
+            $sql_where = DataMapper::expression(
+                'MATCH (ads.`part_name`, ads.`description`, ads.car_model) AGAINST ("' . implode(' ', $param['search']) .
+                '" IN BOOLEAN MODE)'
+            );
+
+            // inner join Advertiser
+            $adDM->setJoins([
+                'advertiser' => [
+                    'name' => array('ap' => 'advertiser'),
+                    'on' => 'ap.id = ads.advertiser_id',
+                    'columns' => array('state_id' => 'state'),
+                    'type' => 'inner'
+                ]
+            ]);
+            $ads = $adDM->fetchAllDefault(
+                [
+                    'status' => 'ok',
+                    'car_make' => $param['carModelId'],
+                    'search' => $sql_where,
+                    'notThisId' => DataMapper::expression(' ads.id <> '.$param['notThisID'])
+                ],
+                $order,
+                [1, 3]
+            );
+
         } elseif ($param['place'] == 'myAds') {
             // My ADS
             $ad_in_list = 'ad_in_list_to_manage';

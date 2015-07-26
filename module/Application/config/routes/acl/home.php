@@ -64,4 +64,8 @@ return array(
         'route' => 'home/contact',
         'roles' => ['guest', 'parcauto']
     ],
+    [
+        'route' => 'home/pages',
+        'roles' => ['guest', 'parcauto']
+    ],
 );
