@@ -30,7 +30,7 @@ $cars = $this->layout()->cars;
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
                     if ($model['popular']) {
                         $modelName = $model['categ'];
-                        $modelNameUrlized = $this->carCollection->getUrlize($modelName);
+                        $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                         ?>
                         <div class="brand">
                         <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $modelName) ?>"

@@ -328,7 +328,7 @@ class AdCollection
                             'model' => $adObj->getCarModel(),
                             'oem' => $adObj->getCodeOem(),
                             'categoryImg' => strtolower($carCollection->getUrlize($cars['categories'][$adObj->getCarCategory()])),
-                            'classUrlized' => $carCollection->getUrlize($cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ'])
+                            'classUrlized' => strtolower($carCollection->getUrlize($cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']))
                         ],
                         'advertiser' => [
                             'name' => $advertiserObj->getName(),
