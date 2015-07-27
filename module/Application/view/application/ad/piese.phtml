@@ -87,7 +87,7 @@ $cars = $this->layout()->cars;
                             foreach ($cars['model'][$categoriesId] as $modelId=>$model) {
                                 if ($model['popular']) {
                                     $modelName = $model['categ'];
-                                    $modelNameUrlized = $this->carCollection->getUrlize($modelName);
+                                    $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                                     ?>
                                     <div class="brand">
                                         <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
