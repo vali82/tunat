@@ -75,29 +75,34 @@ $this->headScript()
         <div class="seller">
             <span>Vanzator</span>
             <h4><?=$this->advertiser['name']?></h4>
-            <a href="<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
+            <a href="http://<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
         </div>
         <div class="price-box">
-            <span class="price">3000 eur</span>
+            <span class="price"><?=$this->price?></span>
             <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
         </div>
         <div class="info-details">
             <p>
                 <span class="category-icon">
-                    <img src="<?=$this->basePath()?>/img/<?=$this->carCategory?>.png" />
+                    <img src="<?=$this->basePath()?>/img/<?=$this->car['categoryImg']?>.png" />
                 </span>Categorie:
-                <span><?=$this->car['category']?> <?=$this->car['class']?></span>
+                <span><?=$this->car['category']?></span>
             </p>
             <p>
-                <span class="category-icon">
-                    <img src="<?=$this->basePath()?>/img/<?=$this->carCategory?>.png" />
+                <span class="car-brand-icon">
+
+                    <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$this->car['classUrlized'].'.jpg')) { ?>
+                        <img src="<?=$this->basePath() . '/img/brand/'.$this->car['classUrlized'].'.jpg'?>"/></a>
+                    <?php } else { ?>
+                        <img src="<?=$this->basePath()?>/img/<?=$this->car['categoryImg']?>.png" />
+                    <?php } ?>
+
                 </span>Marca si model:
-                <span><?=$this->car['class']?></span>
+                <span><?=$this->car['class']?> <?=$this->car['model']?></span>
             </p>
            <?php /*<p>Stare: <?=$this->stare?></p>*/ ?>
-            <p><span class="glyphicon glyphicon-calendar"></span> An <span>2013 - 2015</span></p>
-            <p>Cod: <span>4sa5dfd4sadf</span></p>
-            <p>Cantitate: <span>500</span></p>
+            <p><span class="glyphicon glyphicon-calendar" style="padding: 0 6px"></span> An <span>2013 - 2015</span></p>
+            <p>Cod Piesa: <span><?=$this->car['oem']?></span></p>
             <p class="description"><?= $this->description ?></p>
 
         </div>

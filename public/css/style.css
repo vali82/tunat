@@ -339,7 +339,7 @@ h3.new{
     width: 30px;
     height: 30px;
 }*/
-.announcement .model .category-icon img {
+.category-icon img {
     width: 24px;
     margin: 0 5px 0 0;
     padding: 0 0px 0 0;
@@ -349,6 +349,12 @@ h3.new{
     transform: scaleX(-1);
     filter: FlipH;
     -ms-filter: "FlipH";
+}
+
+.car-brand-icon img {
+    width: 24px;
+    margin: 0 5px 0 0;
+    padding: 0 0px 0 0;
 }
 
 
@@ -780,6 +786,7 @@ select{
 .seller{
     width: 68%;
     margin-bottom: 50px;
+    height: 90px
 }
 .seller span {
     color: #c4c7ca;
@@ -788,6 +795,8 @@ select{
     margin-bottom: 0;
     color: #243045;
     text-transform: uppercase;
+    height: 40px;
+    overflow: hidden;
 }
 .seller a {
     color: #969798;
@@ -804,9 +813,9 @@ select{
     color: #868788;
 }
 .info-details p.description{
-    height: 70px;
+    height: 115px;
     overflow: hidden;
-    margin: 57px 0;
+    margin: 51px 0;
     color: #868788;
 }
 /*end product page*/

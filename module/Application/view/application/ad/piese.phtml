@@ -21,7 +21,7 @@ $cars = $this->layout()->cars;
 <!--Marca-->
 <div class="row"> 
     <?php
-    // listare toate marcile
+    // listare toate marcile inainte de a fi selectat modelul
     if (($this->class) === null) { ?>
         <div class="col-md-12 car-brand">
             <h3>Alegeti o marca</h3>
@@ -60,7 +60,7 @@ $cars = $this->layout()->cars;
             </div>
         </div>
     <?php } else {
-        // listare categorie + marca
+        // listare categorie + model
         ?>
         <div class="change-categories col-md-3">
             <a href="#" class="panel selected" id="changeCarMakeButton">
@@ -93,10 +93,10 @@ $cars = $this->layout()->cars;
                                         <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
                                            href="<?= $this->carCollection->urlizeCarClass($categoriesId, $modelName) ?>">
                                             <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
-                                            <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
-                                        <?php } else { ?>
-                                            <h3><?= $modelName ?></h3>
-                                        <?php } ?>
+                                                <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
+                                            <?php } else { ?>
+                                                <h3><?= $modelName ?></h3>
+                                            <?php } ?>
                                         </a>
                                     </div>
                                 <?php } ?>

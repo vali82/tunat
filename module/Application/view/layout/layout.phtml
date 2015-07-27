@@ -1,13 +1,14 @@
 <?php echo $this->doctype();
 
-//$role = $this->AuthenticatedUserRole();
+//$role = $this->authenticatedUserRole();
 $role = \Application\libs\General::getFromSession('AuthenticatedUserRole');
-
+//$role = $role === null ? 'guest' : $role;
 $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
 
 
 if ($role == 'parcauto') {
+//    $myAdvertiserObj = $this->myAdvertiserObj();
     $myAdvertiserObj = \Application\libs\General::getFromSession('myAdvertiserObj');
     $name = $myAdvertiserObj->getName();
 } else {

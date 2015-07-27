@@ -274,7 +274,7 @@ class AdCollection
     public function viewHTML($id)
     {
         $cars = $this->controller->getCars();
-
+        $carCollection = new CarsCollection($this->controller);
         $adDM = new AdDM($this->controller->getAdapter());
         /** @var $adObj \Application\Models\Ads\Ad*/
         $adObj = $adDM->fetchOne([
@@ -319,16 +319,22 @@ class AdCollection
                         'description' => $adObj->getDescription(),
                         'stare' => $adObj->getStare(),
                         'href' => '#',
+                        'price' => ($adObj->getPrice() == round($adObj->getPrice()) ? round($adObj->getPrice()) : $adObj->getPrice()) .
+                            ' ' . $adObj->getCurrency(),
                         'car' => [
                             'category' => $cars['categories'][$adObj->getCarCategory()],
     //                        'model' =>  $cars['model'][$adObj->getCarMake()][$adObj->getCarModel()]['model'],
-                            'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']
+                            'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ'],
+                            'model' => $adObj->getCarModel(),
+                            'oem' => $adObj->getCodeOem(),
+                            'categoryImg' => strtolower($carCollection->getUrlize($cars['categories'][$adObj->getCarCategory()])),
+                            'classUrlized' => $carCollection->getUrlize($cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ'])
                         ],
                         'advertiser' => [
                             'name' => $advertiserObj->getName(),
                             'tel1' => $advertiserObj->getTel1(),
                             'email' => $advertiserObj->getEmail(),
-                            'url' => $advertiserObj->getUrl(),
+                            'url' => str_replace('http://', '', $advertiserObj->getUrl()),
                             'location' => $advertiserObj->generateLocation()
                         ],
                         'status' => $adObj->getStatus()

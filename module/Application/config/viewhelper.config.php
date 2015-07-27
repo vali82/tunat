@@ -18,6 +18,19 @@ return array(
        		$app = $services->get('Application');
        		return new Application\View\Helper\Params($app->getRequest(), $app->getMvcEvent());
  		} */
+        'myAdvertiserObj' => function ($sm) {
+            $locator = $sm->getServiceLocator();
+            $auth = $locator->get('zfcuser_auth_service');
+            $user = $auth->getIdentity();
+            $dbAdapter = $locator->get('Zend\Db\Adapter\Adapter');
+            $dm = new \Application\Models\Advertiser\AdvertiserUsersDM($dbAdapter);
+            $advertiserUsers = $dm->fetchResultsArray(['user_id' => $user->getId()]);
+            $x = array_values($advertiserUsers)[0];
+            $dm = new \Application\Models\Advertiser\AdvertiserDM($dbAdapter);
+            $advertiser = $dm->fetchOne($x['advertiser_id']);
+//            General::addToSession('myAdvertiserObj', $advertiser !== null ? $advertiser : false);
+            return $advertiser;
+        }
       
     ),
 );

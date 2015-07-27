@@ -49,10 +49,18 @@ class Module
                 General::unsetSession('AuthenticatedUserRole');
                 // gasesc row-ul de user
                 $user = $serviceManager->get('UserDataMapper')->findByHashLogin($_COOKIE['tbroacc']);
-                // acesta e userObj
-                $userObj = $serviceManager->get('zfcuser_user_mapper')->findByEmail($user->getEmail());
-                // fortarea autentificarii
-                $serviceManager->get('zfcuser_auth_service')->authenticate(new ForceLogin($userObj));
+                if ($user !== null) {
+                    // acesta e userObj
+                    $userObj = $serviceManager->get('zfcuser_user_mapper')->findByEmail($user->getEmail());
+                    // fortarea autentificarii
+                    $serviceManager->get('zfcuser_auth_service')->authenticate(new ForceLogin($userObj));
+
+                    // set Advertiser
+                    $serviceManager->get('AdvertiserObj');
+                    // set role
+                    General::unsetSession('AuthenticatedUserRole');
+                    $serviceManager->get('AuthenticatedUserRole');
+                }
             }
             ////
 
