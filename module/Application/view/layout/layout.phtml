@@ -153,10 +153,9 @@ if ($role == 'parcauto') {
         </header>
 
 
-
         <?php // if homepage banner ?>
         <?php if (isset($this->isHomePage)) { ?>
-            <div class="banner">
+            <div id ="generalBanner" class="banner">
                 <div class="banner-img">
                     <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
                 </div>
@@ -166,17 +165,16 @@ if ($role == 'parcauto') {
                 </div>
             </div>
         <?php } elseif (isset($this->isCategoryPage)) { ?>
-            <div class="banner">
+            <div id ="generalBanner" class="banner">
                 <div class="banner-img" style="height: 180px">
                     <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
                 </div>
             </div>
         <?php } ?>
 
-
-        <div class="container generalContainer"
+        <div id ="generalContainer" class="container"
              <?php if (!isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>style="padding-top: 150px"<?php } ?>
-            >
+            ><!--coolAjaxLoad__generalContainer_start-->
 
             <?php
             if (count($this->flashMessenger()->getErrorMessages())) : ?>
@@ -254,7 +252,9 @@ if ($role == 'parcauto') {
             <?php } else { ?>
             <?php echo $this->content; ?>
             <?php } ?>
-        </div> <!-- /container -->
+            <!--coolAjaxLoad__generalContainer_end-->
+        </div>
+
 
         <footer>
             <div class="newsletter">
@@ -324,12 +324,16 @@ if ($role == 'parcauto') {
             </div>
         </footer>
 
+    <div id="scriptsGeneral">
+    <!--coolAjaxLoad__scripts_start-->
     <?php echo $this->inlineScript()->prependScript(
             ' $(document).ready(function() { '.
                 ' generalObj.onLoad(); '.
                 $this->js_call.
             ' ;});'
         );
-        ?>
+    ?>
+    <!--coolAjaxLoad__scripts_end-->
+    </div>
     </body>
 </html>

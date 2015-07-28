@@ -67,6 +67,43 @@ $.general = function() {
 
     };
 
+    var _ajaxCoolLoadPage = function(url)
+    {
+        $.ajax({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url: url,
+            dataType: 'html',
+            statusCode: {
+                403: function() {
+                    alert( "Acces interzis!" );
+                },
+                404: function() {
+                    alert( "Pagina nu a fost gasita!" ); //@TODO - ajax status
+                }
+            },
+            beforeSend : function() {
+                NProgress.configure({ minimum: 0.1, easing: 'ease', speed: 500 });
+                NProgress.start();
+                NProgress.inc(0.3);
+                //$('#adGetContactButton').button('loading');
+            }
+        })
+            .done(function (data) {
+                var x = data.split('<!--coolAjaxLoad__generalContainer_start-->');
+                var y = x[1].split('<!--coolAjaxLoad__generalContainer_end-->');
+                $('#generalContainer').html(y[0]);
+
+                x = data.split('<!--coolAjaxLoad__scripts_start-->');
+                y = x[1].split('<!--coolAjaxLoad__scripts_end-->');
+                $('#scriptsGeneral').html(y[0]);
+
+                window.history.pushState('Object', 'Title', url);
+
+                NProgress.done();
+            });
+    }
+
     this.onLoad = function () {
 
         var thisObj = this;
@@ -192,6 +229,7 @@ $.general = function() {
 
         // category click animation
         $("#categoryContainer .category a").on('click', function () {
+            $(document).scrollTop(0);
             $(".banner-img").animate({
                 height: "180px"
             });
@@ -527,7 +565,9 @@ $.general = function() {
                         )
                     ;
                     $('#searchAds').attr('action', actionForm);
-                    //return false;
+                    $('#button-search-ads').button('loading');
+                    _ajaxCoolLoadPage(actionForm);
+                    return false;
                 });
             },
             _changeCarMake: function () {
