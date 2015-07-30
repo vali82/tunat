@@ -454,7 +454,7 @@ class AdController extends MyAbstractController
                 'error' => 0,
                 'result' => [
                     'html' => $partial('application/ad/piese.phtml', $viewVariables),
-                    'js' => ' generalObj.setAjaxCoolEvents(false); ' . $this->layout()->js_call
+                    'js' => ' generalObj.setAjaxCoolEvents(false, false); ' . $this->layout()->js_call
                 ]
             ];
             return new JsonModel($data);

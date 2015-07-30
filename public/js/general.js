@@ -96,6 +96,8 @@ $.general = function() {
 
                     $('#generalContainer').html(data.result.html);
                     $('#scriptsGeneral').html('<script type="text/javascript">'+data.result.js+'</script>');
+                } else {
+                    alert('asdad');
                 }
 
                 NProgress.done();
@@ -111,7 +113,7 @@ $.general = function() {
             });
     };
 
-    this.setAjaxCoolEvents = function (onlyThisSection) {
+    this.setAjaxCoolEvents = function (onlyThisSection, event) {
         var coolAjaxAvailable = true;
 
         if (coolAjaxAvailable) {
@@ -139,7 +141,8 @@ $.general = function() {
             } else {
                 return true;
             }
-
+        } else if (onlyThisSection == 'historyCall') {
+            _ajaxCoolLoadPage(document.location, event.state);
         }
 
         return true;
@@ -263,7 +266,7 @@ $.general = function() {
         };
 
         window.onpopstate = function(event) {
-            _ajaxCoolLoadPage(document.location, event.state);
+            generalObj.setAjaxCoolEvents('historyCall', event);
         };
 
         _handleBootstrapSwitch();
@@ -277,11 +280,6 @@ $.general = function() {
             });
             $(".banner .banner-text").fadeOut();
         });
-        /*$("a.marca-link", "div.brand a").on('click', function () {
-            $(".banner-img").slideUp('slow');
-            $('#categoryContainer').fadeOut('slow');
-            //$(".banner .banner-text").fadeOut();
-        });*/
         ///
 
         // show page effect on beforeload page
@@ -297,11 +295,11 @@ $.general = function() {
             function() {
                 NProgress.done();
             },
-            3000
+            1000
         );
         ////
 
-        this.setAjaxCoolEvents(false);
+        this.setAjaxCoolEvents(false, false);
     };
 
     this.loginRegister = {
@@ -609,7 +607,7 @@ $.general = function() {
                     ;
                     $('#searchAds').attr('action', actionForm);
                     $('#button-search-ads').button('loading');
-                    generalObj.setAjaxCoolEvents('filterAds');
+                    generalObj.setAjaxCoolEvents('filterAds', false);
                     return false;
                 });
             },
