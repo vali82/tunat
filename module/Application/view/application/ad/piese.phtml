@@ -1,5 +1,7 @@
 <?php
 $cars = $this->layout()->cars;
+//var_dump($this->class);
+//die();
 ?>
 
 <?php if (($this->class) === null) { ?>
@@ -63,7 +65,7 @@ $cars = $this->layout()->cars;
         // listare categorie + model
         ?>
         <div class="change-categories col-md-3">
-            <a href="#" class="panel selected" id="changeCarMakeButton">
+            <a href="javascript:;" class="panel selected" id="changeCarMakeButton">
                 <img src="<?=$this->basePath()?>/img/<?=strtolower($this->carCollection->getUrlize($cars['categories'][$this->carcategoriesId]))?>.png" />
                 <?=$this->class?>
             </a>
@@ -91,6 +93,7 @@ $cars = $this->layout()->cars;
                                     ?>
                                     <div class="brand">
                                         <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
+                                           data-page-load="ajax"
                                            href="<?= $this->carCollection->urlizeCarClass($categoriesId, $modelName) ?>">
                                             <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
                                                 <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>

@@ -411,8 +411,14 @@ class AdController extends MyAbstractController
         $urlGetContact = $this->url()->fromRoute('home/ad/getContact', ['id'=>($adId !== null ? $adId : 0)]);
         $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
 
+        /*if ($this->getRequest()->isXmlHttpRequest()) {
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal(true);
+        } else {
+            $viewModel = new ViewModel();
+        }*/
 
-        return [
+        $viewVariables = [
             'carcategoriesId' => $carcategoriesId,
             'class' => $class,
             'models' => $models,
@@ -434,8 +440,44 @@ class AdController extends MyAbstractController
 //            'searchYearStart' => ($search[1]),
             'years' => $adCollection->getYears(),
             'states' => General::getFromSession('states'),
-            'relatedAds' => $relatedAds['list']
+            'relatedAds' => $relatedAds['list'],
+            ''
         ];
+//        $viewModel->setVariables($viewVariables);
+
+
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            return $viewVariables;
+        } else {
+            $partial = $this->getServiceLocator()->get('viewhelpermanager')->get('partial');
+            $data = [
+                'error' => 0,
+                'result' => [
+                    'html' => $partial('application/ad/piese.phtml', $viewVariables),
+                    'js' => ' generalObj.setAjaxCoolEvents(false); ' . $this->layout()->js_call
+                ]
+            ];
+            return new JsonModel($data);
+        }
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+
+
+            $htmlOutput = $this->getServiceLocator()
+                ->get('viewrenderer')
+                ->render($viewModel);
+
+            $jsonModel = new JsonModel();
+            $jsonModel->setVariables(array(
+                'html' => $htmlOutput,
+                'jsonVar1' => 'jsonVal2',
+                'jsonArray' => array(1,2,3,4,5,6)
+            ));
+            return $jsonModel;
+        }
+
+        return $viewModel;
+
     }
 
     public function getContactAction()

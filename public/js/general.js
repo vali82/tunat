@@ -67,13 +67,12 @@ $.general = function() {
 
     };
 
-    var _ajaxCoolLoadPage = function(url)
-    {
+    var _ajaxCoolLoadPage = function(url, stateObj) {
         $.ajax({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
             url: url,
-            dataType: 'html',
+            dataType: 'json',
             statusCode: {
                 403: function() {
                     alert( "Acces interzis!" );
@@ -90,19 +89,61 @@ $.general = function() {
             }
         })
             .done(function (data) {
-                var x = data.split('<!--coolAjaxLoad__generalContainer_start-->');
+                if (data.error !== undefined && !data.error && data.result !== undefined) {
+                    if (stateObj == '') {
+                        window.history.pushState('{urlPath:"' + url + '"}', 'Title', url);
+                    }
+
+                    $('#generalContainer').html(data.result.html);
+                    $('#scriptsGeneral').html('<script type="text/javascript">'+data.result.js+'</script>');
+                }
+
+                NProgress.done();
+
+                /*var x = data.split('<!--coolAjaxLoad__generalContainer_start-->');
                 var y = x[1].split('<!--coolAjaxLoad__generalContainer_end-->');
                 $('#generalContainer').html(y[0]);
 
                 x = data.split('<!--coolAjaxLoad__scripts_start-->');
                 y = x[1].split('<!--coolAjaxLoad__scripts_end-->');
-                $('#scriptsGeneral').html(y[0]);
+                $('#scriptsGeneral').html(y[0]);*/
 
-                window.history.pushState('Object', 'Title', url);
-
-                NProgress.done();
             });
-    }
+    };
+
+    this.setAjaxCoolEvents = function (onlyThisSection) {
+        var coolAjaxAvailable = true;
+
+        if (coolAjaxAvailable) {
+            if (!onlyThisSection || onlyThisSection == 'data-page-load') {
+                // cool ajax load pages on links
+                $('a[data-page-load="ajax"]').on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    $('#allCarsContainer').slideUp('slow');
+                    $('#generalBanner').slideUp();
+                    $('#categoryContainer').hide();
+                    $('#mainContainer').css('paddingTop','150px');
+                    $(document).scrollTop(0);
+                    _ajaxCoolLoadPage($(this).attr('href'), '');
+                });
+            }
+        }
+
+        if (onlyThisSection == 'filterAds') {
+            // filter form
+            if (coolAjaxAvailable) {
+                _ajaxCoolLoadPage($('#searchAds').attr('action'), '');
+                return false;
+            } else {
+                return true;
+            }
+
+        }
+
+        return true;
+    };
 
     this.onLoad = function () {
 
@@ -221,10 +262,11 @@ $.general = function() {
             });
         };
 
+        window.onpopstate = function(event) {
+            _ajaxCoolLoadPage(document.location, event.state);
+        };
 
         _handleBootstrapSwitch();
-
-
 
 
         // category click animation
@@ -259,6 +301,7 @@ $.general = function() {
         );
         ////
 
+        this.setAjaxCoolEvents(false);
     };
 
     this.loginRegister = {
@@ -566,7 +609,7 @@ $.general = function() {
                     ;
                     $('#searchAds').attr('action', actionForm);
                     $('#button-search-ads').button('loading');
-                    _ajaxCoolLoadPage(actionForm);
+                    generalObj.setAjaxCoolEvents('filterAds');
                     return false;
                 });
             },

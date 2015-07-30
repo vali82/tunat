@@ -1,12 +1,14 @@
 <div class="announcement row panel">
     <div class="picture col-md-2 col-sm-2 col-xs-12">
-        <a href="<?=$this->href?>" title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>">
+        <a href="<?=$this->href?>" title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>" data-page-load="ajax">
             <img class="media-object" src="<?=$this->imgSrc?>" data-holder-rendered="true">
         </a>
     </div>
     <div class="description col-md-8 col-sm-8 col-xs-12">
         <h4 class="media-heading">
-            <a title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>" href="<?=$this->href?>"><?=$this->title?></a>
+            <a title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>" href="<?=$this->href?>" data-page-load="ajax">
+                <?=$this->title?>
+            </a>
             <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
         </h4>
         <p class="about"><?=$this->description?></p>
@@ -14,7 +16,7 @@
             <span class="category-icon">
                 <img src="<?=$this->basePath()?>/img/<?=$this->carCategory?>.png" />
             </span>
-            <a href="<?=$this->urlFilter1?>" title="Piese <?=$this->car?>">
+            <a href="<?=$this->urlFilter1?>" title="Piese <?=$this->car?>" data-page-load="ajax">
                 <?=$this->car?>
             </a>
             <?php
@@ -22,7 +24,9 @@
             foreach ($x as $model) {
                 $model = trim($model);
                 ?>
-                <a href="<?=str_replace('__search__', $model, $this->urlFilter2)?>" title="Piese <?=$this->car?> <?=$model?>">
+                <a href="<?=str_replace('__search__', $model, $this->urlFilter2)?>"
+                   data-page-load="ajax"
+                   title="Piese <?=$this->car?> <?=$model?>">
                     <?=$model?></a>,
                 <?php
             }
