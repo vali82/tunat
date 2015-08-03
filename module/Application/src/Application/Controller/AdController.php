@@ -412,8 +412,6 @@ class AdController extends MyAbstractController
         $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
 
 
-
-
         return [
             'carcategoriesId' => $carcategoriesId,
             'class' => $class,
