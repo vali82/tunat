@@ -18,9 +18,9 @@ $this->headScript()
             <?= $this->title ?> pentru <?= $this->car['class'] ?>
         </h3>
         <div class="info-dates">
-            <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:15522</span>
-            <span><span class="glyphicon glyphicon-calendar"></span>Expira la 15.06.2015</span>
-            <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la 17.08.1956</span>
+            <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:<?=$this->views?></span>
+            <span><span class="glyphicon glyphicon-calendar"></span>Expira la <?=$this->refreshDate?></span>
+            <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la <?=$this->expirationDate?></span>
         </div>
     <div class="product-images panel">
         <?php
@@ -36,13 +36,12 @@ $this->headScript()
                         $this->folder,
                         $img,
                         '2000x2000'
-                    ) ?>" type="" title=""
-                       download="" data-gallery>
+                    ) ?>" type="" title="" download="" data-image-lib="popup">
                         <img class="img-responsive" src="<?=
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
                             $img,
-                            '300x200'
+                            '900x500'
                         ) ?>">
                     </a>
                 </div>
@@ -50,24 +49,23 @@ $this->headScript()
                 <div class="row tumb-img">
                 <?php
                 if (count ($this->images) > 0) {
-                    foreach ($this->images as $img) { ?>
-                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top: 15px">
+                    foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
+                    <div class="col-xs-3" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
                         <a href="<?=
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
                             $img,
                             '2000x2000'
-                        ) ?>" type="" title=""
-                           download="" data-gallery>
+                        ) ?>" type="" title="" download="" data-image-lib="popup">
                             <img class="img-responsive" src="<?=
                             \Application\libs\General::getSimpleAvatar(
                                 $this->folder,
                                 $img,
-                                '60x40'
+                                '150x100'
                             ) ?>">
                         </a>
                     </div>    
-                <?php } } ?>
+                <?php } } } ?>
                 </div>
         </div>
         

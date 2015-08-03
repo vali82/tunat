@@ -102,6 +102,8 @@ $.general = function() {
 
                 NProgress.done();
 
+                $(document).scrollTop(0);
+
                 /*var x = data.split('<!--coolAjaxLoad__generalContainer_start-->');
                 var y = x[1].split('<!--coolAjaxLoad__generalContainer_end-->');
                 $('#generalContainer').html(y[0]);
@@ -127,7 +129,6 @@ $.general = function() {
                     $('#generalBanner').slideUp();
                     $('#categoryContainer').hide();
                     $('#mainContainer').css('paddingTop','150px');
-                    $(document).scrollTop(0);
                     _ajaxCoolLoadPage($(this).attr('href'), '');
                 });
             }
@@ -609,6 +610,23 @@ $.general = function() {
                     $('#button-search-ads').button('loading');
                     generalObj.setAjaxCoolEvents('filterAds', false);
                     return false;
+                });
+
+                $('a[data-image-lib="popup"]').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var pics = [];
+                    $.each($('a[data-image-lib="popup"]'), function(i,v) {
+                        pics.push({
+                            title: $(v).attr('title'),
+                            href: $(v).attr('href'),
+                            type: 'image/jpeg',
+                            thumbnail: $(v).attr('href')
+                        });
+                    });
+                    var galleryImg = blueimp.Gallery(pics);
+
                 });
             },
             _changeCarMake: function () {

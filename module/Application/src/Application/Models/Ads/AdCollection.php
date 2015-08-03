@@ -319,6 +319,9 @@ class AdCollection
                         'description' => $adObj->getDescription(),
                         'stare' => $adObj->getStare(),
                         'href' => '#',
+                        'views' => $adObj->getViews(),
+                        'refreshDate' => General::DateTime($adObj->getUpdatedAt(), 'LONG'),
+                        'expirationDate' => General::DateTime($adObj->getExpirationDate(), 'LONG'),
                         'price' => ($adObj->getPrice() == round($adObj->getPrice()) ? round($adObj->getPrice()) : $adObj->getPrice()) .
                             ' ' . $adObj->getCurrency(),
                         'car' => [

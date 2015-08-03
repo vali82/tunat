@@ -131,9 +131,10 @@ class AdController extends MyAbstractController
                         $x = explode('/', $filefound);
                         $filename = $x[count($x)-1];
                         if (strpos($filename, '_') === false) {
-                            $images[] = $filename;
+                            $images[date('YmdHis', filemtime($filefound))] = $filename;
                         }
                     }
+                    ksort($images);
                 }
 
                 // detect Car Class
@@ -145,7 +146,7 @@ class AdController extends MyAbstractController
                 $resourceObj
                     ->setCarMake($carMakelId)
                     ->setStatus('ok')
-                    ->setImages(serialize($images))
+                    ->setImages(serialize(array_values($images)))
                     ->setViews(0)
                     ->setContactDisplayed(0)
                 ;
@@ -454,30 +455,12 @@ class AdController extends MyAbstractController
                 'error' => 0,
                 'result' => [
                     'html' => $partial('application/ad/piese.phtml', $viewVariables),
-                    'js' => ' generalObj.setAjaxCoolEvents(false, false); ' . $this->layout()->js_call
+                    'js' => ' generalObj.setAjaxCoolEvents(false, false); ' . $this->layout()->js_call .
+                        $this->layout()->googleAnalitics
                 ]
             ];
             return new JsonModel($data);
         }
-
-        if ($this->getRequest()->isXmlHttpRequest()) {
-
-
-            $htmlOutput = $this->getServiceLocator()
-                ->get('viewrenderer')
-                ->render($viewModel);
-
-            $jsonModel = new JsonModel();
-            $jsonModel->setVariables(array(
-                'html' => $htmlOutput,
-                'jsonVar1' => 'jsonVal2',
-                'jsonArray' => array(1,2,3,4,5,6)
-            ));
-            return $jsonModel;
-        }
-
-        return $viewModel;
-
     }
 
     public function getContactAction()

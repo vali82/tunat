@@ -65,6 +65,7 @@ class MyAbstractController extends AbstractActionController
 
         // get cars make and models into session
         $cars = General::getFromSession('cars');
+        $googleAnalitics = General::getFromSession('googleAnalitics');
         if ($cars === null || 1==2) {
             $carMake = [];
             $carsMakeDM = new CarsCategoriesDM($this->adapter);
@@ -105,15 +106,20 @@ class MyAbstractController extends AbstractActionController
                 //'partsSub' => $partsSub,
             ];
             General::addToSession('cars', $cars);
+
+            $states = General::getConfigs($this, 'consts|states');
+            General::addToSession('states', $states);
+
+            $googleAnalitics = General::getConfigs($this, 'googleAnalitics');
+            General::addToSession('googleAnalitics', $googleAnalitics);
         }
 //        General::echop($carModel);
         $this->cars = $cars;
-        $this->layout()->cars = $cars;
-
+        $this->layout()->setVariables([
+            'googleAnalitics' => $googleAnalitics,
+            'cars' => $cars
+        ]);
         ////
-
-        $states = General::getConfigs($this, 'consts|states');
-        General::addToSession('states', $states);
 
         parent::onDispatch($e);
     }
