@@ -818,6 +818,40 @@ select{
 /*end product page*/
 
 
+/*my account page*/
+.my-account {
+    margin-top: 54px;
+}
+.my-account > li {
+    height: 52px;
+    text-align: center;
+}
+.my-account > li a {
+    font-size: 17px;
+    line-height: 2.8;
+    color: #575757;
+    padding: 15px 63px;
+}
+
+.my-account >li.active a {
+    color: #fff;
+}
+.my-account > li.active {
+    box-shadow: none;
+    position: relative;
+}
+.my-account > li.active:after{
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    content: "";
+    width: 0; 
+    height: 0; 
+    border-top: 26px solid #f8f6f6;
+    border-left: 14px solid #243045; 
+    border-bottom: 26px solid #f8f6f6;
+}
+/*end my account*/
 
 
 
