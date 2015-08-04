@@ -1,3 +1,4 @@
+var blueimp;
 
 $.general = function() {
 
@@ -86,9 +87,8 @@ $.general = function() {
                 NProgress.start();
                 NProgress.inc(0.3);
                 //$('#adGetContactButton').button('loading');
-            }
-        })
-            .done(function (data) {
+            },
+            success: function(data, textStatus, jqXHR) {
                 if (data.error !== undefined && !data.error && data.result !== undefined) {
                     if (stateObj == '') {
                         window.history.pushState('{urlPath:"' + url + '"}', 'Title', url);
@@ -103,16 +103,11 @@ $.general = function() {
                 NProgress.done();
 
                 $(document).scrollTop(0);
-
-                /*var x = data.split('<!--coolAjaxLoad__generalContainer_start-->');
-                var y = x[1].split('<!--coolAjaxLoad__generalContainer_end-->');
-                $('#generalContainer').html(y[0]);
-
-                x = data.split('<!--coolAjaxLoad__scripts_start-->');
-                y = x[1].split('<!--coolAjaxLoad__scripts_end-->');
-                $('#scriptsGeneral').html(y[0]);*/
-
-            });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                self.location.href = url;
+            }
+        });
     };
 
     this.setAjaxCoolEvents = function (onlyThisSection, event) {
@@ -292,12 +287,7 @@ $.general = function() {
         ////
 
         // hide page load effect
-        setTimeout(
-            function() {
-                NProgress.done();
-            },
-            1000
-        );
+        setTimeout( function() { NProgress.done(); }, 1000);
         ////
 
         this.setAjaxCoolEvents(false, false);
@@ -612,6 +602,7 @@ $.general = function() {
                     return false;
                 });
 
+                // set blueimp gallery on pictures
                 $('a[data-image-lib="popup"]').on('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -628,6 +619,7 @@ $.general = function() {
                     var galleryImg = blueimp.Gallery(pics);
 
                 });
+                ////
             },
             _changeCarMake: function () {
                 if ($('#allCarsContainer').is(':visible')) {
