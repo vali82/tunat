@@ -19,8 +19,8 @@ $this->headScript()
         </h3>
         <div class="info-dates">
             <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:<?=$this->views?></span>
-            <span><span class="glyphicon glyphicon-calendar"></span>Expira la <?=$this->refreshDate?></span>
-            <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la <?=$this->expirationDate?></span>
+            <span><span class="glyphicon glyphicon-calendar"></span>Expira la <?=$this->expirationDate?></span>
+            <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la <?=$this->refreshDate?></span>
         </div>
     <div class="product-images panel">
         <?php
@@ -83,7 +83,7 @@ $this->headScript()
             <p>
                 <span class="category-icon">
                     <img src="<?=$this->basePath()?>/img/<?=$this->car['categoryImg']?>.png" />
-                </span>Categorie:
+                </span>
                 <span><?=$this->car['category']?></span>
             </p>
             <p>
@@ -95,11 +95,11 @@ $this->headScript()
                         <img src="<?=$this->basePath()?>/img/<?=$this->car['categoryImg']?>.png" />
                     <?php } ?>
 
-                </span>Marca si model:
+                </span>
                 <span><?=$this->car['class']?> <?=$this->car['model']?></span>
             </p>
            <?php /*<p>Stare: <?=$this->stare?></p>*/ ?>
-            <p><span class="glyphicon glyphicon-calendar" style="padding: 0 6px"></span> An <span>2013 - 2015</span></p>
+            <p><span class="glyphicon glyphicon-calendar" style="padding: 0 6px"></span> <span>2013 - 2015</span></p>
             <p>Cod Piesa: <span><?=$this->car['oem']?></span></p>
             <p class="description"><?= $this->description ?></p>
 
