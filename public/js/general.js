@@ -1,4 +1,5 @@
 var blueimp;
+var page_loaded = false;
 
 $.general = function() {
 
@@ -69,6 +70,7 @@ $.general = function() {
     };
 
     var _ajaxCoolLoadPage = function(url, stateObj) {
+        page_loaded = true;
         $.ajax({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
@@ -105,17 +107,24 @@ $.general = function() {
                 $(document).scrollTop(0);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                self.location.href = url;
+                window.location.replace(url); // simply dont think it will be here... but just in case
             }
         });
     };
 
     this.setAjaxCoolEvents = function (onlyThisSection, event) {
+
         var coolAjaxAvailable = true;
 
+        if (history.pushState) {
+            //alert('suported');
+            //return true;
+        }
+
         if (coolAjaxAvailable) {
-            if (!onlyThisSection || onlyThisSection == 'data-page-load') {
+            if (!onlyThisSection /*|| onlyThisSection == 'data-page-load'*/) {
                 // cool ajax load pages on links
+                //return true;
                 $('a[data-page-load="ajax"]').on('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -127,18 +136,22 @@ $.general = function() {
                     _ajaxCoolLoadPage($(this).attr('href'), '');
                 });
             }
-        }
 
-        if (onlyThisSection == 'filterAds') {
-            // filter form
-            if (coolAjaxAvailable) {
-                _ajaxCoolLoadPage($('#searchAds').attr('action'), '');
-                return false;
-            } else {
+            if (onlyThisSection == 'filterAds') {
+                // filter form
+                if (coolAjaxAvailable) {
+                    _ajaxCoolLoadPage($('#searchAds').attr('action'), '');
+                    return false;
+                } else {
+                    return true;
+                }
+            } else if (onlyThisSection == 'historyCall') {
+                _ajaxCoolLoadPage(document.location, event.state);
+            }
+        } else {
+            if (onlyThisSection == 'filterAds') {
                 return true;
             }
-        } else if (onlyThisSection == 'historyCall') {
-            _ajaxCoolLoadPage(document.location, event.state);
         }
 
         return true;
@@ -262,7 +275,16 @@ $.general = function() {
         };
 
         window.onpopstate = function(event) {
-            generalObj.setAjaxCoolEvents('historyCall', event);
+            if(event && event.state) {
+                generalObj.setAjaxCoolEvents('historyCall', event);
+            } else {
+                if (!page_loaded) {
+                    page_loaded = true;
+                    return false;
+                } else {
+                    history.go(0);
+                }
+            }
         };
 
         _handleBootstrapSwitch();
@@ -598,8 +620,8 @@ $.general = function() {
                     ;
                     $('#searchAds').attr('action', actionForm);
                     $('#button-search-ads').button('loading');
-                    generalObj.setAjaxCoolEvents('filterAds', false);
-                    return false;
+                    return generalObj.setAjaxCoolEvents('filterAds', false);
+                    //return false;
                 });
 
                 // set blueimp gallery on pictures
