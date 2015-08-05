@@ -49,9 +49,9 @@ class Forms extends AbstractHelper
 
                 } else {
                     if ($element->getAttribute('id') == 'cancelbutton') {
-                        $element->setAttribute('class', "btn btn-default");
+                        $element->setAttribute('class', "button btn-blue");
                     } else {
-                        $element->setAttribute('class', "btn btn-success");
+                        $element->setAttribute('class', "button btn-green");
                     }
                     $found_submit_element = $element;
                     continue;
@@ -158,7 +158,7 @@ class Forms extends AbstractHelper
                 <div class="<?= $formButtonsAlign ?>">
                     <?php echo $view->formElement($found_submit_element); ?>
                     <?php if ($found_submit_element->getAttribute('cancelLink')) { ?>
-                        <input type="button" value="<?= $view->translate('Anuleaza') ?>" class="btn btn-default"
+                        <input type="button" value="<?= $view->translate('Anuleaza') ?>" class="button btn-blue"
                            onclick="<?php
                            if ($found_submit_element->getAttribute('cancelLink') == 'back') {
                                echo 'window.history.back()';
@@ -206,7 +206,7 @@ class Forms extends AbstractHelper
             <div class="row fileupload-buttonbar">
                 <div class="col-lg-7">
                     <!-- The fileinput-button span is used to style the file input field as button -->
-                    <span class="btn btn-success fileinput-button">
+                    <span class="button btn-green fileinput-button">
                         <i class="glyphicon glyphicon-plus"></i>
                         <span>adauga poze...</span>
                         <input type="file" multiple="" name="files[]">
@@ -268,13 +268,13 @@ class Forms extends AbstractHelper
         </td>
         <td>
             {% if (!o.files.error && !i && !o.options.autoUpload) { %}
-            <button class="btn btn-primary start">
+            <button class="button btn-blue start">
                     <i class="glyphicon glyphicon-upload"></i>
                     <span>Start</span>
                 </button>
             {% } %}
             {% if (!i) { %}
-            <button class="btn btn-warning cancel">
+            <button class="button btn-red cancel">
                     <i class="glyphicon glyphicon-ban-circle"></i>
                     <span>Cancel</span>
                 </button>
@@ -313,13 +313,13 @@ class Forms extends AbstractHelper
         </td>
         <td>
             {% if (file.deleteUrl) { %}
-            <button class="btn btn-danger delete pull-right" onclick="$(this).button('loading')" data-loading-text="Loading..." data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"
+            <button class="button btn-red delete" onclick="$(this).button('loading')" data-loading-text="Loading..." data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"
             {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
             <i class="fa fa-trash-o"></i>
             <span>Sterge</span>
             </button>
             {% } else { %}
-            <button class="btn btn-warning cancel">
+            <button class="button btn-red cancel">
                 <i class="fa fa-ban"></i>
                 <span>Anuleaza</span>
             </button>

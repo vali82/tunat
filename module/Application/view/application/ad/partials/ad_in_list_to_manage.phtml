@@ -11,12 +11,10 @@
             <a title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>" href="<?=$this->href?>"><?=$this->title?></a>
             <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
         </h4>
-        <div style="float: right; margin-top: 0px">
-            <span class="glyphicon glyphicon-calendar"></span> Data Expirarii: <?=$this->expirationDate?>
-            <span style="padding-left:10px"></span>
-            <span class="glyphicon glyphicon-eye-open"></span> Vizualizari: <?=$this->views?>
-            <span style="padding-left:10px"></span>
-            <span class="glyphicon glyphicon-earphone"></span> Contact Afisat: <?=$this->contactDisplayed?>
+        <div>
+            <span><span class="glyphicon glyphicon-calendar"></span>Data Expirarii: <?=$this->expirationDate?></span>
+            <span><span class="glyphicon glyphicon-eye-open"></span> Vizualizari: <?=$this->views?></span>
+            <span><span class="glyphicon glyphicon-earphone"></span> Contact Afisat: <?=$this->contactDisplayed?></span>
         </div>
         <p class="about"><?=$this->description?></p>
         <p class="model">
@@ -41,16 +39,16 @@
         </p>
         <?php if ($this->status == 'expired') { ?>
         <a href="<?=$this->url('home/ad/changeStatus', ['mode'=>'activate', 'id'=>$this->id, 'token'=>$this->token])?>"
-           class="btn btn-primary btn-sm" role="button">Reactiveaza Anunt</a>
+           class="btn-green button" role="button">Reactiveaza Anunt</a>
         <?php } else { ?>
-        <a href="<?=$this->url('home/ad/create', ['id'=>$this->id])?>" class="btn btn-success btn-sm" role="button">Modifica Anunt</a>
+        <a href="<?=$this->url('home/ad/create', ['id'=>$this->id])?>" class="btn-blue button" role="button">Modifica Anunt</a>
         <?php } ?>
         <a href="javascript:;" onclick="<?=\Application\libs\General::confirmBoxJS(
             $this,
             $this->url('home/ad/changeStatus', ['mode'=>'delete', 'id'=>$this->id, 'token'=>$this->token]),
             'Vrei sa stergi definitiv acest anunt?'
         )?>"
-           class="btn btn-danger btn-sm" role="button">Sterge Anunt</a>
+           class="btn-red button" role="button">Sterge Anunt</a>
     </div>
     <div class="col-md-2 col-sm-2 col-xs-12">
         <span class="price"><?=$this->price?></span>
