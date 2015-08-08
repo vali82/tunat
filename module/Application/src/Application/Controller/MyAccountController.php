@@ -195,6 +195,6 @@ class MyAccountController extends MyAbstractController
             $this->flashMessenger()->addSuccessMessage($messageSuccess);
         }
 
-        $this->redirect()->toRoute('home/myAccount/update');
+        return $this->redirect()->toRoute('home/myAccount/update');
     }
 }

@@ -111,7 +111,7 @@ class OffersController extends MyAbstractController
 
 
                 General::unsetSession('offerTmpId');
-                $this->redirect()->toRoute('home/offers/create');
+                return $this->redirect()->toRoute('home/offers/create');
 
             }
         } else {

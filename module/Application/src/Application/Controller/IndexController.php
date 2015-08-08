@@ -75,7 +75,7 @@ class IndexController extends MyAbstractController
                     $this->translator->translate('Mesajul dvs. a fost trimis! Va vom contacta in cel mai scurt timp posibil!')
                 );
 
-                $this->redirect()->toRoute('home/contact');
+                return $this->redirect()->toRoute('home/contact');
 
             }
         } else {

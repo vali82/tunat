@@ -426,6 +426,6 @@ class LoginRegisterController extends MyAbstractController
             $headers->addHeader($new_cookie);
         }
 
-        $this->redirect()->toRoute('zfcuser/logout');
+        return $this->redirect()->toRoute('zfcuser/logout');
     }
 }

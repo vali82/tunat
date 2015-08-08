@@ -83,7 +83,7 @@ class AdController extends MyAbstractController
             ]);
             if ($resourceObj === null) {
                 $this->flashMessenger()->addErrorMessage('A aparut o eroare! Anunt invalid!');
-                $this->redirect()->toRoute('home/ad/myAds', ['status'=>'active']);
+                return $this->redirect()->toRoute('home/ad/myAds', ['status'=>'active']);
             }
             $adTmpId = $id;
             General::addToSession('adTmpId', $adTmpId);
@@ -169,7 +169,7 @@ class AdController extends MyAbstractController
                 }
                 General::unsetSession('adTmpId');
 
-                $this->redirect()->toRoute('home/ad/myAds');
+                return $this->redirect()->toRoute('home/ad/myAds');
             } else {
                 $this->layout()->js_call .=
                     ' generalObj.ad.changeClass("'.$form->get('car_make')->getValue().'");'
@@ -285,7 +285,7 @@ class AdController extends MyAbstractController
             $this->flashMessenger()->addSuccessMessage($messageSuccess);
         }
 
-        $this->redirect()->toRoute('home/ad/myAds', ['status' => $statusRedirect]);
+        return $this->redirect()->toRoute('home/ad/myAds', ['status' => $statusRedirect]);
     }
 
     public function pieseAction()
