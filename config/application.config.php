@@ -12,7 +12,7 @@ return array(
         'ZendDeveloperTools',
         'BjyProfiler',
         'WebinoImageThumb',
-        'Mandrill'
+//        'mandrill/mandrill'
 
     ),
 
