@@ -2,12 +2,13 @@
 
 namespace Application\Forms;
 
+use Application\libs\General;
 use Application\Models\Ads\Ad;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class AdForm extends AbstractForm
 {
-    public function create($resourceObj, $carMake, $years)
+    public function create($resourceObj, $carMake, $years, $role, $states)
     {
         $this->setHydrator(new ClassMethodsHydrator(true))
             ->setObject($resourceObj);
@@ -222,7 +223,7 @@ class AdForm extends AbstractForm
             'name' => 'currency',
             'options' => array(
                 'label' => '&nbsp;',
-                'options' => ['RON' => 'RON', 'EUR' => 'EUR', 'USD' => 'USD'],
+                'options' => ['RON' => 'RON', 'EUR' => 'EUR'],
                 //'empty_option' => '--- Selecteaza Parinte ---',
 //                'disable_inarray_validator' => true
             ),
@@ -266,6 +267,107 @@ class AdForm extends AbstractForm
             )
         ));
 
+        if ($role == "contentmanager" || $role == "admin") {
+
+            $this->add(array(
+                'name' => 'x3',
+                'type' => 'hidden',
+                'attributes' => array(
+                    'textAbove' => 'Detalii Vanzator',
+                    'custom_form_spacer' => true,
+                )
+            ));
+
+            $this->add(array(
+                'type' => 'text',
+                'name' => 'adv_name',
+                'options' => array(
+                    'label' => 'Nume Vanzator',
+//                'options' => [''=>''],
+                ),
+                'attributes' => array(
+//                    'id' => 'select2CarPartsSub',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+                    'group' => array('size' => 'col-lg-5 col-md-5 col-sm-4 col-xs-12', 'type' => 'start'),
+                    'extraInfo' => 'obligatoriu'
+                ),
+            ));
+
+            $this->add(array(
+                'type' => 'text',
+                'name' => 'adv_email',
+                'options' => array(
+                    'label' => 'Email',
+//                'options' => [''=>''],
+                ),
+                'attributes' => array(
+//                    'id' => 'select2CarPartsSub',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+                    'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
+                    'extraInfo' => 'optional'
+                ),
+            ));
+
+            $this->add(array(
+                'type' => 'text',
+                'name' => 'adv_tel',
+                'options' => array(
+                    'label' => 'Telefon',
+//                'options' => [''=>''],
+                ),
+                'attributes' => array(
+//                    'id' => 'select2CarPartsSub',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+                    'group' => array('size' => 'col-lg-3 col-md-3 col-sm-4 col-xs-12', 'type' => 'end'),
+                    'extraInfo' => 'obligatoriu'
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'adv_address',
+                'type' => 'text',
+                'options' => array(
+                    'label' => 'Adressa',
+                ),
+                'attributes' => array(
+                    'placeholder' => 'Adresa: strada, nr.',
+                    'group' => array('size' => 'col-lg-5 col-md-5 col-sm-4 col-xs-12', 'type' => 'start'),
+                    'extraInfo' => 'optional'
+                ),
+            ));
+            $this->add(array(
+                'name' => 'adv_city',
+                'type' => 'text',
+                'options' => array(
+                    'label' => 'Oras',
+                ),
+                'attributes' => array(
+//                'noLabel' => true,
+                    'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
+                    'extraInfo' => 'obligatoriu'
+                ),
+            ));
+            $this->add(array(
+                'type' => 'select',
+                'name' => 'adv_state',
+                'options' => array(
+                    'label' => 'Judet',
+                    'options' => $states,
+                ),
+                'attributes' => array(
+//                'id' => 'year_end',
+                    'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-lg-3 col-md-3 col-sm-4 col-xs-12', 'type' => 'end'),
+                    'required' => true,
+//                'noLabel' => true,
+                    'extraInfo' => 'obligaroriu'
+                ),
+            ));
+
+
+
+
+        }
+
         /*$this->add(array(
             'name' => 'custom_form_spacer',
             'type' => 'hidden',
@@ -280,7 +382,7 @@ class AdForm extends AbstractForm
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Salveaza',
+                'value' => 'Adauga anuntul',
                 'id' => 'submitbutton',
                 'cancelLink' => $this->_cancel_route
             ),

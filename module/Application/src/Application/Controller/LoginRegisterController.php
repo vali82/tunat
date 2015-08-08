@@ -404,15 +404,15 @@ class LoginRegisterController extends MyAbstractController
         $userRoleLinkerDM = $this->getServiceLocator()->get('getUserRoleLinkerDB');
         $usrole = $userRoleLinkerDM->fetchByUserId($user_id);
 
-        if ($usrole['role_id'] == 'parcauto') {
+        //if ($usrole['role_id'] !== 'parcauto' || $usrole['role_id'] == 'admin') {
             General::unsetSession('AuthenticatedUserRole');
             General::unsetSession('myAdvertiserObj');
             General::unsetSession('myUser');
             return $this->redirect()->toRoute('home/ad/myAds');
 
-        } else {
+        /*} else {
             return $this->redirect()->toRoute('home');
-        }
+        }*/
 
     }
 

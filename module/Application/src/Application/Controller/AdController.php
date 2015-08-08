@@ -16,6 +16,7 @@ use Application\Mail\MailGeneral;
 use Application\Models\Ads\Ad;
 use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
+use Application\Models\Advertiser\Advertiser;
 use Application\Models\Advertiser\AdvertiserDM;
 use Application\Models\Cars\CarsCollection;
 use Zend\View\Model\JsonModel;
@@ -57,10 +58,9 @@ class AdController extends MyAbstractController
         $this->layout()->setVariable('myAccountMenu', [
             'active' => 'addad'
         ]);
-        /*$mail = new MailGeneral($this->getServiceLocator());
-        $mail->_to = 'ileavalentin@gmail.com';
-        $mail->_no_reply = true;
-        var_dump($mail->forgotPassword("Gigi D'agostino", '123456'));*/
+
+        $states = General::getFromSession('states');
+        unset($states[0]); // delete the "oricare" value
 
         $cars = $this->cars;
         $id = $this->getEvent()->getRouteMatch()->getParam('id', null);
@@ -70,6 +70,8 @@ class AdController extends MyAbstractController
 
         $request = $this->getRequest();
         $adCollection = new AdCollection($this);
+
+        $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId();
 
         if ($id !== null) {
             // EDIT
@@ -100,26 +102,27 @@ class AdController extends MyAbstractController
                 $adTmpId = General::getFromSession('adTmpId');
             } else {
                 $adTmpId = 'tmp'.rand(10000, 99999);
-
                 General::addToSession('adTmpId', $adTmpId);
             }
 
             $resourceObj = new Ad();
         }
 
-        $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/'. $adTmpId . '/' ;
+        $file_path .= '/ads/'. $adTmpId . '/';
+
+
 
         $form = new AdForm();
         $form->setCancelRoute('back');
         $years = $adCollection->getYears();
-        $form->create($resourceObj, $this->cars['categories'], $years, null, null, null);
+        $form->create($resourceObj, $this->cars['categories'], $years, $this->role, $states);
 
         $form->bind($resourceObj);
 
         $resourceObj->setAdvertiserId($this->myAdvertiserObj->getId());
 
         if ($request->isPost()) {
-            $filter = new AdFilter();
+            $filter = new AdFilter($this->role);
             $form->setInputFilter($filter->getInputFilter());
 
             $form->setData($request->getPost());
@@ -153,12 +156,38 @@ class AdController extends MyAbstractController
                 $adDM = new AdDM($this->adapter);
 
                 if ($id === null) {
+                    $resourceObj->setPrice(str_replace(',', '.', $resourceObj->getPrice()));
                     $resourceObj->setExpirationDate(General::DateTime($expDate));
                     $adId = $adDM->createRow($resourceObj);
 
+                    // create adv if is content manager
+                    if ($this->role == 'contentmanager' || $this->role == 'admin') {
+                        $advDM = new AdvertiserDM($this->adapter);
+                        $advObj = new Advertiser();
+                        $advObj
+                            ->setAccountType('unregistered')
+                            ->setAddress($filter->getInputFilter()->getValue('adv_address'))
+                            ->setCity($filter->getInputFilter()->getValue('adv_city'))
+                            ->setDescription('')
+                            ->setEmail($filter->getInputFilter()->getValue('adv_email'))
+                            ->setLogo('')
+                            ->setName($filter->getInputFilter()->getValue('adv_name'))
+                            ->setState($filter->getInputFilter()->getValue('adv_state'))
+                            ->setTel1($filter->getInputFilter()->getValue('adv_tel'))
+                            ->setTel2('')
+                            ->setTel3('')
+                            ->setUrl('')
+                        ;
+                        $advId = $advDM->createRow($advObj);
+
+                        $resourceObj->setId($adId)->setAdvertiserId($advId);
+                        $adDM->updateRow($resourceObj);
+                    } else {
+                        $advId = $this->myAdvertiserObj->getId();
+                    }
 
                     if ($adId && is_dir($file_path)) {
-                        rename($file_path, PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/' . $adId . '/');
+                        rename($file_path, PUBLIC_IMG_PATH . $advId . '/ads/' . $adId . '/');
                     }
                     $this->flashMessenger()->addSuccessMessage('Anuntul a fost adaugat cu success!');
 

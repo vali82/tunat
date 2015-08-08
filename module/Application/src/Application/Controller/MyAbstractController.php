@@ -38,7 +38,7 @@ class MyAbstractController extends AbstractActionController
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
 
-            if ($this->role == 'parcauto') {
+//            if ($this->role == 'parcauto' || $this->role == 'admin') {
                 $this->myAdvertiserObj = $this->getServiceLocator()->get('AdvertiserObj');
 
                 if ($this->myAdvertiserObj->getTel1() === '') {
@@ -52,7 +52,7 @@ class MyAbstractController extends AbstractActionController
                     }
 
                 }
-            }
+//            }
         }
 
 //        General::echop($this->role);

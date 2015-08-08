@@ -7,7 +7,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
 
 
-if ($role == 'parcauto') {
+if ($role !== 'guest') {
 //    $myAdvertiserObj = $this->myAdvertiserObj();
     $myAdvertiserObj = \Application\libs\General::getFromSession('myAdvertiserObj');
     $name = $myAdvertiserObj->getName();
