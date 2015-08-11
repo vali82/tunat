@@ -117,11 +117,20 @@ class AdCollection
                 ]
             ]);
 
-            $ads = $adDM->fetchAllDefault(
-                [
+            if ($param['role'] == 'contentmanager' || $param['role'] == 'admin') {
+                $where = [
+                    'status' => $param['status']
+                ];
+            } else {
+                $where = [
                     'advertiser_id' => $this->controller->getMyAdvertiserObj()->getId(),
                     'status' => $param['status']
-                ],
+                ];
+            }
+
+
+            $ads = $adDM->fetchAllDefault(
+                $where,
                 ['dateadd' => 'DESC']
             );
 

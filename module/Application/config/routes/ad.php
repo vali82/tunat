@@ -15,7 +15,7 @@ return [
     'upload' => [
         'type' => 'Segment',
         'options' => array(
-            'route' => '/upload[/:option][/:folder][/:name]',
+            'route' => '/upload[/:adv_id][/:option][/:folder][/:name]',
             'defaults' => array(
                 'controller' => 'Application\Controller\Ad',
                 'action' => 'upload',
