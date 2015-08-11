@@ -263,7 +263,7 @@ class AdCollection
                             ($ad->getPrice() == round($ad->getPrice()) ? round($ad->getPrice()) : $ad->getPrice()) .
                             ' ' . $ad->getCurrency(),
                         'stare' => $ad->getStare(),
-                        'carCategory' => strtolower($carCollection->getUrlize($cars['categories'][$ad->getCarCategory()])),
+                        'carCategory' => $ad->getCarCategory(),
                         'urlFilter1' => $carCollection->urlizeCarClass($ad->getCarCategory(), $cars['model'][$ad->getCarCategory()][$ad->getCarMake()]['categ']),
                         'urlFilter2' => $carCollection->urlizeSearchAds($ad->getCarCategory(), $ad->getCarMake())
                     ]
@@ -339,7 +339,7 @@ class AdCollection
                             'class' => $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ'],
                             'model' => $adObj->getCarModel(),
                             'oem' => $adObj->getCodeOem(),
-                            'categoryImg' => strtolower($carCollection->getUrlize($cars['categories'][$adObj->getCarCategory()])),
+                            'categoryID' => $adObj->getCarCategory(),
                             'classUrlized' => strtolower($carCollection->getUrlize($cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']))
                         ],
                         'advertiser' => [

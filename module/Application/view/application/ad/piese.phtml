@@ -21,7 +21,7 @@ $cars = $this->layout()->cars;
 <?php } ?>
 
 <!--Marca-->
-<div class="row"> 
+<div class="row" style="padding-top: 70px">
     <?php
     // listare toate marcile inainte de a fi selectat modelul
     if (($this->class) === null) { ?>
@@ -66,12 +66,11 @@ $cars = $this->layout()->cars;
         ?>
         <div class="change-categories col-md-3">
             <a href="javascript:;" class="panel selected" id="changeCarMakeButton">
-                <img src="<?=$this->basePath()?>/img/<?=strtolower($this->carCollection->getUrlize($cars['categories'][$this->carcategoriesId]))?>.png" />
+                <img src="<?=$this->basePath()?>/img/categ_<?=$this->carcategoriesId?>.png" />
                 <?=$this->class?>
             </a>
 
         </div>
-        <div class="offer2 col-md-9"><a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a></div>
         <div class="col-md-12 change-categories" id="allCarsContainer" style="display: none">
             <?php foreach ($cars['categories'] as $categoriesId=>$categories) { ?>
                 <div class="row">
@@ -79,7 +78,7 @@ $cars = $this->layout()->cars;
                         <a class="panel"
                            title = "Piese <?=$cars['categories'][$categoriesId]?>"
                            href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
-                            <img src="<?=$this->basePath()?>/img/<?=strtolower($this->carCollection->getUrlize($cars['categories'][$categoriesId]))?>.png" />
+                            <img src="<?=$this->basePath()?>/img/categ_<?=$categoriesId?>.png" />
                             <?=$categories?>
                         </a>
                     </div>
@@ -174,8 +173,8 @@ $cars = $this->layout()->cars;
     </div>
 
 <!--Listing Anunturi-->  
-    <div class="col-md-9 brand-listing">
-        <h3>Anunturi Piese</h3>
+    <div id="announcement-listing" class="col-md-9 brand-listing">
+        <h3>Anunturi Piese de <?=$cars['categories'][$this->carcategoriesId]?> <?=$this->class?></h3>
         <?php if ($this->adList !== null) { ?>
             <?=$this->adList?>
             <?=
@@ -187,7 +186,10 @@ $cars = $this->layout()->cars;
             );
             ?>
         <?php } else { ?>
-            <p>Nu sunt anunturi in aceasta categorie</p>
+            <span class="no-results-found">
+                Nu am gasit anunturi in aceasta categorie.
+            </span>
+            <a href="<?=$this->url('home/offers/create')?>" class="btn-red button pull-right">Cere oferta</a>
         <?php } ?>
     </div>
 </div>
