@@ -2,6 +2,11 @@
 body{
     background-color: #f8f6f6;
     font-family: 'Ubuntu', sans-serif;
+    font-size: 14px;
+    line-height: 1;
+}
+a:focus, a:hover {
+    color: #fff;
 }
 .panel {
     border-radius: 0;
@@ -83,8 +88,19 @@ ul.navbar-right{
 }
 
 /*general buttons*/
-.btn-green{
+.button {
     display: inline-block;
+    color: #fff;
+    font: 500 15px/1.2 'Ubuntu', sans-serif;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+    text-align: center;
+    padding: 10px 20px;
+} 
+.button:hover {
+    color: #fff;
+} 
+.btn-green{
+    background-color: #63c848;
     background: -webkit-linear-gradient(#64c948, #5cb942); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#64c948, #5cb942); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#64c948, #5cb942); /* For Firefox 3.6 to 15 */
@@ -92,18 +108,11 @@ ul.navbar-right{
     box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
     -moz-box-shadow: inset 0 -2px 0 0  rgba(75, 157, 54, 0.86);
     -webkit-box-shadow: inset 0 -2px 0 0 rgba(75, 157, 54, 0.86);
-    color: #fff;
-    font: 500 17px/22px 'Ubuntu', sans-serif;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
-    background-color: #63c848;
-    border: 0;
-    text-align: center;
+    
 }
 
 .btn-red{
-    float: right;
-    height: 48px;
-    padding: 0px 70px;
+    background-color: #d03e3e;
     background: -webkit-linear-gradient(#d03e3e, #bc3838); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(#d03e3e, #bc3838); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(#d03e3e, #bc3838); /* For Firefox 3.6 to 15 */
@@ -111,9 +120,20 @@ ul.navbar-right{
     box-shadow: inset 0 -2px 0 0  rgba(162, 46, 46, 0.9);
     -moz-box-shadow: inset 0 -2px 0 0  rgba(162, 46, 46, 0.9);
     -webkit-box-shadow: inset 0 -2px 0 0 rgba(162, 46, 46, 0.9);
-    color: #fff;
-    font: 500 18px/2.5 'Ubuntu', sans-serif;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.43);
+}
+
+.btn-blue{
+    background-color: #003399;
+    background: -webkit-linear-gradient(#003399, #0033CC); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(#003399, #0033CC); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(#003399, #0033CC); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#003399, #0033CC); /* Standard syntax */
+    box-shadow: inset 0 -2px 0 0  rgba(0, 51, 153, 0.9);
+    -moz-box-shadow: inset 0 -2px 0 0  rgba(0, 51, 153, 0.9);
+    -webkit-box-shadow: inset 0 -2px 0 0 rgba(0, 51, 153, 0.9);
+}
+.btn-blue:hover{
+    background: #0066CC;
 }
 /*end general buttons*/
 
@@ -243,10 +263,6 @@ li.displayOnMobile {
     padding-top: 14px;
 }
 
-.panel-body{
-    padding-top: 0;
-    padding-bottom: 0;
-}
 .offer span{
     font: 22px/50px 'Ubuntu', sans-serif;
     padding-left: 71px;
@@ -269,6 +285,10 @@ h3.new{
     font: 300 22px/28px 'Ubuntu', sans-serif;
     margin-bottom: 20px;
     margin-top: 50px;
+}
+.offer .button {
+    padding: 15px 64px;
+    float: right;
 }
 .announcement.panel{
     padding: 15px 17px;
@@ -381,6 +401,10 @@ footer .container{
     color: #9b9a9a;
     font-size: 14px;
 }
+.newsletter .button {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
 .newsletter .form-group{
     float: left;
     margin-right: 10px;
@@ -424,19 +448,6 @@ footer .container{
 .has-success .form-control:focus {
     border-color: #989696;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 6px #989696;
-}
-.btn-newsletter{
-    float: left;
-    padding: 12px 43px;
-}
-.btn-newsletter a{
-    color: #fff;
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 20px
-}
-.btn-success:focus, .btn-success:hover {
-    background-color: #5cb943 ;
 }
 .social-media li{
     display: inline-block;
@@ -523,12 +534,6 @@ footer .container{
 }
 #loginForm div:nth-child(odd), #registerForm div{
     margin-bottom: 20px;
-}
-#loginButton, #registerButton, #forgotButton{
-    padding: 9px 40px;
-}
-#loginButton:hover, #registerButton:hover, #forgotButton:hover{
-    color: #ffff;
 }
 label[for=globalLoginFieldPass]{
     width: 50%;
@@ -715,8 +720,8 @@ select{
     padding-right: 10px;
 }
 .offer2 a {
-    height: 60px;
-    line-height: 3.2;
+    float: right;
+    padding: 21px 64px;
 }
 .info-dates {
     margin-bottom: 30px;
@@ -815,6 +820,11 @@ select{
     margin: 51px 0;
     color: #868788;
 }
+.contact a {
+    width: 100%;
+    padding: 20px;
+    font-size: 18px;
+}
 /*end product page*/
 
 
@@ -822,25 +832,26 @@ select{
 .my-account {
     margin-top: 54px;
 }
-.my-account > li {
-    height: 52px;
+.my-account li {
+    height: 51px;
     text-align: center;
 }
-.my-account > li a {
+.my-account  li a {
+    display: block;
     font-size: 17px;
-    line-height: 2.8;
+    line-height: 1.2;
     color: #575757;
-    padding: 15px 63px;
+    padding: 15px;
 }
 
-.my-account >li.active a {
+.my-account li.active a {
     color: #fff;
 }
-.my-account > li.active {
+.my-account  li.active {
     box-shadow: none;
     position: relative;
 }
-.my-account > li.active:after{
+.my-account li.active:after{
     position: absolute;
     top: -1px;
     right: -1px;
@@ -850,6 +861,12 @@ select{
     border-top: 26px solid #f8f6f6;
     border-left: 14px solid #243045; 
     border-bottom: 26px solid #f8f6f6;
+}
+
+ul.dropdown-menu li a {
+    color: #575757 !important;
+    line-height: 1;
+    height: 100%;
 }
 /*end my account*/
 

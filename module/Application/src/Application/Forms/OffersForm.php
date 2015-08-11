@@ -221,7 +221,7 @@ class OffersForm extends AbstractForm
             'name' => 'x6',
             'type' => 'hidden',
             'attributes' => array(
-                'pureHtml' => '<a href="javascript:;" data-clone="piesa" class="btn btn-success pull-right">adauga piesa noua</a>',
+                'pureHtml' => '<a href="javascript:;" data-clone="piesa" class="btn-green button">adauga piesa noua</a>',
                 'custom_form_spacer' => true,
             )
         ));

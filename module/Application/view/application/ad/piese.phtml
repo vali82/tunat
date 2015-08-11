@@ -71,7 +71,7 @@ $cars = $this->layout()->cars;
             </a>
 
         </div>
-        <div class="offer2 col-md-9"><a href="<?=$this->url('home/offers/create')?>" class="btn-red">Cere oferta</a></div>
+        <div class="offer2 col-md-9"><a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a></div>
         <div class="col-md-12 change-categories" id="allCarsContainer" style="display: none">
             <?php foreach ($cars['categories'] as $categoriesId=>$categories) { ?>
                 <div class="row">
@@ -160,7 +160,7 @@ $cars = $this->layout()->cars;
                 <input id ="searchOem" value="<?=$this->searchValues['oem']?>"  maxlength="50" class="form-control" type="text">
             </div>
 
-            <button type="submit" id="button-search-ads" class="btn-green" data-loading-text="cautare...">Aplica</button>
+            <button type="submit" id="button-search-ads" class="btn-green button" data-loading-text="cautare...">Aplica</button>
         </form>
 <!--end Filtrare Anunturi-->
 
