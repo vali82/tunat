@@ -9,15 +9,14 @@ $this->headScript()
 //$this->layout()->js_call .= ' newsletterObj.loadNewsletterOptionData("'.$this->url('kindergarten/newsletter/saveNewsletterOption').'"); ';
 ?>
 <h3><?=$this->translate('Contul Meu')?></h3>
-<div class="row">
-    <div class="col-sm-12">
+
         <div class="panel">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-md-3 col-sm-3 col-xs-12">
                         <img src="<?=$this->myAdvertiserObj->generateAvatar('160x160')?>" class="thumbnail img-responsive"/>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-md-9 col-sm-9 col-xs-12">
                         <ul class="list-group">
 
                             <li class="list-group-item">
@@ -40,20 +39,15 @@ $this->headScript()
                             </li>
                         </ul>
                     </div>
-
                 </div>
-
                 <p>
                     <?=$this->myAdvertiserObj->getDescription()?>
                 </p>
 
-
                 <a href="<?=$this->url('home/myAccount/update')?>" type="button" class="button btn-green"><?=$this->translate('Modifica')?></a>
                 <a href="<?=$this->url('zfcuser/changepassword')?>" type="button" class="button btn-blue"><?=$this->translate('Schimba Parola')?></a>
             </div>
-
         </div>
-
-    </div>
+ 
 </div>
 
