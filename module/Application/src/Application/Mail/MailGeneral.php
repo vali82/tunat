@@ -87,6 +87,7 @@ class MailGeneral extends AbstractActionController
 		$from = ($this->_from !== null ? array('email'=>$this->_from['email'], 'name'=>$this->_from['name']) : array('email'=>$this->_config['from']['email'], 'name'=>$this->_config['from']['name']));
 		try
 		{
+            require 'vendor/mandrill/mandrill/src/Mandrill.php';
 			$mandrill = new \Mandrill($this->_config['mandrill']['key']);
 
 			$subdomain_id = APPLICATION_ENV.'-default';
