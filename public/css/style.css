@@ -3,7 +3,7 @@ body{
     background-color: #f8f6f6;
     font-family: 'Ubuntu', sans-serif;
     font-size: 14px;
-    line-height: 1;
+    /*line-height: 1;*/
 }
 h3{
     font: 300 21px/26px 'Ubuntu', sans-serif;
