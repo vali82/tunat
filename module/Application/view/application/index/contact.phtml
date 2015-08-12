@@ -1,8 +1,10 @@
-
 <div class="row">
-    <div class="col-md-3">
-        <h2>Contact</h2>
-
+    <div class="hideOnMobile col-lg-3 col-md-3 col-sm-3 col-sm-12">
+        <ul class="my-account">
+            <li role="presentation" class="active panel">
+                <a href="#">Contact</a>
+            </li>
+        </ul>
         Departament Vanzari: <br />
         &bull; e-mail: <a href="mailto:vanzari@tirbox.ro">vanzari@tirbox.ro</a><br />
         &bull; telefon: <a href="tel:0734.123.654">0734.123.654</a><br />
@@ -11,7 +13,8 @@
         &bull; e-mail: <a href="mailto:vanzari@tirbox.ro">contact@tirbox.ro</a><br />
         &bull; telefon: <a href="tel:0734.123.654">0734.123.654</a><br />
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9 col-md-9 col-sm-9 col-sm-12">
+        <h3><?=$this->translate('Contacteaza-ne pentru orice problema pe care o intampini')?></h3>
         <?php
         \Application\View\Helper\Forms::render(
             $this,
