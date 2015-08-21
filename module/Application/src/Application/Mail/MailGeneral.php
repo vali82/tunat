@@ -15,10 +15,11 @@ class MailGeneral extends AbstractActionController
 {
     public $_to;
     public $_from;
-	public $_subdomain;
 	public $_no_reply;
+    public $bcc = null;
     protected $_subject;
     protected $_message;
+    protected $_content;
     protected $translator;
     protected $_config;
     protected $_general_config;
@@ -39,31 +40,24 @@ class MailGeneral extends AbstractActionController
         $this->_log2hdd = APPLICATION_ENV == 'development' ? true : false;
     }
 
-    protected function header($action, $user_type = 'user')
+    protected function template($action)
     {
-        return
-            '
+        return '
 <div style="background: font-family: \'Source Sans Pro\', Arial;color: #577897;font-size: 15px;font-weight: 100;line-height: 19px;text-align: left;min-height: 500px;">
     <style type="text/css">
         @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,400,300,700,700italic,900);
     </style>
     <div style="margin: 0px auto; width: 640px; padding-top: 20px; overflow: hidden;">
         <div style="padding: 0 15px;">
-            <img src="' . $this->_site_names['http'] . '/img/logo.png" alt="" style="float:left;">
+            <img src="' . $this->_site_names['http'] . '/img/logo.jpg" alt="" style="float:left;">
             <a style="background: #094B88;color:#fff;display: block;border: 0 none;border-bottom: 4px solid #0A447B;box-shadow:inset 0 2px 4px rgba(255,255,255,0.2), 0 3px 5px rgba(0,0,0,0.2);height: 32px;padding: 0 24px;float: right;font-family: \'Source Sans Pro\', Arial;font-size: 13px;font-weight: bold;height: 32px;line-height: 34px;padding: 0 24px;text-decoration: none;" href="' . $action[0]['href'] . '">' . $action[0]['name'] . '</a>
-            ' . (isset($action[1]) ? '<a style="background: #094B88;color:#fff;display: block;border: 0 none;border-bottom: 4px solid #0A447B;box-shadow:inset 0 2px 4px rgba(255,255,255,0.2), 0 3px 5px rgba(0,0,0,0.2);height: 32px;padding: 0 24px;float: right;font-family: \'Source Sans Pro\', Arial;font-size: 13px;font-weight: bold;height: 32px;line-height: 34px;margin-right:10px;padding: 0 24px;text-decoration: none;" href="' . $action[1]['href'] . '">' . $action[0]['name'] . '</a>' : '') . '
-            <div style="float: left; width: 100%; margin-bottom: 20px;">&nbsp;</div>
-            <img src="' . $this->_site_names['http'] . '/img/mail/' . ($user_type == 'user' ? 'user_img.jpg' : 'merchant.png') . '" alt="" style="float:left; padding:0 20px;">
-            <h1 style="color: #5A7A99;float: left;font-family: \'Source Sans Pro\', Arial;font-size: 49px;font-weight: 900;letter-spacing: -1px;line-height: 42px;margin: 0;">
-';
-    }
-
-    protected function footer()
-    {
-        return
-            '
-	<div style="float: left; width: 100%;padding-bottom:30px;">&nbsp;</div>
-
+            <h1 style="color: #5A7A99;float: left;font-family: \'Source Sans Pro\', Arial;font-size: 25px;font-weight: 900;letter-spacing: -1px;line-height: 42px;margin: 0;">
+                Buna,<BR>' . $action[1] . '
+            </h1>
+            <div style="font-family: \'Source Sans Pro\', Arial;float: left; margin: 30px 0 0; background: none repeat scroll 0px 0px rgb(237, 237, 244);color: #4A4A4A;padding: 2%; width: 96%; border-bottom: 1px solid rgb(221, 221, 221);">
+                '.$this->_content.'
+            </div>
+        </div>
         <div class="footer" style="font-family: \'Source Sans Pro\', Arial;background: #F9F9F9; overflow: hidden; width: 96%; float: left; padding: 2%; border-top: 1px solid rgb(237, 237, 237); border-bottom: 1px solid rgb(237, 237, 237);">
             <div style="margin: 0px auto 10px; float: left; width: 100%; text-align: center;">
                 <a style="color: rgb(87, 120, 151); font-size: 13px; line-height: 20px; text-decoration: none; border-right: 1px solid rgb(221, 221, 221); padding-right: 10px; margin-right: 5px;" href="#">Politica de confidențialitate</a>
@@ -75,15 +69,13 @@ class MailGeneral extends AbstractActionController
                 <a href="#"><img alt="linked in" src="' . $this->_site_names['http'] . '/img/mail/social-li.png"></a>
                 <a href="#"><img alt="google plus" src="' . $this->_site_names['http'] . '/img/mail/social-gp.png"></a>
             </div>
-            
-            
+
             <p style="font-family: \'Source Sans Pro\', Arial;float: left; width: 100%; text-align: center; margin: 0px;color: #577897; font-size: 13px;">Copyright &copy; 2015 '.$this->_site_names['name'].'&reg; LLC. Toate drepturile rezervate. </p>
             <p style="float: left; color: #577897; font-size: 15px; font-weight: 900; width: 100%; text-align: center; margin: 5px 0px;">Contact:</p>
             <p style="font-family: \'Source Sans Pro\', Arial;float: left; width: 100%; text-align: center; margin: 0px;color: #577897; font-size: 13px;">E-mail: info@kinderpedia.ro</p>
             <p style="font-family: \'Source Sans Pro\', Arial;float: left; width: 100%; text-align: center; margin: 0px;color: #577897; font-size: 13px;">Telefon: 0732.234.123</p>
 
         </div>
-        <div style="float: left; height:80px; width: 100%;">&nbsp;</div>
     </div>
 </div>
 ';
@@ -95,6 +87,7 @@ class MailGeneral extends AbstractActionController
 		$from = ($this->_from !== null ? array('email'=>$this->_from['email'], 'name'=>$this->_from['name']) : array('email'=>$this->_config['from']['email'], 'name'=>$this->_config['from']['name']));
 		try
 		{
+            require 'vendor/mandrill/mandrill/src/Mandrill.php';
 			$mandrill = new \Mandrill($this->_config['mandrill']['key']);
 
 			$subdomain_id = APPLICATION_ENV.'-default';
@@ -122,7 +115,7 @@ class MailGeneral extends AbstractActionController
 				'url_strip_qs' => null,
 				'preserve_recipients' => null,
 				'view_content_link' => null,
-				//'bcc_address' => 'message.bcc_address@example.com',
+				'bcc_address' => $this->bcc,
 				'tracking_domain' => null,
 				'signing_domain' => null,
 				'return_path_domain' => null,
@@ -161,8 +154,8 @@ class MailGeneral extends AbstractActionController
 						'name' => 'myfile.txt',
 						'content' => 'ZXhhbXBsZSBmaWxl'
 					)
-				),
-				'images' => array(
+				),*/
+				/*'images' => array(
 					array(
 						'type' => 'image/png',
 						'name' => 'IMAGECID',
@@ -206,7 +199,7 @@ class MailGeneral extends AbstractActionController
 
 	    if ($this->method === 'mandrill') {
 
-		    if (APPLICATION_ENV != 'development' || 1==1) {
+		    if (APPLICATION_ENV != 'development' || 1==2) {
 			    $response = $this->mandrillAction();
 		    } else {
 			    $response = array('error'=>false, 'message'=>'');
@@ -298,21 +291,107 @@ class MailGeneral extends AbstractActionController
 
 
 
+    public function contact($name, $subject, $message)
+    {
+        $this->_subject = $subject;
+        $this->_message = 'Mesaj de la '.$name.' &lt;'.$this->_from['email'].'&gt;, '.
+            General::DateTime(null, 'LONG', true).'<hr>'.
+            $message
+        ;
+
+        return $this->sendAction();
+    }
+
+    public function requestOffer($from, $car, $parts, $folder, $user_id)
+    {
+        $this->_subject = 'Cerere Oferta Noua';
+        $partshtml = '';
+        foreach($parts[0] as $k => $partname) {
+            $partshtml[] = ($k+1).'. <strong>'.$partname . '</strong>, cod: '.$parts[1][$k].'<br />'.$parts[2][$k];
+        }
+
+        $path = PUBLIC_IMG_PATH . $user_id. '/' . implode('/', $folder);
+        foreach (glob($path . "/*") as $filefound) {
+            $x = explode("/", $filefound);
+            $imageFile = $x[count($x)-1];
+            if (strpos($imageFile, '_') === false ) {
+                $photos[] = '<a href="'.General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $imageFile, '9999x9999').'">
+                    <img style="padding:10px; float:left" src="'.General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $imageFile, '100x100').'">
+                    </a>';
+            }
+        }
+
+        $this->_message = 'Cerere oferta de la '.$from['name']. ', ' .
+            General::DateTime(null, 'LONG', true) . '<br />mail:&lt;'.$this->_from['email'].'&gt;, tel: '.
+            $from['phone']. ', judet: '.$from['state']. '<hr>'.
+            '<strong>Masina:</strong><br/>' .
+            'categorie: '.$car['category'].', marca: '. $car['make'].', model: '.$car['model'].', an: '.$car['year'].
+            ', serie sasiu: '.$car['sasiu'].'<hr>'.
+            '<strong>Piese:</strong><br/>' .
+            implode('<br>', $partshtml).'<hr>'.
+            '<strong>Poze:</strong><br/>' .
+            '<div style="overflow:hidden">'. implode('', $photos) . '</photos>'
+        ;
+
+        return $this->sendAction();
+    }
 
     public function forgotPassword($name, $hash)
     {
-        $this->_subject = $this->translator->translate('Reseatare Parola Kinderpedia');
-        $this->_message =
-            $this->header(array(array('href' => $this->_site_names['http'] . '/reset-password/' . $hash . '', 'name' => 'Reseteaza Parola')), 'user') . '
-Hello -<BR>' . $name . '</h1>
-<div style="font-family: \'Source Sans Pro\', Arial;float: left; width: 100%;">&nbsp;</div>
-<p style="font-family: \'Source Sans Pro\', Arial;float: left; margin: 30px 0 0; background: none repeat scroll 0px 0px rgb(237, 237, 244);color: #4A4A4A;padding: 2%; width: 96%; border-bottom: 1px solid rgb(221, 221, 221);">
-	Poti sa iti schimbi parola <a href="' . $this->_site_names['http'] . '/reset-password/' . $hash . '">aici</a>.
-</p></div>' .
+        $this->_content  = 'Poti sa iti schimbi parola <a href="' . $this->_site_names['http'] . '/reset-password/' . $hash . '">aici</a>.';
 
-                $this->footer();
+        $this->_subject = $this->translator->translate('Reseatare Parola Tirbox');
+        $this->_message =
+            $this->template(
+                array(
+                    array(
+                        'href' => $this->_site_names['http'] . '/reset-password/' . $hash . '',
+                        'name' => 'Reseteaza Parola'
+                    ),
+                    $name
+                )
+            );
 
 	    return $this->sendAction();
     }
 
+    public function inactivateAd($name, $adsInMAil)
+    {
+        $expiredAds = '';
+        foreach ($adsInMAil as $ad) {
+            $expiredAds .= '
+            <div style="width:300px; overflow: hidden; padding-bottom: 20px">
+                <div style="float: left; width: 80px">
+                    <img src="' . $ad['photo']. '" style="width:70px" />
+                </div>
+                <div style="float: left; width: 200px">
+                    '.$ad['name'].'
+                </div>
+            </div>';
+        }
+
+        $this->_content = 'Urmatoarele anunturi postate de tine au expirat:<br /><br />
+	        <div style="width:200px; overflow: hidden; padding-bottom: 20px">
+	            '.$expiredAds.'
+            </div>
+
+	        Reactivaza-ti anunturile pentru inca 30 de zile GRATUIT!<br />
+	        <a href="'.$this->_site_names['http'] . '/ad/my-ads/expired'.'">Intra in contul tau Tirbox.ro</a>'
+        ;
+
+
+        $this->_subject = $this->translator->translate('Anuntul tau a expirat');
+        $this->_message =
+            $this->template(
+                array(
+                    array(
+                        'href' => $this->_site_names['http'] . '/ad/my-ads/expired',
+                        'name' => 'Reactiveaza-ti anunturile'
+                    ),
+                    $name
+                )
+            );
+
+        return $this->sendAction();
+    }
 }

@@ -5,36 +5,41 @@
       data-bing-action-uri="#" data-form-code="KPGSF" target="_self" method="POST">
 	<div class="loginForm">
 
-		<label for="globalLoginFieldIdentity" style="display: block;"><?=$this->translate('email utilizator')?></label>
+		<label for="globalLoginFieldIdentity" style="display: block;"><?=$this->translate('E-mail')?></label>
 		<input type="email" style="width:100%;"
-               maxlength="250" value="" spellcheck="false" autocomplete="off"
+               maxlength="250" value="" spellcheck="false"
                name="identity" id="globalLoginFieldIdentity">
 
 	</div>
 	<div class="loginForm">
 
-		<label for="globalLoginFieldPass" style="display: block;"><?=$this->translate('parola')?></label>
+		<label for="globalLoginFieldPass" style="display: block;"><?=$this->translate('Parola')?></label>
+		<a href="javascript:;" id="forgotTab">Ai uitat parola?</a>
 		<input type="password" style="width:100%;"
-               maxlength="250" value="" spellcheck="false" autocomplete="off"
+               maxlength="250" value="" spellcheck="false"
                name="credential" id="globalLoginFieldPass">
 	</div>
+    <div class="loginForm">
+
+        <input type="checkbox" value="1" checked="checked"  name="rememberme" id="globalLoginFieldRemember">
+        <label for="globalLoginFieldRemember" style="display: block;"><?=$this->translate('Salveaza parola 2 saptamani')?></label>
+
+    </div>
 
 	<div class="loginButtons">
-
-		<a id="loginButton" href="javascript:;" onclick="$('#loginForm').submit()" class="btn btn-success">Login</a>
+		<a id="loginButton" class="btn-green button" href="javascript:;" onclick="$('#loginForm').submit()">Login</a>
 		<br /><input type="submit" style="float: right;visibility: hidden;">
 	</div>
 
 </form>
 
-<a href="javascript:;" id="registerTab">nu ai cont? inregistreaza-te</a>
+<div class="register"><a href="javascript:;" id="registerTab">Nu ai cont? Inregistreaza-te</a></div>
 
-
-
-<!--<div id = "loginSocialContainer" class="shell">
+<div id = "loginSocialContainer" class="socialLogin">
 
 	<a href="/user/login/facebook" id="loginOptionFacebook" class="cellBtn rotX180 autoExecCenter">
-		FaceBook
+         Log in cu Facebook
+        
 	</a>
 
-</div>-->
+</div>

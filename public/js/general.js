@@ -1,7 +1,164 @@
+var blueimp;
+var page_loaded = false;
 
 $.general = function() {
 
     this.cars = false;
+
+    var _handleBootstrapSwitch = function () {
+        if (!jQuery().bootstrapSwitch) {
+            return;
+        }
+        $('.make-switch').bootstrapSwitch();
+    };
+
+    var _uploadImages = function (uploadUrl)
+    {
+        // Initialize the jQuery File Upload widget:
+        $('#fileupload').fileupload({
+            disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+            autoUpload:true,
+            imageMaxWidth: 2000,
+            imageMaxHeight: 2000,
+            maxFileSize:2*1024*1024,
+            maxFileCount:5,
+            acceptFileTypes:/(\.|\/)(jpe?g|png|gif)$/i,
+            messages:{
+                maxNumberOfFiles:'Numarul maxim de fisiere depasit',
+                acceptFileTypes:'Tipul fisierului nu este admis',
+                maxFileSize:'Fisierul depaseste marimea admisa',
+                minFileSize:'Fisierul este sub marimea admisa'
+            },
+            formData:{
+                //dinselect:$("#selectDoi").val(),
+                //album_id:albumId
+            },
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url:uploadUrl
+        });
+
+        // Demo settings:
+        //$('#fileupload').fileupload('option', {
+        //    url:$('#fileupload').fileupload('option', 'url'),
+        //    // Enable image resizing, except for Android and Opera,
+        //    // which actually support image resizing, but fail to
+        //    // send Blob objects via XHR requests:
+        //    //disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+        //    //maxFileSize:10000000,
+        //
+        //});
+
+        // Load & display existing files:
+        $('#fileupload').addClass('fileupload-processing');
+        $(document).ready(function() {
+            $.ajax({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: uploadUrl,
+                dataType: 'json',
+                context: $('#fileupload')[0]
+            }).always(function () {
+                $(this).removeClass('fileupload-processing');
+            }).done(function (result) {
+                $(this).fileupload('option', 'done')
+                    .call(this, $.Event('done'), {result: result});
+            });
+        });
+
+
+    };
+
+    var _ajaxCoolLoadPage = function(url, stateObj) {
+        page_loaded = true;
+        $.ajax({
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url: url,
+            dataType: 'json',
+            statusCode: {
+                403: function() {
+                    alert( "Acces interzis!" );
+                },
+                404: function() {
+                    alert( "Pagina nu a fost gasita!" ); //@TODO - ajax status
+                }
+            },
+            beforeSend : function() {
+                NProgress.configure({ minimum: 0.1, easing: 'ease', speed: 500 });
+                NProgress.start();
+                NProgress.inc(0.3);
+                //$('#adGetContactButton').button('loading');
+            },
+            success: function(data, textStatus, jqXHR) {
+                if (data.error !== undefined && !data.error && data.result !== undefined) {
+                    if (stateObj == '') {
+                        window.history.pushState('{urlPath:"' + url + '"}', 'Title', url);
+                    }
+
+                    $('#generalContainer').html(data.result.html);
+                    $('#scriptsGeneral').html('<script type="text/javascript">'+data.result.js+'</script>');
+                } else {
+                    alert('asdad');
+                }
+
+                NProgress.done();
+
+                $(document).scrollTop(0);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                window.location.replace(url); // simply dont think it will be here... but just in case
+            }
+        });
+    };
+
+    this.setAjaxCoolEvents = function (onlyThisSection, event) {
+
+        var coolAjaxAvailable = true;
+
+        if (history.pushState) {
+            //alert('suported');
+            //return true;
+        }
+
+        if (coolAjaxAvailable) {
+            if (!onlyThisSection /*|| onlyThisSection == 'data-page-load'*/) {
+                // cool ajax load pages on links
+                //return true;
+                $('a[data-page-load="ajax"]').on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    //$('#allCarsContainer').slideUp('slow');
+                    $('#allCarsContainer').slideUp('normal', function() {
+                        $('#announcement-listing').css('marginTop','-126px');
+                    });
+                    $('#generalBanner').slideUp();
+                    $('#categoryContainer').hide();
+                    $('#mainContainer').css('paddingTop','100px');
+                    _ajaxCoolLoadPage($(this).attr('href'), '');
+                });
+            }
+
+            if (onlyThisSection == 'filterAds') {
+                // filter form
+                if (coolAjaxAvailable) {
+                    _ajaxCoolLoadPage($('#searchAds').attr('action'), '');
+                    return false;
+                } else {
+                    return true;
+                }
+            } else if (onlyThisSection == 'historyCall') {
+                _ajaxCoolLoadPage(document.location, event.state);
+            }
+        } else {
+            if (onlyThisSection == 'filterAds') {
+                return true;
+            }
+        }
+
+        return true;
+    };
 
     this.onLoad = function () {
 
@@ -120,22 +277,55 @@ $.general = function() {
             });
         };
 
+        window.onpopstate = function(event) {
+            if(event && event.state) {
+                generalObj.setAjaxCoolEvents('historyCall', event);
+            } else {
+                if (!page_loaded) {
+                    page_loaded = true;
+                    return false;
+                } else {
+                    history.go(0);
+                }
+            }
+        };
 
-        $('#loginNavMenuButton').on('click', function(){
-            $('#LoginRegisterContainer').slideToggle();
+        _handleBootstrapSwitch();
+
+
+        // category click animation
+        $("#categoryContainer .category a").on('click', function () {
+            $(document).scrollTop(0);
+            $(".banner-img").animate({
+                height: "180px"
+            });
+            $(".banner .banner-text").fadeOut();
         });
+        ///
 
+        // show page effect on beforeload page
+        $(window).bind('beforeunload', function(){
+            NProgress.configure({ minimum: 0.1, easing: 'ease', speed: 500 });
+            NProgress.start();
+            NProgress.inc(0.3);
+        });
+        ////
 
+        // hide page load effect
+        setTimeout( function() { NProgress.done(); }, 1000);
+        ////
 
-        //});
+        this.setAjaxCoolEvents(false, false);
     };
 
     this.loginRegister = {
         init: function()
         {
             var thisObj = this;
+            var _openLogin
 
             $('#registerContainer').hide();
+            $('#forgotContainer').hide();
 
             // rewrite login form action
             $("body").on("submit", "#loginForm", function(e){
@@ -160,7 +350,14 @@ $.general = function() {
             $(document).on("click", "#loginTab", function(e){
                 e.preventDefault();
                 $('#registerContainer').slideUp();
+                $('#forgotContainer').slideUp();
                 $('#loginContainer').slideDown();
+                $('#errorLoginRegister').hide();
+            });
+            $(document).on("click", "#forgotTab", function(e){
+                e.preventDefault();
+                $('#forgotContainer').slideDown();
+                $('#loginContainer').slideUp();
                 $('#errorLoginRegister').hide();
             });
 
@@ -171,10 +368,31 @@ $.general = function() {
                 $('#errorLoginRegister').slideDown();
                 $('#errorLoginRegister').html('Autentificare prin '+socialMediaType+'...');
                 $('#errorLoginRegister').css('font-size', '16px');
-                $('#loginForm').slideUp();
-                $('#loginSocialContainer').fadeOut();
+                $('#loginContainer').slideUp();
+                $('#registerContainer').slideUp();
+                $('#registerSocialContainer').fadeOut();
             });
             ////
+
+            // login button opens login/register form
+            $('#loginNavMenuButton').on('click', function(){
+                thisObj._openMainContainer();
+            });
+
+            // create ad for unlogged users
+            $('.loginActionCreateAd').on('click', function(e) {
+                e.preventDefault();
+                thisObj._openMainContainer();
+            });
+        },
+
+        _openMainContainer: function()
+        {
+            $('#LoginRegisterContainer').slideToggle('fast', function(){
+                if ($('.navbar-toggle').is(':visible') && $('#LoginRegisterContainer').is(':visible')) {
+                    $(".navbar-collapse").collapse('hide');
+                }
+            });
         },
 
         _doRegisterDefault: function (form)
@@ -236,7 +454,10 @@ $.general = function() {
                         ,
                         password: afterRegister ?
                             $('#globalRegisterFieldPass').val() :
-                            $('#globalLoginFieldPass').val()
+                            $('#globalLoginFieldPass').val(),
+                        rememberme: afterRegister ? 0 : (
+                            $('#globalLoginFieldRemember').is(':checked') ? 1 : 0
+                        )
 
                     }
                 },
@@ -330,78 +551,15 @@ $.general = function() {
 
 
             if ($('#select2CarMake').length > 0 && this.cars !== false) {
-
                 $('#select2CarMake').bind('change', function (i,v) {
                     thisObj.changeClass(0);
                 });
-
                 $('#select2CarModels').bind('change', function(i,v) {
                     thisObj.changeModel('');
                 });
 
             }
-
-            /*$("#select2CarMake").select2({
-                placeholder: "Alege Categoria",
-            });*/
-            /*$("#select2CarPartsMain").select2({
-                placeholder: "Alege Categorie",
-            });*/
-
-            // Initialize the jQuery File Upload widget:
-            $('#fileupload').fileupload({
-                disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-                autoUpload:false,
-                imageMaxWidth: 2000,
-                imageMaxHeight: 2000,
-                maxFileSize:2*1024*1024,
-                acceptFileTypes:/(\.|\/)(jpe?g|png|gif)$/i,
-                messages:{
-                    maxNumberOfFiles:'Numarul maxim de fisiere depasit',
-                    acceptFileTypes:'Tipul fisierului nu este admis',
-                    maxFileSize:'Fisierul depaseste marimea admisa',
-                    minFileSize:'Fisierul este sub marimea admisa'
-                },
-                formData:{
-                    //dinselect:$("#selectDoi").val(),
-                    //album_id:albumId
-                },
-                // Uncomment the following to send cross-domain cookies:
-                //xhrFields: {withCredentials: true},
-                url:uploadUrl
-            });
-
-            // Demo settings:
-            $('#fileupload').fileupload('option', {
-                url:$('#fileupload').fileupload('option', 'url'),
-                // Enable image resizing, except for Android and Opera,
-                // which actually support image resizing, but fail to
-                // send Blob objects via XHR requests:
-                //disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-                //maxFileSize:10000000,
-
-            });
-
-            // Load & display existing files:
-            $('#fileupload').addClass('fileupload-processing');
-            $.ajax({
-                // Uncomment the following to send cross-domain cookies:
-                //xhrFields: {withCredentials: true},
-                url:uploadUrl,
-                dataType:'json',
-                context:$('#fileupload')[0]
-            }).always(function () {
-                $(this).removeClass('fileupload-processing');
-            }).done(function (result) {
-                $(this).fileupload('option', 'done')
-                    .call(this, $.Event('done'), {result:result});
-            });
-
-
-
-            // Upload server status check for browsers with CORS support:
-
-
+            _uploadImages(uploadUrl);
 
         },
 
@@ -449,9 +607,14 @@ $.general = function() {
                 });
                 $('#searchAds').bind('submit', function() {
                     var searchQuery = $('#searchInput').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
-                    if ($('#searchYear').val() > 0 ) {
-                        searchQuery += ':' + $('#searchYear').val();
-                    }
+                    //if ($('#searchYear').val() > 0 ) {
+                    searchQuery += ':' + $('#searchYear').val();
+                    //}
+                    //if ($('#searchCounty').val() > 0 ) {
+                    searchQuery += ':' + $('#searchStare').val();
+                    searchQuery += ':' + $('#searchCounty').val();
+                    searchQuery += ':' + $('#searchOem').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
+                    //}
                     var actionForm = $('#searchAds').attr('action').
                         replace(
                             '__search__',
@@ -459,11 +622,44 @@ $.general = function() {
                         )
                     ;
                     $('#searchAds').attr('action', actionForm);
+                    $('#button-search-ads').button('loading');
+                    return generalObj.setAjaxCoolEvents('filterAds', false);
                     //return false;
                 });
+
+                // set blueimp gallery on pictures
+                $('a[data-image-lib="popup"]').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var pics = [];
+                    $.each($('a[data-image-lib="popup"]'), function(i,v) {
+                        pics.push({
+                            title: $(v).attr('title'),
+                            href: $(v).attr('href'),
+                            type: 'image/jpeg',
+                            thumbnail: $(v).attr('href')
+                        });
+                    });
+                    var galleryImg = blueimp.Gallery(pics);
+
+                });
+                ////
             },
             _changeCarMake: function () {
-                $('#allCarsContainer').show();
+                if ($('#allCarsContainer').is(':visible')) {
+                    $('#allCarsContainer').slideUp('normal', function() {
+                        $('#announcement-listing').css('marginTop','-126px');
+                    });
+
+                } else {
+                    $('#announcement-listing').css('marginTop','0px');
+                    $('#allCarsContainer').slideDown('normal', function() {
+
+                    });
+
+                }
+
             },
             _getContact: function()
             {
@@ -501,6 +697,112 @@ $.general = function() {
 
     };
 
+    this.offers = {
+        cars: false,
+
+        changeClass: function (selected) {
+            var thisObj = this;
+            var carId = $('#select2CarMake').val();
+            var userList= '<option value="">Marca</option>';
+            $("#select2CarModels").attr('disabled',false);
+            $("#select2CarModels2").attr('disabled',true);
+            $("#select2CarModels2").val('');
+            if (thisObj.cars.model[carId] != undefined) {
+                $.each(thisObj.cars.model[carId], function (i, v) {
+                    userList += ('<option value="' + i + '">' + v.categ + '</option>');
+                });
+            }
+            $('#select2CarModels').html(userList);
+            $('#select2CarModels').val(selected == 0 ? '' : selected);
+        },
+
+        changeModel: function (selected) {
+            var thisObj = this;
+            var carId = $('#select2CarMake').val();
+            var carCategId = $('#select2CarModels').val();
+            $("#select2CarModels2").attr('disabled',false);
+            /*var userList= '<option value="">Model</option>';
+             $("#select2CarModels2").attr('disabled',false);
+             if (thisObj.cars.model[carId] != undefined && thisObj.cars.model[carId] != undefined) {
+             $.each(thisObj.cars.model[carId], function (i, v) {
+             if (v.categ == carCategId) {
+             userList += ('<option value="' + i + '">' + v.model + '</option>');
+             }
+
+             });
+             }*/
+            $('#select2CarModels2').val(selected);
+            $("#year_start").attr('disabled',false);
+            $("#year_end").attr('disabled',false);
+            //$('#select2CarModels2').val(selected == 0 ? '' : selected);
+        },
+
+        create: function(uploadUrl) {
+            this.cars = generalObj.cars;
+            var thisObj = this;
+
+
+            if ($('#select2CarMake').length > 0 && this.cars !== false) {
+                $('#select2CarMake').bind('change', function (i,v) {
+                    thisObj.changeClass(0);
+                });
+                $('#select2CarModels').bind('change', function(i,v) {
+                    thisObj.changeModel('');
+                });
+
+            }
+            _uploadImages(uploadUrl);
+
+            $(document).on('click', "a[data-clone]", function(){
+                if ($(this).data('clone') == 'piesa') {
+                    console.log('asdsad');
+
+                    var row = $(this).parent();
+                    $.each($('div.piesa'), function(i,v){
+                        var x  =$(v).clone();
+                        $(x).removeClass('piesa');
+                        $(x).insertBefore(row);
+                    });
+                }
+            });
+
+        }
+    };
+
+    this.myAccount = {
+        update: function() {
+
+            var _enableParcFields = function() {
+                $('#name').parent().slideDown();
+                $('#description').parent().slideDown();
+                $('#url').parent().slideDown();
+                //$('#name2').parent().parent().hide();
+                //$('#name2').next().html('obligatoriu: nu va aparea nicaieri pe site');
+            };
+            var _enableParticularFields = function() {
+                $('#name').parent().slideUp();
+                $('#description').parent().slideUp();
+                $('#url').parent().slideUp();
+                //$('#name2').parent().parent().show();
+                //$('#name2').next().html('obligatoriu: va aparea in detaliile anuntului');
+            };
+            $('#accountType').parent().parent().css('width', '200px');
+            if ($('#accountType').is(':checked')) {
+                _enableParcFields();
+            } else {
+                _enableParticularFields();
+            }
+
+            $('#accountType').on('switch-change', function (e, data) {
+                var $el = $(this);
+                if(!data.value) {
+                    _enableParticularFields();
+                } else {
+                    _enableParcFields();
+                }
+            });
+        }
+    }
 
 };
 

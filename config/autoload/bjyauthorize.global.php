@@ -38,8 +38,21 @@ return array(
             'BjyAuthorize\Provider\Role\Config' => array(
                 'guest' => array(),
 	            'user' => array(),
-            	'parcauto' => array(),
-            	'admin' => array(),
+            	'parcauto' => [
+                    'children' => array(
+                        'contentmanager' => array(
+                            'children' => array(
+                                'admin' => array(),
+                            )
+                        ),
+                    )
+                ],
+            	'admin' => [],
+                'contentmanager' => [
+                    'children' => array(
+                        'admin' => array(),
+                    )
+                ]
             ),
 
             // this will load roles from the user_role table in a database

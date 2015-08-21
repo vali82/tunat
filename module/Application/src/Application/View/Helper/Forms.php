@@ -7,20 +7,20 @@ use Zend\View\Helper\AbstractHelper;
 class Forms extends AbstractHelper
 {
 
-    private static $_label_size;
-    private static $_input_size;
+    private static $label_size;
+    private static $input_size;
     private static $elementClass;
 
     public static function render($view, $form, $url, $options = array())
     {
-        self::$_label_size = isset($options['label_size']) ? $options['label_size'] : 'col-md-2 col-sm-4';
-        self::$_input_size = isset($options['input_size']) ? $options['input_size'] : 'col-md-10 col-sm-8';
+        self::$label_size = isset($options['label_size']) ? $options['label_size'] : 'col-md-2 col-sm-4';
+        self::$input_size = isset($options['input_size']) ? $options['input_size'] : 'col-md-10 col-sm-8';
         self::$elementClass = isset($options['element_class']) ? $options['element_class'] : 'form-control';
 
         $form->setAttribute('action', $url);
         $form->setAttribute('method', 'post');
         $form->setAttribute('role', 'form');
-        $form->setAttribute('class', 'form-horizontal');
+        //$form->setAttribute('class', 'form-horizontal');
 
 
         $form->prepare();
@@ -32,7 +32,7 @@ class Forms extends AbstractHelper
         $found_submit_element = false;
 
         foreach ($form as $element) {
-
+            $elementClass = self::$elementClass;
             $group = $element->getAttribute('group');
             $container = $element->getAttribute('container');
 
@@ -42,16 +42,16 @@ class Forms extends AbstractHelper
 
             } else {
                 if ($element->getAttribute('class')) {
-                    self::$elementClass .= ' '.$element->getAttribute('class');
+                    $elementClass .= ' ' . $element->getAttribute('class');
                 }
                 if ($element->getAttribute('type') != 'submit') {
-                    $element->setAttribute('class', self::$elementClass);
+                    $element->setAttribute('class', $elementClass);
 
                 } else {
                     if ($element->getAttribute('id') == 'cancelbutton') {
-                        $element->setAttribute('class', "btn btn-default");
+                        $element->setAttribute('class', "button btn-blue");
                     } else {
-                        $element->setAttribute('class', "btn btn-success");
+                        $element->setAttribute('class', "button btn-green");
                     }
                     $found_submit_element = $element;
                     continue;
@@ -79,19 +79,18 @@ class Forms extends AbstractHelper
                     <div class="form-group <?php if ($view->formElementErrors($element)) echo "has-error" ?><?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>"><?php
                 } ?>
 
-                <?php if ($element->getAttribute('type') != 'hidden' && !$element->getAttribute('noLabel')) { ?>
-                    <label class="<?= ($group != null ?
-                            (
-                                (isset($group['sizeLabel']) ? $group['sizeLabel'] : self::$_label_size) .
-                                ($view->formElementErrors($element) ? ' has-error' : '')
-                            ) :
-                            self::$_label_size).' control-label'
-                        ?>"><?= $view->translate($element->getLabel()); ?></label>
+
+
+                <?php if ($group != null) { ?>
+                <div
+                    class="<?= ($group != null ? ($group['size'] . ($view->formElementErrors($element) ? ' has-error' : '')) : self::$input_size) ?>">
                 <?php } ?>
 
-                <?php //if (!isset($options['label_above_input'])) { ?>
-                <div
-                    class="<?= ($group != null ? ($group['size'] . ($view->formElementErrors($element) ? ' has-error' : '')) : self::$_input_size) ?>">
+                <?php if ($element->getAttribute('type') != 'hidden' && !$element->getAttribute('noLabel')) { ?>
+                    <label class="<?= 'control-label'?>">
+                        <?= $view->translate($element->getLabel()); ?>
+                    </label>
+                <?php } ?>
 
                     <?php if ($element->getName() == 'no_element') { ?>
                         &nbsp;
@@ -133,7 +132,9 @@ class Forms extends AbstractHelper
 
                     <?php } ?>
 
+                <?php if ($group != null) { ?>
                 </div>
+                <?php } ?>
 
                 <?php
             if ($container !== null) {
@@ -153,10 +154,11 @@ class Forms extends AbstractHelper
 
         if ($found_submit_element) { ?>
             <div class="form-group">
-                <div class="col-md-offset-2 <?= self::$_input_size ?><?= $formButtonsAlign ?>">
+                <hr style="margin:10px 0">
+                <div class="<?= $formButtonsAlign ?>">
                     <?php echo $view->formElement($found_submit_element); ?>
                     <?php if ($found_submit_element->getAttribute('cancelLink')) { ?>
-                        <input type="button" value="<?= $view->translate('Anuleaza') ?>" class="btn btn-default"
+                        <input type="button" value="<?= $view->translate('Anuleaza') ?>" class="button btn-blue"
                            onclick="<?php
                            if ($found_submit_element->getAttribute('cancelLink') == 'back') {
                                echo 'window.history.back()';
@@ -204,15 +206,15 @@ class Forms extends AbstractHelper
             <div class="row fileupload-buttonbar">
                 <div class="col-lg-7">
                     <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>Add files...</span>
-                    <input type="file" multiple="" name="files[]">
-                </span>
-                    <button class="btn btn-primary start" type="submit">
+                    <span class="button btn-green fileinput-button">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>adauga poze...</span>
+                        <input type="file" multiple="" name="files[]">
+                    </span>
+                    <!--<button class="btn btn-primary start" type="submit">
                         <i class="glyphicon glyphicon-upload"></i>
                         <span>Start upload</span>
-                    </button>
+                    </button>-->
                     <!-- The global file processing state -->
                     <span class="fileupload-process"></span>
                 </div>
@@ -229,27 +231,18 @@ class Forms extends AbstractHelper
                         &nbsp;
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <p class="photo-uploader-note">
+                        Nr maxim de poze adminse: <?=$element->getAttribute('maxNumberOfFiles')?>. Pozele trebuie sa aiba maximum <strong><?=$element->getAttribute('maxFileSize')?></strong>
+                        . Sunt admise doar fisiere (<strong><?=$element->getAttribute('acceptedFileType')?></strong>).
+                    </p>
+                </div>
             </div>
             <!-- The table listing the files available for upload/download -->
             <table role="presentation" class="table table-striped clearfix">
                 <tbody class="files">
                 </tbody>
             </table>
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <h3 class="panel-title">Note</h3>
-            </div>
-            <div class="panel-body">
-                <ul>
-                    <li>
-                        Pozele trebuie sa aiba maximum <strong><?=$element->getAttribute('maxFileSize')?></strong>.
-                    </li>
-                    <li>
-                        Sunt admise doar fisiere (<strong><?=$element->getAttribute('acceptedFileType')?></strong>).
-                    </li>
-                </ul>
-            </div>
-        </div>
         <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
         <script id="template-upload" type="text/x-tmpl">
     {% for (var i=0, file; file=o.files[i]; i++) { %}
@@ -275,13 +268,13 @@ class Forms extends AbstractHelper
         </td>
         <td>
             {% if (!o.files.error && !i && !o.options.autoUpload) { %}
-            <button class="btn btn-primary start">
+            <button class="button btn-blue start">
                     <i class="glyphicon glyphicon-upload"></i>
                     <span>Start</span>
                 </button>
             {% } %}
             {% if (!i) { %}
-            <button class="btn btn-warning cancel">
+            <button class="button btn-red cancel">
                     <i class="glyphicon glyphicon-ban-circle"></i>
                     <span>Cancel</span>
                 </button>
@@ -320,13 +313,13 @@ class Forms extends AbstractHelper
         </td>
         <td>
             {% if (file.deleteUrl) { %}
-            <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"
+            <button class="button btn-red delete" onclick="$(this).button('loading')" data-loading-text="Loading..." data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"
             {% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
             <i class="fa fa-trash-o"></i>
             <span>Sterge</span>
             </button>
             {% } else { %}
-            <button class="btn btn-warning cancel">
+            <button class="button btn-red cancel">
                 <i class="fa fa-ban"></i>
                 <span>Anuleaza</span>
             </button>
@@ -359,9 +352,9 @@ class Forms extends AbstractHelper
     protected static function showSwitcher($view, $element, $options)
     {
         $view->headLink()
-            ->appendStylesheet('/assets/plugins/bootstrap-switch/css/bootstrap-switch.css');
+            ->appendStylesheet('/assets/bootstrap-switch/css/bootstrap-switch.css');
         $view->headScript()
-            ->appendFile('/assets/plugins/bootstrap-switch/js/bootstrap-switch.js', 'text/javascript');
+            ->appendFile('/assets/bootstrap-switch/js/bootstrap-switch.js', 'text/javascript');
 
         ?>
 
@@ -374,9 +367,8 @@ class Forms extends AbstractHelper
 
     protected static function customSpacerElement($element)
     {
-        if (!$element->getAttribute('no_form_group')) { ?>
-            <div class="form-group" style="padding:0 15px">
-        <?php }?>
+        ?>
+        <div class="form-group<?php if ($element->getAttribute('containerClass')) echo " " . $element->getAttribute('containerClass') ?>">
         <?php if ($element->getAttribute('pureHtml')) { ?>
         <?= $element->getAttribute('pureHtml') ?>
         <?php } else { ?>
@@ -393,11 +385,9 @@ class Forms extends AbstractHelper
                     <?= $element->getAttribute('textBellow') ?>
                 </p>
             <?php } ?>
-        <?php }
-        if (!$element->getAttribute('no_form_group')) { ?>
-            </div>
-        <?php }
-
+        <?php } ?>
+        </div>
+        <?php
     }
 
     static function showDatePicker($view, $element, $setTime = false)

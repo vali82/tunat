@@ -1,12 +1,42 @@
-<div class="media">
-    <div class="media-left">
-        <a href="<?=$this->href?>">
+<div class="announcement row panel">
+    <div class="picture col-md-2 col-sm-2 col-xs-12">
+        <a href="<?=$this->href?>" title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>" data-page-load="ajax">
             <img class="media-object" src="<?=$this->imgSrc?>" data-holder-rendered="true">
         </a>
     </div>
-    <div class="media-body">
-        <h4 class="media-heading"><a href="<?=$this->href?>"><?=$this->title?></a></h4>
-        <p><?=$this->description?></p>
-        <p><?=$this->car?> <?=$this->model?> (<?=$this->yearStart?> - <?=$this->yearEnd?>)</p>
+    <div class="description col-md-8 col-sm-8 col-xs-12">
+        <h4 class="media-heading">
+            <a title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>" href="<?=$this->href?>" data-page-load="ajax">
+                <?=$this->title?>
+            </a>
+            <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
+        </h4>
+        <p class="about"><?=$this->description?></p>
+        <p class="model">
+            <span class="category-icon">
+                <img src="<?=$this->basePath()?>/img/categ_<?=$this->carCategory?>.png" />
+            </span>
+            <a href="<?=$this->urlFilter1?>" title="Piese <?=$this->car?>" data-page-load="ajax">
+                <?=$this->car?>
+            </a>
+            <?php
+            $x = explode(',', $this->model);
+            foreach ($x as $model) {
+                $model = trim($model);
+                ?>
+                <a href="<?=str_replace('__search__', $model, $this->urlFilter2)?>"
+                   data-page-load="ajax"
+                   title="Piese <?=$this->car?> <?=$model?>">
+                    <?=$model?></a>,
+                <?php
+            }
+            ?>
+
+            (<?=$this->yearStart?> - <?=$this->yearEnd?>)
+        </p>
+    </div>
+    <div class="col-md-2 col-sm-2 col-xs-12">
+        <span class="price"><?=$this->price?></span>
+        <span class="county"><?=$this->county?></span>
     </div>
 </div>

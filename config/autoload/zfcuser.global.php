@@ -21,7 +21,7 @@ $settings = array(
      * instead of the default one provided. Default is ZfcUser\Entity\User.
      * The entity class should implement ZfcUser\Entity\UserInterface
      */
-    'user_entity_class' => 'ZfcUser\Entity\User',
+    'user_entity_class' => 'Application\Models\Zuser\User',
 
     /**
      * Enable registration
@@ -153,7 +153,7 @@ $settings = array(
      * Accepted values: A valid route name within your application
      *
      */
-    'login_redirect_route' => 'home',
+    'login_redirect_route' => 'home/afterlogin',
 
     /**
      * Logout Redirect Route

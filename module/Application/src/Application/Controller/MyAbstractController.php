@@ -3,7 +3,7 @@
 namespace Application\Controller;
 
 use Application\libs\General;
-use Application\Models\Autoparks\ParksDM;
+use Application\Models\Advertiser\AdvertiserDM;
 use Application\Models\Cars\CarsCategoriesDM;
 use Application\Models\Cars\CarsModelsDM;
 use Application\Models\Cars\CarsPartsMainDM;
@@ -17,8 +17,8 @@ use ZfcBaseTest\Mapper\AbstractDbMapperTest;
 
 class MyAbstractController extends AbstractActionController
 {
-    /** @var \Application\Models\Autoparks\Park*/
-    protected $myPark;
+    /** @var \Application\Models\Advertiser\Advertiser*/
+    protected $myAdvertiserObj;
     protected $myUser;
     protected $role;
     protected $adapter;
@@ -27,20 +27,36 @@ class MyAbstractController extends AbstractActionController
 
     public function onDispatch(MvcEvent $e)
     {
+        $route = $this->getEvent()->getRouteMatch();
         $this->translator = $this->getServiceLocator()->get('translator');
         $this->adapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
         $this->role = $this->getServiceLocator()->get('AuthenticatedUserRole');
-        $this->myPark = null;
+        $this->myAdvertiserObj = null;
         $this->myUser = null;
+
+
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
-            if ($this->role == 'parcauto') {
-                $this->myPark = $this->getServiceLocator()->get('AutoPark');
-            }
+
+//            if ($this->role == 'parcauto' || $this->role == 'admin') {
+                $this->myAdvertiserObj = $this->getServiceLocator()->get('AdvertiserObj');
+
+                if ($this->myAdvertiserObj->getTel1() === '') {
+                    $this->flashMessenger()->addInfoMessage(
+                        'Va rugam sa va completati datele de mai jos pentru a putea continua!'
+                    );
+                    if ($route->getMatchedRouteName() != 'home/myAccount/update' &&
+                        $route->getMatchedRouteName() != 'home/logout'
+                    ) {
+                        return $this->redirect()->toRoute('home/myAccount/update');
+                    }
+
+                }
+//            }
         }
 
 //        General::echop($this->role);
-//        General::echop($this->myPark);
+//        General::echop($this->myAdvertiserObj);
 
         // layout variables
         $this->layout()->myUser = $this->myUser;
@@ -49,10 +65,11 @@ class MyAbstractController extends AbstractActionController
 
         // get cars make and models into session
         $cars = General::getFromSession('cars');
-        if ($cars === null || 1==2) {
+        $googleAnalitics = General::getFromSession('googleAnalitics');
+        if ($cars === null || 1==1) {
             $carMake = [];
             $carsMakeDM = new CarsCategoriesDM($this->adapter);
-            foreach ($carsMakeDM->fetchResultsArray() as $k => $r) {
+            foreach ($carsMakeDM->fetchResultsArray(null, ['ord' => 'ASC']) as $k => $r) {
                 $carMake[$r['id']] = $r['category'];
             }
             $carModel = [];
@@ -66,7 +83,7 @@ class MyAbstractController extends AbstractActionController
                 $carModel[$r['category_id']][$r['id']] = [
                     //'model' => $r['model'],
                     'categ' => $r['car_make'],
-//                    'popularity' => $r['popularity']
+                    'popular' => $r['popular']
                 ];
 
             }
@@ -89,14 +106,20 @@ class MyAbstractController extends AbstractActionController
                 //'partsSub' => $partsSub,
             ];
             General::addToSession('cars', $cars);
+
+            $states = General::getConfigs($this, 'consts|states');
+            General::addToSession('states', $states);
+
+            $googleAnalitics = General::getConfigs($this, 'googleAnalitics');
+            General::addToSession('googleAnalitics', $googleAnalitics);
         }
 //        General::echop($carModel);
         $this->cars = $cars;
-        $this->layout()->cars = $cars;
-
+        $this->layout()->setVariables([
+            'googleAnalitics' => $googleAnalitics,
+            'cars' => $cars
+        ]);
         ////
-
-
 
         parent::onDispatch($e);
     }
@@ -111,76 +134,95 @@ class MyAbstractController extends AbstractActionController
         return $this->adapter;
     }
 
-    public function getMyPark()
+    public function getMyAdvertiserObj()
     {
-        return $this->myPark;
+        return $this->myAdvertiserObj;
     }
 
-    protected function uploadAdGetUploaded($user_id, $email, $folder)
+    protected function uploadGetUploaded($user_id, $folder)
     {
-//        General::echop($folder);
         $files = [];
-        if ($user_id && $email) {
-            $path = PUBLIC_IMG_PATH . $user_id . '/' . implode('/', $folder) . '/';
-            foreach (glob($path . "*") as $filefound) {
-                $x = explode('/', $filefound);
-                $filename = $x[count($x) - 1];
-                if (strpos($filename, '_') === false) {
-                    $files[] = array(
-                        'deleteType' => "DELETE",
-                        'deleteUrl' => $this->url()->fromRoute(
-                            'home/ad/upload',
-                            [
-                                'option' => 'delete',
-                                'folder' => $user_id . 'x' . implode('x', $folder),
-                                'name' => $filename
-                            ]
+        $path = PUBLIC_IMG_PATH . $user_id . '/' . implode('/', $folder) . '/';
+        foreach (glob($path . "*") as $filefound) {
+            $x = explode('/', $filefound);
+            $filename = $x[count($x) - 1];
+            if (strpos($filename, '_') === false) {
+                $files[] = array(
+                    'deleteType' => "DELETE",
+                    'deleteUrl' => $this->url()->fromRoute(
+                        ($folder[0] == 'ads' ?
+                            'home/ad/upload' :
+                            ($folder[0] == 'offers' ?
+                                'home/offers/upload' :
+                                'home'
+                            )
                         ),
-                        'name' => $filename,
-                        "size" => filesize($path . '/' . $filename),//$info['size'],
-                        //"type" => 'image/jpeg',//$info['type'],
-                        "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '800x600'),
-                        "thumbnailUrl" =>
-                            General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '100x100'),
-                    );
+                        [
+                            'option' => 'delete',
+                            'folder' => $user_id . 'x' . implode('x', $folder),
+                            'name' => $filename
+                        ]
+                    ),
+                    'name' => $filename,
+                    "size" => filesize($path . '/' . $filename),//$info['size'],
+                    //"type" => 'image/jpeg',//$info['type'],
+                    "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '800x600'),
+                    "thumbnailUrl" =>
+                        General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '100x100'),
+                );
 
 //                $images[] = $filename;
-                }
             }
-
-            $jsonModel = new JsonModel();
-            $jsonModel->setVariables(array('files' => $files));
-            return $jsonModel;
         }
 
-        $response = $this->getResponse();
-        $response->setStatusCode(403);
-        $response->sendHeaders();
-        return $response;
+        $jsonModel = new JsonModel();
+        $jsonModel->setVariables(array('files' => $files));
+        return $jsonModel;
+
     }
 
-    protected function uploadAdImages($user_id, $email, $folder, $allowedExtensions, $maxSize)
+    protected function uploadImages($user_id, $folder, $allowedExtensions, $maxSize)
     {
-        if ($user_id && $email) {
-            $adapter = new \Zend\File\Transfer\Adapter\Http();
+        $adapter = new \Zend\File\Transfer\Adapter\Http();
 
-            $path = PUBLIC_IMG_PATH . $user_id . '/';
+        $path = PUBLIC_IMG_PATH . $user_id . '/';
+        if (!is_dir($path)) {
+            mkdir($path);
+            chmod($path, 0755);
+        }
+        foreach ($folder as $f) {
+            $path .= $f . '/';
             if (!is_dir($path)) {
                 mkdir($path);
                 chmod($path, 0755);
             }
-            foreach ($folder as $f) {
-                $path .= $f . '/';
-                if (!is_dir($path)) {
-                    mkdir($path);
-                    chmod($path, 0755);
+        }
+        $cnt = 0;
+        if ($folder[0] == 'ads' || $folder[0] == 'offers') {
+            foreach (glob($path . "/*") as $filefound) {
+                if (strpos($filefound, '_') === false) {
+                    $cnt++;
                 }
             }
-            foreach ($adapter->getFileInfo() as $file => $info) {
+        }
+
+        foreach ($adapter->getFileInfo() as $file => $info) {
+            if ($folder[0] == 'ads' || $folder[0] == 'offers') {
+                $cnt++;
+                if ($cnt > 10) {
+                    $response = $this->getResponse();
+                    $response->setStatusCode(403);
+                    $response->sendHeaders();
+                    return $response;
+                }
+            }
+
+            if (isset($info['name']) && $info['name'] != '') {
                 if (!in_array($info['type'], $allowedExtensions)) {
                     $response = $this->getResponse();
                     $response->setStatusCode(415);
                     $response->sendHeaders();
+
                     return $response;
                 }
 
@@ -191,55 +233,57 @@ class MyAbstractController extends AbstractActionController
                     return $response;
                 }
 
-                $name =  rand(100, 999).md5($info['name']);
-                copy($info['tmp_name'], $path.$name);
-                rename($info['tmp_name'], $path.$name);
+                $name = rand(100, 999) . md5($info['name']);
+                copy($info['tmp_name'], $path . $name);
+                rename($info['tmp_name'], $path . $name);
 
                 $files = array(
                     'deleteType' => "DELETE",
                     'deleteUrl' => $this->url()->fromRoute(
-                        'home/ad/upload',
+                        ($folder[0] == 'ads' ?
+                            'home/ad/upload' :
+                            ($folder[0] == 'offers' ?
+                                'home/offers/upload' :
+                                'home'
+                            )
+                        ),
                         [
-                            'option'=>'delete',
-                            'folder' => $user_id.'x'.implode('x', $folder),
+                            'option' => 'delete',
+                            'folder' => $user_id . 'x' . implode('x', $folder),
                             'name' => $name
                         ]
                     ),
                     'name' => $info['name'],
                     "size" => $info['size'],
                     "type" => $info['type'],
-                    "url" => General::getSimpleAvatar($user_id.'x'.implode('x', $folder), $name, '800x600'),
+                    "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '800x600'),
                     "thumbnailUrl" =>
-                        General::getSimpleAvatar($user_id.'x'.implode('x', $folder), $name, '100x100'),
+                        General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '100x100'),
+                    "nameDisk" => $name
                 );
             }
-
-            $jsonModel = new JsonModel();
-            $jsonModel->setVariables(array('files' => [$files]));
-            return $jsonModel;
         }
 
-        $response = $this->getResponse();
-        $response->setStatusCode(403);
-        $response->sendHeaders();
-        return $response;
+        $jsonModel = new JsonModel();
+        $jsonModel->setVariables(array('files' => [$files]));
+        return $jsonModel;
+
     }
 
-    protected function deleteAdImages($user_id, $email)
+    protected function uploadDeleteImages()
     {
-        if ($user_id && $email) {
-            $file_name = $this->getEvent()->getRouteMatch()->getParam('name', 'xxx');
-            $folder = $this->getEvent()->getRouteMatch()->getParam('folder', 'yyy');
+        $file_name = $this->getEvent()->getRouteMatch()->getParam('name', 'xxx');
+        $folder = $this->getEvent()->getRouteMatch()->getParam('folder', 'yyy');
 
-            // this has been customized to remove only specific images in certain user_id folders
-            // you should modify that to your needs
-            $file_path = PUBLIC_IMG_PATH . str_replace('x', '/', $folder). '/'. $file_name;
-            $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
+        // this has been customized to remove only specific images in certain user_id folders
+        // you should modify that to your needs
 
-            if ($success) {
-                foreach (glob($file_path . "_*") as $filefound) {
-                    @unlink($filefound);
-                }
+        $file_path = PUBLIC_IMG_PATH . str_replace('x', '/', $folder). '/'. $file_name;
+        $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
+
+        if ($success) {
+            foreach (glob($file_path . "_*") as $filefound) {
+                @unlink($filefound);
             }
         }
         $jsonModel = new JsonModel();

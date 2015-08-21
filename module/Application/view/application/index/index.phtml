@@ -1,32 +1,34 @@
-<div class="jumbotron">
-    <h1><?php echo sprintf($this->translate('Bine ai venit pe %stirbox.ro%s'), '<span class="zf-green">', '</span>') ?></h1>
+<?php
+$this->layout()->setVariable(
+    'isHomePage', true
+);
+?>
+<!--Category-->
+<?=
+$this->partial(
+    'application/ad/partials/categoriesBox.phtml',
+    [
+        'carCollection' => $this->carCollection,
+        'carcategoriesId' => 0
+    ]
+)?>
+<!--end Category-->
 
-    <p>
-        <?php echo sprintf($this->translate('Congratulations! You have successfully installed the %sZF2
-            Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple
-            starting point for you to begin building your application on ZF2.'),
-            '<a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">', '</a>',
-            \Zend\Version\Version::VERSION) ?>
-    </p>
-
-    <p><a class="btn btn-success btn-lg" href="https://github.com/zendframework/zf2"
-          target="_blank"><?php echo $this->translate('Fork Zend Framework 2 on GitHub') ?> &raquo;</a></p>
-</div>
-
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Masini populare</h3>
+<div class="row">
+    <div class="col-md-12 offer">
+        <span>Vrei sa primesti o oferta personaliazata completa? Cere-o acum!</span>
+        <a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a>
     </div>
-    <div class="panel-body">
-        <a href="<?= $this->url('home/piese', ['categories' => 'camioane']) ?>">Camioane</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'dube']) ?>">Dube</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'remorci']) ?>">Remorci</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-agricole']) ?>">Utilaje Agricole</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'autobuse']) ?>">Autobuse</a>,
-        <a href="<?= $this->url('home/piese', ['categories' => 'utilaje-constructii']) ?>">Utilaje Constructii</a>,
+    <h3 class="col-md-12 new">Cele mai noi anunturi</h3>
+    <div class="col-md-9">
+        <?= $this->adList ?>
     </div>
-</div>
 
-<div>
-    <?= $this->adList ?>
+    <div class="col-md-3">
+        <?=
+        $this->partial(
+            'application/ad/partials/partners.phtml',
+            []
+        )?>
+    </div>
 </div>

@@ -36,50 +36,47 @@ class SimpleController extends AbstractActionController
 
 //        die('asdad');
 
-        $typex = str_replace("x",'/',$folder);
+        $typex = str_replace("x", '/', $folder);
         $sizex = explode('x', $size);
 
         $image_to_display = PUBLIC_IMG_PATH . $typex . '/' . $id . '_' . $size;
 
         if (!file_exists($image_to_display)) {
-
-
             $oldname = PUBLIC_IMG_PATH . $typex . '/' . $id;
 
             if (file_exists($oldname)) {
-
-                // We encourage to use Dependency Injection instead of Service Locator
-                $thumbnailer = $this->getServiceLocator()->get('WebinoImageThumb');
-                $imagePath = $oldname;
-                $thumb = $thumbnailer->create($imagePath, $options = array(), $plugins = array());
-
-                if ($sizex[0] == 9999 || $sizex[1] == 9999) {
-                    $thumb->resize($sizex[0], $sizex[1]);
-                } else {
-                    $thumb->adaptiveResize($sizex[0], $sizex[1]);
-                    $thumb->cropFromCenter($sizex[0], $sizex[1]);
-                }
-
-                $thumb->save($image_to_display);
-
-            } else {  // display no image
-                $image_to_display = PUBLIC_IMG_PATH . $noPhoto . '_' . $size;
-                if (!file_exists($image_to_display)) {
-                    $oldname = PUBLIC_IMG_PATH . $noPhoto;
-
+                if ($sizex[0] != 9999 && $sizex[1] != 9999) {
+                    // We encourage to use Dependency Injection instead of Service Locator
                     $thumbnailer = $this->getServiceLocator()->get('WebinoImageThumb');
                     $imagePath = $oldname;
                     $thumb = $thumbnailer->create($imagePath, $options = array(), $plugins = array());
 
-                    //$thumb->resize($sizex[0], $sizex[1]);
-                    if ($sizex[0] == 9999 || $sizex[1] == 9999) {
-                        $thumb->resize($sizex[0], $sizex[1]);
-                    } else {
-                        $thumb->adaptiveResize($sizex[0], $sizex[1]);
-                        $thumb->cropFromCenter($sizex[0], $sizex[1]);
-                    }
+                    $thumb->adaptiveResize($sizex[0], $sizex[1]);
+                    $thumb->cropFromCenter($sizex[0], $sizex[1]);
 
                     $thumb->save($image_to_display);
+                } else {
+                    $image_to_display = $oldname;
+                }
+
+            } else {
+                // display no image
+                $image_to_display = PUBLIC_IMG_PATH . $noPhoto . '_' . $size;
+                if (!file_exists($image_to_display)) {
+                    $oldname = PUBLIC_IMG_PATH . $noPhoto;
+
+                    if ($sizex[0] != 9999 && $sizex[1] != 9999) {
+                        $thumbnailer = $this->getServiceLocator()->get('WebinoImageThumb');
+                        $imagePath = $oldname;
+                        $thumb = $thumbnailer->create($imagePath, $options = array(), $plugins = array());
+
+                        $thumb->adaptiveResize($sizex[0], $sizex[1]);
+                        $thumb->cropFromCenter($sizex[0], $sizex[1]);
+
+                        $thumb->save($image_to_display);
+                    } else {
+                        $image_to_display = $oldname;
+                    }
 
                 }
             }

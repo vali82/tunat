@@ -35,6 +35,7 @@ abstract class DataMapper implements MMDataMapperInterface
     protected $log_action_interested_fields = null;
 
     protected $columns = [];
+    protected $joins = [];
 
     public function getTableName()
     {
@@ -64,6 +65,11 @@ abstract class DataMapper implements MMDataMapperInterface
     public function setColumns($col)
     {
         $this->columns = $col;
+    }
+
+    public function setJoins($joins)
+    {
+        $this->joins = $joins;
     }
 
     /**
@@ -120,7 +126,7 @@ abstract class DataMapper implements MMDataMapperInterface
      *
      * @return \Zend\Db\Sql\Select
      */
-    private function constructWhere($select, $key, $value)
+    protected function constructWhere($select, $key, $value)
     {
         if (strpos($value, '__expression[:]') !== false) {
             $x = explode('[:]', $value);
@@ -363,12 +369,28 @@ abstract class DataMapper implements MMDataMapperInterface
      *
      * @return $this->_model[]|null
      */
-    public function fetchAllDefault($selectKey, $orderBy = null, $limit = null)
+    public function fetchAllDefault($selectKey, $orderBy = null, $limit = null, $groupBy = null)
     {
-        $results = $this->getTableGateway()->select(function (Select $select) use ($selectKey, $orderBy, $limit) {
+        $results = $this->getTableGateway()->select(function (Select $select) use (
+            $selectKey,
+            $orderBy,
+            $limit,
+            $groupBy
+        ) {
 
             if (count($this->columns) > 0) {
                 $select->columns($this->columns);
+            }
+
+            if (count($this->joins) > 0) {
+                foreach ($this->joins as $join) {
+                    $select->join(
+                        $join['name'],
+                        $join['on'],
+                        $join['columns'],
+                        $join['type']
+                    );
+                }
             }
 
             if (is_array($selectKey)) {
@@ -387,9 +409,13 @@ abstract class DataMapper implements MMDataMapperInterface
                 $select->limit($limit[1])->offset(((int)$limit[0]-1)*$limit[1]);
             }
 
+            if ($groupBy !== null) {
+                $select->group($groupBy);
+            }
+
 
         });
-//		var_dump($results->getDataSource()->getResource()->queryString);
+//		General::echop($results->getDataSource()->getResource()->queryString);
 
         if (count($results) == 0) {
             $res = null;
@@ -484,7 +510,7 @@ abstract class DataMapper implements MMDataMapperInterface
         return null;
     }
 
-    public function fetchResultsArray($selectKey = null)
+    public function fetchResultsArray($selectKey = null, $orderBy = null)
     {
         $sql = new Sql($this->adapter);
         $select = $sql->select();
@@ -503,12 +529,16 @@ abstract class DataMapper implements MMDataMapperInterface
             ->from($this->table_name)
         ;
 
+        if ($orderBy !== null) {
+            $select->order($orderBy);
+        }
+
         $statement = $sql->prepareStatementForSqlObject($countSelect);
         $result = $statement->execute();
         $return = [];
         $id = count($this->primary_key_update) == 1 ? $this->primary_key_update[0] : null;
         $cnt = 0;
-        foreach($result as $r) {
+        foreach ($result as $r) {
             $return[($id !== null ? $r[$id] : $cnt)] = $r;
             $cnt++;
         }

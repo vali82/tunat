@@ -87,7 +87,9 @@ return array(
             'Application\Controller\LoginRegister' => 'Application\Controller\LoginRegisterController',
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Simple' => 'Application\Controller\SimpleController',
-            'Application\Controller\Ad' => 'Application\Controller\AdController'
+            'Application\Controller\Ad' => 'Application\Controller\AdController',
+            'Application\Controller\MyAccount' => 'Application\Controller\MyAccountController',
+            'Application\Controller\Offers' => 'Application\Controller\OffersController',
         ),
     ),
     'view_manager' => array(
@@ -98,11 +100,13 @@ return array(
         'exception_template' => 'error/index',
         'template_map' => array(
             'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'layout-parcauto' => __DIR__ . '/../view/layout/layout-parcauto.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
             'scn-social-auth/user/login' => __DIR__ . '/../view/scn-social-auth/user/login.phtml',
             'scn-social-auth/user/register' => __DIR__ . '/../view/scn-social-auth/user/register.phtml',
+            'zfc-user/user/changepassword' => __DIR__ . '/../view/scn-social-auth/user/changepassword.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -114,7 +118,7 @@ return array(
     // Placeholder for console routes
     'console' => array(
         'router' => array(
-            'routes' => array(),
+            'routes' => include __DIR__ . '/routes/console.php'
         ),
     ),
     'bjyauthorize' => array(
@@ -123,7 +127,9 @@ return array(
 
                 include __DIR__ . '/routes/acl/home.php',
                 include __DIR__ . '/routes/acl/ad.php',
-                []
+                include __DIR__ . '/routes/acl/my-account.php',
+                include __DIR__ . '/routes/acl/pages.php',
+                include __DIR__ . '/routes/acl/offers.php'
             )
         ),
     ),

@@ -22,7 +22,10 @@ return array(
 	"Vrei sa stergi aceasta pagina?" => "Vrei să ștergi această pagină?",
 	"Esti sigur?" => "Ești sigur?",
 	"All rights reserved." => "Toate drepturile rezervate",
-
+    "Unable to update your password. Please try again." => "Schimbare parola nereusita. Te rugam sa mai incerci.",
+    "Current Password" => "Parola actuala",
+    "New Password" => "Noua parola",
+    "Verify New Password" => "Reintrodu parola",
 
 
 
@@ -263,7 +266,7 @@ return array(
     "The input has failed the IBAN check" => "The input has failed the IBAN check",
 
     // Zend\Validator\Identical
-    "The two given tokens do not match" => "The two given tokens do not match",
+    "The two given tokens do not match" => "Cele doua campuri nu sunt identice",
     "No token was provided to match against" => "No token was provided to match against",
 
     // Zend\Validator\InArray
@@ -285,7 +288,7 @@ return array(
     "The input is not less or equal than '%max%'" => "The input is not less or equal than '%max%'",
 
     // Zend\Validator\NotEmpty
-    "Value is required and can't be empty" => "Este nevoie de o valoare și nu poate fi goală",
+    "Value is required and can't be empty" => "Este nevoie de o valoare",
     "Invalid type given. String, integer, float, boolean or array expected" => "Invalid type given. String, integer, float, boolean or array expected",
 
     // Zend\Validator\Regex

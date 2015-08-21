@@ -5,6 +5,8 @@
  */
 chdir(dirname(__DIR__));
 
+
+
 // Define application environment
 defined('APPLICATION_ENV')
 || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
@@ -12,12 +14,13 @@ defined('APPLICATION_ENV')
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
 if (APPLICATION_ENV == 'development') {
-    define('MAIN_DOMAIN', 'http://tirbox.local');
-} elseif (APPLICATION_ENV == 'development') {
+    define('MAIN_DOMAIN', 'http://tirbox.local/');
+} elseif (APPLICATION_ENV == 'dev') {
     define('MAIN_DOMAIN', 'http://dev.tirbox.ro/');
 } else {
     define('MAIN_DOMAIN', 'http://www.tirbox.ro/');
 }
+
 
 
 // Decline static file requests back to the PHP built-in webserver

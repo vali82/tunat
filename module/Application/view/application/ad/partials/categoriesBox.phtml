@@ -1,0 +1,12 @@
+<div id="categoryContainer" class="panel panel-default row">
+    <?php foreach($this->layout()->cars['categories'] as $categId => $categName) {
+        $categNameUrlized = strtolower($this->carCollection->getUrlize($categName));
+        ?>
+        <div class="col-md-2 col-sm-4 col-xs-4 category <?=($this->carcategoriesId == $categId ? 'active' : '')?>">
+            <a href="<?= $this->url('home/piese', ['categories' => $categNameUrlized]) ?>" title="Piese <?=$categName?>">
+                <img class="img-responsive" src="<?=$this->basePath() . '/img/categ_'.$categId.'.png'?>"/>
+                <span><?=$categName?></span>
+            </a>
+        </div>
+    <?php } ?>
+</div>

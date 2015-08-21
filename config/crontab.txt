@@ -1,0 +1,10 @@
+/* CRON JOBS available
+
+pt fiecare server exista un cronjob... de ex pt developing este cronjob_developing.php, iar pt dev server este cronjob_dev.php
+
+*/
+
+// marcarea anunturilor ce au expirat ... se apeleaza in fiecare minut intre orele 08-20
+// se verifica toate anunturile ce tre marcate ca expirate si daca parcul auto nu are mail primit in aceasta tema in
+// ziua de azi atunci i se va trimite mail cum ca anuntul a expirat
+* * * * * php cronjob_development.php inactivate-old-ads

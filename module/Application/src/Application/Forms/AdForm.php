@@ -2,12 +2,13 @@
 
 namespace Application\Forms;
 
+use Application\libs\General;
 use Application\Models\Ads\Ad;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class AdForm extends AbstractForm
 {
-    public function create($resourceObj, $carMake, $years)
+    public function create($resourceObj, $carMake, $years, $role, $states)
     {
         $this->setHydrator(new ClassMethodsHydrator(true))
             ->setObject($resourceObj);
@@ -15,26 +16,6 @@ class AdForm extends AbstractForm
         $this->setAttribute('method', 'post');
         $this->setName('fileupload');
         $this->setAttribute('id', 'fileupload');
-
-
-        //--------------------------------------------------------- DETALII PIESA--------------
-
-        /*$this->add(array(
-            'type' => 'select',
-            'name' => 'part_categ',
-            'options' => array(
-                'label' => 'Categorie',
-                'options' => ['' => ''] + $partsMain,
-            ),
-            'attributes' => array(
-                'id' => 'select2CarPartsMain',
-                    'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
-//                    'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
-
-            ),
-        ));*/
-
-
 
 
 //-------------------------- DETALII MASINA--------------------
@@ -57,6 +38,7 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'select2CarMake',
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
@@ -76,7 +58,7 @@ class AdForm extends AbstractForm
 //                'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'select2CarModels',
-                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -93,7 +75,7 @@ class AdForm extends AbstractForm
 //                'disabled' => 'disabled',
 //                'noLabel' => true,
                 'id' => 'select2CarModels2',
-                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'end'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
 
@@ -117,7 +99,7 @@ class AdForm extends AbstractForm
 //                'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'year_start',
-                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => 'start'),
+                'group' => array('size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12', 'type' => 'start'),
                 'required' => false,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -126,16 +108,16 @@ class AdForm extends AbstractForm
             'type' => 'select',
             'name' => 'year_end',
             'options' => array(
-                'label' => '-',
+                'label' => '&nbsp;',
                 'options' => ['' => 'pana la '] + $years,
                 //'empty_option' => '--- Selecteaza Parinte ---',
 //                'disable_inarray_validator' => true
             ),
             'attributes' => array(
-                'noLabel' => true,
+//                'noLabel' => true,
 //                'disabled' => 'disabled',
                 'id' => 'year_end',
-                'group' => array('size' => 'col-sm-6 col-md-2', 'type' => ''),
+                'group' => array('size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12', 'type' => ''),
                 'required' => false,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -150,7 +132,7 @@ class AdForm extends AbstractForm
             ),
             'attributes' => array(
 //                'id' => 'year_end',
-                'group' => array('size' => 'col-sm-6 col-md-4', 'type' => 'end'),
+                'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
                 'required' => false,
             ),
         ));
@@ -177,8 +159,24 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'select2CarPartsSub',
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'start'),
+                'extraInfo' => 'numele piesei'
 
+            ),
+        ));
+
+        $this->add(array(
+            'type' => 'text',
+            'name' => 'code_oem',
+            'options' => array(
+                'label' => 'Cod Piesa',
+//                'disable_inarray_validator' => true
+            ),
+            'attributes' => array(
+                'id' => 'code_oem',
+                'required' => false,
+                'extraInfo' => 'Cod unic de origine, OEM',
+                'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'end'),
             ),
         ));
 
@@ -190,8 +188,7 @@ class AdForm extends AbstractForm
                 'label' => 'Descriere',
             ),
             'attributes' => array(
-                'extraInfo' => 'Detalii masina daca este cazul. Ex: Audi A4 sedan 1.9TDI, sau: piesa e compatibila cu
-                toate modele Audi A4 2001-2005'
+                'extraInfo' => 'detalii anunt, descriere generala a prodului de vanzare, sau orice caracteristica importanta'
                 //'group' => array('size'=> 'col-sm-4','type'=>'end'),
 //				'id' => 'last_name',
             ),
@@ -213,7 +210,11 @@ class AdForm extends AbstractForm
                 'label' => 'Pret',
             ),
             'attributes' => array(
-                'group' => array('size' => 'col-lg-2 col-sm-5 col-md-2', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
+                'group' => array(
+                    'size' => 'col-lg-2 col-md-3 col-sm-4 col-xs-8',
+                    'sizeLabel' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
+                    'type' => 'start'
+                ),
                 'type' => 'text',
             ),
         ));
@@ -221,16 +222,20 @@ class AdForm extends AbstractForm
             'type' => 'select',
             'name' => 'currency',
             'options' => array(
-//                'label' => '-',
-                'options' => ['RON' => 'RON', 'EUR' => 'EUR', 'USD' => 'USD'],
+                'label' => '&nbsp;',
+                'options' => ['RON' => 'RON', 'EUR' => 'EUR'],
                 //'empty_option' => '--- Selecteaza Parinte ---',
 //                'disable_inarray_validator' => true
             ),
             'attributes' => array(
-                'noLabel' => true,
+//                'noLabel' => true,
 //                'disabled' => 'disabled',
 //                'id' => 'year_end',
-                'group' => array('size' => 'col-lg-1 col-sm-3 col-md-2', 'type' => 'end'),
+                'group' => array(
+                    'size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-4',
+                    'sizeLabel' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
+                    'type' => 'end'
+                ),
                 'required' => true,
 //                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
             ),
@@ -255,11 +260,113 @@ class AdForm extends AbstractForm
             ],
             'attributes' => array(
                 'maxFileSize' => '2MB',
+                'maxNumberOfFiles' => 10,
                 'acceptedFileType' => 'jpeg, png, gif'
 //                'noLabel' => true,
                 //'textAbove' => 'Detalii Anunt',
             )
         ));
+
+        if ($role == "contentmanager" || $role == "admin") {
+
+            $this->add(array(
+                'name' => 'x3',
+                'type' => 'hidden',
+                'attributes' => array(
+                    'textAbove' => 'Detalii Vanzator',
+                    'custom_form_spacer' => true,
+                )
+            ));
+
+            $this->add(array(
+                'type' => 'text',
+                'name' => 'adv_name',
+                'options' => array(
+                    'label' => 'Nume Vanzator',
+//                'options' => [''=>''],
+                ),
+                'attributes' => array(
+//                    'id' => 'select2CarPartsSub',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+                    'group' => array('size' => 'col-lg-5 col-md-5 col-sm-4 col-xs-12', 'type' => 'start'),
+                    'extraInfo' => 'obligatoriu'
+                ),
+            ));
+
+            $this->add(array(
+                'type' => 'text',
+                'name' => 'adv_email',
+                'options' => array(
+                    'label' => 'Email',
+//                'options' => [''=>''],
+                ),
+                'attributes' => array(
+//                    'id' => 'select2CarPartsSub',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+                    'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
+                    'extraInfo' => 'optional'
+                ),
+            ));
+
+            $this->add(array(
+                'type' => 'text',
+                'name' => 'adv_tel',
+                'options' => array(
+                    'label' => 'Telefon',
+//                'options' => [''=>''],
+                ),
+                'attributes' => array(
+//                    'id' => 'select2CarPartsSub',
+//                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
+                    'group' => array('size' => 'col-lg-3 col-md-3 col-sm-4 col-xs-12', 'type' => 'end'),
+                    'extraInfo' => 'obligatoriu'
+                ),
+            ));
+
+            $this->add(array(
+                'name' => 'adv_address',
+                'type' => 'text',
+                'options' => array(
+                    'label' => 'Adressa',
+                ),
+                'attributes' => array(
+                    'placeholder' => 'Adresa: strada, nr.',
+                    'group' => array('size' => 'col-lg-5 col-md-5 col-sm-4 col-xs-12', 'type' => 'start'),
+                    'extraInfo' => 'optional'
+                ),
+            ));
+            $this->add(array(
+                'name' => 'adv_city',
+                'type' => 'text',
+                'options' => array(
+                    'label' => 'Oras',
+                ),
+                'attributes' => array(
+//                'noLabel' => true,
+                    'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
+                    'extraInfo' => 'obligatoriu'
+                ),
+            ));
+            $this->add(array(
+                'type' => 'select',
+                'name' => 'adv_state',
+                'options' => array(
+                    'label' => 'Judet',
+                    'options' => $states,
+                ),
+                'attributes' => array(
+//                'id' => 'year_end',
+                    'group' => array('sizeLabel' => 'col-sm-1', 'size' => 'col-lg-3 col-md-3 col-sm-4 col-xs-12', 'type' => 'end'),
+                    'required' => true,
+//                'noLabel' => true,
+                    'extraInfo' => 'obligaroriu'
+                ),
+            ));
+
+
+
+
+        }
 
         /*$this->add(array(
             'name' => 'custom_form_spacer',
@@ -275,7 +382,7 @@ class AdForm extends AbstractForm
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Salveaza',
+                'value' => 'Adauga anuntul',
                 'id' => 'submitbutton',
                 'cancelLink' => $this->_cancel_route
             ),

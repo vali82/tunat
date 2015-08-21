@@ -1,38 +1,57 @@
 
-<div class="media" style="border-bottom: 1px solid #DADADA; padding:10px 0 20px 0">
-    <div class="media-left">
-        <a href="<?=($this->status == 'ok' ? $this->href : '#')?>">
+
+<div class="announcement row panel">
+    <div class="picture col-md-2 col-sm-2 col-xs-12">
+        <a href="<?=$this->href?>" title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>">
             <img class="media-object" src="<?=$this->imgSrc?>" data-holder-rendered="true">
         </a>
     </div>
-    <div class="media-body">
+    <div class="description col-md-8 col-sm-8 col-xs-12">
         <h4 class="media-heading">
-            <?php if ($this->status == 'ok') { ?>
-            <a href="<?=$this->href?>"><?=$this->title?></a>
-            <?php } else { ?>
-                <?=$this->title?>
-            <?php } ?>
+            <a title="<?=$this->car?> <?=$this->model?> - <?=$this->title?>" href="<?=$this->href?>"><?=$this->title?></a>
+            <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
         </h4>
-        <div style="position: relative; float: right; margin-top: -25px">
-            <span class="glyphicon glyphicon-calendar"></span> Data Expirarii: <?=$this->expirationDate?>
-            <span style="padding-left:10px"></span>
-            <span class="glyphicon glyphicon-eye-open"></span> Vizualizari: <?=$this->views?>
-            <span style="padding-left:10px"></span>
-            <span class="glyphicon glyphicon-earphone"></span> Contact Afisat: <?=$this->contactDisplayed?>
+        <div>
+            <span><span class="glyphicon glyphicon-calendar"></span>Data Expirarii: <?=$this->expirationDate?></span>
+            <span><span class="glyphicon glyphicon-eye-open"></span> Vizualizari: <?=$this->views?></span>
+            <span><span class="glyphicon glyphicon-earphone"></span> Contact Afisat: <?=$this->contactDisplayed?></span>
         </div>
-        <p><?=$this->description?></p>
-        <p><?=$this->car?></p>
+        <p class="about"><?=$this->description?></p>
+        <p class="model">
+            <span class="category-icon">
+                <img src="<?=$this->basePath()?>/img/categ_<?=$this->carCategory?>.png" />
+            </span>
+            <a href="<?=$this->urlFilter1?>" title="Piese <?=$this->car?>">
+                <?=$this->car?>
+            </a>
+            <?php
+            $x = explode(',', $this->model);
+            foreach ($x as $model) {
+                $model = trim($model);
+                ?>
+                <a href="<?=str_replace('__search__', $model, $this->urlFilter2)?>" title="Piese <?=$this->car?> <?=$model?>">
+                    <?=$model?></a>,
+                <?php
+            }
+            ?>
+
+            (<?=$this->yearStart?> - <?=$this->yearEnd?>)
+        </p>
         <?php if ($this->status == 'expired') { ?>
         <a href="<?=$this->url('home/ad/changeStatus', ['mode'=>'activate', 'id'=>$this->id, 'token'=>$this->token])?>"
-           class="btn btn-primary btn-sm" role="button">Reactiveaza Anunt</a>
+           class="btn-green button" role="button">Reactiveaza Anunt</a>
         <?php } else { ?>
-        <a href="<?=$this->url('home/ad/create', ['id'=>$this->id])?>" class="btn btn-success btn-sm" role="button">Modifica Anunt</a>
+        <a href="<?=$this->url('home/ad/create', ['id'=>$this->id])?>" class="btn-green button" role="button">Modifica Anunt</a>
         <?php } ?>
         <a href="javascript:;" onclick="<?=\Application\libs\General::confirmBoxJS(
             $this,
             $this->url('home/ad/changeStatus', ['mode'=>'delete', 'id'=>$this->id, 'token'=>$this->token]),
             'Vrei sa stergi definitiv acest anunt?'
         )?>"
-           class="btn btn-danger btn-sm" role="button">Sterge Anunt</a>
+           class="btn-red button" role="button">Sterge Anunt</a>
+    </div>
+    <div class="col-md-2 col-sm-2 col-xs-12">
+        <span class="price"><?=$this->price?></span>
+        <span class="county"><?=$this->county?></span>
     </div>
 </div>

@@ -1,12 +1,8 @@
 <?php
-use Application\Mappers\UserDM;
 
-use Kindergartens\Mappers\KindergartenDM;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Mapper\UserHydrator;
-
-use Application\Mappers as Mappers;
-
+use Application\libs\General;
 
 return array(
     'factories' => array(
@@ -40,35 +36,35 @@ return array(
             return $user;
         },
 
-        'AutoPark' => function (ServiceLocatorInterface $sm) {
-            $park = \Application\libs\General::getFromSession('myPark');
-            if ($park === null) {
+        'AdvertiserObj' => function (ServiceLocatorInterface $sm) {
+            $advertiser = General::getFromSession('myAdvertiserObj');
+            if ($advertiser === null) {
                 $auth = $sm->get('zfcuser_auth_service');
                 $user = $auth->getIdentity();
                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                $dm = new \Application\Models\Autoparks\ParkUsersDM($dbAdapter);
-                $parkUsers = $dm->fetchResultsArray(['user_id' => $user->getId()]);
-                $x = array_values($parkUsers)[0];
-                $dm = new \Application\Models\Autoparks\ParksDM($dbAdapter);
-                $park = $dm->fetchOne($x['park_id']);
-                \Application\libs\General::addToSession('myPark', $park !== null ? $park : false);
+                $dm = new \Application\Models\Advertiser\AdvertiserUsersDM($dbAdapter);
+                $advertiserUsers = $dm->fetchResultsArray(['user_id' => $user->getId()]);
+                $x = array_values($advertiserUsers)[0];
+                $dm = new \Application\Models\Advertiser\AdvertiserDM($dbAdapter);
+                $advertiser = $dm->fetchOne($x['advertiser_id']);
+                General::addToSession('myAdvertiserObj', $advertiser !== null ? $advertiser : false);
             }
-            return $park;
+            return $advertiser;
         },
 
-        'AutoParkUserDM'  => function (ServiceLocatorInterface $sm) {
+        'AdvertiserUserDM'  => function (ServiceLocatorInterface $sm) {
             $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-            $dm = new \Application\Models\Autoparks\ParkUsersDM($dbAdapter);
+            $dm = new \Application\Models\Advertiser\AdvertiserUsersDM($dbAdapter);
             return $dm;
         },
 
-        'AutoParkDM' => function (ServiceLocatorInterface $sm) {
+        'AdvertiserDM' => function (ServiceLocatorInterface $sm) {
             $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-            $dm = new \Application\Models\Autoparks\ParksDM($dbAdapter);
+            $dm = new \Application\Models\Advertiser\AdvertiserDM($dbAdapter);
             return $dm;
         },
 
-        'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
+        /*'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
 //            $role = \Application\libs\General::getFromSession('role');
 //            if ($role === null) {
                 $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
@@ -77,6 +73,16 @@ return array(
 //                \Application\libs\General::addToSession('role', $role);
 //            }
             return $role;
+        },*/
+        'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
+            $x = General::getFromSession('AuthenticatedUserRole');
+            if ($x === null) {
+                $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
+                $roles = $pi->getIdentityRoles();
+                $x = array_pop($roles);
+                General::addToSession('AuthenticatedUserRole', $x);
+            }
+            return $x;
         },
 
         /* 'AffiliateDataMapper' => function (ServiceLocatorInterface $sm) {
@@ -91,13 +97,8 @@ return array(
         }, */
 
         'UserDataMapper' => function (ServiceLocatorInterface $sm) {
-            $dm = new \ZfcUser\Mapper\User();
-
-            $dm->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
-            $zfcUserOptions = $sm->get('zfcuser_module_options');
-            $entityClass = $zfcUserOptions->getUserEntityClass();
-            $dm->setEntityPrototype(new $entityClass);
-            $dm->setHydrator(new UserHydrator());
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $dm = new \Application\Models\Zuser\UserDM($dbAdapter);
             return $dm;
         },
 
