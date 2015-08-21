@@ -32,7 +32,7 @@ class SimpleController extends AbstractActionController
         } else {
             $noPhoto = 'nophoto';
         }*/
-        $noPhoto = 'nophoto';
+        $noPhoto = 'nophoto.jpg';
 
 //        die('asdad');
 
