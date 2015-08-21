@@ -29,7 +29,7 @@ if ($role !== 'guest') {
         <?php
         echo $this
             ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-            ->prependStylesheet($this->basePath() . '/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
+            ->prependStylesheet($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
             ->prependStylesheet($this->basePath() . '/js/nprogress-master/nprogress.css')
             ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
             ->prependStylesheet($this->basePath() . '/css/style.css')
@@ -43,7 +43,7 @@ if ($role !== 'guest') {
 
         <!-- Scripts -->
         <?php echo $this->headScript()
-            ->appendFile($this->basePath() . '/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
+            ->appendFile($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
             ->prependFile($this->basePath() . '/js/nprogress-master/nprogress.js')
             ->prependFile($this->basePath() . '/js/general.js')
             ->prependFile($this->basePath() . '/js/bootbox/bootbox.min.js')
