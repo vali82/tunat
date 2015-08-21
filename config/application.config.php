@@ -9,7 +9,7 @@ return array(
         'ZfcUser',
         'BjyAuthorize',
         'RoleUserBridge',
-        'ZendDeveloperTools',
+//        'ZendDeveloperTools',
         'BjyProfiler',
         'WebinoImageThumb',
 //        'mandrill/mandrill'
