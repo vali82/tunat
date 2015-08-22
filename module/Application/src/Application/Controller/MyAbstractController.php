@@ -117,7 +117,12 @@ class MyAbstractController extends AbstractActionController
         $this->cars = $cars;
         $this->layout()->setVariables([
             'googleAnalitics' => $googleAnalitics,
-            'cars' => $cars
+            'cars' => $cars,
+            'head' => [
+                'title' => 'Anunturi dezmembrari camioane si utilaje',
+                'description' => 'anunturi piese noi si second hand pentru camioane, utilitare max 3.5 tone, remorci, utilaje constructii, utilaje agricole, autobuze',
+                'keywords' => 'dezmembrari, piese camioane, piese utilitare, piese remorci, piese utilaje constructii', 'piese autobuze'
+            ]
         ]);
         ////
 

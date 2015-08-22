@@ -18,7 +18,11 @@ if ($role !== 'guest') {
 ?><html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle($this->translate('tirbox.ro'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php
+        $this->headTitle($this->translate('Tirbox'))->setSeparator(' - ');
+        $this->headTitle()->append($this->head['title']);
+        echo $this->headTitle()->setAutoEscape(false)
+        ?>
 
         <?php echo $this->headMeta()
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
@@ -31,7 +35,7 @@ if ($role !== 'guest') {
             ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
             ->prependStylesheet($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
             ->prependStylesheet($this->basePath() . '/js/nprogress-master/nprogress.css')
-            ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
+//            ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
             ->prependStylesheet($this->basePath() . '/css/style.css')
             ->prependStylesheet('http://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700')
             ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
@@ -47,7 +51,7 @@ if ($role !== 'guest') {
             ->prependFile($this->basePath() . '/js/nprogress-master/nprogress.js')
             ->prependFile($this->basePath() . '/js/general.js')
             ->prependFile($this->basePath() . '/js/bootbox/bootbox.min.js')
-            ->prependFile($this->basePath() . '/js/select2/select2.full.js')
+//            ->prependFile($this->basePath() . '/js/select2/select2.full.js')
             ->prependFile($this->basePath() . '/js/bootstrap.min.js')
             ->prependFile($this->basePath() . '/js/jquery.min.js')
 
