@@ -118,11 +118,9 @@ class MyAbstractController extends AbstractActionController
         $this->layout()->setVariables([
             'googleAnalitics' => $googleAnalitics,
             'cars' => $cars,
-            'head' => [
-                'title' => 'Anunturi dezmembrari camioane si utilaje',
-                'description' => 'anunturi piese noi si second hand pentru camioane, utilitare max 3.5 tone, remorci, utilaje constructii, utilaje agricole, autobuze',
-                'keywords' => 'dezmembrari, piese camioane, piese utilitare, piese remorci, piese utilaje constructii', 'piese autobuze'
-            ]
+            'headTitle' => 'Anunturi Gratuite - Dezmembrari camioane si utilaje',
+            'metaDescription' => 'Anunturi gratuite, anunturi piese noi, piese din dezmembrari, piese, second hand, camioane, utilitare max 3.5 tone, remorci, utilaje constructii, utilaje agricole, autobuze',
+            'metaKeywords' => 'dezmembrari, piese camioane, utilitare, remorci, utilaje constructii, autobuze'
         ]);
         ////
 

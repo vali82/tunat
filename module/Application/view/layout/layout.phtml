@@ -17,14 +17,16 @@ if ($role !== 'guest') {
 
 ?><html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <?php
-        $this->headTitle($this->translate('Tirbox'))->setSeparator(' - ');
-        $this->headTitle()->append($this->head['title']);
+        $this->headTitle()->append($this->headTitle)->setSeparator(' - ')->append('Tirbox.ro');
         echo $this->headTitle()->setAutoEscape(false)
         ?>
-
+        <meta name="robots" content="index, follow" />
+        <meta http-equiv="Content-Language" content="ro" />
         <?php echo $this->headMeta()
+            ->appendName('description', $this->metaDescription)
+            ->appendName('keywords', $this->metaKeywords)
             ->appendName('viewport', 'width=device-width, initial-scale=1.0')
             ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
