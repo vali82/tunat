@@ -117,7 +117,7 @@ class AdCollection
                 ]
             ]);
 
-            if ($param['role'] == 'contentmanager' || $param['role'] == 'admin') {
+            if ($param['role'] == 'contentmanager') {
                 $where = [
                     'status' => $param['status']
                 ];
