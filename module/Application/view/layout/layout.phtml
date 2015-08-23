@@ -270,10 +270,11 @@ if ($role !== 'guest') {
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-2 col-sm-2 logo">
-                        <img src="<?=$this->basePath() . '/img/logo-footer.png'?>" />
+                    <div class="col-md-2 col-sm-4 col-xs-12 logo">
+                        <a href="<?php echo $this->url('home') ?>"><img src="<?=$this->basePath() . '/img/logo-footer.png'?>" />
+                        </a>
                     </div>
-                    <div class="col-md-2 col-sm-3 info">
+                    <div class="col-md-2 col-sm-4 col-xs-6 info">
                         <h3>Informatii</h3>
                         <ul>
                             <li><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')">Aplicatii mobile</a></li>
@@ -283,7 +284,7 @@ if ($role !== 'guest') {
                             <li><a href="<?=$this->url('home/pages/partners')?>">Parteneri </a></li>
                         </ul>
                     </div>
-                    <div class="col-md-2 col-sm-3 info2">
+                    <div class="col-md-2 col-sm-4 col-xs-6 info2">
                         <h3> &nbsp; </h3>
                         <ul>
                             <li><a href="<?=$this->url('home/contact')?>">Ajutor 24/7</a></li>
@@ -293,14 +294,14 @@ if ($role !== 'guest') {
                             <li><a href="<?=$this->url('home/terms')?>">Termeni si Conditii</a></li>
                         </ul>
                     </div>
-                    <div class="col-md-3 col-sm-4 mobile-app">
+                    <div class="col-md-3 col-sm-6 col-xs-12 mobile-app">
                         <h3>Descarca aplicatia</h3>
                         <ul>
                             <li class="ggl-play"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
                             <li class="app-store"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
                         </ul>
                     </div>
-                    <div class="col-md-3 col-sm-12 social-media">
+                    <div class="col-md-3 col-sm-6 col-xs-12 social-media">
                         <!--<h3>Facebook</h3>-->
                         <!--<ul>
                             <li class="fb"><a href="#"></a></li>
