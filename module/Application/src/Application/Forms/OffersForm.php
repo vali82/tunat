@@ -34,6 +34,7 @@ class OffersForm extends AbstractForm
             'attributes' => array(
                 'required' => true,
                 'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => 'start'),
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -46,6 +47,7 @@ class OffersForm extends AbstractForm
             'attributes' => array(
                 'required' => true,
                 'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => ''),
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -57,6 +59,7 @@ class OffersForm extends AbstractForm
             'attributes' => array(
                 'required' => true,
                 'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => ''),
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -71,6 +74,7 @@ class OffersForm extends AbstractForm
                 'group' => array('size' => 'col-lg-3 col-md-3 col-sm-3 col-xs-12', 'type' => 'end'),
                 'required' => true,
 //                'noLabel' => true,
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         ////
@@ -98,7 +102,7 @@ class OffersForm extends AbstractForm
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
                 'required' => true,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'extraInfo' => 'obligatoriu'
 
             ),
         ));
@@ -117,7 +121,7 @@ class OffersForm extends AbstractForm
                 'id' => 'select2CarModels',
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
                 'required' => true,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -134,7 +138,7 @@ class OffersForm extends AbstractForm
                 'id' => 'select2CarModels2',
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
                 'required' => true,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'extraInfo' => 'obligatoriu'
 
             ),
         ));
@@ -154,7 +158,7 @@ class OffersForm extends AbstractForm
             'attributes' => array(
                 'required' => true,
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
-//                'extraInfo' => 'ex: 2012-2015'
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -192,7 +196,8 @@ class OffersForm extends AbstractForm
             ),
             'attributes' => array(
                 'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'start'),
-                'containerClass' => 'piesa'
+                'containerClass' => 'piesa',
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -213,7 +218,7 @@ class OffersForm extends AbstractForm
                 'label' => 'Descriere',
             ),
             'attributes' => array(
-                'rows' => 2,
+                'rows' => 3,
                 "containerClass" => 'piesa'
             ),
         ));
@@ -244,7 +249,7 @@ class OffersForm extends AbstractForm
             ],
             'attributes' => array(
                 'maxFileSize' => '2MB',
-                'maxNumberOfFiles' => 10,
+                'maxNumberOfFiles' => 5,
                 'acceptedFileType' => 'jpeg, png, gif'
 //                'noLabel' => true,
                 //'textAbove' => 'Detalii Anunt',

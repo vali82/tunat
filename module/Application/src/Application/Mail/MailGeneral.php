@@ -316,7 +316,7 @@ class MailGeneral extends AbstractActionController
             $imageFile = $x[count($x)-1];
             if (strpos($imageFile, '_') === false ) {
                 $photos[] = '<a href="'.General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $imageFile, '1024x768').'">
-                    <img style="padding:10px; float:left" src="'.General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $imageFile, '130x130').'">
+                    <img style="padding:10px; float:left" src="'.General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $imageFile, '100x100').'">
                     </a>';
             }
         }

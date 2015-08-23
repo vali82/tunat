@@ -172,7 +172,7 @@ class MyAbstractController extends AbstractActionController
                     //"type" => 'image/jpeg',//$info['type'],
                     "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '1024x768'),
                     "thumbnailUrl" =>
-                        General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '130x130'),
+                        General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '100x100'),
                 );
 
 //                $images[] = $filename;
@@ -252,6 +252,7 @@ class MyAbstractController extends AbstractActionController
                             )
                         ),
                         [
+                            'adv_id' => $user_id,
                             'option' => 'delete',
                             'folder' => $user_id . 'x' . implode('x', $folder),
                             'name' => $name
@@ -262,7 +263,7 @@ class MyAbstractController extends AbstractActionController
                     "type" => $info['type'],
                     "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '1024x768'),
                     "thumbnailUrl" =>
-                        General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '130x130'),
+                        General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '100x100'),
                     "nameDisk" => $name
                 );
             }
