@@ -241,7 +241,7 @@ class AdCollection
                         'imgSrc' => General::getSimpleAvatar(
                             $ad->getAdvertiserId() . 'xadsx'.$ad->getId(),
                             (count($adImg) > 0 ? $adImg[0] : ''),
-                            '130x130'
+                            '260x260'
                         ),
                         'title' => $ad->getPartName(),
                         'id' => $ad->getId(),
