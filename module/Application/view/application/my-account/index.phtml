@@ -20,22 +20,23 @@ $this->headScript()
                         <ul class="list-group">
 
                             <li class="list-group-item">
-                                <span class="badge">
-                                    <?=($this->myAdvertiserObj->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?>
-                                </span>&nbsp;
-                                <?=$this->myAdvertiserObj->getName()?>
+                                <span class="badge"><?=($this->myAdvertiserObj->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?></span>
+                                <span><?=$this->myAdvertiserObj->getName()?></span>
                             </li>
-                            <li class="list-group-item"><span class="badge"><?=$this->translate('nume')?></span>&nbsp;
-                                <?=$this->myUser->getDisplayName()?>
+                            <li class="list-group-item">
+                                <span class="badge"><?=$this->translate('nume')?></span>&nbsp;
+                                <span><?=$this->myUser->getDisplayName()?></span>
                             </li>
-                            <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
-                                <?=$this->myAdvertiserObj->getEmail()?>
+                            <li class="list-group-item">
+                                <span class="badge"><?=$this->translate('Email')?></span>&nbsp;
+                                <span><?=$this->myAdvertiserObj->getEmail()?></span>
                             </li>
-                            <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
-                                <?=$this->myAdvertiserObj->getTel1()?> <?=$this->myAdvertiserObj->getTel2()?> <?=$this->myAdvertiserObj->getTel3()?>
+                            <li class="list-group-item">
+                                <span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
+                                <span><?=$this->myAdvertiserObj->getTel1()?> <?=$this->myAdvertiserObj->getTel2()?> <?=$this->myAdvertiserObj->getTel3()?></span>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Adresa')?></span>&nbsp;
-                                <?=$this->myAdvertiserObj->generateLocation()?>
+                                <span><?=$this->myAdvertiserObj->generateLocation()?></span>
                             </li>
                         </ul>
                     </div>

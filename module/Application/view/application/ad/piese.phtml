@@ -125,14 +125,14 @@ $cars = $this->layout()->cars;
     <div class="col-md-3 filters">
     <h3>Filtre</h3>
     <!--Filtrare Anunturi-->
-        <form class="form-inline panel col-md-12" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
+        <form class="panel col-md-12" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
             <div class="key-words">
                 <label>Cuvinte cheie</label>
-                <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50" class="form-control" type="text">
+                <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50"  type="text">
             </div>
             <div class="made-year">
                 <label>An fabricatie</label>
-                <select class="form-control" id="searchYear">
+                <select  id="searchYear">
                     <option value="">orice an</option>
                     <?php foreach ($this->years as $year) {?>
                         <option value="<?=$year?>" <?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
@@ -141,7 +141,7 @@ $cars = $this->layout()->cars;
             </div>
             <div class="part-look ">
                 <label>Stare piesa</label>
-                <select class="form-control" id="searchStare">
+                <select id="searchStare">
                     <option value="" <?=('' == $this->searchValues['stare'] ? 'selected' : '')?>>oricare</option>
                     <option value="nou" <?=('nou' == $this->searchValues['stare'] ? 'selected' : '')?>>Noua</option>
                     <option value="second" <?=('second' == $this->searchValues['stare'] ? 'selected' : '')?>>Second</option>
@@ -149,7 +149,7 @@ $cars = $this->layout()->cars;
             </div>
             <div class="region">
                 <label>Judet</label>
-                <select class="form-control" id="searchCounty">
+                <select id="searchCounty">
                     <?php foreach ($this->states as $k=>$state) { ?>
                         <option value="<?=$k?>" <?=($k == $this->searchValues['county'] ? 'selected' : '')?>><?=$state?></option>
                     <?php } ?>
@@ -157,7 +157,7 @@ $cars = $this->layout()->cars;
             </div>
             <div class="key-words">
                 <label>Cod piesa, OEM</label>
-                <input id ="searchOem" value="<?=$this->searchValues['oem']?>"  maxlength="50" class="form-control" type="text">
+                <input id ="searchOem" value="<?=$this->searchValues['oem']?>"  maxlength="50"  type="text">
             </div>
 
             <button type="submit" id="button-search-ads" class="btn-green button" data-loading-text="cautare...">Aplica</button>

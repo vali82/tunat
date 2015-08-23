@@ -132,7 +132,7 @@ $.general = function() {
                     $('#allCarsContainer').slideUp('slow');
                     $('#generalBanner').slideUp();
                     $('#categoryContainer').hide();
-                    $('#mainContainer').css('paddingTop','150px');
+                    $('#mainContainer').css('paddingTop','100px');
                     _ajaxCoolLoadPage($(this).attr('href'), '');
                 });
             }
