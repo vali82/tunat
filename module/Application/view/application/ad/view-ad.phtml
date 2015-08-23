@@ -27,13 +27,13 @@
                     \Application\libs\General::getSimpleAvatar(
                         $this->folder,
                         $img,
-                        '2000x2000'
+                        '1024x768'
                     ) ?>" type="" title="" download="" data-image-lib="popup">
                         <img class="img-responsive" src="<?=
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
                             $img,
-                            '900x500'
+                            '700x400'
                         ) ?>">
                     </a>
                 </div>
@@ -47,13 +47,13 @@
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
                             $img,
-                            '2000x2000'
+                            '1024x768'
                         ) ?>" type="" title="" download="" data-image-lib="popup">
                             <img class="img-responsive" src="<?=
                             \Application\libs\General::getSimpleAvatar(
                                 $this->folder,
                                 $img,
-                                '150x100'
+                                '260x260'
                             ) ?>">
                         </a>
                     </div>    
@@ -65,7 +65,7 @@
         <div class="seller">
             <span>Vanzator</span>
             <h4><?=$this->advertiser['name']?></h4>
-            <a href="http://<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
+            <!--<a href="http://<?/*=$this->advertiser['url']*/?>"><?/*=$this->advertiser['url']*/?></a>-->
         </div>
         <div class="price-box">
             <span class="price"><?=$this->price?></span>
@@ -91,16 +91,37 @@
                 <span><?=$this->car['class']?> <?=$this->car['model']?></span>
             </p>
            <?php /*<p>Stare: <?=$this->stare?></p>*/ ?>
-            <p><span class="glyphicon glyphicon-calendar" style="padding: 0 6px"></span> <span>2013 - 2015</span></p>
+            <p><span class="glyphicon glyphicon-calendar" style="padding: 0 6px"></span> <span><?=$this->years?></span></p>
             <p>Cod Piesa: <span><?=$this->car['oem']?></span></p>
-            <p class="description"><?= $this->description ?></p>
+            <p class="description">
+                <span id="short-description">
+                    <?php if ($this->descriptionShort != '') { ?>
+                        <?= $this->descriptionShort ?>
+                        ...
+                        <a href="javascript:;" onclick="$('#short-description').hide(); $('#long-description').slideDown(); $(this).parent().parent().addClass('description-long')">vezi tot</a>
+                    <?php } else { ?>
+                        <?= $this->description ?>
+                    <?php } ?>
+                </span>
+                <span id="long-description" style="display: none;">
+                    <?= $this->description ?> ...
+                    <a href="javascript:;" onclick="$('#short-description').show(); $('#long-description').slideUp(); $(this).parent().parent().removeClass('description-long')">ascunde</a>
+                </span>
+            </p>
 
         </div>
         <div class="contact">
             <div id = "contactParkContainer" style="display: none">
-                Telefon: <span id="contactParkPhone"></span><br />
-                Email: <span id="contactParkEmail"></span><br />
-                Adresa: <span id="contactParkAddress"></span><br />
+                <h4><?=$this->advertiser['name']?></h4>
+                Adresa: <a href="#" target="_blank"><span id="contactParkAddress"></span> - vezi pe harta</a><br />
+                <br />
+                <a id = "contactParkEmail" class="button btn-green button-mail" href="javascript:;" title="Trimite email vanzatorului">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    Email
+                </a>
+                <a class="button btn-green button-tel" href="#" title="Contacteaza telefonic vanzatorul">
+                    <span class="glyphicon glyphicon-earphone"></span> <span id="contactParkPhone"></span>
+                </a>
             </div>
             <a id="adGetContactButton" href="javascript:;" role="button" class="btn-green button"
                data-loading-text="se incarca...">Contacteaza vanzator</a>

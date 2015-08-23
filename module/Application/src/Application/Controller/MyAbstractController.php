@@ -161,6 +161,7 @@ class MyAbstractController extends AbstractActionController
                             )
                         ),
                         [
+                            'adv_id' => $user_id,
                             'option' => 'delete',
                             'folder' => $user_id . 'x' . implode('x', $folder),
                             'name' => $filename
@@ -169,7 +170,7 @@ class MyAbstractController extends AbstractActionController
                     'name' => $filename,
                     "size" => filesize($path . '/' . $filename),//$info['size'],
                     //"type" => 'image/jpeg',//$info['type'],
-                    "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '800x600'),
+                    "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '1024x768'),
                     "thumbnailUrl" =>
                         General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $filename, '100x100'),
                 );
@@ -212,7 +213,7 @@ class MyAbstractController extends AbstractActionController
         foreach ($adapter->getFileInfo() as $file => $info) {
             if ($folder[0] == 'ads' || $folder[0] == 'offers') {
                 $cnt++;
-                if ($cnt > 10) {
+                if ($cnt > 5) {
                     $response = $this->getResponse();
                     $response->setStatusCode(403);
                     $response->sendHeaders();
@@ -251,6 +252,7 @@ class MyAbstractController extends AbstractActionController
                             )
                         ),
                         [
+                            'adv_id' => $user_id,
                             'option' => 'delete',
                             'folder' => $user_id . 'x' . implode('x', $folder),
                             'name' => $name
@@ -259,7 +261,7 @@ class MyAbstractController extends AbstractActionController
                     'name' => $info['name'],
                     "size" => $info['size'],
                     "type" => $info['type'],
-                    "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '800x600'),
+                    "url" => General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '1024x768'),
                     "thumbnailUrl" =>
                         General::getSimpleAvatar($user_id . 'x' . implode('x', $folder), $name, '100x100'),
                     "nameDisk" => $name

@@ -287,52 +287,56 @@ li.displayOnMobile {
 
 h3.new{
     color: #545454;
-    font: 300 22px/28px 'Ubuntu', sans-serif;
+    font: 300 22px/1.2px 'Ubuntu', sans-serif;
     margin-bottom: 20px;
-    margin-top: 50px;
 }
 .offer .button {
     padding: 15px 64px;
     float: right;
 }
-.announcement.panel{
+.announcement {
+    overflow: hidden;
     padding: 15px 17px;
-    margin-left: 0;
 }
-.announcement .description .about{
+.announcement .about {
     height: 39px;
     overflow: hidden;
     margin-bottom: 15px;
     font: 13px/19px 'Ubuntu', sans-serif;
     color: #6c727e;
 }
-.announcement .description .model{
+.announcement .model{
     font-weight: 300;
     font: 16px/23px 'Ubuntu', sans-serif;
     color: #a2a3a5;
 }
-.announcement .description .model a {
+.announcement .model a {
     color: #a2a3a5;
 }
-.announcement .price{
+.announcement .price {
+    display: block;
     font: 500 19px/1.2 'Ubuntu', sans-serif; 
     color: #243045;
-    text-align: right;
-    display: table;
-    margin-top: 50px;
-    width: 100%;
+    text-align: right; 
 }
-.announcement .county{
+.announcement .county {
+    display: block;
     color: #8E929F;
     text-align: right;
+}
+.announcement .picture, .price-container {
     display: table;
+    table-layout: fixed;
+    height: 130px;
+}
+.announcement .picture a, .price-container .wrapper {
+    display: table-cell;
+    vertical-align: middle;
+    float: none;
+}
+
+.announcement .picture img {
     width: 100%;
-}
-.announcement .picture{
-    padding: 0;
-}
-.announcement .picture img{
-    min-width: 130px;
     height: auto;
 }
 
@@ -389,6 +393,7 @@ footer .container{
     padding-top: 40px;
 }
 .newsletter{
+    display: none;
     background-color: #fff;
     padding: 22px 138px 13px;
     overflow: hidden;
@@ -800,7 +805,7 @@ span.no-results-found {
 .seller{
     width: 68%;
     margin-bottom: 50px;
-    height: 90px
+    height: 75px
 }
 .seller span {
     color: #c4c7ca;
@@ -832,10 +837,29 @@ span.no-results-found {
     margin: 51px 0;
     color: #868788;
 }
-.contact a {
+.info-details p.description-long{
+    height: auto;
+    /*overflow: hidden;*/
+    /*margin: 51px 0;*/
+    /*color: #868788;*/
+}
+
+.contact a.button {
     width: 100%;
     padding: 20px;
     font-size: 18px;
+}
+.contact a.button-mail {
+    width: 45%;
+    padding: 10px;
+    font-size: 13px;
+    float: left;
+}
+.contact a.button-tel {
+    width: 45%;
+    padding: 10px;
+    font-size: 13px;
+    float: right;
 }
 /*end product page*/
 
@@ -893,9 +917,7 @@ ul.dropdown-menu li a {
     /*.announcement .price{
         height: 117px;
     }*/
-    .announcement .picture img {
-        min-width: 100%;
-    }
+  
 
 
 }
@@ -909,6 +931,9 @@ ul.dropdown-menu li a {
    
 }
 @media screen and (max-width: 768px){
+    .brand-listing {
+        margin-top: 0px;
+    }
     /*#categoryContainer{
         width: 75%;
     }
@@ -916,29 +941,51 @@ ul.dropdown-menu li a {
         padding: 12px 0;
         font-size: 15px;
     }*/
+    h3.new {
+        font-size: 26px;
+        line-height: 1.2;
+    }
     .banner-text{
-        width: 75%;
+        display: none;
     }
-    .banner-text span{
-        font-size: 20px;
-        line-height: 26px;
+
+    .announcement .price-container span {
+        text-align: left;
     }
-    .banner-text span:first-child{
-        font-size: 30px;
-        line-height: 36px;
+
+    .announcement .picture, .price-container {
+        height: auto;
     }
-    .announcement .picture img{
-        min-width: 35%;
+
+    .right-pic img {
+        display: block;
         margin: 0 auto;
     }
-    .announcement .description{
-        text-align: center;
-        margin-top: 20px;
+
+
+/*footer*/
+
+    footer .logo {
+        margin-bottom: 20px;
+        text-align: center;     
     }
-    .announcement .price{
+
+    footer .info, footer .info2 {
         text-align: center;
-        height: 50px;
     }
+    .mobile-app {
+        text-align: center;
+    }
+    .mobile-app li a {
+        margin: 0 auto;
+    }
+    .social-media {
+        text-align: center;
+    }
+   
+   /*.category span {
+    font-size: 12px;
+   }*/
 }
 @media screen and (max-width: 640px){
    
