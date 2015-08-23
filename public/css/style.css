@@ -805,7 +805,7 @@ span.no-results-found {
 .seller{
     width: 68%;
     margin-bottom: 50px;
-    height: 90px
+    height: 75px
 }
 .seller span {
     color: #c4c7ca;
@@ -837,10 +837,29 @@ span.no-results-found {
     margin: 51px 0;
     color: #868788;
 }
-.contact a {
+.info-details p.description-long{
+    height: auto;
+    /*overflow: hidden;*/
+    /*margin: 51px 0;*/
+    /*color: #868788;*/
+}
+
+.contact a.button {
     width: 100%;
     padding: 20px;
     font-size: 18px;
+}
+.contact a.button-mail {
+    width: 45%;
+    padding: 10px;
+    font-size: 13px;
+    float: left;
+}
+.contact a.button-tel {
+    width: 45%;
+    padding: 10px;
+    font-size: 13px;
+    float: right;
 }
 /*end product page*/
 
@@ -912,6 +931,9 @@ ul.dropdown-menu li a {
    
 }
 @media screen and (max-width: 768px){
+    .brand-listing {
+        margin-top: 0px;
+    }
     /*#categoryContainer{
         width: 75%;
     }

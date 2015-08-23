@@ -56,7 +56,7 @@ return [
     'getContact' => [
         'type' => 'Segment',
         'options' => array(
-            'route' => '/get-contact[/:id]',
+            'route' => '/get-contact[/:id][/:token]',
             'constraints' => [
                 'id' => '[0-9]+',
             ],
