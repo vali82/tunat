@@ -113,10 +113,15 @@
         <div class="contact">
             <div id = "contactParkContainer" style="display: none">
                 <h4><?=$this->advertiser['name']?></h4>
-                Telefon: <span id="contactParkPhone"></span><br />
-                Adresa: <span id="contactParkAddress"></span><br /><br />
-                <a class="button btn-green button-mail" href="javascript:;">trimite un mail vanzatorului</a>
-                <a class="button btn-green button-tel" href="javascript:;">suna</a>
+                Adresa: <span id="contactParkAddress"></span><br />
+                <br />
+                <a id = "contactParkEmail" class="button btn-green button-mail" href="javascript:;">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    Email
+                </a>
+                <a class="button btn-green button-tel" href="#">
+                    <span class="glyphicon glyphicon-earphone"></span> <span id="contactParkPhone"></span>
+                </a>
             </div>
             <a id="adGetContactButton" href="javascript:;" role="button" class="btn-green button"
                data-loading-text="se incarca...">Contacteaza vanzator</a>

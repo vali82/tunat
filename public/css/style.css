@@ -849,6 +849,18 @@ span.no-results-found {
     padding: 20px;
     font-size: 18px;
 }
+.contact a.button-mail {
+    width: 45%;
+    padding: 10px;
+    font-size: 13px;
+    float: left;
+}
+.contact a.button-tel {
+    width: 45%;
+    padding: 10px;
+    font-size: 13px;
+    float: right;
+}
 /*end product page*/
 
 

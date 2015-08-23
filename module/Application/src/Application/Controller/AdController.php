@@ -508,7 +508,13 @@ class AdController extends MyAbstractController
 
 
 
-        $urlGetContact = $this->url()->fromRoute('home/ad/getContact', ['id'=>($adId !== null ? $adId : 0)]);
+        $urlGetContact = $this->url()->fromRoute(
+            'home/ad/getContact',
+            [
+                'id'=>($adId !== null ? $adId : 0),
+                'token' => General::getFromSession('token')
+            ]
+        );
         $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
 
         /*if ($this->getRequest()->isXmlHttpRequest()) {
@@ -565,39 +571,50 @@ class AdController extends MyAbstractController
     public function getContactAction()
     {
         $id = $this->getEvent()->getRouteMatch()->getParam('id', '');
-        $adDM = new AdDM($this->getAdapter());
-        /** @var $adObj \Application\Models\Ads\Ad*/
-        $adObj = $adDM->fetchOne([
-            'id' => $id,
-            'status' => 'ok'
-        ]);
-        $advertiserObj = null;
-        if ($adObj !== null) {
-            $advertiserDM = new AdvertiserDM($this->getAdapter());
-            /** @var $advertiserObj \Application\Models\Advertiser\Advertiser */
-            $advertiserObj = $advertiserDM->fetchOne($adObj->getAdvertiserId());
+        $token = $this->getEvent()->getRouteMatch()->getParam('token', '');
 
-            // count number of view contacts
-            if ($this->myAdvertiserObj === null ||
-                $this->myAdvertiserObj->getId() !== $adObj->getAdvertiserId()) {
-                $adObj->setContactDisplayed($adObj->getContactDisplayed() + 1);
-                $adDM->updateRow($adObj);
+        if ($token === General::getFromSession('token')) {
+            $adDM = new AdDM($this->getAdapter());
+            /** @var $adObj \Application\Models\Ads\Ad */
+            $adObj = $adDM->fetchOne([
+                'id' => $id,
+                'status' => 'ok'
+            ]);
+            $advertiserObj = null;
+            if ($adObj !== null) {
+                $advertiserDM = new AdvertiserDM($this->getAdapter());
+                /** @var $advertiserObj \Application\Models\Advertiser\Advertiser */
+                $advertiserObj = $advertiserDM->fetchOne($adObj->getAdvertiserId());
+
+                // count number of view contacts
+                if ($this->myAdvertiserObj === null ||
+                    $this->myAdvertiserObj->getId() !== $adObj->getAdvertiserId()
+                ) {
+                    $adObj->setContactDisplayed($adObj->getContactDisplayed() + 1);
+                    $adDM->updateRow($adObj);
+                }
+                ////
             }
-            ////
+            return new JsonModel([
+                'error' => $advertiserObj !== null ? 0 : 1,
+                'result' =>  $advertiserObj !== null ? [
+                    'name' => $advertiserObj->getName(),
+                    'tel1' => $advertiserObj->getTel1(),
+                    'tel2' => $advertiserObj->getTel2(),
+                    'tel3' => $advertiserObj->getTel3(),
+                    'email' => $advertiserObj->getEmail(),
+                    'url' => $advertiserObj->getUrl(),
+                    'location' => $advertiserObj->generateLocation()
+                ] : null,
+                'message' => $advertiserObj !== null ? '' : 'Datele de contact nu au fost gasite',
+            ]);
+        } else {
+            return new JsonModel([
+                'error' => 1,
+                'result' =>  null,
+                'message' => 'Datele de contact nu au fost gasite',
+            ]);
         }
-
-
-        return new JsonModel([
-            'error' => $advertiserObj !== null ? 0 : 1,
-            'result' =>  $advertiserObj !== null ? [
-                'name' => $advertiserObj->getName(),
-                'tel1' => $advertiserObj->getTel1(),
-                'email' => $advertiserObj->getEmail(),
-                'url' => $advertiserObj->getUrl(),
-                'location' => $advertiserObj->generateLocation()
-            ] : null,
-            'message' => $advertiserObj !== null ? '' : 'Datele de contact nu au fost gasite',
-        ]);
     }
 
     public function cronInactivateOldAdsAction()
