@@ -27,14 +27,18 @@ $role = \Application\libs\General::getFromSession('AuthenticatedUserRole');
                                 </span>&nbsp;
                                 <?=$this->myAdvertiserObj->getName()?>
                             </li>
+                            <?php if ($this->myAdvertiserObj->getAccountType() === 'parc-auto') { ?>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('nume')?></span>&nbsp;
                                 <?=$this->myUser->getDisplayName()?>
                             </li>
+                            <?php } ?>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
                                 <?=$this->myAdvertiserObj->getEmail()?>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
-                                <?=$this->myAdvertiserObj->getTel1()?> <?=$this->myAdvertiserObj->getTel2()?> <?=$this->myAdvertiserObj->getTel3()?>
+                                <a href="tel:<?=$this->myAdvertiserObj->getTel1()?>"><?=$this->myAdvertiserObj->getTel1()?></a>
+                                <a href="tel:<?=$this->myAdvertiserObj->getTel2()?>"><?=$this->myAdvertiserObj->getTel2()?></a>
+                                <a href="tel:<?=$this->myAdvertiserObj->getTel3()?>"><?=$this->myAdvertiserObj->getTel3()?></a>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Adresa')?></span>&nbsp;
                                 <?=$this->myAdvertiserObj->generateLocation()?>

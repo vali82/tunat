@@ -38,16 +38,19 @@ class IndexController extends MyAbstractController
 
     public function termsAction()
     {
+        $this->layout()->headTitle = 'Termeni si Conditii';
         return [];
     }
 
     public function privacyAction()
     {
+        $this->layout()->headTitle = 'Confidentialitate';
         return [];
     }
 
     public function contactAction()
     {
+        $this->layout()->headTitle = 'Contact';
         $form = new ContactForm();
         $form->contact();
         $request = $this->getRequest();
