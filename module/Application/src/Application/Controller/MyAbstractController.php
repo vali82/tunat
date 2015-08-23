@@ -161,6 +161,7 @@ class MyAbstractController extends AbstractActionController
                             )
                         ),
                         [
+                            'adv_id' => $user_id,
                             'option' => 'delete',
                             'folder' => $user_id . 'x' . implode('x', $folder),
                             'name' => $filename
@@ -212,7 +213,7 @@ class MyAbstractController extends AbstractActionController
         foreach ($adapter->getFileInfo() as $file => $info) {
             if ($folder[0] == 'ads' || $folder[0] == 'offers') {
                 $cnt++;
-                if ($cnt > 10) {
+                if ($cnt > 5) {
                     $response = $this->getResponse();
                     $response->setStatusCode(403);
                     $response->sendHeaders();

@@ -686,6 +686,7 @@ $.general = function() {
                         $('#contactParkPhone').parent().attr('href', 'tel:'+data.result.tel1);
                         $('#contactParkEmail').attr('href', 'mailto:'+data.result.email);
                         $('#contactParkAddress').html(data.result.location);
+                        $('#contactParkAddress').parent().attr('href', 'http://maps.google.com/?q='+data.result.location);
                         $('#adGetContactButton').slideUp();
                         $('#contactParkContainer').slideDown();
                     } else {

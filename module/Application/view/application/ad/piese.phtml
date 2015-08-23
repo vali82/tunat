@@ -122,7 +122,7 @@ $cars = $this->layout()->cars;
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
 <div class="row">
     <div class="col-md-3 filters">
-    <h3>Filtre</h3>
+    <h3>Cautare</h3>
     <!--Filtrare Anunturi-->
         <form class="panel col-md-12" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
             <div class="key-words">
@@ -159,7 +159,7 @@ $cars = $this->layout()->cars;
                 <input id ="searchOem" value="<?=$this->searchValues['oem']?>"  maxlength="50"  type="text">
             </div>
 
-            <button type="submit" id="button-search-ads" class="btn-green button" data-loading-text="cautare...">Aplica</button>
+            <button type="submit" id="button-search-ads" class="btn-green button" data-loading-text="cautare...">cauta</button>
         </form>
 <!--end Filtrare Anunturi-->
 

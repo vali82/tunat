@@ -805,7 +805,7 @@ span.no-results-found {
 .seller{
     width: 68%;
     margin-bottom: 50px;
-    height: 90px
+    height: 75px
 }
 .seller span {
     color: #c4c7ca;
@@ -844,7 +844,7 @@ span.no-results-found {
     /*color: #868788;*/
 }
 
-.contact a {
+.contact a.button {
     width: 100%;
     padding: 20px;
     font-size: 18px;
@@ -931,6 +931,9 @@ ul.dropdown-menu li a {
    
 }
 @media screen and (max-width: 768px){
+    .brand-listing {
+        margin-top: 0px;
+    }
     /*#categoryContainer{
         width: 75%;
     }

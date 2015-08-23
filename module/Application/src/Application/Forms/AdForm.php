@@ -40,7 +40,7 @@ class AdForm extends AbstractForm
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'start'),
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'start'),
                 'required' => true,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'extraInfo' => 'obligatoriu'
 
             ),
         ));
@@ -60,7 +60,7 @@ class AdForm extends AbstractForm
                 'id' => 'select2CarModels',
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => ''),
                 'required' => true,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -77,7 +77,7 @@ class AdForm extends AbstractForm
                 'id' => 'select2CarModels2',
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
                 'required' => true,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'extraInfo' => 'obligatoriu'
 
             ),
         ));
@@ -100,8 +100,8 @@ class AdForm extends AbstractForm
 //                'disabled' => 'disabled',
                 'id' => 'year_start',
                 'group' => array('size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12', 'type' => 'start'),
-                'required' => false,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'required' => true,
+                'extraInfo' => 'obligatoriu'
             ),
         ));
         $this->add(array(
@@ -118,8 +118,8 @@ class AdForm extends AbstractForm
 //                'disabled' => 'disabled',
                 'id' => 'year_end',
                 'group' => array('size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12', 'type' => ''),
-                'required' => false,
-//                'extraInfo' => 'Sau selecteaza din cei adaugati deja in sistem'
+                'required' => true,
+                'extraInfo' => 'obligatoriu'
             ),
         ));
 
@@ -133,7 +133,8 @@ class AdForm extends AbstractForm
             'attributes' => array(
 //                'id' => 'year_end',
                 'group' => array('size' => 'col-lg-4 col-md-4 col-sm-4 col-xs-12', 'type' => 'end'),
-                'required' => false,
+                'required' => true,
+                'extraInfo' => 'obligatoriu'
             ),
         ));
 
@@ -160,7 +161,7 @@ class AdForm extends AbstractForm
                 'id' => 'select2CarPartsSub',
 //                'group' => array('size' => 'col-sm-8 col-md-4', 'sizeLabel' => 'col-sm-4 col-md-2', 'type' => 'end'),
                 'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'start'),
-                'extraInfo' => 'numele piesei'
+                'extraInfo' => 'obligatoriu: numele piesei'
 
             ),
         ));
@@ -175,7 +176,7 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'code_oem',
                 'required' => false,
-                'extraInfo' => 'Cod unic de origine, OEM',
+                'extraInfo' => 'obligatoriu: cod unic de origine, OEM',
                 'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'end'),
             ),
         ));
@@ -188,7 +189,8 @@ class AdForm extends AbstractForm
                 'label' => 'Descriere',
             ),
             'attributes' => array(
-                'extraInfo' => 'detalii anunt, descriere generala a prodului de vanzare, sau orice caracteristica importanta'
+                'extraInfo' => 'obligatoriu: detalii anunt, descriere generala a prodului de vanzare, sau orice caracteristica importanta',
+                'rows' => 10,
                 //'group' => array('size'=> 'col-sm-4','type'=>'end'),
 //				'id' => 'last_name',
             ),
@@ -211,11 +213,12 @@ class AdForm extends AbstractForm
             ),
             'attributes' => array(
                 'group' => array(
-                    'size' => 'col-lg-2 col-md-3 col-sm-4 col-xs-8',
+                    'size' => 'col-lg-3 col-md-3 col-sm-4 col-xs-8',
                     'sizeLabel' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
                     'type' => 'start'
                 ),
                 'type' => 'text',
+                'extraInfo' => 'obligatoriu: un pret real va ajuta in vanzarea piesei'
             ),
         ));
         $this->add(array(
@@ -260,7 +263,7 @@ class AdForm extends AbstractForm
             ],
             'attributes' => array(
                 'maxFileSize' => '2MB',
-                'maxNumberOfFiles' => 10,
+                'maxNumberOfFiles' => 5,
                 'acceptedFileType' => 'jpeg, png, gif'
 //                'noLabel' => true,
                 //'textAbove' => 'Detalii Anunt',
