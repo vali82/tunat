@@ -74,7 +74,7 @@
         <div class="info-details">
             <p>
                 <span class="category-icon">
-                    <img src="<?=$this->basePath()?>/img/<?=$this->car['categoryImg']?>.png" />
+                    <img src="<?=$this->basePath()?>/img/categ_<?=$this->car['categoryID']?>.png" />
                 </span>
                 <span><?=$this->car['category']?></span>
             </p>
@@ -84,7 +84,7 @@
                     <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$this->car['classUrlized'].'.jpg')) { ?>
                         <img src="<?=$this->basePath() . '/img/brand/'.$this->car['classUrlized'].'.jpg'?>"/></a>
                     <?php } else { ?>
-                        <img src="<?=$this->basePath()?>/img/<?=$this->car['categoryImg']?>.png" />
+                        <img src="<?=$this->basePath()?>/img/categ_<?=$this->car['categoryID']?>.png" />
                     <?php } ?>
 
                 </span>

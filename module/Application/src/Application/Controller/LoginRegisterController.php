@@ -404,15 +404,15 @@ class LoginRegisterController extends MyAbstractController
         $userRoleLinkerDM = $this->getServiceLocator()->get('getUserRoleLinkerDB');
         $usrole = $userRoleLinkerDM->fetchByUserId($user_id);
 
-        if ($usrole['role_id'] == 'parcauto') {
+        //if ($usrole['role_id'] !== 'parcauto' || $usrole['role_id'] == 'admin') {
             General::unsetSession('AuthenticatedUserRole');
             General::unsetSession('myAdvertiserObj');
             General::unsetSession('myUser');
             return $this->redirect()->toRoute('home/ad/myAds');
 
-        } else {
+        /*} else {
             return $this->redirect()->toRoute('home');
-        }
+        }*/
 
     }
 
@@ -426,6 +426,6 @@ class LoginRegisterController extends MyAbstractController
             $headers->addHeader($new_cookie);
         }
 
-        $this->redirect()->toRoute('zfcuser/logout');
+        return $this->redirect()->toRoute('zfcuser/logout');
     }
 }

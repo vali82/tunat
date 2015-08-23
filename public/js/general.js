@@ -129,7 +129,10 @@ $.general = function() {
                     e.preventDefault();
                     e.stopPropagation();
 
-                    $('#allCarsContainer').slideUp('slow');
+                    //$('#allCarsContainer').slideUp('slow');
+                    $('#allCarsContainer').slideUp('normal', function() {
+                        $('#announcement-listing').css('marginTop','-126px');
+                    });
                     $('#generalBanner').slideUp();
                     $('#categoryContainer').hide();
                     $('#mainContainer').css('paddingTop','100px');
@@ -645,9 +648,16 @@ $.general = function() {
             },
             _changeCarMake: function () {
                 if ($('#allCarsContainer').is(':visible')) {
-                    $('#allCarsContainer').slideUp();
+                    $('#allCarsContainer').slideUp('normal', function() {
+                        $('#announcement-listing').css('marginTop','-126px');
+                    });
+
                 } else {
-                    $('#allCarsContainer').slideDown();
+                    $('#announcement-listing').css('marginTop','0px');
+                    $('#allCarsContainer').slideDown('normal', function() {
+
+                    });
+
                 }
 
             },

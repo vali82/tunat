@@ -266,7 +266,7 @@ return array(
     "The input has failed the IBAN check" => "The input has failed the IBAN check",
 
     // Zend\Validator\Identical
-    "The two given tokens do not match" => "Cele 2 campuri nu sunt identice",
+    "The two given tokens do not match" => "Cele doua campuri nu sunt identice",
     "No token was provided to match against" => "No token was provided to match against",
 
     // Zend\Validator\InArray
@@ -288,7 +288,7 @@ return array(
     "The input is not less or equal than '%max%'" => "The input is not less or equal than '%max%'",
 
     // Zend\Validator\NotEmpty
-    "Value is required and can't be empty" => "Este nevoie de o valoare și nu poate fi goală",
+    "Value is required and can't be empty" => "Este nevoie de o valoare",
     "Invalid type given. String, integer, float, boolean or array expected" => "Invalid type given. String, integer, float, boolean or array expected",
 
     // Zend\Validator\Regex

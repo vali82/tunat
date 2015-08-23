@@ -16,6 +16,7 @@ use Application\Mail\MailGeneral;
 use Application\Models\Ads\Ad;
 use Application\Models\Ads\AdCollection;
 use Application\Models\Ads\AdDM;
+use Application\Models\Advertiser\Advertiser;
 use Application\Models\Advertiser\AdvertiserDM;
 use Application\Models\Cars\CarsCollection;
 use Zend\View\Model\JsonModel;
@@ -31,10 +32,11 @@ class AdController extends MyAbstractController
     public function uploadAction()
     {
         $option = $this->getEvent()->getRouteMatch()->getParam('option', '');
+        $advId = (int)$this->getEvent()->getRouteMatch()->getParam('adv_id', 0);
 
         if ($option == '' && $this->getRequest()->isPost()) {
             return $this->uploadImages(
-                $this->myAdvertiserObj->getId(),
+                $advId > 0 ? $advId : $this->myAdvertiserObj->getId(),
                 ['ads', General::getFromSession('adTmpId')],
                 ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
                 2*1024*1024
@@ -42,7 +44,7 @@ class AdController extends MyAbstractController
         }
         if ($this->getRequest()->isGet()) {
             return  $this->uploadGetUploaded(
-                $this->myAdvertiserObj->getId(),
+                $advId > 0 ? $advId : $this->myAdvertiserObj->getId(),
                 ['ads', General::getFromSession('adTmpId')]
             );
         }
@@ -57,16 +59,15 @@ class AdController extends MyAbstractController
         $this->layout()->setVariable('myAccountMenu', [
             'active' => 'addad'
         ]);
-        /*$mail = new MailGeneral($this->getServiceLocator());
-        $mail->_to = 'ileavalentin@gmail.com';
-        $mail->_no_reply = true;
-        var_dump($mail->forgotPassword("Gigi D'agostino", '123456'));*/
+
+        $states = General::getFromSession('states');
+        unset($states[0]); // delete the "oricare" value
 
         $cars = $this->cars;
         $id = $this->getEvent()->getRouteMatch()->getParam('id', null);
 
         $this->layout()->js_call .= ' generalObj.cars = '.json_encode($cars).'; ';
-        $this->layout()->js_call .= ' generalObj.ad.create("'.$this->url()->fromRoute("home/ad/upload").'"); ';
+
 
         $request = $this->getRequest();
         $adCollection = new AdCollection($this);
@@ -77,17 +78,28 @@ class AdController extends MyAbstractController
                 'active' => 'editad'
             ]);
             $adDM = new AdDM($this->adapter);
-            $resourceObj = $adDM->fetchOne([
-                'id' => $id,
-                'advertiser_id' => $this->myAdvertiserObj->getId()
-            ]);
+            if ($this->role == 'contentmanager' || $this->role == 'admin') {
+                $resourceObj = $adDM->fetchOne([
+                    'id' => $id,
+//                    'advertiser_id' => $this->myAdvertiserObj->getId()
+                ]);
+            } else {
+                $resourceObj = $adDM->fetchOne([
+                    'id' => $id,
+                    'advertiser_id' => $this->myAdvertiserObj->getId()
+                ]);
+            }
+
             if ($resourceObj === null) {
                 $this->flashMessenger()->addErrorMessage('A aparut o eroare! Anunt invalid!');
-                $this->redirect()->toRoute('home/ad/myAds', ['status'=>'active']);
+                return $this->redirect()->toRoute('home/ad/myAds', ['status'=>'active']);
             }
             $adTmpId = $id;
             General::addToSession('adTmpId', $adTmpId);
 
+            $file_path = PUBLIC_IMG_PATH . $resourceObj->getAdvertiserId();
+
+            $this->layout()->js_call .= ' generalObj.ad.create("'.$this->url()->fromRoute("home/ad/upload", ['adv_id'=>$resourceObj->getAdvertiserId()]).'"); ';
             $this->layout()->js_call .=
                 ' generalObj.ad.changeClass("'.$resourceObj->getCarMake().'");'
                 .
@@ -95,31 +107,30 @@ class AdController extends MyAbstractController
             ;
 
         } else {
+            $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId();
+            $this->layout()->js_call .= ' generalObj.ad.create("'.$this->url()->fromRoute("home/ad/upload", ['adv_id'=>0]).'"); ';
             // ADD
             if ($request->isPost()) {
                 $adTmpId = General::getFromSession('adTmpId');
             } else {
                 $adTmpId = 'tmp'.rand(10000, 99999);
-
                 General::addToSession('adTmpId', $adTmpId);
             }
 
             $resourceObj = new Ad();
         }
 
-        $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/'. $adTmpId . '/' ;
+        $file_path .= '/ads/'. $adTmpId . '/';
 
         $form = new AdForm();
         $form->setCancelRoute('back');
         $years = $adCollection->getYears();
-        $form->create($resourceObj, $this->cars['categories'], $years, null, null, null);
+        $form->create($resourceObj, $this->cars['categories'], $years, $this->role, $states);
 
         $form->bind($resourceObj);
 
-        $resourceObj->setAdvertiserId($this->myAdvertiserObj->getId());
-
         if ($request->isPost()) {
-            $filter = new AdFilter();
+            $filter = new AdFilter($this->role);
             $form->setInputFilter($filter->getInputFilter());
 
             $form->setData($request->getPost());
@@ -150,26 +161,81 @@ class AdController extends MyAbstractController
                     ->setViews(0)
                     ->setContactDisplayed(0)
                 ;
+                $resourceObj->setPrice(str_replace(',', '.', $resourceObj->getPrice()));
                 $adDM = new AdDM($this->adapter);
 
                 if ($id === null) {
+                    // create adv if is content manager
+                    if ($this->role == 'contentmanager' || $this->role == 'admin') {
+                        $advDM = new AdvertiserDM($this->adapter);
+                        $advObj = new Advertiser();
+                        $advObj
+                            ->setAccountType('unregistered')
+                            ->setAddress($filter->getInputFilter()->getValue('adv_address'))
+                            ->setCity($filter->getInputFilter()->getValue('adv_city'))
+                            ->setDescription('')
+                            ->setEmail($filter->getInputFilter()->getValue('adv_email'))
+                            ->setLogo('')
+                            ->setName($filter->getInputFilter()->getValue('adv_name'))
+                            ->setState($filter->getInputFilter()->getValue('adv_state'))
+                            ->setTel1($filter->getInputFilter()->getValue('adv_tel'))
+                            ->setTel2('')
+                            ->setTel3('')
+                            ->setUrl('')
+                        ;
+                        $advId = $advDM->createRow($advObj);
+
+                    } else {
+                        $advId = $this->myAdvertiserObj->getId();
+                    }
+
+
                     $resourceObj->setExpirationDate(General::DateTime($expDate));
+                    $resourceObj->setAdvertiserId($advId);
                     $adId = $adDM->createRow($resourceObj);
 
 
+
                     if ($adId && is_dir($file_path)) {
-                        rename($file_path, PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/' . $adId . '/');
+                        $pathAdv = PUBLIC_IMG_PATH . $advId . '/';
+                        if (!is_dir($pathAdv)) {
+                            mkdir($pathAdv);
+                            chmod($pathAdv, 0755);
+                            mkdir($pathAdv . '/ads/');
+                            chmod($pathAdv . '/ads/', 0755);
+                        }
+                        rename($file_path, PUBLIC_IMG_PATH . $advId . '/ads/' . $adId . '/');
                     }
                     $this->flashMessenger()->addSuccessMessage('Anuntul a fost adaugat cu success!');
 
                 } else {
-                    $adId = $adDM->updateRow($resourceObj);
+                    // update adv if is content manager
+                    if (($this->role == 'contentmanager' || $this->role == 'admin') &&
+                        $resourceObj->getAdvertiserId() !== $this->myAdvertiserObj->getId()
+                    ) {
+                        $advDM = new AdvertiserDM($this->adapter);
+                        $advObj = $advDM->fetchOne($resourceObj->getAdvertiserId());
+                        if ($advObj !== null) {
+                            $advObj
+                                ->setAccountType('unregistered')
+                                ->setAddress($filter->getInputFilter()->getValue('adv_address'))
+                                ->setCity($filter->getInputFilter()->getValue('adv_city'))
+                                ->setEmail($filter->getInputFilter()->getValue('adv_email'))
+                                ->setName($filter->getInputFilter()->getValue('adv_name'))
+                                ->setState($filter->getInputFilter()->getValue('adv_state'))
+                                ->setTel1($filter->getInputFilter()->getValue('adv_tel'))
+                            ;
+                        }
+                        $advDM->updateRow($advObj);
+                    }
+
+                    $adDM->updateRow($resourceObj);
                     $this->flashMessenger()->addSuccessMessage('Anuntul a fost modificat cu success!');
 
                 }
                 General::unsetSession('adTmpId');
 
-                $this->redirect()->toRoute('home/ad/myAds');
+                return $this->redirect()->toRoute('home/ad/myAds');
             } else {
                 $this->layout()->js_call .=
                     ' generalObj.ad.changeClass("'.$form->get('car_make')->getValue().'");'
@@ -177,7 +243,30 @@ class AdController extends MyAbstractController
                     ' generalObj.ad.changeModel("'.$form->get('car_model')->getValue().'"); '
                 ;
             }
+        } else {
+            if ($id !== null && ($this->role == 'contentmanager' || $this->role == 'admin') &&
+                $resourceObj->getAdvertiserId() !== $this->myAdvertiserObj->getId()
+            ) {
+                // anuntul nu este personal ... atunci este pentru un alt advertiser
+
+                $advDM = new AdvertiserDM($this->adapter);
+                $advObj = $advDM->fetchOne($resourceObj->getAdvertiserId());
+                $form->populateValues([
+                    'adv_name' => $advObj->getName(),
+                    'adv_email' => $advObj->getEmail(),
+                    'adv_tel' => $advObj->getTel1(),
+                    'adv_address' => $advObj->getAddress(),
+                    'adv_city' => $advObj->getCity(),
+                    'adv_state' => $advObj->getState()
+                ]);
+            }
+            if ($id !== null) {
+                $form->populateValues([
+                    'price' => str_replace('.', ',', $resourceObj->getPrice())
+                ]);
+            }
         }
+
 
         return [
             'form' => $form,
@@ -213,7 +302,8 @@ class AdController extends MyAbstractController
         $content = $ad->adListHTML([
             'place' => 'myAds',
             'status' => $status,
-            'token' => $token
+            'token' => $token,
+            'role' => $this->role
         ]);
 
         $adList = $content['list'];
@@ -239,15 +329,24 @@ class AdController extends MyAbstractController
 
         if ($token == General::getFromSession('token')) {
             $adDM = new AdDM($this->adapter);
+
             /** @var $adObj \Application\Models\Ads\Ad*/
-            $adObj = $adDM->fetchOne([
-                'id' => $id,
-                'advertiser_id' => $this->myAdvertiserObj->getId()
-            ]);
+            if ($this->role == 'admin') {
+                $adObj = $adDM->fetchOne([
+                    'id' => $id,
+                ]);
+            } else {
+                $adObj = $adDM->fetchOne([
+                    'id' => $id,
+                    'advertiser_id' => $this->myAdvertiserObj->getId()
+                ]);
+            }
+
+
             if ($adObj !== null) {
                 if ($mode == 'delete') {
                     $adDM->deleteOne($adObj);
-                    $file_path = PUBLIC_IMG_PATH . $this->myAdvertiserObj->getId() . '/ads/' . $id;
+                    $file_path = PUBLIC_IMG_PATH . $adObj->getAdvertiserId() . '/ads/' . $id;
                     foreach (glob($file_path . "/*") as $filefound) {
                         @unlink($filefound);
                     }
@@ -285,7 +384,7 @@ class AdController extends MyAbstractController
             $this->flashMessenger()->addSuccessMessage($messageSuccess);
         }
 
-        $this->redirect()->toRoute('home/ad/myAds', ['status' => $statusRedirect]);
+        return $this->redirect()->toRoute('home/ad/myAds', ['status' => $statusRedirect]);
     }
 
     public function pieseAction()

@@ -199,7 +199,7 @@ class MailGeneral extends AbstractActionController
 
 	    if ($this->method === 'mandrill') {
 
-		    if (APPLICATION_ENV != 'development' || 1==1) {
+		    if (APPLICATION_ENV != 'development' || 1==2) {
 			    $response = $this->mandrillAction();
 		    } else {
 			    $response = array('error'=>false, 'message'=>'');

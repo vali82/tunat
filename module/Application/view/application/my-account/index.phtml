@@ -7,9 +7,11 @@ $this->headScript()
 //    ->prependFile($this->basePath() . '/js/newsletter.js')
 ;
 //$this->layout()->js_call .= ' newsletterObj.loadNewsletterOptionData("'.$this->url('kindergarten/newsletter/saveNewsletterOption').'"); ';
+$role = \Application\libs\General::getFromSession('AuthenticatedUserRole');
 ?>
-<h3><?=$this->translate('Contul Meu')?></h3>
-
+<h3><?=$this->translate('Contul Meu')?><?=$role === 'admin' ? ' - ADMIN TB.ro' : ''?></h3>
+<div class="row">
+    <div class="col-sm-12">
         <div class="panel">
             <div class="panel-body">
                 <div class="row">
@@ -20,23 +22,26 @@ $this->headScript()
                         <ul class="list-group">
 
                             <li class="list-group-item">
-                                <span class="badge"><?=($this->myAdvertiserObj->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?></span>
-                                <span><?=$this->myAdvertiserObj->getName()?></span>
+                                <span class="badge">
+                                    <?=($this->myAdvertiserObj->getAccountType() === 'parc-auto' ? 'Parc Auto' : 'Particular')?>
+                                </span>&nbsp;
+                                <?=$this->myAdvertiserObj->getName()?>
                             </li>
-                            <li class="list-group-item">
-                                <span class="badge"><?=$this->translate('nume')?></span>&nbsp;
-                                <span><?=$this->myUser->getDisplayName()?></span>
+                            <?php if ($this->myAdvertiserObj->getAccountType() === 'parc-auto') { ?>
+                            <li class="list-group-item"><span class="badge"><?=$this->translate('nume')?></span>&nbsp;
+                                <?=$this->myUser->getDisplayName()?>
                             </li>
-                            <li class="list-group-item">
-                                <span class="badge"><?=$this->translate('Email')?></span>&nbsp;
-                                <span><?=$this->myAdvertiserObj->getEmail()?></span>
+                            <?php } ?>
+                            <li class="list-group-item"><span class="badge"><?=$this->translate('Email')?></span>&nbsp;
+                                <?=$this->myAdvertiserObj->getEmail()?>
                             </li>
-                            <li class="list-group-item">
-                                <span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
-                                <span><?=$this->myAdvertiserObj->getTel1()?> <?=$this->myAdvertiserObj->getTel2()?> <?=$this->myAdvertiserObj->getTel3()?></span>
+                            <li class="list-group-item"><span class="badge"><?=$this->translate('Telefon')?></span>&nbsp;
+                                <a href="tel:<?=$this->myAdvertiserObj->getTel1()?>"><?=$this->myAdvertiserObj->getTel1()?></a>
+                                <a href="tel:<?=$this->myAdvertiserObj->getTel2()?>"><?=$this->myAdvertiserObj->getTel2()?></a>
+                                <a href="tel:<?=$this->myAdvertiserObj->getTel3()?>"><?=$this->myAdvertiserObj->getTel3()?></a>
                             </li>
                             <li class="list-group-item"><span class="badge"><?=$this->translate('Adresa')?></span>&nbsp;
-                                <span><?=$this->myAdvertiserObj->generateLocation()?></span>
+                                <?=$this->myAdvertiserObj->generateLocation()?>
                             </li>
                         </ul>
                     </div>
@@ -49,6 +54,6 @@ $this->headScript()
                 <a href="<?=$this->url('zfcuser/changepassword')?>" type="button" class="button btn-blue"><?=$this->translate('Schimba Parola')?></a>
             </div>
         </div>
- 
+    </div>
 </div>
 

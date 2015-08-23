@@ -1,18 +1,20 @@
-
 <div class="row">
-    <div class="col-md-3">
-        <h2>Cerere Oferta</h2>
+    <div class="hideOnMobile col-lg-3 col-md-3 col-sm-3 col-sm-12">
+        <ul class="my-account">
+            <li role="presentation" class="active panel">
+                <a href="#">Cerere Oferta</a>
+            </li>
+        </ul>
         <p>Trimite-ne mesajul tau si iti vom raspunde in maxim 24 ore!</p>
 
         <p>
             Puteti sa ne contactati pentru o oferta de piese direct prin departamentul de vanzari: <br />
             &bull; e-mail: <a href="mailto:vanzari@tirbox.ro">vanzari@tirbox.ro</a><br />
-            &bull; telefon: <a href="tel:0734.123.654">0734.123.654</a><br />
+            &bull; telefon: <a href="tel:0740258207">0740.258.207</a><br />
         </p>
-
-
     </div>
-    <div class="col-md-9">
+    <div class="col-lg-9 col-md-9 col-sm-9 col-sm-12">
+        <h3><?=$this->translate('Cerere Oferta Personalizata pentru nevoile tale')?></h3>
         <?php
         \Application\View\Helper\Forms::render(
             $this,

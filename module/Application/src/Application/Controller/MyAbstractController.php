@@ -38,7 +38,7 @@ class MyAbstractController extends AbstractActionController
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');
 
-            if ($this->role == 'parcauto') {
+//            if ($this->role == 'parcauto' || $this->role == 'admin') {
                 $this->myAdvertiserObj = $this->getServiceLocator()->get('AdvertiserObj');
 
                 if ($this->myAdvertiserObj->getTel1() === '') {
@@ -52,7 +52,7 @@ class MyAbstractController extends AbstractActionController
                     }
 
                 }
-            }
+//            }
         }
 
 //        General::echop($this->role);
@@ -66,7 +66,7 @@ class MyAbstractController extends AbstractActionController
         // get cars make and models into session
         $cars = General::getFromSession('cars');
         $googleAnalitics = General::getFromSession('googleAnalitics');
-        if ($cars === null || 1==2) {
+        if ($cars === null || 1==1) {
             $carMake = [];
             $carsMakeDM = new CarsCategoriesDM($this->adapter);
             foreach ($carsMakeDM->fetchResultsArray(null, ['ord' => 'ASC']) as $k => $r) {
@@ -117,7 +117,10 @@ class MyAbstractController extends AbstractActionController
         $this->cars = $cars;
         $this->layout()->setVariables([
             'googleAnalitics' => $googleAnalitics,
-            'cars' => $cars
+            'cars' => $cars,
+            'headTitle' => 'Anunturi Gratuite - Dezmembrari camioane si utilaje',
+            'metaDescription' => 'Anunturi gratuite, anunturi piese noi, piese din dezmembrari, piese, second hand, camioane, utilitare max 3.5 tone, remorci, utilaje constructii, utilaje agricole, autobuze',
+            'metaKeywords' => 'dezmembrari, piese camioane, utilitare, remorci, utilaje constructii, autobuze'
         ]);
         ////
 
