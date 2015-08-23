@@ -683,7 +683,6 @@ $.general = function() {
                     .done(function (data) {
                     if (!data.error) {
                         $('#contactParkPhone').html(data.result.tel1);
-                        $('#contactParkEmail').html(data.result.email);
                         $('#contactParkAddress').html(data.result.location);
                         $('#adGetContactButton').slideUp();
                         $('#contactParkContainer').slideDown();

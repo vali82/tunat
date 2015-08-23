@@ -832,6 +832,13 @@ span.no-results-found {
     margin: 51px 0;
     color: #868788;
 }
+.info-details p.description-long{
+    height: auto;
+    /*overflow: hidden;*/
+    /*margin: 51px 0;*/
+    /*color: #868788;*/
+}
+
 .contact a {
     width: 100%;
     padding: 20px;

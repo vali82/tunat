@@ -241,7 +241,7 @@ class AdCollection
                         'imgSrc' => General::getSimpleAvatar(
                             $ad->getAdvertiserId() . 'xadsx'.$ad->getId(),
                             (count($adImg) > 0 ? $adImg[0] : ''),
-                            '100x100'
+                            '130x130'
                         ),
                         'title' => $ad->getPartName(),
                         'id' => $ad->getId(),
@@ -311,26 +311,18 @@ class AdCollection
                 $partial(
                     'application/ad/view-ad.phtml',
                     [
-                        'imgSrc' => General::getSimpleAvatar(
-                            $adObj->getAdvertiserId() . 'xadsx'.$adObj->getId(),
-                            (count($adImgs) > 0 ? $adImgs[0] : ''),
-                            '300x300'
-                        ),
-                        'imgSrcBig' => General::getSimpleAvatar(
-                            $adObj->getAdvertiserId() . 'xadsx'.$adObj->getId(),
-                            (count($adImgs) > 0 ? $adImgs[0] : ''),
-                            '2000x2000'
-                        ),
                         'images' => $adImgs,
                         'id' => $adObj->getId(),
                         'folder' => $adObj->getAdvertiserId() . 'xadsx'.$adObj->getId(),
                         'title' => $adObj->getPartName(),
                         'description' => $adObj->getDescription(),
+                        'descriptionShort' => strlen($adObj->getDescription()) > 200 ? substr($adObj->getDescription(), 0, 200) : '',
                         'stare' => $adObj->getStare(),
                         'href' => '#',
                         'views' => $adObj->getViews(),
                         'refreshDate' => General::DateTime($adObj->getUpdatedAt(), 'LONG'),
                         'expirationDate' => General::DateTime($adObj->getExpirationDate(), 'LONG'),
+                        'years' => $adObj->getYearStart() . ' - ' . $adObj->getYearEnd(),
                         'price' => ($adObj->getPrice() == round($adObj->getPrice()) ? round($adObj->getPrice()) : $adObj->getPrice()) .
                             ' ' . $adObj->getCurrency(),
                         'car' => [
@@ -406,7 +398,7 @@ class AdCollection
                             'photo' => General::getSimpleAvatar(
                                 $ad4thisAdvertiser->getAdvertiserId() . 'xadsx'.$ad4thisAdvertiser->getId(),
                                 (count($adImgs) > 0 ? $adImgs[0] : ''),
-                                '100x100'
+                                '130x130'
                             )
                         ];
                     }
