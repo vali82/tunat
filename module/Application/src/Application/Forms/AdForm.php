@@ -176,7 +176,7 @@ class AdForm extends AbstractForm
             'attributes' => array(
                 'id' => 'code_oem',
                 'required' => false,
-                'extraInfo' => 'obligatoriu: cod unic de origine, OEM',
+                'extraInfo' => 'optional: cod unic de origine, OEM',
                 'group' => array('size' => 'col-lg-6 col-md-6 col-sm-6 col-xs-12', 'type' => 'end'),
             ),
         ));

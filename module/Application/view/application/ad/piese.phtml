@@ -25,6 +25,7 @@ $cars = $this->layout()->cars;
     <?php
     // listare toate marcile inainte de a fi selectat modelul
     if (($this->class) === null) { ?>
+        <?php $this->layout()->headTitle = 'Anunturi Gratuite - piese '.$cars['categories'][$this->carcategoriesId];?>
         <div class="col-md-12 car-brand">
             <h3>Alegeti o marca</h3>
             <div class="popular-brands">
@@ -174,7 +175,8 @@ $cars = $this->layout()->cars;
 
 <!--Listing Anunturi-->  
     <div id="announcement-listing" class="col-md-9 brand-listing">
-        <h3>Anunturi Piese de <?=$cars['categories'][$this->carcategoriesId]?> <?=$this->class?></h3>
+        <?php $this->layout()->headTitle = 'Anunturi Piese de '.$cars['categories'][$this->carcategoriesId] . ' ' . $this->class; ?>
+        <h3 id="pageTitleElement"><?=$this->layout()->headTitle?></h3>
         <?php if ($this->adList !== null) { ?>
             <?=$this->adList?>
             <?=

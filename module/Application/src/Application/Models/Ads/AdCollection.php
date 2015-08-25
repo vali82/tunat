@@ -285,6 +285,9 @@ class AdCollection
         $cars = $this->controller->getCars();
         $carCollection = new CarsCollection($this->controller);
         $adDM = new AdDM($this->controller->getAdapter());
+
+
+
         /** @var $adObj \Application\Models\Ads\Ad*/
         $adObj = $adDM->fetchOne([
             'id' => $id,
