@@ -22,6 +22,7 @@ if (APPLICATION_ENV !== 'production') {
 }
 
 
+
 if (APPLICATION_ENV == 'development') {
     define('MAIN_DOMAIN', 'http://tirbox.local/');
 } elseif (APPLICATION_ENV == 'dev') {
