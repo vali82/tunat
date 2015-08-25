@@ -31,6 +31,14 @@ class Module
         date_default_timezone_set($config['timezone']);
         \Locale::setDefault($config['translator']['locale']);
 
+
+        if ((!defined('_CRONJOB_') || _CRONJOB_ == false) && $serviceManager->get('AuthenticatedUserRole') != "guest") {
+            if (General::getFromSession('myAdvertiserObj') === null) {
+                // set Advertiser
+                $serviceManager->get('AdvertiserObj');
+            }
+        }
+
         if ((!defined('_CRONJOB_') || _CRONJOB_ == false) && $serviceManager->get('AuthenticatedUserRole') == "guest") {
             // for register via SNC
             $e->getApplication()->getEventManager()->getSharedManager()->attach(
@@ -46,6 +54,8 @@ class Module
 
             // if cookie remember me
             if (isset($_COOKIE['tbroacc']) && $_COOKIE['tbroacc'] != '') {
+
+                General::unsetSession('myAdvertiserObj');
                 General::unsetSession('AuthenticatedUserRole');
                 // gasesc row-ul de user
                 $user = $serviceManager->get('UserDataMapper')->findByHashLogin($_COOKIE['tbroacc']);

@@ -55,6 +55,7 @@ class MyAbstractController extends AbstractActionController
 //            }
         }
 
+
 //        General::echop($this->role);
 //        General::echop($this->myAdvertiserObj);
 
