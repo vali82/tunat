@@ -98,6 +98,12 @@ $.general = function() {
 
                     $('#generalContainer').html(data.result.html);
                     $('#scriptsGeneral').html('<script type="text/javascript">'+data.result.js+'</script>');
+
+                    if ($('#pageTitleElement').length > 0) {
+                        document.title = $('#pageTitleElement').html() + ' - Tirbox.ro';
+                    } else {
+                        document.title = 'Anunturi Gratuite - Dezmembrari camioane si utilaje - Tirbox.ro';
+                    }
                 } else {
                     alert('asdad');
                 }

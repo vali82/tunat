@@ -13,6 +13,16 @@ defined('APPLICATION_ENV')
 
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
+if (APPLICATION_ENV !== 'production') {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 'On');
+} else {
+    error_reporting(0);
+    ini_set('display_errors', 'Off');
+}
+
+
+
 if (APPLICATION_ENV == 'development') {
     define('MAIN_DOMAIN', 'http://tirbox.local/');
 } elseif (APPLICATION_ENV == 'dev') {

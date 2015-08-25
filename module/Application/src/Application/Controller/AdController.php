@@ -455,7 +455,7 @@ class AdController extends MyAbstractController
 
 
 
-        // detect Ad ID
+        // detect Ad ID -  VIEW AD
         $adCollection = new AdCollection($this);
         $adId = null;
         $adView = null;
