@@ -1,19 +1,7 @@
 <?php echo $this->doctype();
 
 $role = $this->authenticatedUserRole();
-//$role = \Application\libs\General::getFromSession('AuthenticatedUserRole');
-//$role = $role === null ? 'guest' : $role;
 $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
-
-
-
-if ($role !== 'guest') {
-//    $myAdvertiserObj = $this->myAdvertiserObj();
-    $myAdvertiserObj = \Application\libs\General::getFromSession('myAdvertiserObj');
-    $name = $myAdvertiserObj->getName();
-} else {
-    $name = $user !== null ? $user->getEmail() : '';
-}
 
 ?><html lang="ro">
     <head>

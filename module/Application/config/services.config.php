@@ -47,7 +47,7 @@ return array(
                 $x = array_values($advertiserUsers)[0];
                 $dm = new \Application\Models\Advertiser\AdvertiserDM($dbAdapter);
                 $advertiser = $dm->fetchOne($x['advertiser_id']);
-                General::addToSession('myAdvertiserObj', $advertiser !== null ? $advertiser : false);
+                General::addToSession('myAdvertiserObj', $advertiser);
             }
             return $advertiser;
         },
@@ -75,13 +75,9 @@ return array(
             return $role;
         },*/
         'AuthenticatedUserRole' => function (ServiceLocatorInterface $sm) {
-//            $x = General::getFromSession('AuthenticatedUserRole');
-//            if ($x === null) {
-                $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
-                $roles = $pi->getIdentityRoles();
-                $x = array_pop($roles);
-//                General::addToSession('AuthenticatedUserRole', $x);
-//            }
+            $pi = $sm->get('BjyAuthorize\Provider\Identity\ProviderInterface');
+            $roles = $pi->getIdentityRoles();
+            $x = array_pop($roles);
             return $x;
         },
 
