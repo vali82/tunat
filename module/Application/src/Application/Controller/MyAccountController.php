@@ -135,7 +135,6 @@ class MyAccountController extends MyAbstractController
                         $this->translator->translate('Contul tau a fost modificat cu success')
                     );
                     General::unsetSession('myAdvertiserObj');
-                    General::unsetSession('myUser');
                     return $this->redirect()->toRoute('home/myAccount');
                 }
 

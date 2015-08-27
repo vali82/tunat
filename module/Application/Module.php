@@ -36,6 +36,13 @@ class Module
             if (General::getFromSession('myAdvertiserObj') === null) {
                 // set Advertiser
                 $serviceManager->get('AdvertiserObj');
+                if ((General::getFromSession('myAdvertiserObj') === null) &&
+                    $_SERVER['REQUEST_URI'] != '/logout'&&
+                    $_SERVER['REQUEST_URI'] != '/user/logout'
+                ) {
+                    header('Location: '.MAIN_DOMAIN.'logout');
+                    die();
+                }
             }
         }
 
@@ -56,7 +63,6 @@ class Module
             if (isset($_COOKIE['tbroacc']) && $_COOKIE['tbroacc'] != '') {
 
                 General::unsetSession('myAdvertiserObj');
-//                General::unsetSession('AuthenticatedUserRole');
                 // gasesc row-ul de user
                 $user = $serviceManager->get('UserDataMapper')->findByHashLogin($_COOKIE['tbroacc']);
                 if ($user !== null) {
@@ -67,9 +73,6 @@ class Module
 
                     // set Advertiser
                     $serviceManager->get('AdvertiserObj');
-                    // set role
-//                    General::unsetSession('AuthenticatedUserRole');
-                    $serviceManager->get('AuthenticatedUserRole');
                 }
             }
             ////

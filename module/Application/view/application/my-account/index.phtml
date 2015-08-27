@@ -7,7 +7,7 @@ $this->headScript()
 //    ->prependFile($this->basePath() . '/js/newsletter.js')
 ;
 //$this->layout()->js_call .= ' newsletterObj.loadNewsletterOptionData("'.$this->url('kindergarten/newsletter/saveNewsletterOption').'"); ';
-$role = \Application\libs\General::getFromSession('AuthenticatedUserRole');
+$role = $this->authenticatedUserRole();
 ?>
 <h3><?=$this->translate('Contul Meu')?><?=$role === 'admin' ? ' - ADMIN TB.ro' : ''?></h3>
 <div class="row">

@@ -225,8 +225,6 @@ class LoginRegisterController extends MyAbstractController
                         return $this->redirect()->toRoute('home');
                     } else {
                         General::unsetSession('myAdvertiserObj');
-                        General::unsetSession('myUser');
-//                        General::unsetSession('AuthenticatedUserRole');
                         $this->flashMessenger()->addSuccessMessage(
                             $this->translator->translate('Parola ta a fost schimbata cu success!')
                         );
@@ -401,18 +399,13 @@ class LoginRegisterController extends MyAbstractController
             $user_id = 0;
         }
 
-        $userRoleLinkerDM = $this->getServiceLocator()->get('getUserRoleLinkerDB');
-        $usrole = $userRoleLinkerDM->fetchByUserId($user_id);
-
-        //if ($usrole['role_id'] !== 'parcauto' || $usrole['role_id'] == 'admin') {
-//            General::unsetSession('AuthenticatedUserRole');
+        if ($user_id > 0) {
             General::unsetSession('myAdvertiserObj');
-            General::unsetSession('myUser');
             return $this->redirect()->toRoute('home/ad/myAds');
 
-        /*} else {
+        } else {
             return $this->redirect()->toRoute('home');
-        }*/
+        }
 
     }
 
