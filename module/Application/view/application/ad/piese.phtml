@@ -125,7 +125,7 @@ $cars = $this->layout()->cars;
     <div class="col-md-3 filters">
     <h3>Cautare</h3>
     <!--Filtrare Anunturi-->
-        <form class="panel col-md-12" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
+        <form class="panel col-md-12 card card-1" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
             <div class="key-words">
                 <label>Cuvinte cheie</label>
                 <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50"  type="text">
