@@ -4,321 +4,313 @@ $role = $this->authenticatedUserRole();
 $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
 ?><html lang="ro">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <?php
-        $this->headTitle()->append($this->headTitle)->setSeparator(' - ')->append('Tirbox.ro');
-        echo $this->headTitle()->setAutoEscape(false)
-        ?>
-        <meta name="robots" content="index, follow" />
-        <meta http-equiv="Content-Language" content="ro" />
-        <?php echo $this->headMeta()
-            ->appendName('description', $this->metaDescription)
-            ->appendName('keywords', $this->metaKeywords)
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-        ?>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <?php
+    $this->headTitle()->append($this->headTitle)->setSeparator(' - ')->append('Tirbox.ro');
+    echo $this->headTitle()->setAutoEscape(false)
+    ?>
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="Content-Language" content="ro" />
+    <?php echo $this->headMeta()
+        ->appendName('description', $this->metaDescription)
+        ->appendName('keywords', $this->metaKeywords)
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
 
-        <!-- Le styles -->
-        <?php
-        echo $this
-            ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-            ->prependStylesheet($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
-            ->prependStylesheet($this->basePath() . '/js/nprogress-master/nprogress.css')
+    <!-- Le styles -->
+    <?php
+    echo $this
+        ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        ->prependStylesheet($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
+        ->prependStylesheet($this->basePath() . '/js/nprogress-master/nprogress.css')
 //            ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
-            ->prependStylesheet($this->basePath() . '/css/style.css')
-            ->prependStylesheet('http://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700')
-            ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
-            ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
-            ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
-            ->prependStylesheet($this->basePath() . '/css/reset.css')
-        ;
-        ?>
+        ->prependStylesheet($this->basePath() . '/css/style.css')
+        ->prependStylesheet('http://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700')
+        ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
+        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+        ->prependStylesheet($this->basePath() . '/css/reset.css')
+    ;
+    ?>
 
-        <!-- Scripts -->
-        <?php echo $this->headScript()
-            ->appendFile($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
-            ->prependFile($this->basePath() . '/js/nprogress-master/nprogress.js')
-            ->prependFile($this->basePath() . '/js/general.js')
-            ->prependFile($this->basePath() . '/js/bootbox/bootbox.min.js')
+    <!-- Scripts -->
+    <?php echo $this->headScript()
+        ->appendFile($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
+        ->prependFile($this->basePath() . '/js/nprogress-master/nprogress.js')
+        ->prependFile($this->basePath() . '/js/general.js')
+        ->prependFile($this->basePath() . '/js/bootbox/bootbox.min.js')
 //            ->prependFile($this->basePath() . '/js/select2/select2.full.js')
-            ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-            ->prependFile($this->basePath() . '/js/jquery.min.js')
+        ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+        ->prependFile($this->basePath() . '/js/jquery.min.js')
 
 //            ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
 //            ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
-        ; ?>
+    ; ?>
 
-        <script>
-            <?=$this->layout()->googleAnalitics?>
-        </script>
-    </head>
-    <body>
     <script>
-//        NProgress.configure({ minimum: 0.5, easing: 'ease', speed: 500 });
-
-        //NProgress.start();
+        <?=$this->layout()->googleAnalitics?>
+    </script>
+</head>
+<body>
+    <script>
         NProgress.set(0.5);
         NProgress.inc(0.2);
-    </script
+    </script>
+    <?php if (APPLICATION_ENV != 'development') { ?>
     <div id="fb-root"></div>
-        <script>
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/ro_RO/sdk.js#xfbml=1&version=v2.3&appId=839888486066952";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
-        <header>
-            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?=$this->basePath() . '/img/logo.jpg'?>" alt="tirbox.ro" /><?php // echo $this->translate('tirbox.ro') ?></a>
-                    </div>
-                    <div class="collapse navbar-collapse">
-                        <div class="navbar-collapse collapse" id="navbar">
-                            <ul class="nav navbar-nav navbar-right">
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/ro_RO/sdk.js#xfbml=1&version=v2.3&appId=839888486066952";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <?php } ?>
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?=$this->basePath() . '/img/logo.jpg'?>" alt="tirbox.ro" /><?php // echo $this->translate('tirbox.ro') ?></a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <div class="navbar-collapse collapse" id="navbar">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="<?=$this->url('home')?>"><?php echo $this->translate('Acasa') ?></a>
+                            </li>
+                            <li>
+                                <a href="<?=$this->url('home/offers/create')?>"><?php echo $this->translate('Cerere Oferta') ?></a>
+                            </li>
+                           <!--  <li>
+                                <a href="#"><?php echo $this->translate('Categorii') ?></a>
+                            </li> -->
+                            <li>
+                                <a href="<?=$this->url('home/contact')?>"><?php echo $this->translate('Contact') ?></a>
+                            </li>
+                            <?php if ($role == 'guest') { ?>
                                 <li>
-                                    <a href="<?=$this->url('home')?>"><?php echo $this->translate('Acasa') ?></a>
+                                    <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
                                 </li>
-                                <li>
-                                    <a href="<?=$this->url('home/offers/create')?>"><?php echo $this->translate('Cerere Oferta') ?></a>
+                            <?php } else { ?>
+                                <li><a href="<?=$this->url('home/myAccount')?>">Contul meu</a></li>
+                                <li class="displayOnMobile"><a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a></li>
+                                <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
+                                <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
+                                <li class="displayOnMobile">
+                                    <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
                                 </li>
-                               <!--  <li>
-                                    <a href="#"><?php echo $this->translate('Categorii') ?></a>
-                                </li> -->
-                                <li>
-                                    <a href="<?=$this->url('home/contact')?>"><?php echo $this->translate('Contact') ?></a>
-                                </li>
-                                <?php if ($role == 'guest') { ?>
-                                    <li>
-                                        <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
-                                    </li>
-                                <?php } else { ?>
-                                    <li><a href="<?=$this->url('home/myAccount')?>">Contul meu</a></li>
-                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a></li>
-                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
-                                    <li class="displayOnMobile"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
-                                    <li class="displayOnMobile">
-                                        <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
-                                    </li>
-                                <?php } ?>
-                                <li><a class="add-offer<?=($role == 'guest' ? ' loginActionCreateAd' : '')?>" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
-                            </ul>
-                        </div>
-                    </div><!--/.nav-collapse -->
-                    <?php if ($role == 'guest') { ?>
-                        <div id="LoginRegisterContainer">
-                            <div class="contentLoginRegister">
-                                <div>
-                                    <img id="loginRegisterLoading" src="/img/loading.gif" style="display:none; height: 20px; padding-top: 0px">
-                                    <div id="errorLoginRegister"></div>
-                                </div>
-                                <div id="loginContainer">
-                                    <h4>Log in:</h4>
-                                    <?php echo $this->partial('scn-social-auth/user/login');?>
-                                </div>
-                                <div id="registerContainer">
-                                    <h4>Inregistreaza-te:</h4>
-                                    <?php echo $this->partial('scn-social-auth/user/register');?>
-                                </div>
-                                <div id="forgotContainer">
-                                    <h4>Ai uitat parola?</h4>
-                                    <?php echo $this->partial('scn-social-auth/user/forgot');?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
-                </div>
-            </nav>
-        </header>
-
-
-        <?php // if homepage banner ?>
-        <?php if (isset($this->isHomePage)) { ?>
-            <div id ="generalBanner" class="banner">
-                <div class="banner-img">
-                    <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
-                </div>
-                <div class="banner-text">
-                    <span>Cauti sau vinzi piese de schimb?</span>
-                    <span>Ai ajuns unde trebuie!</span>
-                </div>
-            </div>
-        <?php } elseif (isset($this->isCategoryPage)) { ?>
-            <div id ="generalBanner" class="banner">
-                <div class="banner-img" style="height: 180px">
-                    <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
-                </div>
-            </div>
-        <?php } ?>
-
-        <div id = "mainContainer" class="container"
-             <?php if (!isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>style="padding-top: 100px"<?php } ?>>
-
-            <?php
-            if (count($this->flashMessenger()->getErrorMessages())) : ?>
-                <div class="alert alert-danger alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <?php foreach ($this->flashMessenger()->getErrorMessages() as $fMessage) : ?>
-                        <?php echo $fMessage . '<br />'; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-            <?php
-            if (count($this->flashMessenger()->getSuccessMessages())) : ?>
-                <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <?php foreach ($this->flashMessenger()->getSuccessMessages() as $fMessage) : ?>
-                        <?php echo $fMessage . '<br />'; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-
-            <?php
-            if (count($this->flashMessenger()->getInfoMessages())) : ?>
-                <div class="alert alert-info alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <?php foreach ($this->flashMessenger()->getInfoMessages() as $fMessage) : ?>
-                        <?php echo $fMessage . '<br />'; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-            <?php
-            if (count($this->flashMessenger()->getMessages())) : ?>
-                <div class="alert alert-info alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <?php foreach ($this->flashMessenger()->getMessages() as $fMessage) : ?>
-                        <?php echo $fMessage . '<br />'; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-
-            <?php if (isset($this->myAccountMenu)) { ?>
-                <div class="row">
-                    <div class="hideOnMobile col-lg-3 col-md-3 col-sm-3 col-sm-12">
-                        <ul class="my-account">
-                            <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'myaccount' ? 'active' : '')?> panel">
-                                <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
-                            </li>
-                            <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'addad' ? 'active' : '')?> panel">
-                                <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
-                            </li>
-                            <li role="presentation" class="dropdown<?=($this->myAccountMenu['active'] === 'myads' ? ' active' : '')?> panel">
-                                <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                    Anunturile mele<span class="caret"></span>
-                                </a>
-                                <ul role="menu" class="dropdown-menu">
-                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Active</a></li>
-                                    <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Expirate</a></li>
-                                </ul>
-                            </li>
-
-                            <li role="presentation" class="panel">
-                                <a href="<?=$this->url('home/logout')?>">Logout</a>
-                            </li>
+                            <?php } ?>
+                            <li><a class="add-offer<?=($role == 'guest' ? ' loginActionCreateAd' : '')?>" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
                         </ul>
                     </div>
-                    <div id ="generalContainer" class="col-lg-9 col-md-9 col-sm-9 col-sm-12">
-                        <?php echo $this->content; ?>
+                </div><!--/.nav-collapse -->
+                <?php if ($role == 'guest') { ?>
+                    <div id="LoginRegisterContainer">
+                        <div class="contentLoginRegister">
+                            <div>
+                                <img id="loginRegisterLoading" src="/img/loading.gif" style="display:none; height: 20px; padding-top: 0px">
+                                <div id="errorLoginRegister"></div>
+                            </div>
+                            <div id="loginContainer">
+                                <h4>Log in:</h4>
+                                <?php echo $this->partial('scn-social-auth/user/login');?>
+                            </div>
+                            <div id="registerContainer">
+                                <h4>Inregistreaza-te:</h4>
+                                <?php echo $this->partial('scn-social-auth/user/register');?>
+                            </div>
+                            <div id="forgotContainer">
+                                <h4>Ai uitat parola?</h4>
+                                <?php echo $this->partial('scn-social-auth/user/forgot');?>
+                            </div>
+                        </div>
                     </div>
+                <?php } ?>
+            </div>
+        </nav>
+    </header>
+
+
+    <?= $this->partial('application/ad/partials/slider.phtml', [])?>
+
+    <div id = "mainContainer" class="container"
+         <?php if (!isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>style="padding-top: 100px"<?php } ?>>
+
+        <?php
+        if (count($this->flashMessenger()->getErrorMessages())) : ?>
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <?php foreach ($this->flashMessenger()->getErrorMessages() as $fMessage) : ?>
+                    <?php echo $fMessage . '<br />'; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php
+        if (count($this->flashMessenger()->getSuccessMessages())) : ?>
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <?php foreach ($this->flashMessenger()->getSuccessMessages() as $fMessage) : ?>
+                    <?php echo $fMessage . '<br />'; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+
+        <?php
+        if (count($this->flashMessenger()->getInfoMessages())) : ?>
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <?php foreach ($this->flashMessenger()->getInfoMessages() as $fMessage) : ?>
+                    <?php echo $fMessage . '<br />'; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php
+        if (count($this->flashMessenger()->getMessages())) : ?>
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <?php foreach ($this->flashMessenger()->getMessages() as $fMessage) : ?>
+                    <?php echo $fMessage . '<br />'; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+
+        <?php if (isset($this->myAccountMenu)) { ?>
+            <div class="row">
+                <div class="hideOnMobile col-lg-3 col-md-3 col-sm-3 col-sm-12">
+                    <ul class="my-account">
+                        <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'myaccount' ? 'active' : '')?> panel">
+                            <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>
+                        </li>
+                        <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'addad' ? 'active' : '')?> panel">
+                            <a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a>
+                        </li>
+                        <li role="presentation" class="dropdown<?=($this->myAccountMenu['active'] === 'myads' ? ' active' : '')?> panel">
+                            <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                Anunturile mele<span class="caret"></span>
+                            </a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Active</a></li>
+                                <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Expirate</a></li>
+                            </ul>
+                        </li>
+
+                        <li role="presentation" class="panel">
+                            <a href="<?=$this->url('home/logout')?>">Logout</a>
+                        </li>
+                    </ul>
                 </div>
-            <?php } else { ?>
-                <div id ="generalContainer">
+                <div id ="generalContainer" class="col-lg-9 col-md-9 col-sm-9 col-sm-12">
                     <?php echo $this->content; ?>
                 </div>
-            <?php } ?>
-        </div>
-
-
-        <footer>
-            <div class="newsletter">
-                <p>
-                    <span>Aboneaza-te la newsletter</span>
-                    <span>Afla informatii despre oferte si partenerii nostri</span>
-                </p>
-                <form action="">
-                    <div class="form-group has-success has-feedback">
-                        <input type="text" class="form-control" name="adress" placeholder="Adresa de e-mail">
-                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    </div>
-                </form>
-                <a href="#" class="button btn-green">Abonare</a>
             </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-2 col-sm-4 col-xs-12 logo">
-                        <a href="<?php echo $this->url('home') ?>"><img src="<?=$this->basePath() . '/img/logo-footer.png'?>" />
-                        </a>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-xs-6 info">
-                        <h3>Informatii</h3>
-                        <ul>
-                            <li><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')">Aplicatii mobile</a></li>
-                            <li><a href="#">Cautari frecvente</a></li>
-                            <li><a href="javascript:;" onclick="alert('Momentan anunturile nu pot fi promovate!<br />Functie in lucru!')">Anunturi promovate</a></li>
-                            <li><a href="<?=$this->url('home/pages/sitemap')?>">Harta site</a></li>
-                            <li><a href="<?=$this->url('home/pages/partners')?>">Parteneri </a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-2 col-sm-4 col-xs-6 info2">
-                        <h3> &nbsp; </h3>
-                        <ul>
-                            <li><a href="<?=$this->url('home/contact')?>">Ajutor 24/7</a></li>
-                            <li><a href="<?=$this->url('home/contact')?>">Contact</a></li>
-                            <li><a href="#">Descopera TirBox</a></li>
-                            <li><a href="<?=$this->url('home/privacy')?>">Confidentialitate</a></li>
-                            <li><a href="<?=$this->url('home/terms')?>">Termeni si Conditii</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-12 mobile-app">
-                        <h3>Descarca aplicatia</h3>
-                        <ul>
-                            <li class="ggl-play"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
-                            <li class="app-store"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-12 social-media">
-                        <!--<h3>Facebook</h3>-->
-                        <!--<ul>
-                            <li class="fb"><a href="#"></a></li>
-                            <li class="tw"><a href="#"></a></li>
-                            <li class="rss"><a href="#"></a></li>
-                            <li class="google"><a href="#"></a></li>
-                        </ul>-->
-                        <div class="fb-page" data-href="https://www.facebook.com/tirbox.ro"
-                             data-height="130" data-small-header="false" data-adapt-container-width="true"
-                             data-hide-cover="false" data-show-facepile="false" data-show-posts="false">
-                            <div class="fb-xfbml-parse-ignore">
-                                <blockquote cite="https://www.facebook.com/facebook">
-                                    <a href="https://www.facebook.com/www.tirbox.ro">Tirbox</a>
-                                </blockquote>
-                            </div>
+        <?php } else { ?>
+            <div id ="generalContainer">
+                <?php echo $this->content; ?>
+            </div>
+        <?php } ?>
+    </div>
+
+
+    <footer>
+        <div class="newsletter">
+            <p>
+                <span>Aboneaza-te la newsletter</span>
+                <span>Afla informatii despre oferte si partenerii nostri</span>
+            </p>
+            <form action="">
+                <div class="form-group has-success has-feedback">
+                    <input type="text" class="form-control" name="adress" placeholder="Adresa de e-mail">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+            </form>
+            <a href="#" class="button btn-green">Abonare</a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2 col-sm-4 col-xs-12 logo">
+                    <a href="<?php echo $this->url('home') ?>"><img src="<?=$this->basePath() . '/img/logo-footer.png'?>" />
+                    </a>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6 info">
+                    <h3>Informatii</h3>
+                    <ul>
+                        <li><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')">Aplicatii mobile</a></li>
+                        <li><a href="#">Cautari frecvente</a></li>
+                        <li><a href="javascript:;" onclick="alert('Momentan anunturile nu pot fi promovate!<br />Functie in lucru!')">Anunturi promovate</a></li>
+                        <li><a href="<?=$this->url('home/pages/sitemap')?>">Harta site</a></li>
+                        <li><a href="<?=$this->url('home/pages/partners')?>">Parteneri </a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 col-sm-4 col-xs-6 info2">
+                    <h3> &nbsp; </h3>
+                    <ul>
+                        <li><a href="<?=$this->url('home/contact')?>">Ajutor 24/7</a></li>
+                        <li><a href="<?=$this->url('home/contact')?>">Contact</a></li>
+                        <li><a href="#">Descopera TirBox</a></li>
+                        <li><a href="<?=$this->url('home/privacy')?>">Confidentialitate</a></li>
+                        <li><a href="<?=$this->url('home/terms')?>">Termeni si Conditii</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 mobile-app">
+                    <h3>Descarca aplicatia</h3>
+                    <ul>
+                        <li class="ggl-play"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
+                        <li class="app-store"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 col-xs-12 social-media">
+                    <!--<h3>Facebook</h3>-->
+                    <!--<ul>
+                        <li class="fb"><a href="#"></a></li>
+                        <li class="tw"><a href="#"></a></li>
+                        <li class="rss"><a href="#"></a></li>
+                        <li class="google"><a href="#"></a></li>
+                    </ul>-->
+                    <div class="fb-page" data-href="https://www.facebook.com/tirbox.ro"
+                         data-height="130" data-small-header="false" data-adapt-container-width="true"
+                         data-hide-cover="false" data-show-facepile="false" data-show-posts="false">
+                        <div class="fb-xfbml-parse-ignore">
+                            <blockquote cite="https://www.facebook.com/facebook">
+                                <a href="https://www.facebook.com/www.tirbox.ro">Tirbox</a>
+                            </blockquote>
                         </div>
                     </div>
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
 
     <div id="scriptsGeneral">
         <?php echo $this->inlineScript()->prependScript(
             ' $(document).ready(function() { '.
                 ' generalObj.onLoad(); '.
                 $this->js_call.
+                (isset($this->isHomePage) ? ' generalObj.sliderInit(); ' : '').
             ' ;});'
             );
         ?>
     </div>
+    <?php if (isset($this->isHomePage)) { ?>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="/js/slider/ie10-viewport-bug-workaround.js"></script>
+
+        <!-- jssor slider scripts-->
+        <!-- use jssor.js + jssor.slider.js instead for development -->
+        <!-- jssor.slider.mini.js = (jssor.js + jssor.slider.js) -->
+        <script type="text/javascript" src="/js/slider/jssor.slider.mini.js"></script>
+    <?php } ?>
     </body>
 </html>
