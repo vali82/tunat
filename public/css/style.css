@@ -5,12 +5,24 @@ body{
     font-size: 14px;
     /*line-height: 1;*/
 }
+
+.__showOnMobile__ {
+    display: none;
+}
+.__hideOnMobile__ {
+    display: block;
+}
+
 h3{
     font: 300 21px/26px 'Ubuntu', sans-serif;
-    color: #545454;
+    color: #363636;
+}
+.product-details p.description a {
+    color: #337ab7;
+    text-decoration: underline;
 }
 a:focus, a:hover {
-    color: #fff;
+    color: #243046;
 }
 .panel {
     border-radius: 0;
@@ -34,6 +46,8 @@ nav.navbar-inverse{
     text-shadow: none;
     padding-right: 10px;
     padding-left: 10px;
+    color:#666;
+    font-weight: 400;
 }
 
 .navbar-inverse .navbar-nav li a:hover, .navbar-inverse .navbar-nav > li > a:focus {
@@ -347,7 +361,7 @@ h3.new{
     overflow: hidden;
     margin-bottom: 15px;
     font: 13px/19px 'Ubuntu', sans-serif;
-    color: #6c727e;
+    color: #444;
 }
 .announcement .model{
     font-weight: 300;
@@ -355,7 +369,7 @@ h3.new{
     color: #a2a3a5;
 }
 .announcement .model a {
-    color: #a2a3a5;
+    color: #888;
 }
 .announcement .price {
     display: block;
@@ -388,11 +402,11 @@ h3.new{
     padding: 15px;
 }
 
-.announcement .description .media-heading {
+.announcement .description .title {
     margin-top: 10px;
 }
 
-.announcement .description .media-heading a{
+.announcement .description .title a{
     font: 19px/25px 'Ubuntu', sans-serif;
     color: #243045;
     font-weight: 500;
@@ -712,10 +726,6 @@ input#globalLoginFieldRemember{
 .brand-listing {
     margin-top: -126px;
 }
-.brand-listing .announcement{
-    margin-right: 0;
-    margin-left: -15px;
-}
 .key-words #searchInput{
     width: 100%;
 }
@@ -729,7 +739,7 @@ input#globalLoginFieldRemember{
     margin-top: 20px;
 }
 #searchAds label{
-   font: 600 14px/20px 'Ubuntu', sans-serif;
+   font: 600 13px/20px 'Ubuntu', sans-serif;
    color: #243045;
    margin-bottom: 12px;
    margin-top: 22px;
@@ -738,9 +748,13 @@ input#globalLoginFieldRemember{
     margin-top: 0;
 }
 #searchAds input, #searchAds select{
-    border-radius: 0;
+    /*border-radius: 0;*/
     background-color: #e9e9e9;
     height: 34px;
+    padding:8px;
+    border:1px solid #CACACA;
+    color: #666;
+    width: 100%;
 }
 select{
     -webkit-appearance: none;
@@ -809,7 +823,7 @@ span.no-results-found {
     margin-bottom: 30px;
 }
 .info-dates >span{
-    color: #9d9d9d;
+    color: #666;
     font-weight: 300;
     font-size: 13px;
     padding-right: 15px;
@@ -819,7 +833,8 @@ span.no-results-found {
 }
 .product-details {
     width: 100%;
-    float: left;
+    /*float: left;*/
+    overflow: hidden;
 }
 .product-images{
     width: 60%;
@@ -839,6 +854,9 @@ span.no-results-found {
 }
 .product-images .big-image img {
     -max-height: 370px;
+}
+.product-images p.description {
+    display: none;
 }
 .tumb-img {
     max-height: 85px;
@@ -870,7 +888,7 @@ span.no-results-found {
 .seller{
     width: 68%;
     margin-bottom: 50px;
-    height: 75px
+    height: 50px
 }
 .seller span {
     color: #c4c7ca;
@@ -896,10 +914,10 @@ span.no-results-found {
 .info-details p span{
     color: #868788;
 }
-.info-details p.description{
+.info-details p.description, .product-images p{
     height: 115px;
     overflow: hidden;
-    margin: 51px 0;
+    margin: 30px 0 40px 0;
     color: #868788;
 }
 .info-details p.description-long{
@@ -982,8 +1000,13 @@ ul.dropdown-menu li a {
     /*.announcement .price{
         height: 117px;
     }*/
-  
+    #searchAds label {
+        font: 600 12px/20px 'Ubuntu', sans-serif;
+    }
 
+    .category a {
+        font-size:15px;
+    }
 
 }
 
@@ -993,12 +1016,33 @@ ul.dropdown-menu li a {
     }
 }
 @media screen and (max-width: 980px){
-   
+    #searchAds label {
+        font: 600 12px/20px 'Ubuntu', sans-serif;
+    }
+    .product-info {
+        width:48%;
+    }
+    .product-info .info-details p.description {
+        display: none;
+    }
+    .product-images p.description {
+        display: block;
+    }
+    .product-images {
+        width:48%;
+    }
+
 }
 @media screen and (max-width: 768px){
     .brand-listing {
         margin-top: 0px;
     }
+    #searchAds label {
+        font: 600 14px/20px 'Ubuntu', sans-serif;
+    }
+    /*.brand-listing {
+        margin-top: -126px;
+    }*/
     /*#categoryContainer{
         width: 75%;
     }
@@ -1027,6 +1071,19 @@ ul.dropdown-menu li a {
         margin: 0 auto;
     }
 
+    .product-info {
+        width:100%;
+    }
+    .product-images {
+        width:100%;
+    }
+    .product-info .info-details {
+        display: block;
+    }
+    .product-images p.description {
+        display: none;
+    }
+
 
 /*footer*/
 
@@ -1047,7 +1104,7 @@ ul.dropdown-menu li a {
     .social-media {
         text-align: center;
     }
-   
+
    /*.category span {
     font-size: 12px;
    }*/
@@ -1056,8 +1113,51 @@ ul.dropdown-menu li a {
    
 }
 @media screen and (max-width: 480px){
-   
+    .__showOnMobile__ {
+        display: block;
+    }
+    .__hideOnMobile__ {
+        display: none;
+    }
+    .announcement .model {
+        display: none;
+    }
+    .announcement .description .about {
+        display: none;
+    }
+    .announcement .description .title a {
+        font-size: 15px;
+        line-height: 15px;
+    }
+    .announcement .description .stare {
+        display: none;
+    }
+    .announcement .price-container {
+        display: none;
+    }
+    .announcement .price {
+        font-size: 13px;
+    }
+    .announcement .priceMobile {
+        float: left;
+    }
+
+    .announcement .county {
+        font-size: 12px;
+        text-align: left;
+    }
+    .filters .partners {
+        display: none;
+    }
+    .category-panel {
+        margin-top: 90px;
+        top:0px;
+
+    }
+    /*.category-panel .category a span{
+        font-size: 14px;
+    }*/
 }
 @media screen and (max-width: 320px){
-   
+
 }
