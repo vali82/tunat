@@ -389,6 +389,9 @@ class AdController extends MyAbstractController
 
     public function pieseAction()
     {
+        $token = md5(time().'asdfqwer'.rand(1000, 9999));
+        General::addToSession('token', $token);
+
         $cars = $this->cars;
         $carCollection = new CarsCollection($this);
 
@@ -606,13 +609,13 @@ class AdController extends MyAbstractController
                     'url' => $advertiserObj->getUrl(),
                     'location' => $advertiserObj->generateLocation()
                 ] : null,
-                'message' => $advertiserObj !== null ? '' : 'Datele de contact nu au fost gasite',
+                'message' => $advertiserObj !== null ? '' : 'Datele de contact nu au fost gasite1',
             ]);
         } else {
             return new JsonModel([
                 'error' => 1,
                 'result' =>  null,
-                'message' => 'Datele de contact nu au fost gasite',
+                'message' => 'Datele de contact nu au fost gasite2',
             ]);
         }
     }

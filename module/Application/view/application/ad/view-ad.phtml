@@ -8,62 +8,104 @@ if ($this->status !== 'ok') { ?>
 <?php } ?>
 
 <div class="product-details">
-        <h3 id="pageTitleElement">
-            <?= $this->title ?> pentru <?= $this->car['class'] ?> <?=$this->car['model']?>
-        </h3>
-        <div class="info-dates">
-            <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:<?=$this->views?></span>
-            <span><span class="glyphicon glyphicon-calendar"></span>Expira la <?=$this->expirationDate?></span>
-            <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la <?=$this->refreshDate?></span>
-        </div>
-    <div class="product-images panel">
+    <h3 id="pageTitleElement">
+        <?= $this->title ?> pentru <?= $this->car['class'] ?> <?=$this->car['model']?>
+    </h3>
+    <div class="info-dates">
+        <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:<?=$this->views?></span>
+        <span><span class="glyphicon glyphicon-calendar"></span>Expira la <?=$this->expirationDate?></span>
+        <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la <?=$this->refreshDate?></span>
+    </div>
+    <div class="product-images panel card card-2">
         <?php
-            if (count($this->images) > 0) {
-                $img = $this->images[0];
-            } else {
-                $img = 0;
-            }
-            ?>
-                <div class="big-image">
-                    <a href="<?=
+        if (count($this->images) > 0) {
+            $img = $this->images[0];
+        } else {
+            $img = 0;
+        }
+        ?>
+        <div class="big-image">
+            <a href="<?=
+            \Application\libs\General::getSimpleAvatar(
+                $this->folder,
+                $img,
+                '1024x768'
+            ) ?>" type="" title="" download="" data-image-lib="popup">
+                <img class="img-responsive" src="<?=
+                \Application\libs\General::getSimpleAvatar(
+                    $this->folder,
+                    $img,
+                    '700x400'
+                ) ?>">
+            </a>
+        </div>
+
+        <div class="row tumb-img">
+        <?php
+        if (count ($this->images) > 0) {
+            foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
+            <div class="col-xs-2" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
+                <a href="<?=
+                \Application\libs\General::getSimpleAvatar(
+                    $this->folder,
+                    $img,
+                    '1024x768'
+                ) ?>" type="" title="" download="" data-image-lib="popup">
+                    <img class="img-responsive card card-1" style="max-width:80px" src="<?=
                     \Application\libs\General::getSimpleAvatar(
                         $this->folder,
                         $img,
-                        '1024x768'
-                    ) ?>" type="" title="" download="" data-image-lib="popup">
-                        <img class="img-responsive" src="<?=
-                        \Application\libs\General::getSimpleAvatar(
-                            $this->folder,
-                            $img,
-                            '700x400'
-                        ) ?>">
-                    </a>
-                </div>
-
-                <div class="row tumb-img">
-                <?php
-                if (count ($this->images) > 0) {
-                    foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
-                    <div class="col-xs-3" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
+                        '260x260'
+                    ) ?>">
+                </a>
+            </div>
+        <?php } } } ?>
+            <?php
+            if (count ($this->images) > 0) {
+                foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
+                    <div class="col-xs-2" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
                         <a href="<?=
                         \Application\libs\General::getSimpleAvatar(
                             $this->folder,
                             $img,
                             '1024x768'
                         ) ?>" type="" title="" download="" data-image-lib="popup">
-                            <img class="img-responsive" src="<?=
+                            <img class="img-responsive card card-1" style="max-width:80px" src="<?=
                             \Application\libs\General::getSimpleAvatar(
                                 $this->folder,
                                 $img,
                                 '260x260'
                             ) ?>">
                         </a>
-                    </div>    
+                    </div>
+                <?php } } } ?><?php
+            if (count ($this->images) > 0) {
+                foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
+                    <div class="col-xs-2" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
+                        <a href="<?=
+                        \Application\libs\General::getSimpleAvatar(
+                            $this->folder,
+                            $img,
+                            '1024x768'
+                        ) ?>" type="" title="" download="" data-image-lib="popup">
+                            <img class="img-responsive card card-1" style="max-width:80px" src="<?=
+                            \Application\libs\General::getSimpleAvatar(
+                                $this->folder,
+                                $img,
+                                '260x260'
+                            ) ?>">
+                        </a>
+                    </div>
                 <?php } } } ?>
-                </div>
         </div>
+
+        <p class="description">
+            <?= $this->description ?>
+        </p>
+
+    </div>
         
-    <div class="product-info panel">
+    <div class="product-info panel card card-2">
         <div class="seller">
             <span>Vanzator</span>
             <h4><?=$this->advertiser['name']?></h4>

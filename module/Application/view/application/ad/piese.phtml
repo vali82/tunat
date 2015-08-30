@@ -49,15 +49,26 @@ $cars = $this->layout()->cars;
                 }
                 ?>
             </div>
-            <div class="car-brand-list">
-                <?php
+            <div class="car-brand-list card card-1">
+                <?php $cnt = 0;
+                $splitVal = floor(count($cars['model'][$this->carcategoriesId]) / 6) + 1;
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
+
+                    if ($cnt % $splitVal == 0) {
+                        ?><div class="col-md-2"><?php
+                    }
                     ?>
+                    <span></span>
                     <a class="marca-link"
                        title = "Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $model['categ'] ?>"
                        href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ'])?>">
                         <?=$model['categ']?>
-                    </a>, <?php
+                    </a><br>
+                    <?php
+                    if ($cnt % $splitVal == $splitVal - 1) {
+                        ?></div><?php
+                    }
+                    $cnt++;
                 }
                 ?>
             </div>
@@ -65,7 +76,7 @@ $cars = $this->layout()->cars;
     <?php } else {
         // listare categorie + model
         ?>
-        <div class="change-categories col-md-3">
+        <div class="change-categories col-sm-4 col-md-3">
             <a href="javascript:;" class="panel card card-1" id="changeCarMakeButton">
                 <img src="<?=$this->basePath()?>/img/categ_<?=$this->carcategoriesId?>.png" />
                 <?=$this->class?>
@@ -123,7 +134,7 @@ $cars = $this->layout()->cars;
 
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
 <div class="row">
-    <div class="col-md-3 filters">
+    <div class="col-sm-4 col-md-3 filters">
     <h3>Cautare</h3>
     <!--Filtrare Anunturi-->
         <form class="panel col-md-12 card card-1" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
@@ -131,7 +142,8 @@ $cars = $this->layout()->cars;
                 <label>Cuvinte cheie</label>
                 <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50"  type="text">
             </div>
-            <div class="made-year">
+            <div class="row">
+                <div class="col-xs-6">
                 <label>An fabricatie</label>
                 <select  id="searchYear">
                     <option value="">orice an</option>
@@ -139,8 +151,8 @@ $cars = $this->layout()->cars;
                         <option value="<?=$year?>" <?=($year == $this->searchValues['year'] ? 'selected' : '')?>><?=$year?></option>
                     <?php }?>
                 </select>
-            </div>
-            <div class="part-look ">
+                </div>
+            <div class="col-xs-6">
                 <label>Stare piesa</label>
                 <select id="searchStare">
                     <option value="" <?=('' == $this->searchValues['stare'] ? 'selected' : '')?>>oricare</option>
@@ -148,7 +160,9 @@ $cars = $this->layout()->cars;
                     <option value="second" <?=('second' == $this->searchValues['stare'] ? 'selected' : '')?>>Second</option>
                 </select>
             </div>
-            <div class="region">
+            </div>
+            <div class="row">
+            <div class="col-xs-6">
                 <label>Judet</label>
                 <select id="searchCounty">
                     <?php foreach ($this->states as $k=>$state) { ?>
@@ -156,11 +170,11 @@ $cars = $this->layout()->cars;
                     <?php } ?>
                 </select>
             </div>
-            <div class="key-words">
-                <label>Cod piesa, OEM</label>
+            <div class="col-xs-6">
+                <label>Cod piesa</label>
                 <input id ="searchOem" value="<?=$this->searchValues['oem']?>"  maxlength="50"  type="text">
             </div>
-
+            </div>
             <button type="submit" id="button-search-ads" class="btn-green button" data-loading-text="cautare...">cauta</button>
         </form>
 <!--end Filtrare Anunturi-->
@@ -175,7 +189,7 @@ $cars = $this->layout()->cars;
     </div>
 
 <!--Listing Anunturi-->  
-    <div id="announcement-listing" class="col-md-9 brand-listing">
+    <div id="announcement-listing" class="col-sm-8 col-md-9 brand-listing">
         <?php $this->layout()->headTitle = 'Anunturi Piese de '.$cars['categories'][$this->carcategoriesId] . ' ' . $this->class; ?>
         <h3 id="pageTitleElement"><?=$this->layout()->headTitle?></h3>
         <?php if ($this->adList !== null) { ?>
