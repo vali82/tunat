@@ -99,6 +99,10 @@ $.general = function() {
                     $('#generalContainer').html(data.result.html);
                     $('#scriptsGeneral').html('<script type="text/javascript">'+data.result.js+'</script>');
 
+                    $('#generalBanner').slideUp();
+                    $('#categoryContainer').hide();
+                    $('#mainContainer').css('paddingTop','100px');
+
                     if ($('#pageTitleElement').length > 0) {
                         document.title = $('#pageTitleElement').html() + ' - Tirbox.ro';
                     } else {
@@ -122,9 +126,10 @@ $.general = function() {
 
         var coolAjaxAvailable = true;
 
-        if (history.pushState) {
+        if (!history.pushState) {
             //alert('suported');
             //return true;
+            coolAjaxAvailable = false;
         }
 
         if (coolAjaxAvailable) {
@@ -139,9 +144,7 @@ $.general = function() {
                     $('#allCarsContainer').slideUp('normal', function() {
                         $('#announcement-listing').css('marginTop','-126px');
                     });
-                    $('#generalBanner').slideUp();
-                    $('#categoryContainer').hide();
-                    $('#mainContainer').css('paddingTop','100px');
+
                     _ajaxCoolLoadPage($(this).attr('href'), '');
                 });
             }

@@ -1,6 +1,6 @@
 /*header*/
 body{
-    background-color: #F8F6F6;
+    background-color: #eeeded;
     font-family: 'Ubuntu', sans-serif;
     font-size: 14px;
     /*line-height: 1;*/
@@ -111,7 +111,7 @@ ul.navbar-right{
 }
 
 .card-1:hover {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .card-2 {
@@ -119,11 +119,14 @@ ul.navbar-right{
     transition: all 0.2s ease-in-out;
 }
 .card-2:hover {
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .card-3 {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+.card-3:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 .card-4 {
@@ -251,8 +254,8 @@ li.displayOnMobile {
 }
 
 #LoginRegisterContainer .contentLoginRegister {
-    background-color: #f8f6f6;
-    border: 1px solid #eaeaea;
+    /*background-color: #f8f6f6;
+    border: 1px solid #eaeaea;*/
     float: right;
     padding:20px;
     width: 297px;
@@ -650,6 +653,17 @@ input#globalLoginFieldRemember{
     float: left;
     margin-bottom: 25px;
     width: 100%;
+}
+
+.car-brand-list span {
+    border-bottom: 4px solid transparent;
+    border-left: 6px solid #b6bcc5;
+    border-top: 4px solid transparent;
+    float: left;
+    height: 0;
+    margin-top: 6px;
+    padding-top: -1px;
+    width: 10px;
 }
 .popular-brands .brand{
     width: 10.75%;

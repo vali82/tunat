@@ -49,15 +49,26 @@ $cars = $this->layout()->cars;
                 }
                 ?>
             </div>
-            <div class="car-brand-list">
-                <?php
+            <div class="car-brand-list card card-1">
+                <?php $cnt = 0;
+                $splitVal = floor(count($cars['model'][$this->carcategoriesId]) / 6) + 1;
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
+
+                    if ($cnt % $splitVal == 0) {
+                        ?><div class="col-md-2"><?php
+                    }
                     ?>
+                    <span></span>
                     <a class="marca-link"
                        title = "Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $model['categ'] ?>"
                        href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ'])?>">
                         <?=$model['categ']?>
-                    </a>, <?php
+                    </a><br>
+                    <?php
+                    if ($cnt % $splitVal == $splitVal - 1) {
+                        ?></div><?php
+                    }
+                    $cnt++;
                 }
                 ?>
             </div>
