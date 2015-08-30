@@ -28,22 +28,24 @@ $cars = $this->layout()->cars;
         <?php $this->layout()->headTitle = 'Anunturi Gratuite - piese '.$cars['categories'][$this->carcategoriesId];?>
         <div class="col-md-12 car-brand">
             <h3>Alegeti o marca</h3>
-            <div class="popular-brands">
+            <div class="row popular-brands">
                 <?php
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
                     if ($model['popular']) {
                         $modelName = $model['categ'];
                         $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                         ?>
-                        <div class="brand">
+                        <div class="col-md-2 col-sm-6 col-xs-6">
+                            <div class="brand card card-1">
                         <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $modelName) ?>"
                             title="Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $modelName ?>">
                             <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
                                 <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
                             <?php } else { ?>
-                            <h3><?= $modelName ?></h3>
+                            <h3 style="width: 100%"><?= $modelName ?></h3>
                             <?php } ?>
                         </a>
+                                </div>
                         </div><?php
                     }
                 }
@@ -55,11 +57,11 @@ $cars = $this->layout()->cars;
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
 
                     if ($cnt % $splitVal == 0) {
-                        ?><div class="col-md-2"><?php
+                        ?><div class="col-md-2 col-sm-6 col-xs-12"><?php
                     }
                     ?>
                     <span></span>
-                    <a class="marca-link"
+                    <a
                        title = "Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $model['categ'] ?>"
                        href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ'])?>">
                         <?=$model['categ']?>
