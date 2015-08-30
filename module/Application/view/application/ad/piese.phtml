@@ -28,22 +28,24 @@ $cars = $this->layout()->cars;
         <?php $this->layout()->headTitle = 'Anunturi Gratuite - piese '.$cars['categories'][$this->carcategoriesId];?>
         <div class="col-md-12 car-brand">
             <h3>Alegeti o marca</h3>
-            <div class="popular-brands">
+            <div class="row popular-brands">
                 <?php
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
                     if ($model['popular']) {
                         $modelName = $model['categ'];
                         $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                         ?>
-                        <div class="brand">
-                        <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $modelName) ?>"
-                            title="Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $modelName ?>">
-                            <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
-                                <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
-                            <?php } else { ?>
-                            <h3><?= $modelName ?></h3>
-                            <?php } ?>
-                        </a>
+                        <div class="col-md-2 col-sm-6 col-xs-6">
+                            <div class="brand card card-1">
+                                <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $modelName) ?>"
+                                    title="Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $modelName ?>">
+                                    <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
+                                        <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
+                                    <?php } else { ?>
+                                    <h3 style="width: 100%"><?= $modelName ?></h3>
+                                    <?php } ?>
+                                </a>
+                            </div>
                         </div><?php
                     }
                 }
@@ -55,11 +57,11 @@ $cars = $this->layout()->cars;
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
 
                     if ($cnt % $splitVal == 0) {
-                        ?><div class="col-md-2"><?php
+                        ?><div class="col-md-2 col-sm-6 col-xs-12"><?php
                     }
                     ?>
                     <span></span>
-                    <a class="marca-link"
+                    <a
                        title = "Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $model['categ'] ?>"
                        href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ'])?>">
                         <?=$model['categ']?>
@@ -88,7 +90,7 @@ $cars = $this->layout()->cars;
             <?php foreach ($cars['categories'] as $categoriesId=>$categories) { ?>
                 <div class="row">
                     <div class="change-categories col-md-3">
-                        <a class="panel"
+                        <a class="panel card card-1"
                            title = "Piese <?=$cars['categories'][$categoriesId]?>"
                            href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
                             <img src="<?=$this->basePath()?>/img/categ_<?=$categoriesId?>.png" />
@@ -96,14 +98,15 @@ $cars = $this->layout()->cars;
                         </a>
                     </div>
                     <div class="col-md-9">
-                        <div class="popular-brands">
+                        <div class="row popular-brands">
                             <?php
                             foreach ($cars['model'][$categoriesId] as $modelId=>$model) {
                                 if ($model['popular']) {
                                     $modelName = $model['categ'];
                                     $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                                     ?>
-                                    <div class="brand">
+                            <div class="col-md-2 col-sm-6 col-xs-6">
+                                <div class="brand card card-1">
                                         <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
                                            data-page-load="ajax"
                                            href="<?= $this->carCollection->urlizeCarClass($categoriesId, $modelName) ?>">
@@ -114,14 +117,10 @@ $cars = $this->layout()->cars;
                                             <?php } ?>
                                         </a>
                                     </div>
+                                </div>
                                 <?php } ?>
                             <?php }
                             ?>
-                            <div class="brand">
-                                <a href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
-                                    <h3>Altele</h3>
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>

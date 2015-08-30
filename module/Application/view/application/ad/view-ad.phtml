@@ -60,43 +60,6 @@ if ($this->status !== 'ok') { ?>
                 </a>
             </div>
         <?php } } } ?>
-            <?php
-            if (count ($this->images) > 0) {
-                foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
-                    <div class="col-xs-2" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
-                        <a href="<?=
-                        \Application\libs\General::getSimpleAvatar(
-                            $this->folder,
-                            $img,
-                            '1024x768'
-                        ) ?>" type="" title="" download="" data-image-lib="popup">
-                            <img class="img-responsive card card-1" style="max-width:80px" src="<?=
-                            \Application\libs\General::getSimpleAvatar(
-                                $this->folder,
-                                $img,
-                                '260x260'
-                            ) ?>">
-                        </a>
-                    </div>
-                <?php } } } ?><?php
-            if (count ($this->images) > 0) {
-                foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
-                    <div class="col-xs-2" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
-                        <a href="<?=
-                        \Application\libs\General::getSimpleAvatar(
-                            $this->folder,
-                            $img,
-                            '1024x768'
-                        ) ?>" type="" title="" download="" data-image-lib="popup">
-                            <img class="img-responsive card card-1" style="max-width:80px" src="<?=
-                            \Application\libs\General::getSimpleAvatar(
-                                $this->folder,
-                                $img,
-                                '260x260'
-                            ) ?>">
-                        </a>
-                    </div>
-                <?php } } } ?>
         </div>
 
         <p class="description">

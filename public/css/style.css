@@ -663,12 +663,21 @@ input#globalLoginFieldRemember{
     margin-top: 0;
     margin-bottom: 25px;
 }
-.popular-brands,.car-brand-list{
+.popular-brands{
+    margin-bottom: 25px;
+}
+
+.car-brand-list{
     float: left;
     margin-bottom: 25px;
     width: 100%;
+    padding: 10px;
 }
 
+.car-brand-list a {
+    display: block;
+    margin: 0 0 -15px;
+}
 .car-brand-list span {
     border-bottom: 4px solid transparent;
     border-left: 6px solid #b6bcc5;
@@ -677,25 +686,31 @@ input#globalLoginFieldRemember{
     height: 0;
     margin-top: 6px;
     padding-top: -1px;
-    width: 10px;
+    width: 15px;
 }
 .popular-brands .brand{
-    width: 10.75%;
-    float: left;
-    margin-right: 2%;
-    background-color: #fff;
-    height: 100px;
+    display: table;
+    height: 80px;
+    margin-bottom: 10px;
     text-align: center;
-    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.05);
+    width: 100%;
 }
 .popular-brands div:last-child{
     margin-right: 0;
 }
-.brand img{
-    min-height: 100px
+.brand a {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
 }
-.brand h3{
-    margin-top: 30%;
+.brand a h3 {
+    color: #0079bf;
+    font-weight: 400;
+    margin: 0;
+}
+.brand img{
+    margin: 0 auto;
+    max-height: 80px;
 }
 .change-categories .popular-brands {
     margin-bottom: 0px;
@@ -704,15 +719,14 @@ input#globalLoginFieldRemember{
 .change-categories .popular-brands .brand {
     height: 60px;
     margin: 5px;
-    width: 9.75%;
-    padding: 5px;
 }
 .change-categories .brand img {
     min-height: 50px;
     padding-right: 0;
 }
 .change-categories .brand h3 {
-    font-size: 11px;
+    font-size: 15px;
+    line-height: 14px;
 }
 .car-brand-list a{
    font: 300 14px/20px 'Ubuntu', sans-serif;
