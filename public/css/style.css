@@ -719,15 +719,14 @@ input#globalLoginFieldRemember{
 .change-categories .popular-brands .brand {
     height: 60px;
     margin: 5px;
-    width: 9.75%;
-    padding: 5px;
 }
 .change-categories .brand img {
     min-height: 50px;
     padding-right: 0;
 }
 .change-categories .brand h3 {
-    font-size: 11px;
+    font-size: 15px;
+    line-height: 14px;
 }
 .car-brand-list a{
    font: 300 14px/20px 'Ubuntu', sans-serif;
