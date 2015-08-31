@@ -55,7 +55,6 @@ $cars = $this->layout()->cars;
                 <?php $cnt = 0;
                 $splitVal = floor(count($cars['model'][$this->carcategoriesId]) / 6) + 1;
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
-
                     if ($cnt % $splitVal == 0) {
                         ?><div class="col-md-2 col-sm-6 col-xs-12"><?php
                     }
