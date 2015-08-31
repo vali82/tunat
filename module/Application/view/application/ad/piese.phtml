@@ -72,6 +72,9 @@ $cars = $this->layout()->cars;
                     }
                     $cnt++;
                 }
+                if (($cnt-1) % $splitVal == $splitVal - 1) {
+                    ?></div><?php
+                }
                 ?>
             </div>
         </div>
@@ -107,19 +110,19 @@ $cars = $this->layout()->cars;
                                     ?>
                             <div class="col-md-2 col-sm-6 col-xs-6">
                                 <div class="brand card card-1">
-                                        <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
-                                           data-page-load="ajax"
-                                           href="<?= $this->carCollection->urlizeCarClass($categoriesId, $modelName) ?>">
-                                            <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
-                                                <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
-                                            <?php } else { ?>
-                                                <h3><?= $modelName ?></h3>
-                                            <?php } ?>
-                                        </a>
-                                    </div>
+                                    <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
+                                       data-page-load="ajax"
+                                       href="<?= $this->carCollection->urlizeCarClass($categoriesId, $modelName) ?>">
+                                        <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
+                                            <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
+                                        <?php } else { ?>
+                                            <h3><?= $modelName ?></h3>
+                                        <?php } ?>
+                                    </a>
                                 </div>
-                                <?php } ?>
-                            <?php }
+                            </div>
+                            <?php } ?>
+                        <?php }
                             ?>
                         </div>
                     </div>
