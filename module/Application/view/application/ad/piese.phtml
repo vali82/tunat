@@ -72,7 +72,7 @@ $cars = $this->layout()->cars;
                     }
                     $cnt++;
                 }
-                if (($cnt-1) % $splitVal == $splitVal - 1) {
+                if (($cnt-1) % $splitVal !== $splitVal - 1) {
                     ?></div><?php
                 }
                 ?>
