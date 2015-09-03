@@ -31,7 +31,7 @@ $cars = $this->layout()->cars;
             <div class="row popular-brands">
                 <?php
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
-                    if ($model['popular']) {
+                    if ($model['popular'] > 0) {
                         $modelName = $model['categ'];
                         $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                         ?>
@@ -53,23 +53,25 @@ $cars = $this->layout()->cars;
             </div>
             <div class="car-brand-list card card-1">
                 <?php $cnt = 0;
-                $splitVal = floor(count($cars['model'][$this->carcategoriesId]) / 6) + 1;
+                $splitVal = floor((count($cars['model'][$this->carcategoriesId]) - 6) / 6) + 1;
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
-                    if ($cnt % $splitVal == 0) {
-                        ?><div class="col-md-2 col-sm-6 col-xs-12"><?php
+                    if ($model['popular'] <= 0) {
+                        if ($cnt % $splitVal == 0) {
+                            ?><div class="col-md-2 col-sm-6 col-xs-12"><?php
+                        }
+                        ?>
+                        <span></span>
+                        <a
+                            title="Piese <?= $cars['categories'][$this->carcategoriesId] ?> <?= $model['categ'] ?>"
+                            href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ']) ?>">
+                            <?= $model['categ'] ?>
+                        </a><br>
+                        <?php
+                        if ($cnt % $splitVal == $splitVal - 1) {
+                            ?></div><?php
+                        }
+                        $cnt++;
                     }
-                    ?>
-                    <span></span>
-                    <a
-                       title = "Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $model['categ'] ?>"
-                       href="<?=$this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ'])?>">
-                        <?=$model['categ']?>
-                    </a><br>
-                    <?php
-                    if ($cnt % $splitVal == $splitVal - 1) {
-                        ?></div><?php
-                    }
-                    $cnt++;
                 }
                 if (($cnt-1) % $splitVal !== $splitVal - 1) {
                     ?></div><?php
@@ -103,7 +105,7 @@ $cars = $this->layout()->cars;
                         <div class="row popular-brands">
                             <?php
                             foreach ($cars['model'][$categoriesId] as $modelId=>$model) {
-                                if ($model['popular']) {
+                                if ($model['popular'] > 0) {
                                     $modelName = $model['categ'];
                                     $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                                     ?>
