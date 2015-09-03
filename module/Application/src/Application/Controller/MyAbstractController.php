@@ -74,7 +74,7 @@ class MyAbstractController extends AbstractActionController
             $carModel = [];
             $carCateg = [];
             $carsModelsDM = new CarsModelsDM($this->adapter);
-            foreach ($carsModelsDM->fetchResultsArray() as $k => $r) {
+            foreach ($carsModelsDM->fetchResultsArray(null, ['popular' => 'DESC', 'car_make' => 'ASC']) as $k => $r) {
                 //$years = $r['year_start'] > 0 ? $r['year_start'].'-'.$r['year_end'] : 'toate';
                 if (!isset($carCateg[$r['category_id']]) || !in_array($r['car_make'], $carCateg[$r['category_id']])) {
                     $carCateg[$r['category_id']][] = $r['car_make'];
