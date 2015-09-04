@@ -7,7 +7,7 @@ body{
 }
 
 .__showOnMobile__ {
-    display: none;
+    display: none!important;
 }
 .__hideOnMobile__ {
     display: block;
@@ -1011,6 +1011,7 @@ ul.dropdown-menu li a {
 
 /*responsive design*/
 @media screen and (max-width: 1200px){
+
     /*.announcement .price{
         height: 117px;
     }*/
@@ -1128,7 +1129,7 @@ ul.dropdown-menu li a {
 }
 @media screen and (max-width: 480px){
     .__showOnMobile__ {
-        display: block;
+        display: block!important;
     }
     .__hideOnMobile__ {
         display: none;
