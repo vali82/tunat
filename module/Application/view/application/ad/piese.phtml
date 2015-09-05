@@ -1,7 +1,5 @@
 <?php
-$cars = $this->layout()->cars;
-//var_dump($this->class);
-//die();
+    $cars = $this->layout()->cars;
 ?>
 
 <?php if (($this->class) === null) { ?>
@@ -13,7 +11,8 @@ $cars = $this->layout()->cars;
         'application/ad/partials/categoriesBox.phtml',
         [
             'carCollection' => $this->carCollection,
-            'carcategoriesId' => $this->carcategoriesId
+            'carcategoriesId' => $this->carcategoriesId,
+            'displayedOn' => 'piese'
         ]
     )?>
     <!--end Category-->
@@ -21,7 +20,7 @@ $cars = $this->layout()->cars;
 <?php } ?>
 
 <!--Marca-->
-<div class="row" style="padding-top: 70px">
+<div class="row parts-main-container 0__hideMobileMenu__">
     <?php
     // listare toate marcile inainte de a fi selectat modelul
     if (($this->class) === null) { ?>
@@ -102,14 +101,14 @@ $cars = $this->layout()->cars;
                         </a>
                     </div>
                     <div class="col-md-9">
-                        <div class="row popular-brands">
+                        <div class="popular-brands">
                             <?php
                             foreach ($cars['model'][$categoriesId] as $modelId=>$model) {
                                 if ($model['popular'] > 0) {
                                     $modelName = $model['categ'];
                                     $modelNameUrlized = strtolower($this->carCollection->getUrlize($modelName));
                                     ?>
-                            <div class="col-md-2 col-sm-6 col-xs-6">
+                            <div class="col-md-2 col-sm-6 col-xs-4">
                                 <div class="brand card card-1">
                                     <a title = "Piese <?=$cars['categories'][$categoriesId]?> <?= $modelName ?>"
                                        data-page-load="ajax"
@@ -137,10 +136,12 @@ $cars = $this->layout()->cars;
 
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
 <div class="row">
-    <div class="col-sm-4 col-md-3 filters">
+    <a id ="showSearchAnnouncements" class="button btn-green __showMobileMenu__" style="width:100px" href="javascript;">
+        <span class="glyphicon glyphicon-search"></span> filtre</a>
+    <div id="searchAnnouncementsContainer" class="col-sm-4 col-md-3 filters __hideMobileMenu__">
     <h3>Cautare</h3>
     <!--Filtrare Anunturi-->
-        <form class="panel col-md-12 card card-1" id="searchAds" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
+        <form class="panel col-md-12 card card-1" id="searchAnnnouncement" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
             <div class="key-words">
                 <label>Cuvinte cheie</label>
                 <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50"  type="text">
@@ -194,7 +195,7 @@ $cars = $this->layout()->cars;
 <!--Listing Anunturi-->  
     <div id="announcement-listing" class="col-sm-8 col-md-9 brand-listing">
         <?php $this->layout()->headTitle = 'Anunturi Piese de '.$cars['categories'][$this->carcategoriesId] . ' ' . $this->class; ?>
-        <h3 id="pageTitleElement"><?=$this->layout()->headTitle?></h3>
+        <h3 id="pageTitleElement" class="__hideOnMobile__"><?=$this->layout()->headTitle?></h3>
         <?php if ($this->adList !== null) { ?>
             <?=$this->adList?>
             <?=

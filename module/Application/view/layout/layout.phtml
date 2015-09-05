@@ -81,7 +81,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                     </button>
                     <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
                         <img src="<?=$this->basePath() . '/img/logo.jpg'?>" alt="tirbox.ro" /><?php // echo $this->translate('tirbox.ro') ?>
-                        <a class="btn-red button __hideOnMobile__" style="margin:20px 0 0 20px" href="<?=$this->url('home/offers/create')?>"><?php echo $this->translate('Cerere Oferta') ?></a>
+                        <a class="btn-red button __hideMobileMenu__" style="margin:20px 0 0 20px" href="<?=$this->url('home/offers/create')?>"><?php echo $this->translate('Cerere Oferta') ?></a>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse">
@@ -96,16 +96,18 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                             <li>
                                 <a href="<?=$this->url('home/contact')?>"><?php echo $this->translate('Contact') ?></a>
                             </li>
+                            <li class="__showMobileMenu__"><a href="<?=$this->url('home/offers/create')?>">Cerere Oferta</a></li>
                             <?php if ($role == 'guest') { ?>
                                 <li>
                                     <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
                                 </li>
+
                             <?php } else { ?>
                                 <li><a href="<?=$this->url('home/myAccount')?>">Contul meu</a></li>
-                                <li class="__showOnMobile__"><a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a></li>
-                                <li class="__showOnMobile__"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
-                                <li class="__showOnMobile__"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
-                                <li class="__showOnMobile__">
+                                <li class="__showMobileMenu__"><a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a></li>
+                                <li class="__showMobileMenu__"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
+                                <li class="__showMobileMenu__"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
+                                <li class="__showMobileMenu__">
                                     <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
                                 </li>
                             <?php } ?>
@@ -189,7 +191,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
         <?php if (isset($this->myAccountMenu)) { ?>
             <div class="row">
-                <div class="__hideOnMobile__ col-lg-3 col-md-3 col-sm-3 col-sm-12">
+                <div class="__hideMobileMenu__ col-lg-3 col-md-3 col-sm-3 col-sm-12">
                     <ul class="my-account">
                         <li role="presentation" class="<?=($this->myAccountMenu['active'] === 'myaccount' ? 'active' : '')?> panel">
                             <a href="<?=$this->url('home/myAccount')?>">Contul meu</a>

@@ -142,7 +142,9 @@ $.general = function() {
 
                     //$('#allCarsContainer').slideUp('slow');
                     $('#allCarsContainer').slideUp('normal', function() {
-                        $('#announcement-listing').css('marginTop','-126px');
+                        if ($(window).width() > 480) {
+                            $('#announcement-listing').css('marginTop', '-126px');
+                        }
                     });
 
                     _ajaxCoolLoadPage($(this).attr('href'), '');
@@ -152,7 +154,7 @@ $.general = function() {
             if (onlyThisSection == 'filterAds') {
                 // filter form
                 if (coolAjaxAvailable) {
-                    _ajaxCoolLoadPage($('#searchAds').attr('action'), '');
+                    _ajaxCoolLoadPage($('#searchAnnnouncement').attr('action'), '');
                     return false;
                 } else {
                     return true;
@@ -614,7 +616,7 @@ $.general = function() {
                 $('#adGetContactButton').bind('click', function(){
                     thisObj._getContact();
                 });
-                $('#searchAds').bind('submit', function() {
+                $('#searchAnnnouncement').bind('submit', function() {
                     var searchQuery = $('#searchInput').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
                     //if ($('#searchYear').val() > 0 ) {
                     searchQuery += ':' + $('#searchYear').val();
@@ -624,13 +626,13 @@ $.general = function() {
                     searchQuery += ':' + $('#searchCounty').val();
                     searchQuery += ':' + $('#searchOem').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
                     //}
-                    var actionForm = $('#searchAds').attr('action').
+                    var actionForm = $('#searchAnnnouncement').attr('action').
                         replace(
                             '__search__',
                             searchQuery
                         )
                     ;
-                    $('#searchAds').attr('action', actionForm);
+                    $('#searchAnnnouncement').attr('action', actionForm);
                     $('#button-search-ads').button('loading');
                     return generalObj.setAjaxCoolEvents('filterAds', false);
                     //return false;
@@ -654,15 +656,33 @@ $.general = function() {
 
                 });
                 ////
+
+                //$('.parts-main-container').hide();
+                // filter button
+                $('#showSearchAnnouncements').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    $('#searchAnnouncementsContainer').slideDown();
+                    $('.parts-main-container').show();
+                    $(this).hide();
+                    $('#announcement-listing').hide();
+                });
+
+                ////
             },
             _changeCarMake: function () {
                 if ($('#allCarsContainer').is(':visible')) {
                     $('#allCarsContainer').slideUp('normal', function() {
-                        $('#announcement-listing').css('marginTop','-126px');
+                        if ($(window).width() > 480) {
+                            $('#announcement-listing').css('marginTop', '-126px');
+                        }
                     });
 
                 } else {
-                    $('#announcement-listing').css('marginTop','0px');
+                    if ($(window).width() > 480) {
+                        $('#announcement-listing').css('marginTop', '0px');
+                    }
                     $('#allCarsContainer').slideDown('normal', function() {
 
                     });
@@ -693,7 +713,9 @@ $.general = function() {
                         if (!data.error) {
                             $('#contactParkPhone').html(data.result.tel1);
                             $('#contactParkPhone').parent().attr('href', 'tel:'+data.result.tel1);
-                            $('#contactParkEmail').attr('href', 'mailto:'+data.result.email);
+                            if (data.result.email != '') {
+                                $('#contactParkEmail').attr('href', 'mailto:' + data.result.email);
+                            }
                             $('#contactParkAddress').html(data.result.location);
                             $('#contactParkAddress').parent().attr('href', 'http://maps.google.com/?q='+data.result.location);
                             $('#adGetContactButton').slideUp();
