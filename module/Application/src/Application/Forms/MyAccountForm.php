@@ -80,6 +80,7 @@ class MyAccountForm extends AbstractForm
                 'type' => 'textarea',
                 'id' => 'description',
                 //'required' => true
+                'rows' => 5,
                 'extraInfo' => 'optional'
             ),
         ));

@@ -7,6 +7,11 @@ $this->layout()->js_call .= ' generalObj.myAccount.update(); ';
 ?>
 <div class="row">
     <div class="col-sm-12">
+        <div class="panel card card-1">
+            <div class="panel-body">
         <?php Forms::render($this, $this->form, $this->url('home/myAccount/update')); ?>
+                </div>
+            </div>
     </div>
+
 </div>
