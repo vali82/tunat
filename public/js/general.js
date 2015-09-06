@@ -101,7 +101,8 @@ $.general = function() {
 
                     $('#generalBanner').slideUp();
                     $('#categoryContainer').hide();
-                    $('#mainContainer').css('paddingTop','100px');
+                    $('#mainContainer').addClass('mt100');
+                    $('#changeCarMakeButton').show();
 
                     if ($('#pageTitleElement').length > 0) {
                         document.title = $('#pageTitleElement').html() + ' - Tirbox.ro';
@@ -109,7 +110,7 @@ $.general = function() {
                         document.title = 'Anunturi Gratuite - Dezmembrari camioane si utilaje - Tirbox.ro';
                     }
                 } else {
-                    alert('asdad');
+                    //alert('asdad');
                 }
 
                 NProgress.done();
@@ -131,6 +132,9 @@ $.general = function() {
             //return true;
             coolAjaxAvailable = false;
         }
+        if ($(window).width() < 768) {
+            coolAjaxAvailable = false;
+        }
 
         if (coolAjaxAvailable) {
             if (!onlyThisSection /*|| onlyThisSection == 'data-page-load'*/) {
@@ -142,7 +146,9 @@ $.general = function() {
 
                     //$('#allCarsContainer').slideUp('slow');
                     $('#allCarsContainer').slideUp('normal', function() {
-                        $('#announcement-listing').css('marginTop','-126px');
+                        if ($(window).width() > 480) {
+                            $('#announcement-listing').css('marginTop', '-126px');
+                        }
                     });
 
                     _ajaxCoolLoadPage($(this).attr('href'), '');
@@ -152,7 +158,7 @@ $.general = function() {
             if (onlyThisSection == 'filterAds') {
                 // filter form
                 if (coolAjaxAvailable) {
-                    _ajaxCoolLoadPage($('#searchAds').attr('action'), '');
+                    _ajaxCoolLoadPage($('#searchAnnnouncement').attr('action'), '');
                     return false;
                 } else {
                     return true;
@@ -322,6 +328,30 @@ $.general = function() {
 
         // hide page load effect
         setTimeout( function() { NProgress.done(); }, 1000);
+        ////
+
+        // filter button
+        if ($('#searchAnnouncementsContainer').length > 0 && $(window).width() <= 768) {
+            $('#showSearchAnnouncements').show();
+            $('#searchAnnouncementsContainer').hide();
+            $('.parts-main-container').hide();
+            $('#announcement-listing').show();
+
+            $('#showSearchAnnouncements').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if ($('#searchAnnouncementsContainer').is(':visible')) {
+                    $('#searchAnnouncementsContainer').slideUp();
+                    $('.parts-main-container').hide();
+                    $('#announcement-listing').show();
+                } else {
+                    $('#searchAnnouncementsContainer').slideDown();
+                    $('.parts-main-container').show();
+                    $('#announcement-listing').hide();
+                }
+            });
+        }
         ////
 
         this.setAjaxCoolEvents(false, false);
@@ -614,7 +644,7 @@ $.general = function() {
                 $('#adGetContactButton').bind('click', function(){
                     thisObj._getContact();
                 });
-                $('#searchAds').bind('submit', function() {
+                $('#searchAnnnouncement').bind('submit', function() {
                     var searchQuery = $('#searchInput').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
                     //if ($('#searchYear').val() > 0 ) {
                     searchQuery += ':' + $('#searchYear').val();
@@ -624,13 +654,13 @@ $.general = function() {
                     searchQuery += ':' + $('#searchCounty').val();
                     searchQuery += ':' + $('#searchOem').val().replace(/ /g,'+').replace(/"/g,'').split('/').join('');
                     //}
-                    var actionForm = $('#searchAds').attr('action').
+                    var actionForm = $('#searchAnnnouncement').attr('action').
                         replace(
                             '__search__',
                             searchQuery
                         )
                     ;
-                    $('#searchAds').attr('action', actionForm);
+                    $('#searchAnnnouncement').attr('action', actionForm);
                     $('#button-search-ads').button('loading');
                     return generalObj.setAjaxCoolEvents('filterAds', false);
                     //return false;
@@ -658,11 +688,15 @@ $.general = function() {
             _changeCarMake: function () {
                 if ($('#allCarsContainer').is(':visible')) {
                     $('#allCarsContainer').slideUp('normal', function() {
-                        $('#announcement-listing').css('marginTop','-126px');
+                        if ($(window).width() > 480) {
+                            $('#announcement-listing').css('marginTop', '-126px');
+                        }
                     });
 
                 } else {
-                    $('#announcement-listing').css('marginTop','0px');
+                    if ($(window).width() > 480) {
+                        $('#announcement-listing').css('marginTop', '0px');
+                    }
                     $('#allCarsContainer').slideDown('normal', function() {
 
                     });
@@ -693,7 +727,9 @@ $.general = function() {
                         if (!data.error) {
                             $('#contactParkPhone').html(data.result.tel1);
                             $('#contactParkPhone').parent().attr('href', 'tel:'+data.result.tel1);
-                            $('#contactParkEmail').attr('href', 'mailto:'+data.result.email);
+                            if (data.result.email != '') {
+                                $('#contactParkEmail').attr('href', 'mailto:' + data.result.email);
+                            }
                             $('#contactParkAddress').html(data.result.location);
                             $('#contactParkAddress').parent().attr('href', 'http://maps.google.com/?q='+data.result.location);
                             $('#adGetContactButton').slideUp();
@@ -817,7 +853,7 @@ $.general = function() {
     }
 
     this.sliderInit = function () {
-        if ($(window).width() > 480) {
+        if ($(window).width() > 768) {
             jQuery(document).ready(function ($) {
 
                 var options = {

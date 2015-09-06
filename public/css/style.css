@@ -7,10 +7,31 @@ body{
 }
 
 .__showOnMobile__ {
-    display: none!important;
+    display: none;
 }
 .__hideOnMobile__ {
     display: block;
+}
+.__showMobileMenu__ {
+    display: none;
+}
+.__hideMobileMenu__ {
+    display: block;
+}
+
+.nav > li.__showMobileMenu__ {
+    display: none;
+}
+.nav > li.__hideMobileMenu__ {
+    display: block;
+}
+
+#showSearchAnnouncements {
+    font-size: 15px;
+    float: right;
+    margin-top:15px;
+    display: none;
+    /*margin: -120px 15px;*/
 }
 
 h3{
@@ -105,6 +126,13 @@ ul.navbar-right{
     background-color: #edc127;
     background-position: 0 -15px;
     color: #fff;
+}
+
+#mainContainer {
+    margin-top: -67px;
+}
+#mainContainer.mt100 {
+    margin-top: 100px;
 }
 
 /* card material design */
@@ -244,14 +272,6 @@ ul.navbar-right{
     margin: 0 auto;
 }
 
-li.displayOnMobile {
-    display: none;
-}
-
-.hideOnMobile {
-    display: block;
-}
-
 #LoginRegisterContainer {
     display:none;
     /*
@@ -287,11 +307,12 @@ li.displayOnMobile {
 
 .category-panel {
     position: relative;
-    top: -67px;
+    /*top: -67px;*/
     border: none;
     /*box-shadow: 0 3px 2px rgba(0, 0, 0, 0.05);*/
     width: 100%;
     margin: 0 auto;
+    margin-bottom: 40px;
 }
 .category-panel .category{
     text-align: center;
@@ -396,6 +417,7 @@ h3.new{
 .announcement .picture img {
     width: 100%;
     height: auto;
+    border: 1px solid #dadada;
 }
 
 .right-pic{
@@ -657,6 +679,9 @@ input#globalLoginFieldRemember{
 
 
 /*category page*/
+.parts-main-container {
+    padding-top: 40px;
+}
 .car-brand >h3{
     font: 300 25px/30px 'Ubuntu', sans-serif;
     color: #545454;
@@ -732,7 +757,7 @@ input#globalLoginFieldRemember{
    font: 300 14px/20px 'Ubuntu', sans-serif;
    color: #545454;
 }
-#searchAds{
+#searchAnnnouncement{
     margin-bottom: 20px;
     padding: 15px;
     box-sizing: border-box;
@@ -747,21 +772,21 @@ input#globalLoginFieldRemember{
     width: 50%;
     float: left;
 }
-#searchAds button{
+#searchAnnnouncement button{
     width: 100%;
     padding: 13px;
     margin-top: 20px;
 }
-#searchAds label{
+#searchAnnnouncement label{
    font: 600 13px/20px 'Ubuntu', sans-serif;
    color: #243045;
    margin-bottom: 12px;
    margin-top: 22px;
 }
-#searchAds .key-words label{
+#searchAnnnouncement .key-words label{
     margin-top: 0;
 }
-#searchAds input, #searchAds select{
+#searchAnnnouncement input, #searchAnnnouncement select{
     /*border-radius: 0;*/
     background-color: #e9e9e9;
     height: 34px;
@@ -1015,7 +1040,7 @@ ul.dropdown-menu li a {
     /*.announcement .price{
         height: 117px;
     }*/
-    #searchAds label {
+    #searchAnnnouncement label {
         font: 600 12px/20px 'Ubuntu', sans-serif;
     }
 
@@ -1026,12 +1051,18 @@ ul.dropdown-menu li a {
 }
 
 @media screen and (max-width: 1024px){
+    .navbar-header a.btn-red {
+        display: none;
+    }
     .navbar-inverse .navbar-nav  a.add-offer{
         padding: 14px 20px;
     }
 }
+
+
 @media screen and (max-width: 980px){
-    #searchAds label {
+
+    #searchAnnnouncement label {
         font: 600 12px/20px 'Ubuntu', sans-serif;
     }
     .product-info {
@@ -1048,11 +1079,62 @@ ul.dropdown-menu li a {
     }
 
 }
+
+
+
 @media screen and (max-width: 768px){
+    .nav > li.__showMobileMenu__ {
+        display: block;
+    }
+    .nav > li.__hideMobileMenu__ {
+        display: show;
+    }
+    .navbar-header {
+        height: 50px;
+    }
+    .navbar-brand img {
+        max-height: 50px;
+    }
+    nav.navbar-inverse {
+        height: 50px;
+    }
+    .__showMobileMenu__ {
+        display: block;
+    }
+    .__hideMobileMenu__ {
+        display: none;
+    }
+    #nprogress .bar {
+        top:50px;
+    }
+    #nprogress .spinner {
+        top: 15px;
+    }
     .brand-listing {
         margin-top: 0px;
     }
-    #searchAds label {
+    #mainContainer {
+        margin-top: 0px;
+    }
+    #mainContainer.mt100 {
+        margin-top: 65px;
+    }
+    .category-panel {
+        margin-top: 65px;
+        top:0px;
+
+    }
+    .category-on-piese .category {
+        padding: 0 5px;
+    }
+    .category-on-piese .category span {
+        display: none;
+    }
+    .category-on-piese .category a {
+        padding: 15px 0;
+    }
+
+    #searchAnnnouncement label {
         font: 600 14px/20px 'Ubuntu', sans-serif;
     }
     /*.brand-listing {
@@ -1098,6 +1180,9 @@ ul.dropdown-menu li a {
     .product-images p.description {
         display: none;
     }
+    .parts-main-container {
+        padding-top: 0px;
+    }
 
 
 /*footer*/
@@ -1129,11 +1214,13 @@ ul.dropdown-menu li a {
 }
 @media screen and (max-width: 480px){
     .__showOnMobile__ {
-        display: block!important;
+        display: block;
     }
     .__hideOnMobile__ {
         display: none;
     }
+
+
     .announcement .model {
         display: none;
     }
@@ -1165,8 +1252,16 @@ ul.dropdown-menu li a {
         display: none;
     }
     .category-panel {
-        margin-top: 90px;
+        margin-top: 65px;
         top:0px;
+
+    }
+
+    #allCarsContainer .popular-brands {
+        display: none;
+    }
+    .change-categories > a {
+        padding: 10px 25px;
 
     }
     /*.category-panel .category a span{

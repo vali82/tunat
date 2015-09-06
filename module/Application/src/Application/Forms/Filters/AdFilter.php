@@ -18,8 +18,8 @@ class AdFilter extends AbstractFilter
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 5,
-                            'max' => 50,
+                            'min' => 2,
+                            'max' => 250,
                         ),
                     ),
                 ),
@@ -51,7 +51,7 @@ class AdFilter extends AbstractFilter
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 5,
+                            'min' => 2,
                             'max' => 1000,
                         ),
                     ),
