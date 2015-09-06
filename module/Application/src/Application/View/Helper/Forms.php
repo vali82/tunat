@@ -153,7 +153,7 @@ class Forms extends AbstractHelper
         }
 
         if ($found_submit_element) { ?>
-            <div class="form-group">
+            <div class="">
                 <hr style="margin:10px 0">
                 <div class="<?= $formButtonsAlign ?>">
                     <?php echo $view->formElement($found_submit_element); ?>
@@ -374,7 +374,7 @@ class Forms extends AbstractHelper
         <?php } else { ?>
             <?php if ($element->getAttribute('textAbove')) { ?>
                 <p class="help-block"
-                   style="text-align:<?= ($element->getAttribute('aalign') ? $element->getAttribute('aalign') : 'left') ?>; color: #666666;font-size: <?= ($element->getAttribute('afsize') ? $element->getAttribute('afsize') : 15) ?>px;font-weight: 500;padding: 15px 0 0 0;">
+                   style="text-align:<?= ($element->getAttribute('aalign') ? $element->getAttribute('aalign') : 'left') ?>; color: #666666;font-size: <?= ($element->getAttribute('afsize') ? $element->getAttribute('afsize') : 15) ?>px;font-weight: 500;padding: 0;">
                     <?= $element->getAttribute('textAbove') ?>
                 </p>
             <?php } ?>
