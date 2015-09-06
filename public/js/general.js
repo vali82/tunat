@@ -101,7 +101,8 @@ $.general = function() {
 
                     $('#generalBanner').slideUp();
                     $('#categoryContainer').hide();
-                    $('#mainContainer').css('paddingTop','100px');
+                    $('#mainContainer').addClass('mt100');
+                    $('#changeCarMakeButton').show();
 
                     if ($('#pageTitleElement').length > 0) {
                         document.title = $('#pageTitleElement').html() + ' - Tirbox.ro';
@@ -109,7 +110,7 @@ $.general = function() {
                         document.title = 'Anunturi Gratuite - Dezmembrari camioane si utilaje - Tirbox.ro';
                     }
                 } else {
-                    alert('asdad');
+                    //alert('asdad');
                 }
 
                 NProgress.done();
@@ -129,6 +130,9 @@ $.general = function() {
         if (!history.pushState) {
             //alert('suported');
             //return true;
+            coolAjaxAvailable = false;
+        }
+        if ($(window).width() < 768) {
             coolAjaxAvailable = false;
         }
 
@@ -324,6 +328,30 @@ $.general = function() {
 
         // hide page load effect
         setTimeout( function() { NProgress.done(); }, 1000);
+        ////
+
+        // filter button
+        if ($('#searchAnnouncementsContainer').length > 0 && $(window).width() <= 768) {
+            $('#showSearchAnnouncements').show();
+            $('#searchAnnouncementsContainer').hide();
+            $('.parts-main-container').hide();
+            $('#announcement-listing').show();
+
+            $('#showSearchAnnouncements').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if ($('#searchAnnouncementsContainer').is(':visible')) {
+                    $('#searchAnnouncementsContainer').slideUp();
+                    $('.parts-main-container').hide();
+                    $('#announcement-listing').show();
+                } else {
+                    $('#searchAnnouncementsContainer').slideDown();
+                    $('.parts-main-container').show();
+                    $('#announcement-listing').hide();
+                }
+            });
+        }
         ////
 
         this.setAjaxCoolEvents(false, false);
@@ -656,20 +684,6 @@ $.general = function() {
 
                 });
                 ////
-
-                //$('.parts-main-container').hide();
-                // filter button
-                $('#showSearchAnnouncements').on('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    $('#searchAnnouncementsContainer').slideDown();
-                    $('.parts-main-container').show();
-                    $(this).hide();
-                    $('#announcement-listing').hide();
-                });
-
-                ////
             },
             _changeCarMake: function () {
                 if ($('#allCarsContainer').is(':visible')) {
@@ -839,7 +853,7 @@ $.general = function() {
     }
 
     this.sliderInit = function () {
-        if ($(window).width() > 480) {
+        if ($(window).width() > 768) {
             jQuery(document).ready(function ($) {
 
                 var options = {

@@ -4,7 +4,7 @@
 <!-- To move inline styles to css file/block, please specify a class name for each element. -->
 <!-- ================================================== -->
 <div id="generalBanner" style="display: none; position: relative; margin: 0 auto;
-        top: 75px; left: 0px; width: 1200px; height: 342px; overflow: hidden; margin-bottom:75px" class="__hideOnMobile__">
+        top: 75px; left: 0px; width: 1200px; height: 342px; overflow: hidden; margin-bottom:75px" class="__hideMobileMenu__">
     <!-- Loading Screen -->
     <div u="loading" style="position: absolute; top: 0px; left: 0px;">
         <div style="filter: alpha(opacity=70); opacity: 0.7; position: absolute; display: block;
@@ -116,7 +116,7 @@
 <!-- Jssor Slider End -->
 
 <?php } elseif (isset($this->layout()->isCategoryPage)) { ?>
-    <div id ="generalBanner" class="banner __hideOnMobile__">
+    <div id ="generalBanner" class="banner __hideMobileMenu__">
         <div class="banner-img" style="height: 180px">
             <img class="img-responsive" src="<?=$this->basePath() . '/img/home-banner.jpg'?>" />
         </div>

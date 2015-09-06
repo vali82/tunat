@@ -20,7 +20,7 @@
 <?php } ?>
 
 <!--Marca-->
-<div class="row parts-main-container 0__hideMobileMenu__">
+<div class="row parts-main-container">
     <?php
     // listare toate marcile inainte de a fi selectat modelul
     if (($this->class) === null) { ?>
@@ -136,9 +136,7 @@
 
 <?php if ($this->carModelId !== null && $this->adView === null) { ?>
 <div class="row">
-    <a id ="showSearchAnnouncements" class="button btn-green __showMobileMenu__" style="width:100px" href="javascript;">
-        <span class="glyphicon glyphicon-search"></span> filtre</a>
-    <div id="searchAnnouncementsContainer" class="col-sm-4 col-md-3 filters __hideMobileMenu__">
+    <div id="searchAnnouncementsContainer" class="col-sm-4 col-md-3 filters">
     <h3>Cautare</h3>
     <!--Filtrare Anunturi-->
         <form class="panel col-md-12 card card-1" id="searchAnnnouncement" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
@@ -195,7 +193,7 @@
 <!--Listing Anunturi-->  
     <div id="announcement-listing" class="col-sm-8 col-md-9 brand-listing">
         <?php $this->layout()->headTitle = 'Anunturi Piese de '.$cars['categories'][$this->carcategoriesId] . ' ' . $this->class; ?>
-        <h3 id="pageTitleElement" class="__hideOnMobile__"><?=$this->layout()->headTitle?></h3>
+        <h3 id="pageTitleElement"><?=$this->layout()->headTitle?></h3>
         <?php if ($this->adList !== null) { ?>
             <?=$this->adList?>
             <?=
@@ -210,7 +208,7 @@
             <span class="no-results-found">
                 Nu am gasit anunturi in aceasta categorie.
             </span>
-            <a href="<?=$this->url('home/offers/create')?>" class="btn-red button pull-right">Cere oferta</a>
+            <a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a>
         <?php } ?>
     </div>
 </div>

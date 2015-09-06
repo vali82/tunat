@@ -23,10 +23,11 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     <?php
     echo $this
         ->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        ->prependStylesheet($this->basePath() . '/css/style.css')
         ->prependStylesheet($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css')
         ->prependStylesheet($this->basePath() . '/js/nprogress-master/nprogress.css')
 //            ->prependStylesheet($this->basePath() . '/css/select2/select2.min.css')
-        ->prependStylesheet($this->basePath() . '/css/style.css')
+
         ->prependStylesheet('http://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700')
         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
@@ -74,6 +75,9 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
+                    <a id ="showSearchAnnouncements" href="javascript;">
+                        <span class="glyphicon glyphicon-search"></span> filtre
+                    </a>
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -144,8 +148,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
     <?= $this->partial('application/ad/partials/slider.phtml', [])?>
 
-    <div id = "mainContainer" class="container"
-         <?php if (!isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>style="padding-top: 100px"<?php } ?>>
+    <div id = "mainContainer" class="container <?php if (!isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>mt100<?php } ?>">
 
         <?php
         if (count($this->flashMessenger()->getErrorMessages())) : ?>

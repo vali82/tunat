@@ -15,17 +15,21 @@
     </div>
     <div class="col-lg-9 col-md-9 col-sm-9 col-sm-12">
         <h3><?=$this->translate('Cerere Oferta Personalizata pentru nevoile tale')?></h3>
-        <?php
-        \Application\View\Helper\Forms::render(
-            $this,
-            $this->form,
-            $this->url('home/offers/create'),
-            [
-                'label_size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
-                'input_size' => 'col-lg-10 col-md-10 col-sm-10 col-xs-12',
+        <div class="panel card card-1">
+            <div class="panel-body">
+                <?php
+                \Application\View\Helper\Forms::render(
+                    $this,
+                    $this->form,
+                    $this->url('home/offers/create'),
+                    [
+                        'label_size' => 'col-lg-2 col-md-2 col-sm-2 col-xs-12',
+                        'input_size' => 'col-lg-10 col-md-10 col-sm-10 col-xs-12',
 
-            ]
-        );
-        ?>
+                    ]
+                );
+                ?>
+            </div>
+        </div>
     </div>
 </div>

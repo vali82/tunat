@@ -26,6 +26,14 @@ body{
     display: block;
 }
 
+#showSearchAnnouncements {
+    font-size: 15px;
+    float: right;
+    margin-top:15px;
+    display: none;
+    /*margin: -120px 15px;*/
+}
+
 h3{
     font: 300 21px/26px 'Ubuntu', sans-serif;
     color: #363636;
@@ -118,6 +126,13 @@ ul.navbar-right{
     background-color: #edc127;
     background-position: 0 -15px;
     color: #fff;
+}
+
+#mainContainer {
+    margin-top: -67px;
+}
+#mainContainer.mt100 {
+    margin-top: 100px;
 }
 
 /* card material design */
@@ -257,14 +272,6 @@ ul.navbar-right{
     margin: 0 auto;
 }
 
-li.displayOnMobile {
-    display: none;
-}
-
-.hideOnMobile {
-    display: block;
-}
-
 #LoginRegisterContainer {
     display:none;
     /*
@@ -300,11 +307,12 @@ li.displayOnMobile {
 
 .category-panel {
     position: relative;
-    top: -67px;
+    /*top: -67px;*/
     border: none;
     /*box-shadow: 0 3px 2px rgba(0, 0, 0, 0.05);*/
     width: 100%;
     margin: 0 auto;
+    margin-bottom: 40px;
 }
 .category-panel .category{
     text-align: center;
@@ -672,7 +680,7 @@ input#globalLoginFieldRemember{
 
 /*category page*/
 .parts-main-container {
-    padding-top: 70px;
+    padding-top: 40px;
 }
 .car-brand >h3{
     font: 300 25px/30px 'Ubuntu', sans-serif;
@@ -1050,6 +1058,8 @@ ul.dropdown-menu li a {
         padding: 14px 20px;
     }
 }
+
+
 @media screen and (max-width: 980px){
 
     #searchAnnnouncement label {
@@ -1069,12 +1079,24 @@ ul.dropdown-menu li a {
     }
 
 }
+
+
+
 @media screen and (max-width: 768px){
     .nav > li.__showMobileMenu__ {
-        display: none;
+        display: block;
     }
     .nav > li.__hideMobileMenu__ {
-        display: block;
+        display: show;
+    }
+    .navbar-header {
+        height: 50px;
+    }
+    .navbar-brand img {
+        max-height: 50px;
+    }
+    nav.navbar-inverse {
+        height: 50px;
     }
     .__showMobileMenu__ {
         display: block;
@@ -1082,9 +1104,36 @@ ul.dropdown-menu li a {
     .__hideMobileMenu__ {
         display: none;
     }
+    #nprogress .bar {
+        top:50px;
+    }
+    #nprogress .spinner {
+        top: 15px;
+    }
     .brand-listing {
         margin-top: 0px;
     }
+    #mainContainer {
+        margin-top: 0px;
+    }
+    #mainContainer.mt100 {
+        margin-top: 65px;
+    }
+    .category-panel {
+        margin-top: 65px;
+        top:0px;
+
+    }
+    .category-on-piese .category {
+        padding: 0 5px;
+    }
+    .category-on-piese .category span {
+        display: none;
+    }
+    .category-on-piese .category a {
+        padding: 15px 0;
+    }
+
     #searchAnnnouncement label {
         font: 600 14px/20px 'Ubuntu', sans-serif;
     }
@@ -1131,6 +1180,9 @@ ul.dropdown-menu li a {
     .product-images p.description {
         display: none;
     }
+    .parts-main-container {
+        padding-top: 0px;
+    }
 
 
 /*footer*/
@@ -1167,6 +1219,8 @@ ul.dropdown-menu li a {
     .__hideOnMobile__ {
         display: none;
     }
+
+
     .announcement .model {
         display: none;
     }
@@ -1197,23 +1251,12 @@ ul.dropdown-menu li a {
     .filters .partners {
         display: none;
     }
-    .parts-main-container {
-        padding-top: 30px;
-    }
     .category-panel {
-        margin-top: 90px;
+        margin-top: 65px;
         top:0px;
 
     }
-    .category-on-piese .category {
-        padding: 0 5px;
-    }
-    .category-on-piese .category span {
-        display: none;
-    }
-    .category-on-piese .category a {
-        padding: 15px 0;
-    }
+
     #allCarsContainer .popular-brands {
         display: none;
     }
