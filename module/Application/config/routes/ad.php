@@ -32,7 +32,7 @@ return [
                 'action' => 'myAds',
             ),
             'constraints' => array(
-                'status' => '(active|expired)',
+                'status' => '(active|inactive)',
                 'p' => '[0-9]+',
             ),
         ),

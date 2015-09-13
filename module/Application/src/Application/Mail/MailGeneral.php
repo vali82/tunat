@@ -376,7 +376,7 @@ class MailGeneral extends AbstractActionController
             </div>
 
 	        Reactivaza-ti anunturile pentru inca 30 de zile GRATUIT!<br />
-	        <a href="'.$this->_site_names['http'] . '/ad/my-ads/expired'.'">Intra in contul tau Tirbox.ro</a>'
+	        <a href="'.$this->_site_names['http'] . '/ad/my-ads/incative'.'">Intra in contul tau Tirbox.ro</a>'
         ;
 
 
@@ -385,7 +385,7 @@ class MailGeneral extends AbstractActionController
             $this->template(
                 array(
                     array(
-                        'href' => $this->_site_names['http'] . '/ad/my-ads/expired',
+                        'href' => $this->_site_names['http'] . '/ad/my-ads/inactive',
                         'name' => 'Reactiveaza-ti anunturile'
                     ),
                     $name
