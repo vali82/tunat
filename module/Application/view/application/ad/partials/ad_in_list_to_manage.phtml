@@ -12,7 +12,6 @@
             <span class="stare"><?=($this->stare == 'nou' ? $this->translate('Nou') : $this->translate('Second'))?></span>
         </h4>
         <div>
-            <span><span class="glyphicon glyphicon-calendar"></span>Data Expirarii: <?=$this->expirationDate?></span>
             <span><span class="glyphicon glyphicon-eye-open"></span> Vizualizari: <?=$this->views?></span>
             <span><span class="glyphicon glyphicon-earphone"></span> Contact Afisat: <?=$this->contactDisplayed?></span>
         </div>
@@ -37,18 +36,19 @@
 
             (<?=$this->yearStart?> - <?=$this->yearEnd?>)
         </p>
-        <?php if ($this->status == 'expired') { ?>
+        <?php if ($this->status == 'inactive') { ?>
         <a href="<?=$this->url('home/ad/changeStatus', ['mode'=>'activate', 'id'=>$this->id, 'token'=>$this->token])?>"
            class="btn-green button" role="button">Reactiveaza Anunt</a>
         <?php } else { ?>
         <a href="<?=$this->url('home/ad/create', ['id'=>$this->id])?>" class="btn-green button" role="button">Modifica Anunt</a>
-        <?php } ?>
+
         <a href="javascript:;" onclick="<?=\Application\libs\General::confirmBoxJS(
             $this,
-            $this->url('home/ad/changeStatus', ['mode'=>'delete', 'id'=>$this->id, 'token'=>$this->token]),
+            $this->url('home/ad/changeStatus', ['mode'=>'disable', 'id'=>$this->id, 'token'=>$this->token]),
             'Vrei sa stergi definitiv acest anunt?'
         )?>"
-           class="btn-red button" role="button">Sterge Anunt</a>
+           class="btn-red button" role="button">Dezactiveaza Anunt</a>
+        <?php } ?>
     </div>
     <div class="col-md-2 col-sm-2 col-xs-12">
         <span class="price"><?=$this->price?></span>

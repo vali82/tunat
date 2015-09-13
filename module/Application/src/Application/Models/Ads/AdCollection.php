@@ -257,7 +257,6 @@ class AdCollection
                         'token' => isset($param['token']) ? $param['token'] : '',
                         'views' => $ad->getViews(),
                         'contactDisplayed' => $ad->getContactDisplayed(),
-                        'expirationDate' => General::DateTime($ad->getExpirationDate(), 'LONG'),
                         'county' => $counties[$ad->getStateId()],
                         'price' =>
                             ($ad->getPrice() == round($ad->getPrice()) ? round($ad->getPrice()) : $ad->getPrice()) .
@@ -324,7 +323,6 @@ class AdCollection
                         'href' => '#',
                         'views' => $adObj->getViews(),
                         'refreshDate' => General::DateTime($adObj->getUpdatedAt(), 'LONG'),
-                        'expirationDate' => General::DateTime($adObj->getExpirationDate(), 'LONG'),
                         'years' => $adObj->getYearStart() . ' - ' . $adObj->getYearEnd(),
                         'price' => ($adObj->getPrice() == round($adObj->getPrice()) ? round($adObj->getPrice()) : $adObj->getPrice()) .
                             ' ' . $adObj->getCurrency(),
@@ -394,7 +392,7 @@ class AdCollection
                     foreach ($ads4thisAdvertiserAll as $ad4thisAdvertiser) {
                         $adImgs = unserialize($ad4thisAdvertiser->getImages());
                         // marcare ad ca expirat
-                        $ad4thisAdvertiser->setStatus('expired');
+                        $ad4thisAdvertiser->setStatus('inactive');
                         $adDM->updateRow($ad4thisAdvertiser);
                         $adsInMAil[] = [
                             'name' => $ad4thisAdvertiser->getPartName(),

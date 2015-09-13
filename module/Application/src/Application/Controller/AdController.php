@@ -160,6 +160,7 @@ class AdController extends MyAbstractController
                     ->setImages(serialize(array_values($images)))
                     ->setViews(0)
                     ->setContactDisplayed(0)
+                    ->setUpdatedAt(General::DateTime())
                 ;
                 $resourceObj->setPrice(str_replace(',', '.', $resourceObj->getPrice()));
                 $adDM = new AdDM($this->adapter);
@@ -286,9 +287,9 @@ class AdController extends MyAbstractController
                 $status = 'ok';
                 $title = 'Anunturi Active';
                 break;
-            case "expired":
-                $title = 'Anunturi Expirate';
-                $status = 'expired';
+            case "inactive":
+                $title = 'Anunturi Inactive';
+                $status = 'inactive';
                 break;
             default:
                 $status = 'ok';
@@ -359,13 +360,26 @@ class AdController extends MyAbstractController
                     $expDate->add(new \DateInterval('P30D'));
                     $adObj
                         ->setExpirationDate(General::DateTime($expDate))
-                        ->setDateadd(General::DateTime())
+//                        ->setDateadd(General::DateTime())
                         ->setUpdatedAt(General::DateTime())
                         ->setStatus('ok')
                     ;
                     $adDM->updateRow($adObj);
                     $messageSuccess = 'Anuntul a fost activat cu success!';
-                    $statusRedirect = 'expired';
+                    $statusRedirect = 'inactive';
+
+                } elseif ($mode == 'disable') {
+//                    $expDate = General::DateTime(null, 'object');
+//                    $expDate->add(new \DateInterval('P30D'));
+                    $adObj
+                        //->setExpirationDate(General::DateTime($expDate))
+//                        ->setDateadd(General::DateTime())
+//                        ->setUpdatedAt(General::DateTime())
+                        ->setStatus('inactive')
+                    ;
+                    $adDM->updateRow($adObj);
+                    $messageSuccess = 'Anuntul a fost dezactivat cu success!';
+                    $statusRedirect = 'inactive';
                 }
             } else {
                 $error = 1;
@@ -609,7 +623,7 @@ class AdController extends MyAbstractController
                     'url' => $advertiserObj->getUrl(),
                     'location' => $advertiserObj->generateLocation()
                 ] : null,
-                'message' => $advertiserObj !== null ? '' : 'Datele de contact nu au fost gasite1',
+                'message' => $advertiserObj !== null ? '' : 'Datele de contact nu au fost gasite',
             ]);
         } else {
             return new JsonModel([

@@ -110,7 +110,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                                 <li><a href="<?=$this->url('home/myAccount')?>">Contul meu</a></li>
                                 <li class="__showMobileMenu__"><a href="<?=$this->url('home/ad/create')?>">Adauga anunt</a></li>
                                 <li class="__showMobileMenu__"><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Anunturi active</a></li>
-                                <li class="__showMobileMenu__"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Anunturi expirate</a></li>
+                                <li class="__showMobileMenu__"><a href="<?=$this->url('home/ad/myAds', ['status'=> 'inactive'])?>">Anunturi inactive</a></li>
                                 <li class="__showMobileMenu__">
                                     <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
                                 </li>
@@ -208,7 +208,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                             </a>
                             <ul role="menu" class="dropdown-menu">
                                 <li><a href="<?=$this->url('home/ad/myAds', ['status'=>'active'])?>">Active</a></li>
-                                <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'expired'])?>">Expirate</a></li>
+                                <li><a href="<?=$this->url('home/ad/myAds', ['status'=> 'inactive'])?>">Inactive</a></li>
                             </ul>
                         </li>
 

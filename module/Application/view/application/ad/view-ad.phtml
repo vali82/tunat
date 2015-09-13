@@ -3,7 +3,7 @@ $this->layout()->headTitle = $this->title .' pentru '. $this->car['class'] . ' '
 if ($this->status !== 'ok') { ?>
     <div class="alert alert-info alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        Anuntul a expirat!
+        Anuntul a fost dezactivat!
     </div>
 <?php } ?>
 
@@ -13,7 +13,6 @@ if ($this->status !== 'ok') { ?>
     </h3>
     <div class="info-dates">
         <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:<?=$this->views?></span>
-        <span><span class="glyphicon glyphicon-calendar"></span>Expira la <?=$this->expirationDate?></span>
         <span><span class="glyphicon glyphicon-refresh"></span>Actualizat la <?=$this->refreshDate?></span>
     </div>
     <div class="product-images panel card card-2">
