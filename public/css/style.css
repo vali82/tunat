@@ -1,6 +1,7 @@
 /*header*/
 body{
-    background-color: #eeeded;
+    /*background-color: #eeeded;*/
+    background-color: #ffffff;
     font-family: 'Ubuntu', sans-serif;
     font-size: 14px;
     /*line-height: 1;*/
@@ -501,6 +502,9 @@ footer .container{
     margin-right: 10px;
     margin-left: 80px;
 }
+.form-control{
+    border-radius: 0;
+}
 .newsletter .form-control{
     border-radius: 0;
     border-color: #dfdede;
@@ -872,9 +876,9 @@ span.no-results-found {
     padding-right: 5px;
 }
 .product-details {
-    width: 100%;
+    /*width: 100%;*/
     /*float: left;*/
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .product-images{
     width: 60%;
@@ -1018,9 +1022,9 @@ span.no-results-found {
     content: "";
     width: 0; 
     height: 0; 
-    border-top: 26px solid #eeeded;
+    border-top: 26px solid #fff;
     border-left: 14px solid #243045; 
-    border-bottom: 26px solid #eeeded;
+    border-bottom: 26px solid #fff;
 }
 
 ul.dropdown-menu li a {
