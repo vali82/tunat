@@ -27,6 +27,7 @@ if (APPLICATION_ENV == 'development') {
     define('MAIN_DOMAIN', 'http://tirbox.local/');
 } elseif (APPLICATION_ENV == 'dev') {
     define('MAIN_DOMAIN', 'http://dev.tirbox.ro/');
+    header('Location: http://www.tirbox.ro'); // redirect for stop using dev
 } else {
     define('MAIN_DOMAIN', 'http://www.tirbox.ro/');
     if (strpos($_SERVER['HTTP_HOST'], 'www.') === false) {

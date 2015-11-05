@@ -1,6 +1,15 @@
 <h3><?=$this->title?></h3>
 <div class="panel card card-1">
     <div class="panel-body">
+        <div class="alert alert-info alert-dismissable">
+            <strong>Nu se accepta anunturile de tip general</strong> (ex: "dezmembrez camion ...", "vand orice tip de piesa pentru...", "aduc orice piesa pe coamda"); <strong>anuntul trebuie sa includa o piesa identificata clar, reala</strong>. Anunturile care nu respecta aceasta regula vor fi sterse.
+            <br>
+            Recomandari pentru o vanzare cat mai rapida:<br>
+            &bull; Descrieti detaliat si corect piesa pe care o vindeti (marca model, an de fabricatie, stare, sursa, cod piesa, modele compatibile, etc). Site-ul nostru indexeaza cautariledupa postarile cu cat mai multe detalii.<br>
+            &bull; Pozele reale va asigura o vanzare rapida.<br>
+            &bull; Un pret corect si cat mai aproape de realitate va recomanda ca un vanzator serios si de incredere.
+        </div>
+
     <?php
         \Application\View\Helper\Forms::render(
             $this,
