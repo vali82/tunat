@@ -1062,6 +1062,9 @@ ul.dropdown-menu li a {
     .navbar-inverse .navbar-nav  a.add-offer{
         padding: 14px 20px;
     }
+    #navbar .offersButton {
+        display: none;
+    }
 }
 
 
