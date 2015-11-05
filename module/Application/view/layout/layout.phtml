@@ -85,11 +85,11 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                     </button>
                     <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
                         <img src="<?=$this->basePath() . '/img/logo-header.png'?>" alt="tirbox.ro" /><?php // echo $this->translate('tirbox.ro') ?>
-                        <a class="btn-red button __hideMobileMenu__" style="margin:20px 0 0 20px" href="<?=$this->url('home/offers/create')?>"><?php echo $this->translate('Cerere Oferta') ?></a>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <div class="navbar-collapse collapse" id="navbar">
+                        <a class="btn-red button offersButton" style="margin:20px 0 0 20px" href="<?=$this->url('home/offers/create')?>"><?php echo $this->translate('Cerere Oferta') ?></a>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
                                 <a href="<?=$this->url('home')?>"><?php echo $this->translate('Acasa') ?></a>
