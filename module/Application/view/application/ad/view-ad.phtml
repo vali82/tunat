@@ -1,5 +1,7 @@
 <?php
 $this->layout()->headTitle = $this->title .' pentru '. $this->car['class'] . ' ' .$this->car['model'];
+$this->layout()->metaDescription .= $this->title .', '. $this->car['class'] . ', ' .$this->car['model'];
+$this->layout()->metaKeywords .= $this->title .', '. $this->car['class'] . ', ' .$this->car['model'];
 if ($this->status !== 'ok') { ?>
     <div class="alert alert-info alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
