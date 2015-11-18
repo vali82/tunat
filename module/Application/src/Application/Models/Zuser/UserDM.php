@@ -19,7 +19,7 @@ class UserDM extends ZfcUserMapper
     protected $_adapter;
     protected $_table_name = 'user';
     protected $_fields = array(
-        'id',
+//        'id',
         'email',
         'password',
         'state',
@@ -118,10 +118,11 @@ class UserDM extends ZfcUserMapper
                 } else {
                     $values[$field] = $element->$fieldMethod();
                 }
-            } else {
+            } /*else {
                 $values[$field] = '';
-            }
+            }*/
         }
+
 
         $update->set($values)->where(array('user_id' => $element->getId()));
         $sql = new Sql($this->_adapter);
