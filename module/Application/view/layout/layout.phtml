@@ -120,28 +120,6 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         </ul>
                     </div>
                 </div><!--/.nav-collapse -->
-                <?php if ($role == 'guest' && 1==2) { ?>
-                    <div id="LoginRegisterContainer">
-                        <div class="contentLoginRegister card card-3">
-                            <div>
-                                <img id="loginRegisterLoading" src="/img/loading.gif" style="display:none; height: 20px; padding-top: 0px">
-                                <div id="errorLoginRegister"></div>
-                            </div>
-                            <div id="loginContainer">
-                                <h4>Log in:</h4>
-                                <?php echo $this->partial('scn-social-auth/user/login');?>
-                            </div>
-                            <div id="registerContainer">
-                                <h4>Inregistreaza-te:</h4>
-                                <?php echo $this->partial('scn-social-auth/user/register');?>
-                            </div>
-                            <div id="forgotContainer">
-                                <h4>Ai uitat parola?</h4>
-                                <?php echo $this->partial('scn-social-auth/user/forgot');?>
-                            </div>
-                        </div>
-                    </div>
-                <?php } ?>
             </div>
         </nav>
     </header>
