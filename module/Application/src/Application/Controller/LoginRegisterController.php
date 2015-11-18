@@ -122,7 +122,7 @@ class LoginRegisterController extends MyAbstractController
             $this->flashMessenger()->addErrorMessage($this->translator->translate(
                 'Acest email <strong>'.$email.'</strong> este invalid'
             ));
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('home/login');
         }
 
         $userMapper = $this->getUserTable();
@@ -157,10 +157,10 @@ class LoginRegisterController extends MyAbstractController
         } else {
             $this->flashMessenger()->addErrorMessage(sprintf($this->translator->translate(
                 'Acest email <strong>%s</strong> este invalid'
-            )), $email);
+            ), $email));
         }
 
-        return $this->redirect()->toRoute('home');
+        return $this->redirect()->toRoute('home/login');
     }
 
     public function resetPasswordAction()
@@ -242,14 +242,14 @@ class LoginRegisterController extends MyAbstractController
             $view->setTemplate('application/index/reset-password');
             return $view;
         } else {
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute('home/login');
         }
     }
 
     public function loginAction()
     {
         if (!isset($_POST) || !isset($_POST['data'])) {
-            return $this->redirect()->toRoute('home');
+            //return $this->redirect()->toRoute('home');
 
         } else {
             $this->data = ($_POST['data']);

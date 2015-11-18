@@ -104,7 +104,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                             <li class="__showMobileMenu__"><a href="<?=$this->url('home/offers/create')?>">Cerere Oferta</a></li>
                             <?php if ($role == 'guest') { ?>
                                 <li>
-                                    <a id="loginNavMenuButton" href="javascript:;"><?php echo $this->translate('Login') ?></a>
+                                    <a href="<?=$this->url('home/login')?>"><?php echo $this->translate('Login') ?></a>
                                 </li>
 
                             <?php } else { ?>
@@ -116,11 +116,11 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                                     <a href="<?=$this->url('zfcuser/logout')?>">Logout</a>
                                 </li>
                             <?php } ?>
-                            <li><a class="add-offer<?=($role == 'guest' ? ' loginActionCreateAd' : '')?>" href="<?=$this->url('home/ad/create')?>">Adauga Anunt</a></li>
+                            <li><a class="add-offer" href="<?=($role == 'guest' ? $this->url('home/login') : $this->url('home/ad/create'))?>">Adauga Anunt</a></li>
                         </ul>
                     </div>
                 </div><!--/.nav-collapse -->
-                <?php if ($role == 'guest') { ?>
+                <?php if ($role == 'guest' && 1==2) { ?>
                     <div id="LoginRegisterContainer">
                         <div class="contentLoginRegister card card-3">
                             <div>

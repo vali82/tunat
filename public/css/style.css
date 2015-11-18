@@ -275,7 +275,7 @@ ul.navbar-right{
 }
 
 #LoginRegisterContainer {
-    display:none;
+    /*display:none;*/
     /*
     top: 75px;
     margin-right: 20px;
@@ -285,16 +285,28 @@ ul.navbar-right{
     z-index: 9999;
 
     border: 1px solid red;*/
-    margin: 0 -15px;
+    /*margin: 0 -15px;*/
     padding: 0;
+}
+
+#loginLoading, #registerLoading {
+    display:none;
+    height: 20px;
+    padding-top: 0px;
+}
+
+#LoginRegisterContainer #msgCenterAuth {
+    font-weight: bold;
+    padding: 25px 0;
+    text-align: center;
 }
 
 #LoginRegisterContainer .contentLoginRegister {
     /*background-color: #f8f6f6;
     border: 1px solid #eaeaea;*/
-    float: right;
+    /*float: right;*/
     padding:20px;
-    width: 297px;
+    /*width: 297px;*/
 }
 
 #LoginRegisterContainer h3 {

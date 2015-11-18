@@ -363,7 +363,7 @@ $.general = function() {
             var thisObj = this;
             var _openLogin
 
-            $('#registerContainer').hide();
+            //$('#registerContainer').hide();
             $('#forgotContainer').hide();
 
             // rewrite login form action
@@ -380,58 +380,35 @@ $.general = function() {
             });
             ////
 
-            $(document).on("click", "#registerTab", function(e){
+            /*$(document).on("click", "#registerTab", function(e){
                 e.preventDefault();
                 $('#registerContainer').slideDown();
                 $('#loginContainer').slideUp();
                 $('#errorLoginRegister').hide();
             });
+            */
             $(document).on("click", "#loginTab", function(e){
                 e.preventDefault();
-                $('#registerContainer').slideUp();
+                //$('#registerContainer').slideUp();
                 $('#forgotContainer').slideUp();
                 $('#loginContainer').slideDown();
-                $('#errorLoginRegister').hide();
+                $('#errorLoginForm').hide();
             });
             $(document).on("click", "#forgotTab", function(e){
                 e.preventDefault();
                 $('#forgotContainer').slideDown();
                 $('#loginContainer').slideUp();
-                $('#errorLoginRegister').hide();
+                $('#errorLoginForm').hide();
             });
 
 
             // efect on click pe social media login
             $('a[id^=loginOption]').on('click', function(){
                 var socialMediaType = $(this).attr('id').replace('loginOption', '');
-                $('#errorLoginRegister').slideDown();
-                $('#errorLoginRegister').html('Autentificare prin '+socialMediaType+'...');
-                $('#errorLoginRegister').css('font-size', '16px');
-                $('#loginContainer').slideUp();
-                $('#registerContainer').slideUp();
-                $('#registerSocialContainer').fadeOut();
+                $('.contentLoginRegister').css('visibility', 'hidden');
+                $('#msgCenterAuth').html('Autentificare prin '+socialMediaType+'...');
             });
             ////
-
-            // login button opens login/register form
-            $('#loginNavMenuButton').on('click', function(){
-                thisObj._openMainContainer();
-            });
-
-            // create ad for unlogged users
-            $('.loginActionCreateAd').on('click', function(e) {
-                e.preventDefault();
-                thisObj._openMainContainer();
-            });
-        },
-
-        _openMainContainer: function()
-        {
-            $('#LoginRegisterContainer').slideToggle('fast', function(){
-                if ($('.navbar-toggle').is(':visible') && $('#LoginRegisterContainer').is(':visible')) {
-                    $(".navbar-collapse").collapse('hide');
-                }
-            });
         },
 
         _doRegisterDefault: function (form)
@@ -457,14 +434,14 @@ $.general = function() {
                     }
                 },
                 beforeSend : function() {
-                    $('#errorLoginRegister').hide();
-                    $('#loginRegisterLoading').show();
+                    $('#errorRegisterForm').hide();
+                    $('#registerLoading').show();
                     $('#registerButton').hide();
                 }
             }).done(function( data ) {
 
-                $('#errorLoginRegister').slideDown();
-                $('#errorLoginRegister').html(data.message);
+                $('#errorRegisterForm').slideDown();
+                $('#errorRegisterForm').html(data.message);
 
                 if (data.error == 0) {
                     $('#registerForm').slideUp();
@@ -474,7 +451,7 @@ $.general = function() {
                         true
                     )
                 } else {
-                    $('#loginRegisterLoading').hide();
+                    $('#registerLoading').hide();
                     $('#registerButton').show();
                 }
             });
@@ -511,22 +488,22 @@ $.general = function() {
                 },
                 beforeSend : function() {
                     if (!afterRegister) {
-                        $('#errorLoginRegister').hide();
-                        $('#loginRegisterLoading').show();
+                        $('#errorLoginForm').hide();
+                        $('#loginLoading').show();
                         $('#loginButton').hide();
                     }
                 }
             }).done(function( data ) {
 
-                $('#errorLoginRegister').slideDown();
-                $('#errorLoginRegister').html(data.message);
+                $('#errorLoginForm').slideDown();
+                $('#errorLoginForm').html(data.message);
 
                 if (data.error == 0) {
                     if (!afterRegister) {
                         $('#loginContainer').slideUp();
                         $('#loginSocialContainer').fadeOut();
                     }
-                    $('#loginRegisterLoading').hide();
+                    $('#loginLoading').hide();
                     setTimeout(function () {
                         self.location.replace(data.result.redirectUrl);
                     }, 1000);
@@ -534,7 +511,7 @@ $.general = function() {
 
                 } else {
                     if (!afterRegister) {
-                        $('#loginRegisterLoading').hide();
+                        $('#loginLoading').hide();
                         $('#loginButton').show();
                     }
                 }

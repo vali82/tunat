@@ -103,4 +103,9 @@ class IndexController extends MyAbstractController
     {
 
     }
+
+    public function loginAction()
+    {
+        die();
+    }
 }
