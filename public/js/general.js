@@ -705,7 +705,11 @@ $.general = function() {
                             $('#contactParkPhone').html(data.result.tel1);
                             $('#contactParkPhone').parent().attr('href', 'tel:'+data.result.tel1);
                             if (data.result.email != '') {
-                                $('#contactParkEmail').attr('href', 'mailto:' + data.result.email);
+                                $('#contactParkEmail').attr('href', 'mailto:' + data.result.email+':?subject=Info - '+
+                                $('#pageTitleElement').html().trim()
+                                +' - Tirbox.ro&body=In legatura cu anuntul de pe www.tirbox.ro - '+
+                                window.location.href
+                                );
                             }
                             $('#contactParkAddress').html(data.result.location);
                             $('#contactParkAddress').parent().attr('href', 'http://maps.google.com/?q='+data.result.location);

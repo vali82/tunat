@@ -1,31 +1,40 @@
-<div class="row2" id="LoginRegisterContainer">
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs12 contentLoginRegister card card-3">
-        <div id="errorLoginForm"></div>
-        <div id="loginContainer">
-            <h4>Log in:</h4>
-            <div>
-                <img id="loginLoading" src="/img/loading.gif">
+<div class="row" id="LoginRegisterContainer">
+    <div class="col-md-12">
+
+        <div class="alert alert-info alert-dismissable" style="margin-bottom: 30px">
+            Pentru a putea publica anunturi sa ai cont pe tirbox.ro! <br />
+            Daca nu ai cont poti sa te inregistrezi simplu si usor completand formularul din dreapta!<br />
+            Daca ai deja cont, intra in contul tau si adauga gratuit anunturi!
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs12 contentLoginRegister card card-3">
+            <div id="errorLoginForm"></div>
+            <div id="loginContainer">
+                <h4>Log in:</h4>
+                <div>
+                    <img id="loginLoading" src="/img/loading.gif">
+                </div>
+                <?php echo $this->partial('scn-social-auth/user/login');?>
             </div>
-            <?php echo $this->partial('scn-social-auth/user/login');?>
-        </div>
-        <div id="forgotContainer">
-            <h4>Ai uitat parola?</h4>
-            <?php echo $this->partial('scn-social-auth/user/forgot');?>
-        </div>
-    </div>
-    <div id="msgCenterAuth" class="col-lg-2 col-md-2 col-sm-12 col-xs12">SAU</div>
-
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs12 contentLoginRegister card card-3">
-
-        <div id="registerContainer">
-            <h4>Inregistreaza-te:</h4>
-            <div>
-                <img id="registerLoading" src="/img/loading.gif">
-                <div id="errorRegisterForm"></div>
+            <div id="forgotContainer">
+                <h4>Ai uitat parola?</h4>
+                <?php echo $this->partial('scn-social-auth/user/forgot');?>
             </div>
-            <?php echo $this->partial('scn-social-auth/user/register');?>
         </div>
+        <div id="msgCenterAuth" class="col-lg-3 col-md-3 col-sm-12 col-xs12">SAU</div>
 
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs12 contentLoginRegister card card-3">
+
+            <div id="registerContainer">
+                <h4>Inregistreaza-te:</h4>
+                <div>
+                    <img id="registerLoading" src="/img/loading.gif">
+                    <div id="errorRegisterForm"></div>
+                </div>
+                <?php echo $this->partial('scn-social-auth/user/register');?>
+            </div>
+
+        </div>
     </div>
 </div>
 

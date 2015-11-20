@@ -286,7 +286,8 @@ ul.navbar-right{
 
     border: 1px solid red;*/
     /*margin: 0 -15px;*/
-    padding: 0;
+    padding: 20px 0 50px 0;
+    clear:both;
 }
 
 #loginLoading, #registerLoading {
@@ -314,9 +315,11 @@ ul.navbar-right{
 }
 
 .socialLogin {
-    margin-top: 20px;
-    padding-top: 10px;
+    /*margin-top: 20px;*/
+    /*padding-top: 10px;*/
     text-align: center;
+    float:right;
+    margin-bottom: 0px;
 }
 
 .category-panel {
@@ -616,6 +619,19 @@ footer .container{
 #loginForm, .loginForm{
     overflow: hidden;
 }
+.loginForm{
+    margin-bottom: 20px;
+}
+#loginForm #loginButton {
+    height: 40px;
+    padding: 10px 20px;
+    font:500 14px/22px "Ubuntu",sans-serif
+}
+#registerForm #registerButton {
+    height: 40px;
+    padding: 10px 20px;
+    font: 500 14px/22px "Ubuntu",sans-serif
+}
 #loginContainer h4, 
 #registerContainer h4,
 #forgotContainer h4{
@@ -638,9 +654,6 @@ footer .container{
     border: 1px solid #c4c7cc;
     height: 30px;
     padding: 0 10px;
-}
-#loginForm div:nth-child(odd), #registerForm div{
-    margin-bottom: 20px;
 }
 label[for=globalLoginFieldPass]{
     width: 50%;
@@ -671,13 +684,13 @@ input#globalLoginFieldRemember{
     color: #243045;
 }
 #loginOptionFacebook{
-    background-image: url(../img/fb-login.jpg);
+    background: url(../img/fb-login.jpg) -7px -8px;
     width: 100%;
-    height: 47px;
+    height: 40px;
     display: block;
-    padding: 12px;
+    padding: 10px 20px;
     color: #fff;
-    font: 500 17px/22px 'Ubuntu', sans-serif;
+    font: 500 14px/22px "Ubuntu",sans-serif
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 #loginOptionFacebook:hover{
@@ -1294,4 +1307,18 @@ ul.dropdown-menu li a {
 }
 @media screen and (max-width: 320px){
 
+}
+
+.alert {
+    border-radius: 0px;
+}
+
+#errorRegisterForm {
+    color: orangered;
+    padding: 5px 0;
+}
+
+#errorLoginForm {
+    color: orangered;
+    padding: 5px 0;
 }

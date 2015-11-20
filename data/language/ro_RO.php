@@ -12,6 +12,7 @@
  */
 return array(
     //custom
+    "passwordVerify" => "Confirmare Parola",
 	"Inregistrare Gradinita" => "Înregistrare Grădiniță",
 	"Email" => "E-mail",
 	"Password" => "Parola",
@@ -51,7 +52,8 @@ return array(
 		
 	// Zend\I18n\Validator\Alnum
     "Invalid type given. String, integer or float expected" => "Invalid type given. String, integer or float expected",
-    "The input contains characters which are non alphabetic and no digits" => "The input contains characters which are non alphabetic and no digits",
+    "The input contains characters which are non alphabetic and no digits" =>
+            "The input contains characters which are non alphabetic and no digits",
     "The input is an empty string" => "The input is an empty string",
 
     // Zend\I18n\Validator\Alpha
@@ -64,7 +66,6 @@ return array(
     "The input does not appear to be a valid datetime" => "The input does not appear to be a valid datetime",
 
     // Zend\I18n\Validator\Float
-    //"Invalid type given. String, integer or float expected" => "Invalid type given. String, integer or float expected",
     "The input does not appear to be a float" => "The input does not appear to be a float",
 
     // Zend\I18n\Validator\Int
@@ -79,7 +80,8 @@ return array(
     // Zend\I18n\Validator\PostCode
     //"Invalid type given. String or integer expected" => "Invalid type given. String or integer expected",
     "The input does not appear to be a postal code" => "The input does not appear to be a postal code",
-    "An exception has been raised while validating the input" => "An exception has been raised while validating the input",
+    "An exception has been raised while validating the input" =>
+        "An exception has been raised while validating the input",
 
     // Zend\Validator\Barcode
     "The input failed checksum validation" => "The input failed checksum validation",
@@ -88,7 +90,8 @@ return array(
     //"Invalid type given. String expected" => "Invalid type given. String expected",
 
     // Zend\Validator\Between
-    "The input is not between '%min%' and '%max%', inclusively" => "The input is not between '%min%' and '%max%', inclusively",
+    "The input is not between '%min%' and '%max%', inclusively" =>
+        "The input is not between '%min%' and '%max%', inclusively",
     "The input is not strictly between '%min%' and '%max%'" => "The input is not strictly between '%min%' and '%max%'",
 
     // Zend\Validator\Callback
@@ -102,13 +105,14 @@ return array(
     "The input contains an invalid amount of digits" => "The input contains an invalid amount of digits",
     "The input is not from an allowed institute" => "The input is not from an allowed institute",
     "The input seems to be an invalid credit card number" => "The input seems to be an invalid credit card number",
-    //"An exception has been raised while validating the input" => "An exception has been raised while validating the input",
 
     // Zend\Validator\Csrf
-    "The form submitted did not originate from the expected site" => "The form submitted did not originate from the expected site",
+    "The form submitted did not originate from the expected site" =>
+        "The form submitted did not originate from the expected site",
 
     // Zend\Validator\Date
-    "Invalid type given. String, integer, array or DateTime expected" => "Invalid type given. String, integer, array or DateTime expected",
+    "Invalid type given. String, integer, array or DateTime expected" =>
+        "Invalid type given. String, integer, array or DateTime expected",
     "The input does not appear to be a valid date" => "The input does not appear to be a valid date",
     "The input does not fit the date format '%format%'" => "The input does not fit the date format '%format%'",
 
@@ -126,13 +130,20 @@ return array(
 
     // Zend\Validator\EmailAddress
     //"Invalid type given. String expected" => "Invalid type given. String expected",
-    "The input is not a valid email address. Use the basic format local-part@hostname" => "The input is not a valid email address. Use the basic format local-part@hostname",
-    "'%hostname%' is not a valid hostname for the email address" => "'%hostname%' is not a valid hostname for the email address",
-    "'%hostname%' does not appear to have any valid MX or A records for the email address" => "'%hostname%' does not appear to have any valid MX or A records for the email address",
-    "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network" => "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network",
-    "'%localPart%' can not be matched against dot-atom format" => "'%localPart%' can not be matched against dot-atom format",
-    "'%localPart%' can not be matched against quoted-string format" => "'%localPart%' can not be matched against quoted-string format",
-    "'%localPart%' is not a valid local part for the email address" => "'%localPart%' is not a valid local part for the email address",
+    "The input is not a valid email address. Use the basic format local-part@hostname" =>
+        "Adresa de email este invalida. Foloseste formatul standard nume@yahoo.ro",
+    "'%hostname%' is not a valid hostname for the email address"
+        => "'%hostname%' nu este un provider de email valid",
+    "'%hostname%' does not appear to have any valid MX or A records for the email address"
+        => "'%hostname%' does not appear to have any valid MX or A records for the email address",
+    "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network"
+        => "'%hostname%' is not in a routable network segment. The email address should not be resolved from public network",
+    "'%localPart%' can not be matched against dot-atom format"
+        => "'%localPart%' can not be matched against dot-atom format",
+    "'%localPart%' can not be matched against quoted-string format"
+        => "'%localPart%' can not be matched against quoted-string format",
+    "'%localPart%' is not a valid local part for the email address"
+        => "'%localPart%' is not a valid local part for the email address",
     "The input exceeds the allowed length" => "The input exceeds the allowed length",
 
     // Zend\Validator\Explode

@@ -11,7 +11,7 @@
                name="identity" id="globalLoginFieldIdentity">
 
 	</div>
-	<div class="loginForm">
+	<div class="loginForm" style="margin-bottom: 0px">
 
 		<label for="globalLoginFieldPass" style="display: block;"><?=$this->translate('Parola')?></label>
 		<a href="javascript:;" id="forgotTab">Ai uitat parola?</a>
@@ -26,20 +26,19 @@
 
     </div>
 
-	<div class="loginButtons">
+	<div style="overflow: hidden;">
 		<a id="loginButton" class="btn-green button" href="javascript:;" onclick="$('#loginForm').submit()">Login</a>
-		<br /><input type="submit" style="float: right;visibility: hidden;">
+        <div id = "loginSocialContainer" class="socialLogin">
+
+            <a href="/user/login/facebook" id="loginOptionFacebook" class="cellBtn rotX180 autoExecCenter">
+                Login cu Facebook
+            </a>
+
+        </div>
+        <input type="submit" style="float: right;visibility: hidden; width: 1px">
 	</div>
 
 </form>
 
 <!--<div class="register"><a href="javascript:;" id="registerTab">Nu ai cont? Inregistreaza-te</a></div>-->
 
-<div id = "loginSocialContainer" class="socialLogin">
-
-	<a href="/user/login/facebook" id="loginOptionFacebook" class="cellBtn rotX180 autoExecCenter">
-         Log in cu Facebook
-        
-	</a>
-
-</div>
