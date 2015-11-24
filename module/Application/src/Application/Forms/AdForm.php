@@ -385,7 +385,7 @@ class AdForm extends AbstractForm
             'name' => 'submit',
             'attributes' => array(
                 'type' => 'submit',
-                'value' => 'Adauga anuntul',
+                'value' => $resourceObj->getId() === null ? 'Adauga anuntul' : 'Actualizeaza anuntul',
                 'id' => 'submitbutton',
                 'cancelLink' => $this->_cancel_route
             ),

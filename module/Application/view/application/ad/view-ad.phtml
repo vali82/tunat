@@ -44,7 +44,7 @@ if ($this->status !== 'ok') { ?>
         <div class="row tumb-img">
         <?php
         if (count ($this->images) > 0) {
-            foreach ($this->images as $k=>$img) { if ($k>=0) { ?>
+            foreach ($this->images as $k=>$img) { if ($k>0) { ?>
             <div class="col-xs-2" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
                 <a href="<?=
                 \Application\libs\General::getSimpleAvatar(

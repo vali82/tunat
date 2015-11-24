@@ -142,7 +142,7 @@ class AdController extends MyAbstractController
                         $x = explode('/', $filefound);
                         $filename = $x[count($x)-1];
                         if (strpos($filename, '_') === false) {
-                            $images[date('YmdHis', filemtime($filefound))] = $filename;
+                            $images[date('YmdHis', filemtime($filefound)).rand(1000,9999)] = $filename;
                         }
                     }
                     ksort($images);
@@ -158,10 +158,14 @@ class AdController extends MyAbstractController
                     ->setCarMake($carMakelId)
                     ->setStatus('ok')
                     ->setImages(serialize(array_values($images)))
-                    ->setViews(0)
-                    ->setContactDisplayed(0)
                     ->setUpdatedAt(General::DateTime())
                 ;
+                if ($id === null) {
+                    $resourceObj
+                        ->setViews(0)
+                        ->setContactDisplayed(0)
+                    ;
+                }
                 $resourceObj->setPrice(str_replace(',', '.', $resourceObj->getPrice()));
                 $adDM = new AdDM($this->adapter);
 
