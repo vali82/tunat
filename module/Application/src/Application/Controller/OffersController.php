@@ -51,7 +51,7 @@ class OffersController extends MyAbstractController
 
     public function createAction()
     {
-        $this->layout()->headTitle = 'Cerere oferta personalizata';
+        $this->layout()->headTitle = 'Cerere oferta personalizata pentru piese din dezmembrari';
         $this->layout()->js_call .= ' generalObj.cars = '.json_encode($this->cars).'; ';
         $this->layout()->js_call .= ' generalObj.offers.create("'.$this->url()->fromRoute("home/offers/upload").'"); ';
 

@@ -1,5 +1,5 @@
 <?php
-$this->layout()->headTitle = $this->title .' pentru '. $this->car['class'] . ' ' .$this->car['model'];
+$this->layout()->headTitle = $this->title .' '. $this->car['class'] . ' ' .$this->car['model'];
 $this->layout()->metaDescription .= $this->title .', '. $this->car['class'] . ', ' .$this->car['model'];
 $this->layout()->metaKeywords .= $this->title .', '. $this->car['class'] . ', ' .$this->car['model'];
 if ($this->status !== 'ok') { ?>
@@ -11,7 +11,7 @@ if ($this->status !== 'ok') { ?>
 
 <div class="product-details">
     <h3 id="pageTitleElement">
-        <?= $this->title ?> pentru <?= $this->car['class'] ?> <?=$this->car['model']?>
+        <?= $this->title ?> <?= $this->car['class'] ?> <?=$this->car['model']?>
     </h3>
     <div class="info-dates">
         <span><span class="glyphicon glyphicon-eye-open"></span>Vizualizari:<?=$this->views?></span>
