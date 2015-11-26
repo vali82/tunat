@@ -39,21 +39,6 @@ $this->partial(
 
     <div class="col-md-3">
         <h3 class="new">Parteneri Tirbox</h3>
-        <?=
-        $this->partial(
-            'application/ad/partials/partners.phtml',
-            []
-        )?>
-    </div>
-</div>
-
-<div class="row" style="opacity: 0.5">
-    <div class="col-md-12" style="padding: 20px 15px 20px 15px">
-        <span class="glyphicon glyphicon-question-sign" style="color: #636e7e; font-size: 50px;"></span>
-        <h2 style="float: right; font: 300 18px 'Ubuntu',sans-serif; margin-top: 5px; padding-top: 0; width: calc(100% - 60px);">
-            Pentru orice fel de intrebari sau sugestii, nu ezitati sa ne <a href="#">contactati</a>.<br>Sau puteti sa intrati pe blogul
-            nostru <a href="http://blog.tirbox.ro">blog.tirbox.ro</a>, pentru a fi in pas cu noile tendinte in materie de masini si
-            utilaje.
-        </h2>
+        <?=$this->partial('application/ad/partials/partners.phtml', [])?>
     </div>
 </div>

@@ -1101,9 +1101,9 @@ ul.dropdown-menu li a {
     .product-info {
         width:48%;
     }
-    .product-info .info-details p.description {
+    /*.product-info .info-details p.description {
         display: none;
-    }
+    }*/
     .product-images p.description {
         display: block;
     }
@@ -1115,7 +1115,7 @@ ul.dropdown-menu li a {
 
 
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 767px){
     .nav > li.__showMobileMenu__ {
         display: block;
     }
@@ -1216,6 +1216,9 @@ ul.dropdown-menu li a {
     }
     .product-images p.description {
         display: none;
+    }
+    .info-details p.description {
+        display: block;
     }
     .parts-main-container {
         padding-top: 0px;

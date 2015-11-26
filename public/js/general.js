@@ -331,7 +331,7 @@ $.general = function() {
         ////
 
         // filter button
-        if ($('#searchAnnouncementsContainer').length > 0 && $(window).width() <= 768) {
+        if ($('#searchAnnouncementsContainer').length > 0 && $(window).width() < 768) {
             $('#showSearchAnnouncements').show();
             $('#searchAnnouncementsContainer').hide();
             $('.parts-main-container').hide();
@@ -831,7 +831,7 @@ $.general = function() {
                 }
             });
         }
-    }
+    };
 
     this.sliderInit = function () {
         if ($(window).width() > 768) {
