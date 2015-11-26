@@ -3,7 +3,7 @@
 $role = $this->authenticatedUserRole();
 $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
-?><html lang="ro">
+?><html lang="ro-RO">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <?php
@@ -13,6 +13,8 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     <meta name="robots" content="index, follow" />
     <meta http-equiv="Content-Language" content="ro" />
     <link href="http://www.tirbox.ro" hreflang="ro-ro" rel="alternate" title="Tirbox" type="text/html"/>
+    <link rel="canonical" href="http://tirbox.ro" />
+
     <?php echo $this->headMeta()
         ->appendName('description', $this->metaDescription)
         ->appendName('keywords', $this->metaKeywords)
