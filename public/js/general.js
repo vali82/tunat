@@ -125,7 +125,7 @@ $.general = function() {
 
     this.setAjaxCoolEvents = function (onlyThisSection, event) {
 
-        var coolAjaxAvailable = true;
+        var coolAjaxAvailable = false; // set true for ajax load page
 
         if (!history.pushState) {
             //alert('suported');
