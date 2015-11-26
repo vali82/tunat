@@ -221,13 +221,14 @@
     <!--end Pagina Anunt-->
 
     <!-- anunturi related-->
-    <div class="row" style="clear: both">
+    <div class="row" style="clear: both; padding-top: 20px">
 
         <div class="col-md-9">
-            <h3 class="new">Anunturi asemanatoare</h3>
+            <h3 class="new">Anunturi asemanatoare cu <?=$this->layout()->headTitle?> </h3>
             <?= $this->relatedAds ?>
         </div>
         <div class="col-md-3">
+            <h3 class="new">Parteneri Tirbox</h3>
             <?=
             $this->partial(
                 'application/ad/partials/partners.phtml',

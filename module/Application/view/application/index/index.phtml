@@ -15,21 +15,45 @@ $this->partial(
 )?>
 <!--end Category-->
 
+<div class="row __hideOnMobile__" style="opacity: 0.5">
+    <div class="col-md-12" style="padding: 10px 15px 40px 15px">
+        <span class="glyphicon glyphicon-info-sign" style="color: #636e7e; font-size: 65px;"></span>
+        <h2 style="float: right; font: 300 18px 'Ubuntu',sans-serif; margin-top: 0; padding-top: 0; width: calc(100% - 80px);">
+
+            Tirbox.ro este un site ce ofera utilizatorilor inregistrati, fie ei persoane fizice, fie parcuri auto, spatiu de
+            expunere al anunturilor.
+            Prin intermediul platformei noastre de anunturi puteti gasi piese din categoriile urmatoare:
+            camioane, utilitare max 3.5 tone, remorci, utilaje agricole, utilaje constructii sau autobuze.</h2>
+    </div>
+</div>
+
 <div class="row">
     <!-- <div class="col-md-12 offer">
         <span>Vrei sa primesti o oferta personaliazata completa? Cere-o acum!</span>
         <a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a>
     </div> -->
-    <h3 class="col-md-12 new">Cele mai noi anunturi</h3>
     <div class="col-xs-12 col-sm-12 col-md-9">
+        <h3 class="new">Cele mai noi anunturi din dezmembrari</h3>
         <?= $this->adList ?>
     </div>
 
     <div class="col-md-3">
+        <h3 class="new">Parteneri Tirbox</h3>
         <?=
         $this->partial(
             'application/ad/partials/partners.phtml',
             []
         )?>
+    </div>
+</div>
+
+<div class="row" style="opacity: 0.5">
+    <div class="col-md-12" style="padding: 20px 15px 20px 15px">
+        <span class="glyphicon glyphicon-question-sign" style="color: #636e7e; font-size: 50px;"></span>
+        <h2 style="float: right; font: 300 18px 'Ubuntu',sans-serif; margin-top: 5px; padding-top: 0; width: calc(100% - 60px);">
+            Pentru orice fel de intrebari sau sugestii, nu ezitati sa ne <a href="#">contactati</a>.<br>Sau puteti sa intrati pe blogul
+            nostru <a href="http://blog.tirbox.ro">blog.tirbox.ro</a>, pentru a fi in pas cu noile tendinte in materie de masini si
+            utilaje.
+        </h2>
     </div>
 </div>
