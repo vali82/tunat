@@ -118,8 +118,12 @@ class MyAbstractController extends AbstractActionController
             'googleAnalitics' => $googleAnalitics,
             'cars' => $cars,
             'headTitle' => 'Dezmembrari camioane, utilaje contructii si agricole, utilitare, autobuze, remorci',
-            'metaDescription' => 'Anunturi gratuite, anunturi piese noi, piese din dezmembrari, piese, second hand, camioane, utilitare max 3.5 tone, remorci, utilaje constructii, utilaje agricole, autobuze',
-            'metaKeywords' => 'dezmembrari, piese camioane, utilitare, remorci, utilaje constructii, autobuze'
+            'metaDescription' => 'Tirbox.ro este un site ce ofera utilizatorilor inregistrati, fie ei persoane fizice,
+                fie parcuri auto, spatiu de expunere a anunturilor.
+                Prin intermediul platformei noastre de anunturi puteti gasi piese din categoriile urmatoare:
+                camioane, utilitare max 3.5 tone, remorci, utilaje agricole, utilaje constructii sau autobuze.
+                Anunturi gratuite, anunturi piese noi, piese din dezmembrari, piese, second hand.',
+            'metaKeywords' => 'piese auto, second hand, dezmembrari, piese camioane, utilitare, remorci, utilaje constructii, autobuze'
         ]);
         ////
 

@@ -24,7 +24,9 @@
     <?php
     // listare toate marcile inainte de a fi selectat modelul
     if (($this->class) === null) { ?>
-        <?php $this->layout()->headTitle = 'Piese '.$cars['categories'][$this->carcategoriesId].' din dezmembrari';?>
+        <?php $this->layout()->headTitle = 'Piese '.$cars['categories'][$this->carcategoriesId].' din dezmembrari';
+        $this->layout()->metaDescription = $this->layout()->headTitle .'. '. $this->layout()->metaDescription;
+        ?>
         <div class="col-md-12 car-brand">
             <h3><?=$this->layout()->headTitle?>, alege marca</h3>
             <div class="row popular-brands">
@@ -188,7 +190,9 @@
 
     <!--Listing Anunturi-->
     <div id="announcement-listing" class="col-sm-8 col-md-9 brand-listing">
-        <?php $this->layout()->headTitle = 'Piese '.$cars['categories'][$this->carcategoriesId] . ' ' . $this->class. ' din dezmembrari'; ?>
+        <?php $this->layout()->headTitle = 'Piese '.$cars['categories'][$this->carcategoriesId] . ' ' . $this->class. ' din dezmembrari';
+        $this->layout()->metaDescription = $this->layout()->headTitle .'. '. $this->layout()->metaDescription;
+        ?>
         <h3 id="pageTitleElement"><?=$this->layout()->headTitle?></h3>
         <?php if ($this->adList !== null) { ?>
             <?=$this->adList?>
