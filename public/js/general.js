@@ -710,6 +710,9 @@ $.general = function() {
                                 +' - Tirbox.ro&body=In legatura cu anuntul de pe www.tirbox.ro - '+
                                 window.location.href
                                 );
+                            } else {
+                                $('#contactParkEmail').hide();
+                                $('#contactParkPhone').parent().css('width', '100%');
                             }
                             $('#contactParkAddress').html(data.result.location);
                             $('#contactParkAddress').parent().attr('href', 'http://maps.google.com/?q='+data.result.location);

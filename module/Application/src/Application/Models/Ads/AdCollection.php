@@ -338,6 +338,10 @@ class AdCollection
                         'advertiser' => [
                             'name' => $advertiserObj->getName(),
                             'tel1' => $advertiserObj->getTel1(),
+                            'tel2' => $advertiserObj->getTel2(),
+                            'tel3' => $advertiserObj->getTel3(),
+                            'logo' => $advertiserObj->getLogo(),
+                            'folderLogo' => $adObj->getAdvertiserId() . 'xlogo',
                             'email' => $advertiserObj->getEmail(),
                             'url' => str_replace('http://', '', $advertiserObj->getUrl()),
                             'location' => $advertiserObj->generateLocation()
