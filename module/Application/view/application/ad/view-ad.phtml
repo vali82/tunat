@@ -120,7 +120,8 @@ if ($this->status !== 'ok') { ?>
         </div>
         <div class="contact">
             <div id = "contactParkContainer" style="display: none" class="">
-                <div class="row" style="padding-bottom: 20px">
+                <?php if ($this->advertiser['logo'] != '') { ?>
+                <div class="row" style="padding-bottom: 10px">
                     <div class="col-lg-3 col-md-3 col-sm-3  col-xs-12">
                         <img class="img-responsive" src="<?= \Application\libs\General::getSimpleAvatar(
                             $this->advertiser['folderLogo'],
@@ -130,9 +131,14 @@ if ($this->status !== 'ok') { ?>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                         <h4><?=$this->advertiser['name']?></h4>
-                        <a href="http://<?=$this->advertiser['url']?>"><?=$this->advertiser['url']?></a>
+                        <?=($this->advertiser['accountType'] == 'parc-auto' ? 'Parc Auto' : 'Particular')?>
                     </div>
                 </div>
+                <?php } else { ?>
+                    <h4><?=$this->advertiser['name']?></h4>
+                    <?=($this->advertiser['accountType'] == 'parc-auto' ? 'Parc Auto' : 'Particular')?>
+                    <br /><br />
+                <?php } ?>
                 <?php if ($this->advertiser['tel2'] != '' || $this->advertiser['tel3'] != '') {?>
                     Telefon: <a href="tel:<?=$this->advertiser['tel1']?>"><?=$this->advertiser['tel1']?></a><?=($this->advertiser['tel2'] != '' ? ', <a href="tel:'.$this->advertiser['tel2'].'">'.$this->advertiser['tel2'].'</a>' : '') ?><?=($this->advertiser['tel3'] != '' ? ', <a href="tel:'.$this->advertiser['tel3'].'">'.$this->advertiser['tel3'].'</a>' : '') ?>
                     <br>

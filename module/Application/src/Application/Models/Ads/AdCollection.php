@@ -344,7 +344,8 @@ class AdCollection
                             'folderLogo' => $adObj->getAdvertiserId() . 'xlogo',
                             'email' => $advertiserObj->getEmail(),
                             'url' => str_replace('http://', '', $advertiserObj->getUrl()),
-                            'location' => $advertiserObj->generateLocation()
+                            'location' => $advertiserObj->generateLocation(),
+                            'accountType' => $advertiserObj->getAccountType()
                         ],
                         'status' => $adObj->getStatus()
                     ]
