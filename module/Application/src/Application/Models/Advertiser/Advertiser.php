@@ -277,7 +277,12 @@ class Advertiser
     public function generateLocation()
     {
         $states = General::getFromSession('states');
-        $x = [$this->getAddress(), $this->getCity(), $states[$this->getState()]];
+        $x = [];
+        if ($this->getAddress() != '') {
+            $x[] = $this->getAddress();
+        }
+        $x[] = $this->getCity();
+        $x[] = $states[$this->getState()];
         return implode(', ', $x);
     }
 
