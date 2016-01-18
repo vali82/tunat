@@ -26,6 +26,7 @@ class SimpleController extends AbstractActionController
         $folder = $this->getEvent()->getRouteMatch()->getParam('folder', 'xxx');
 //        $sectype=$this->getEvent()->getRouteMatch()->getParam('sectype','xxx');
         $size = $this->getEvent()->getRouteMatch()->getParam('size', '100x100');
+        $name = $this->getEvent()->getRouteMatch()->getParam('name', '');
 
         /*if ($type == 'avatars') {
             $noPhoto = $sectype . '/nouser';

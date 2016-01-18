@@ -30,13 +30,15 @@ if ($this->status !== 'ok') { ?>
             \Application\libs\General::getSimpleAvatar(
                 $this->folder,
                 $img,
-                '1024x768'
+                '1024x768',
+                $this->titleUrlized . '-'. 1 . '.jpg'
             ) ?>" type="" title="" download="" data-image-lib="popup">
                 <img class="img-responsive" src="<?=
                 \Application\libs\General::getSimpleAvatar(
                     $this->folder,
                     $img,
-                    '700x400'
+                    '700x400',
+                    $this->titleUrlized . '-'. 1 . '.jpg'
                 ) ?>">
             </a>
         </div>
@@ -50,13 +52,15 @@ if ($this->status !== 'ok') { ?>
                 \Application\libs\General::getSimpleAvatar(
                     $this->folder,
                     $img,
-                    '1024x768'
+                    '1024x768',
+                    $this->titleUrlized . '-'. ($k+1) . '.jpg'
                 ) ?>" type="" title="" download="" data-image-lib="popup">
                     <img class="img-responsive card card-1" style="max-width:80px" src="<?=
                     \Application\libs\General::getSimpleAvatar(
                         $this->folder,
                         $img,
-                        '130x130'
+                        '130x130',
+                        $this->titleUrlized . '-'. ($k+1) . '.jpg'
                     ) ?>">
                 </a>
             </div>

@@ -615,7 +615,9 @@ $.general = function() {
             init: function(contactUrl) {
                 var thisObj = this;
                 this._contactUrl = contactUrl;
-                $('#changeCarMakeButton').bind('click', function(){
+                $('#changeCarMakeButton').bind('click', function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
                     thisObj._changeCarMake();
                 });
                 $('#adGetContactButton').bind('click', function(){

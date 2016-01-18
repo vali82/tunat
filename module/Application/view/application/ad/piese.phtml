@@ -84,7 +84,7 @@
         // listare categorie + model
         ?>
         <div class="change-categories col-sm-4 col-md-3">
-            <a href="javascript:;" class="panel card card-1" id="changeCarMakeButton">
+            <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $this->class) ?>" class="panel card card-1" id="changeCarMakeButton">
                 <img src="<?=$this->basePath()?>/img/categ_<?=$this->carcategoriesId?>.png" />
                 <?=$this->class?>
                 <span class="arrow"></span>

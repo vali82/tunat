@@ -241,7 +241,8 @@ class AdCollection
                         'imgSrc' => General::getSimpleAvatar(
                             $ad->getAdvertiserId() . 'xadsx'.$ad->getId(),
                             (count($adImg) > 0 ? $adImg[0] : ''),
-                            '130x130'
+                            '130x130',
+                            $carCollection->getUrlize($ad->getPartName(). ' ' . $cars['model'][$ad->getCarCategory()][$ad->getCarMake()]['categ'] . ' ' . $ad->getCarModel()) . '-1.jpg'
                         ),
                         'title' => $ad->getPartName(),
                         'id' => $ad->getId(),
@@ -317,6 +318,7 @@ class AdCollection
                         'id' => $adObj->getId(),
                         'folder' => $adObj->getAdvertiserId() . 'xadsx'.$adObj->getId(),
                         'title' => $adObj->getPartName(),
+                        'titleUrlized' => $carCollection->getUrlize($adObj->getPartName(). ' ' . $cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ'] . ' ' . $adObj->getCarModel()),
                         'description' => $adObj->getDescription(),
                         'descriptionShort' => strlen($adObj->getDescription()) > 200 ? substr($adObj->getDescription(), 0, 200) : '',
                         'stare' => $adObj->getStare(),

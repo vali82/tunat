@@ -115,7 +115,7 @@ return [
     'displayImage' => [
         'type' => 'Segment',
         'options' => array(
-            'route' => 'display-image[/:folder][/:id][/:size][/:ext]',
+            'route' => 'display-image[/:folder][/:id][/:size][/:name]',
             'defaults' => array(
                 '__NAMESPACE__' => 'Application\Controller',
                 'controller' => 'Simple',
@@ -125,7 +125,7 @@ return [
                 'folder' => '[a-z0-9x]+',
                 'id' => '[a-z0-9_]+',
                 'size' => '[0-9x]+',
-                'ext' => '(.jpg|.png|.gif)'
+                //'ext' => '(.jpg|.png|.gif)'
                 //'h' => '[0-9]+',
             ),
         ),
