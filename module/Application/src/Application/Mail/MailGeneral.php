@@ -25,7 +25,7 @@ class MailGeneral extends AbstractActionController
     protected $_general_config;
     protected $_log2hdd = false; // keep mails into logs
 
-	protected $method = 'mandrill'; // mandrill OR null if zf2 mail
+	protected $method = null; // mandrill OR null if zf2 mail
 
 
     public function __construct($config)
