@@ -527,7 +527,16 @@ class AdController extends MyAbstractController
         }
         ////
 
-
+        // ads on category page
+        $ads4categoryPage = null;
+        if ($carcategoriesId > 0 && $class == null) {
+            $ads4categoryPage = $adCollection->adListHTML([
+                'place' => 'categoryPage',
+                'category' => $carcategoriesId
+            ]);
+            $ads4categoryPage = $ads4categoryPage['list'];
+        }
+        ////
 
         $urlGetContact = $this->url()->fromRoute(
             'home/ad/getContact',
@@ -537,13 +546,6 @@ class AdController extends MyAbstractController
             ]
         );
         $this->layout()->js_call .= ' generalObj.ad.search.init("'.$urlGetContact.'"); ';
-
-        /*if ($this->getRequest()->isXmlHttpRequest()) {
-            $viewModel = new ViewModel();
-            $viewModel->setTerminal(true);
-        } else {
-            $viewModel = new ViewModel();
-        }*/
 
         $viewVariables = [
             'carcategoriesId' => $carcategoriesId,
@@ -555,6 +557,7 @@ class AdController extends MyAbstractController
             'carCollection' => $carCollection,
             'adList' => $adList,
             'ads' => $ads,
+            'ads4categoryPage' => $ads4categoryPage,
             'adView' => $adView,
             'searchValues' => [
                 'input' => str_replace("+", " ", $searchWords),
@@ -570,8 +573,6 @@ class AdController extends MyAbstractController
             'relatedAds' => $relatedAds['list'],
             ''
         ];
-//        $viewModel->setVariables($viewVariables);
-
 
         if (!$this->getRequest()->isXmlHttpRequest()) {
             return $viewVariables;

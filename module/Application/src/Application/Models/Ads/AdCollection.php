@@ -46,7 +46,27 @@ class AdCollection
             $ads = $adDM->fetchAllDefault(
                 ['status' => 'ok'],
                 ['id' => 'DESC'],
-                [1, 3]
+                [1, 5]
+            );
+
+        } elseif ($param['place'] == 'categoryPage') {
+            // HOME PAGE ADS
+            // inner join Advertiser
+            $adDM->setJoins([
+                'advertiser' => [
+                    'name' => array('ap' => 'advertiser'),
+                    'on' => 'ap.id = ads.advertiser_id',
+                    'columns' => array('state_id' => 'state'),
+                    'type' => 'inner'
+                ]
+            ]);
+            $ads = $adDM->fetchAllDefault(
+                [
+                    'status' => 'ok',
+                    'car_category' => $param['category']
+                ],
+                ['id' => 'DESC'],
+                [1, 5]
             );
 
         } elseif ($param['place'] == 'related') {

@@ -17,6 +17,8 @@
     )?>
     <!--end Category-->
 
+
+
 <?php } ?>
 
 <!--Marca-->
@@ -41,13 +43,14 @@
                                 <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $modelName) ?>"
                                     title="Piese <?=$cars['categories'][$this->carcategoriesId]?> <?= $modelName ?>">
                                     <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$modelNameUrlized.'.jpg')) { ?>
-                                        <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/></a>
+                                        <img class="img-responsive" src="<?=$this->basePath() . '/img/brand/'.$modelNameUrlized.'.jpg'?>"/>
                                     <?php } else { ?>
                                     <h3 style="width: 100%"><?= $modelName ?></h3>
                                     <?php } ?>
                                 </a>
                             </div>
-                        </div><?php
+                        </div>
+                        <?php
                     }
                 }
                 ?>
@@ -62,8 +65,7 @@
                         }
                         ?>
                         <span></span>
-                        <a
-                            title="Piese <?= $cars['categories'][$this->carcategoriesId] ?> <?= $model['categ'] ?>"
+                        <a title="Piese <?= $cars['categories'][$this->carcategoriesId] ?> <?= $model['categ'] ?>"
                             href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $model['categ']) ?>">
                             <?= $model['categ'] ?>
                         </a><br>
@@ -80,6 +82,25 @@
                 ?>
             </div>
         </div>
+
+        <!--Listing Anunturi-->
+        <div id="announcement-listing" class="col-sm-8 col-md-9 brand-listing222">
+            <?php if ($this->ads4categoryPage !== null) { ?>
+                <?=$this->ads4categoryPage?>
+            <?php } else { ?>
+                <span class="no-results-found">
+                    Nu am gasit anunturi in aceasta categorie.
+                </span>
+                <a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a>
+            <?php } ?>
+        </div>
+        <!--end Listing Anunturi-->
+
+        <div class="col-sm-4 col-md-3">
+        <?= $this->partial('application/ad/partials/partners.phtml', [])?>
+        </div>
+
+
     <?php } else {
         // listare categorie + model
         ?>
