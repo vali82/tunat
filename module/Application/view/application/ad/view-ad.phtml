@@ -76,7 +76,8 @@ if ($this->status !== 'ok') { ?>
     <div class="product-info panel card card-2">
         <div class="seller">
             <span>Vanzator</span>
-            <h4><?=$this->advertiser['name']?></h4>
+            <h4><a href="<?=$this->url('home/parcAuto', ['id' => $this->advertiser['id']])?>"
+                style="color: #243045;"><?=$this->advertiser['name']?></a></h4>
             <!--<a href="http://<?/*=$this->advertiser['url']*/?>"><?/*=$this->advertiser['url']*/?></a>-->
         </div>
         <div class="price-box">
@@ -116,7 +117,7 @@ if ($this->status !== 'ok') { ?>
                     <?php } ?>
                 </span>
                 <span id="long-description" style="display: none;">
-                    <?= $this->description ?> ...
+                    <?= $this->description ?>
                     <a href="javascript:;" onclick="$('#short-description').show(); $('#long-description').slideUp(); $(this).parent().parent().removeClass('description-long')">ascunde</a>
                 </span>
             </p>
@@ -127,14 +128,17 @@ if ($this->status !== 'ok') { ?>
                 <?php if ($this->advertiser['logo'] != '') { ?>
                 <div class="row" style="padding-bottom: 10px">
                     <div class="col-lg-3 col-md-3 col-sm-3  col-xs-12">
+                        <a href="<?=$this->url('home/parcAuto', ['id' => $this->advertiser['id']])?>"
+                           style="color: #243045;">
                         <img class="img-responsive" src="<?= \Application\libs\General::getSimpleAvatar(
                             $this->advertiser['folderLogo'],
                             $this->advertiser['logo'],
                             '100x100'
-                        )?>" />
+                        )?>" /></a>
                     </div>
                     <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                        <h4><?=$this->advertiser['name']?></h4>
+                        <h4><a href="<?=$this->url('home/parcAuto', ['id' => $this->advertiser['id']])?>"
+                               style="color: #243045;"><?=$this->advertiser['name']?></a></h4>
                         <?=($this->advertiser['accountType'] == 'parc-auto' ? 'Parc Auto' : 'Particular')?>
                     </div>
                 </div>

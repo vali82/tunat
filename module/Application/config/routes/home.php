@@ -189,5 +189,30 @@ return [
         ),
         'may_terminate' => true,
         'child_routes' => include __DIR__ . '/pages.php'
+    ],
+    'parcAuto' => [
+        'type' => 'Segment',
+        'options' => array(
+            'route' => 'parc-auto[/:id]',
+            'defaults' => array(
+                'controller' => 'Application\Controller\ParcAuto',
+                'action' => 'index',
+            ),
+        ),
+        'may_terminate' => true,
+        'child_routes' => [
+            'home' => [
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/prezentare',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\ParcAuto',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ]
+        ]
+
     ]
 ];

@@ -90,6 +90,7 @@ return array(
             'Application\Controller\Ad' => 'Application\Controller\AdController',
             'Application\Controller\MyAccount' => 'Application\Controller\MyAccountController',
             'Application\Controller\Offers' => 'Application\Controller\OffersController',
+            'Application\Controller\ParcAuto' => 'Application\Controller\ParcAutoController',
         ),
     ),
     'view_manager' => array(
@@ -129,7 +130,8 @@ return array(
                 include __DIR__ . '/routes/acl/ad.php',
                 include __DIR__ . '/routes/acl/my-account.php',
                 include __DIR__ . '/routes/acl/pages.php',
-                include __DIR__ . '/routes/acl/offers.php'
+                include __DIR__ . '/routes/acl/offers.php',
+                include __DIR__ . '/routes/acl/parc-auto.php'
             )
         ),
     ),

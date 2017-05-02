@@ -1,0 +1,87 @@
+<?php
+    $this->layout()->headTitle = ($this->advertiser->getAccountType() == 'parc-auto' ? 'Parc Auto' : 'Particular').
+        ' '.$this->advertiser->getName();
+    $this->layout()->metaDescription = $this->layout()->headTitle .'. '. $this->layout()->metaDescription;
+    $descriptionShort = substr($this->advertiser->getDescription(), 0, 220);
+?>
+
+<div class="row">
+    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+        <div class="panel card card-2" style="padding: 15px">
+            <div class="seller">
+                <span><?=$this->advertiser->getAccountType() == 'parc-auto' ? 'Parc Auto' : 'Particular'?></span>
+                <h4><?=$this->advertiser->getName()?></h4>
+
+                <!--<a href="http://"></a>-->
+            </div>
+            <div class="price-box" style="right:30px">
+                <img class="img-responsive" src="<?=$this->advertiser->generateAvatar('100x100')?>">
+            </div>
+            <div class="info-details">
+                <p>Despre noi: <span></span></p>
+                <p class="description">
+                <span id="short-description">
+                    <?php if ($descriptionShort != '') { ?>
+                        <?= $descriptionShort ?>
+                        ...
+                        <a href="javascript:;" onclick="$('#short-description').hide(); $('#long-description').slideDown(); $(this).parent().parent().addClass('description-long')">vezi tot</a>
+                    <?php } else { ?>
+                        <?= $this->advertiser->getDescription() ?>
+                    <?php } ?>
+                </span>
+                    <span id="long-description" style="display: none;">
+                    <?= $this->advertiser->getDescription() ?>
+                    <a href="javascript:;" onclick="$('#short-description').show(); $('#long-description').slideUp(); $(this).parent().parent().removeClass('description-long')">ascunde</a>
+                </span>
+                </p>
+
+            </div>
+            <div class="contact">
+                <div id = "contactParkContainer" style="display: " class="">
+                    <?php if ($this->advertiser->getTel2() != '' || $this->advertiser->getTel3() != '') {?>
+                        Telefon: <a href="tel:<?=$this->advertiser->getTel1()?>"><?=$this->advertiser->getTel1()?></a>
+                        <?=($this->advertiser->getTel2() != '' ? ', <a href="tel:'.$this->advertiser->getTel2().'">'.$this->advertiser->getTel2().'</a>' : '') ?>
+                        <?=($this->advertiser->getTel3() != '' ? ', <a href="tel:'.$this->advertiser->getTel3().'">'.$this->advertiser->getTel3().'</a>' : '') ?>
+                        <br>
+                    <?php } ?>
+                    Email: <a href="mailto:<?=$this->advertiser->getEmail()?>"><span id="contactParkEmail"></span> <?=$this->advertiser->getEmail()?></a>
+                    <br>
+                    Site Web: <a href="<?=$this->advertiser->getUrl()?>"><span id="contactParkUrl"></span> <?=$this->advertiser->getUrl()?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
+        <div class="panel card card-2" style="padding: 15px">
+            <h4>Adresa: <?=$this->advertiser->generateLocation()?></h4>
+            <iframe
+                width="100%"
+                height="325"
+                frameborder="0" style="border:0"
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA6Sx-AtGQX80UMZrFp4anUNs6BtsPSDls
+    &q=<?=$this->advertiser->getAddress()?>" allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+<!--Listing Anunturi-->
+<div id="announcement-listing" class="col-sm-8 col-md-9 col-xs-12">
+    <h3 id="pageTitleElement">Ultimile 10 anunturi adaugate</h3>
+    <?php if ($this->adList !== null) { ?>
+        <?=$this->adList?>
+    <?php } else { ?>
+        <span class="no-results-found">
+                Nu am gasit anunturi in aceasta categorie.
+            </span>
+        <a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a>
+    <?php } ?>
+</div>
+<div class="col-md-3 col-sm-4 col-xs-12 hidden-xs">
+    <h3 class="new">Parteneri Tirbox</h3>
+    <?=$this->partial('application/ad/partials/partners.phtml', [])?>
+</div>
+</div>

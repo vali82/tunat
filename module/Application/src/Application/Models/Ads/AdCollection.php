@@ -192,6 +192,7 @@ class AdCollection
             $sql_county = null;
             $sql_stare = null;
             $sql_oem = null;
+            $sql_advid = null;
             if ($param['searchYear'] != '') {
                 $x = DataMapper::expression(
                     'year_start <= '.$param['searchYear'].' AND year_end >= '.$param['searchYear']
@@ -205,6 +206,13 @@ class AdCollection
                 $sql_county = [
                     'county_query' => DataMapper::expression(
                         'ap.state = '.(int)$param['searchCounty']
+                    )
+                ];
+            }
+            if ($param['searchAdvertiser'] > 0) {
+                $sql_advid = [
+                    'advid_query' => DataMapper::expression(
+                        'ads.advertiser_id = '.(int)$param['searchAdvertiser']
                     )
                 ];
             }
@@ -241,13 +249,14 @@ class AdCollection
             $ads = $adDM->fetchAllDefault(
                 [
                     'status' => 'ok',
-                    'car_make' => $param['carModelId'],
                 ]
+                + ($param['carModelId'] > 0 ? ['car_make' => $param['carModelId']] : [])
                 + ($sql_oem !== null ? $sql_oem : [])
                 + ($sql_where !== null ? ['search' => $sql_where] : [])
                 + ($sql_years !== null ? $sql_years : [])
                 + ($sql_stare !== null ? $sql_stare : [])
-                + ($sql_county !== null ? $sql_county : []),
+                + ($sql_county !== null ? $sql_county : [])
+                + ($sql_advid !== null ? $sql_advid : []),
                 $order
             );
         }
@@ -358,6 +367,7 @@ class AdCollection
                             'classUrlized' => strtolower($carCollection->getUrlize($cars['model'][$adObj->getCarCategory()][$adObj->getCarMake()]['categ']))
                         ],
                         'advertiser' => [
+                            'id' => $advertiserObj->getId(),
                             'name' => $advertiserObj->getName(),
                             'tel1' => $advertiserObj->getTel1(),
                             'tel2' => $advertiserObj->getTel2(),

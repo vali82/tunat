@@ -45,6 +45,10 @@ return array(
         'route' => 'scn-social-auth-user/logout',
         'roles' => array('parcauto')
     ),
+    array(
+        'route' => 'zfcuser/logout',
+        'roles' => array('parcauto')
+    ),
     [
         'route' => 'scn-social-auth-user/login/provider',
         'roles' => ['guest']
@@ -52,6 +56,8 @@ return array(
     array('route' => 'scn-social-auth-hauth', 'roles' => array('guest')),
 //    array('route' => 'scn-social-auth-user/authenticate', 'roles' => array('guest')),
     array('route' => 'scn-social-auth-user/authenticate/provider', 'roles' => array('guest')),
+    array('route' => 'scn-social-auth-user/login', 'roles' => array('guest', 'user', 'parcauto')),
+
     [
         'route' => 'home/terms',
         'roles' => ['guest', 'parcauto']

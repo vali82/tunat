@@ -14,7 +14,7 @@ defined('APPLICATION_ENV')
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
 if (APPLICATION_ENV !== 'production') {
-    error_reporting(E_ALL);
+    error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
     ini_set('display_errors', 'On');
 } else {
     error_reporting(0);
@@ -41,8 +41,16 @@ if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['RE
     return false;
 }
 
+try {
+
+
 // Setup autoloading
-require 'init_autoloader.php';
+    require 'init_autoloader.php';
 
 // Run the application!
-Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+    Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+} catch (Exception $e) {
+    var_dump($e->getMessage());
+    var_dump($e->getFile());
+    var_dump($e->getTraceAsString());
+}

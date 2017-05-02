@@ -516,6 +516,7 @@ class AdController extends MyAbstractController
                 'carModelId' => $carModelId,
                 'partMainId' => 0,
                 'search' => General::generateQueryWords($searchWords),
+                'searchAdvertiser' => 0,
                 'searchYear' => $searchYear,
                 'searchCounty' => $searchCounty,
                 'searchStare' => $searchStare,
