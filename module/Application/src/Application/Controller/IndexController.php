@@ -30,6 +30,7 @@ class IndexController extends MyAbstractController
 
         if (isset($_COOKIE['andoridapp']) && $_COOKIE['andoridapp'] == 'v1.0') {
             echo "Heloo Android App";
+            $this->layout()->js_call .= ' alert("Heloo Android App"); ';
         }
 
         return [
