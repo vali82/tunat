@@ -69,6 +69,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         NProgress.set(0.5);
         NProgress.inc(0.2);
     </script>
+    <?php if (is_null($this->mobileApp)) { ?>
     <header>
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
@@ -120,6 +121,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
             </div>
         </nav>
     </header>
+    <?php } ?>
 
 
     <?= $this->partial('application/ad/partials/slider.phtml', [])?>
@@ -216,6 +218,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     </div>
 
 
+    <?php if (is_null($this->mobileApp)) { ?>
     <footer>
         <div class="newsletter">
             <p>
@@ -284,6 +287,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
             </div>
         </div>
     </footer>
+    <?php } ?>
 
     <div id="scriptsGeneral">
         <?php echo $this->inlineScript()->prependScript(

@@ -34,6 +34,12 @@ class MyAbstractController extends AbstractActionController
         $this->myAdvertiserObj = null;
         $this->myUser = null;
 
+        if (isset($_COOKIE['andoridapp']) && $_COOKIE['andoridapp'] == 'v1.0') {
+            $this->layout()->setVariable('mobileApp', 'android-'.$_COOKIE['andoridapp']);
+        } else {
+            $this->layout()->setVariable('mobileApp', null);
+        }
+
 
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             $this->myUser = $this->getServiceLocator()->get('AuthenticatedUser');

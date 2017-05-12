@@ -28,11 +28,6 @@ class IndexController extends MyAbstractController
         $ad = new AdCollection($this);
         $carCollection = new CarsCollection($this);
 
-        if (isset($_COOKIE['andoridapp']) && $_COOKIE['andoridapp'] == 'v1.0') {
-            General::echop( "Heloo Android App");
-            $this->layout()->js_call .= ' alert("Heloo Android App"); ';
-        }
-
         return [
             'adList' => $ad->adListHTML([
                 'place' => 'homepage'
