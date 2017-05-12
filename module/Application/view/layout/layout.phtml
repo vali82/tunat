@@ -126,7 +126,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
     <?= $this->partial('application/ad/partials/slider.phtml', [])?>
 
-    <div id = "mainContainer" class="container <?php if (!isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>mt100<?php } ?>">
+    <div id = "mainContainer" class="container <?php if (!is_null($this->mobileApp) && !isset($this->isHomePage) && !isset($this->isCategoryPage)) { ?>mt100<?php } ?>">
 
         <?php
         if (count($this->flashMessenger()->getErrorMessages())) : ?>
