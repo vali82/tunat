@@ -203,6 +203,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
             <div id ="generalContainer">
                 <?php echo $this->content; ?>
             </div>
+            <?php if (!$this->mobileApp) { ?>
             <div class="row" style="opacity: 0.5">
                 <div class="col-md-12" style="padding: 20px 15px 20px 15px">
                     <span class="glyphicon glyphicon-question-sign" style="color: #636e7e; font-size: 50px;"></span>
@@ -214,6 +215,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                     </h2>
                 </div>
             </div>
+            <?php } ?>
         <?php } ?>
     </div>
 
