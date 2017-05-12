@@ -13,7 +13,7 @@ defined('APPLICATION_ENV')
 
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
 
-if (APPLICATION_ENV !== 'production') {
+if (APPLICATION_ENV !== 'production' || 1==1) {
     error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
     ini_set('display_errors', 'On');
 } else {
