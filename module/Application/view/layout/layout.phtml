@@ -63,6 +63,26 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     <script>
         <?=$this->layout()->googleAnalitics?>
     </script>
+
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(["init", {
+            appId: "c6052e0f-3561-43c4-abfc-b9fd12dd43a5",
+            autoRegister: false, /* Set to true to automatically prompt visitors */
+            subdomainName: 'https://tirbox.onesignal.com',
+            /*
+             subdomainName: Use the value you entered in step 1.4: http://imgur.com/a/f6hqN
+             */
+            httpPermissionRequest: {
+                enable: true
+            },
+            notifyButton: {
+                enable: true /* Set to false to hide */
+            }
+        }]);
+    </script>
+
 </head>
 <body>
     <script>
