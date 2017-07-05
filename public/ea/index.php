@@ -1,7 +1,9 @@
 <?php
 
-class spider
+class Spider
 {
+    private $mode = 'LIVE';
+    private $pathTest = 'http://tirbox.local/ea/';
     private $host;
     private $url;
     private $skuSuffix = '';
@@ -28,20 +30,19 @@ class spider
             'images' => []
         ];
 
-        if (file_exists('file.html') && 1==1) {
-            $content = file_get_contents('file.html');
-        } else {
-            $content = file_get_contents($url);
-            $fp = fopen('file.html', 'w');
-            fwrite($fp, $content);
-            fclose($fp);
-        }
-
         $html = new DOMDocument();
         if ($this->mode == 'TEST') {
+            if (file_exists('file.html') && 1==1) {
+                $content = file_get_contents('file.html');
+            } else {
+                $content = file_get_contents($url);
+                $fp = fopen('file.html', 'w');
+                fwrite($fp, $content);
+                fclose($fp);
+            }
             $page = $this->pathTest . 'file.html';
         } else {
-            $page = $this->pathLive . 'file.html';
+            $page = $url;
         }
         $html->loadHtmlFile($page);
         $xpath = new DOMXPath($html);
@@ -159,9 +160,6 @@ class spider
 
 class Project
 {
-    private $mode = 'TEST';
-    private $pathTest = 'http://tirbox.local/ea/';
-
     private $attributesMagento = [
         'sku',
         'name',
