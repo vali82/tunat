@@ -44,7 +44,7 @@ class Spider
         } else {
             $page = $url;
         }
-        $html->loadHtmlFile($page);
+        @$html->loadHtmlFile($page);
         $xpath = new DOMXPath($html);
 
         // get name
