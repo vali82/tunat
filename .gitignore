@@ -14,3 +14,6 @@ composer.phar
 public/images
 public/.htaccess
 data/mails
+
+public/ea/file.html
+public/ea/import

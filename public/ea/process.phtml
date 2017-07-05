@@ -1,0 +1,111 @@
+<?php if ($data['error'] == '') { ?>
+    <h3><?=$data['host']?>: 1 product OK</h3>
+    <form method="post" action="index.php?p=saveprod" name="ea">
+        <input type="hidden" name="skuSuffix" value="<?=$data['skuSuffix']?>">
+        <div style="overflow: hidden; padding-bottom: 20px">
+            <div style="width: 800px; float: left">
+
+                <div style="overflow: hidden; width: 800px; padding-bottom: 10px">
+                    <div style="width: 200px; float: left">
+                        SKU<br>
+                        <input type="text" required name="sku" value="<?=$data['sku']?>" style="padding: 10px; width: 100%; font-size: 18px"; placeholder="SKU" />
+                        <br><br>
+                    </div>
+                    <div style="width: 580px; float: left; margin-left: 20px">
+                        Name<br>
+                        <input type="text" required name="name" value="<?=$data['name']?>" style="padding: 10px; width: 100%; font-size: 18px"; placeholder="Name" />
+                        <br><br>
+                    </div>
+                </div>
+
+                Description<br>
+                <textarea name="descr" style="padding: 10px; width: 800px; height: 200px; font-size: 18px";>
+                <?=$data['descr']?>
+            </textarea>
+                <br><br>
+
+                <div style="overflow: hidden; width: 800px; padding-bottom: 10px">
+                    <div style="width: 480px; float: left">
+                        Category<br>
+                        <select name="category" data-id="category" required style="padding: 20px; width: 480px; font-size: 18px";>
+                            <option value="">Select Category</option>
+                            <option value="Feronerie Porti/Porti Culisante/Role Aplicate">Feronerie Porti/Porti Culisante/Role Aplicate</option>
+                            <option value="Feronerie Porti/Porti Culisante/Role Semiingropate">Feronerie Porti/Porti Culisante/Role Semiingropate</option>
+                            <option value="Feronerie Porti/Porti Culisante/Role Ghidaje">Feronerie Porti/Porti Culisante/Role Ghidaje</option>
+                            <option value="Feronerie Porti/Broaste si Manare">Feronerie Porti/Broaste si Manare</option>
+                            <option value="Feronerie Porti/Porti Culisante/Opritoare">Feronerie Porti/Porti Culisante/Opritoare</option>
+                        </select>
+                    </div>
+
+                    <div style="width: 150px; float: left; margin-left: 10px">
+                        Price<br>
+                        <input type="text" required name="price" value="<?=$data['price']?>" style="padding: 10px; width: 100%; font-size: 18px"; placeholder="Price" />
+                    </div>
+
+                    <div style="width: 150px; float: left; margin-left: 10px">
+                        Qty<br>
+                        <input type="text" required name="qty" value="100" style="padding: 10px; width: 100%; font-size: 18px"; placeholder="Qty" />
+                    </div>
+                </div>
+
+                <div style="overflow: hidden; width: 800px">
+                    Attribute<br>
+                    <div data-content="attribute">
+                        <select name="attr_k[]" style="padding: 20px; width: 480px; font-size: 18px";>
+                            <option value="">Select Attribute</option>
+                            <option value="lungime_m">Lungime M</option>
+                            <option value="greutate_kg">Greutate</option>
+                        </select>
+                        <input type="text" name="attr_v[]" placeholder="Attribute Value"
+                               style="padding: 10px; margin-left: 10px; width: 305px; font-size: 18px"; value="" />
+                    </div>
+                    <button type="button" data-action="add-new-attr" style="padding: 5px; width: 100px; font-size: 12px";>+</button>
+                </div>
+
+            </div>
+            <div style="width: 500px; float: left; padding-left: 20px">
+                <?php foreach ($data['images'] as $image) { ?>
+                    <div style="width: 200px; height: 250px; margin: 20px; border: 1px solid #999999; float: left; overflow: hidden">
+                        <img src="<?=$image?>" style="width: 100%; height: 230px;" />
+                        <br>
+                        <input type="text" name="images[]" value="<?=$image?>" style="width: 100%">
+                    </div>
+                <?php } ?>
+                <div style="clear: both"></div>
+                <button type="submit" value="GO" style="padding: 10px; width: 100%; font-size: 24px; background-color: #3c763d; color: white">Save the Product</button>
+            </div>
+        </div>
+    </form>
+<?php } else { ?>
+
+<?php } ?>
+
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script>
+
+    var cnt = 1;
+    $('[data-action="add-new-attr"]').on('click', function () {
+        var newAttr = $('[data-content="attribute"]').clone();
+        $(newAttr).attr('data-content', 'attribute-'+cnt);
+        $(newAttr).insertBefore($(this));
+        cnt++;
+    });
+
+    getCookie = function (cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+        }
+        return "";
+    }
+
+    if (getCookie('lastcat') != '') {
+        $('[data-id="category"]').val(getCookie('lastcat').replace(/\+/g, ' ').replace(/%2F/g, '/'));
+    }
+
+
+</script>
