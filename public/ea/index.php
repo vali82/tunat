@@ -356,13 +356,32 @@ class Project
         }
         require_once 'index.phtml';
     }
+
+    public function download()
+    {
+        $furnizor = isset($_GET['f']) ? $_GET['f'] : '';
+        $spider = new Spider();
+        if (in_array($furnizor, $spider->getResolvedHosts())) {
+            $file = __DIR__ . '/import/' . $furnizor . '/new_products.csv';
+            header('Content-Description: File Transfer');
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="products_'.$furnizor.'.csv"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            die();
+        } else {
+            $error = "Furnizor not found";
+            require_once 'index.phtml';
+        }
+    }
 }
 
 $project = new Project();
 
-if (
-    (isset($_COOKIE['passpider']) && $_COOKIE['passpider'] = 'uyfsb98342h839thfoibq9r4r3ht34t89hfn89wf')
-) {
+if (isset($_COOKIE['passpider']) && $_COOKIE['passpider'] = 'uyfsb98342h839thfoibq9r4r3ht34t89hfn89wf') {
     switch ($_GET['p']) {
         case "process":
             $url = $_POST['url'];
@@ -376,6 +395,9 @@ if (
             break;
         case "login":
             $project->login();
+            break;
+        case "download":
+            $project->download();
             break;
         default:
             $project->index();
