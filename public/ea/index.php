@@ -175,6 +175,7 @@ class Project
         "brand" => "Brand",
         "diametru_mm" => "Diametru(mm) - diametru_mm",
         "dimensiune_diamentru" => "Diametru Ø(mm) - dimensiune_diamentru",
+        "dimensiune_placa" => "Dimensiune Placa(mm) - dimensiune_placa",
         "greutate_max_poarta" => "Greutate Max Poarta - greutate_max_poarta",
         "grosime_mm" => "Grosime(mm) - grosime_mm",
         "lungime_m" => "Lungime(m) - lungime_m",
