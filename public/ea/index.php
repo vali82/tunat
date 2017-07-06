@@ -367,7 +367,7 @@ class Project
             $file = __DIR__ . '/import/' . $furnizor . '/new_products.csv';
             header('Content-Description: File Transfer');
             header('Content-Type: text/csv');
-            header('Content-Disposition: attachment; filename="products_'.$furnizor.'.csv"');
+            header('Content-Disposition: attachment; filename="products_'.$furnizor.'_'.date('Y-m-d_H-i').'.csv"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
