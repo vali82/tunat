@@ -29,11 +29,50 @@
                         Category<br>
                         <select name="category" data-id="category" required style="padding: 20px; width: 480px; font-size: 18px";>
                             <option value="">Select Category</option>
-                            <option value="Feronerie Porti/Porti Culisante/Role Aplicate">Feronerie Porti/Porti Culisante/Role Aplicate</option>
-                            <option value="Feronerie Porti/Porti Culisante/Role Semiingropate">Feronerie Porti/Porti Culisante/Role Semiingropate</option>
-                            <option value="Feronerie Porti/Porti Culisante/Role Ghidaje">Feronerie Porti/Porti Culisante/Role Ghidaje</option>
-                            <option value="Feronerie Porti/Broaste si Manare">Feronerie Porti/Broaste si Manare</option>
-                            <option value="Feronerie Porti/Porti Culisante/Opritoare">Feronerie Porti/Porti Culisante/Opritoare</option>
+                            <optgroup label="Feronerie Porti">
+                                <option value="Feronerie Porti/Porti Culisante/Role Aplicate">Porti Culisante/Role Aplicate</option>
+                                <option value="Feronerie Porti/Porti Culisante/Role Semiingropate">Porti Culisante/Role Semiingropate</option>
+                                <option value="Feronerie Porti/Porti Culisante/Sine Culisare">Porti Culisante/Sine Culisare</option>
+                                <option value="Feronerie Porti/Porti Culisante/Role Ghidaje">Porti Culisante/Role Ghidaje</option>
+                                <option value="Feronerie Porti/Porti Culisante/Opritoare">Porti Culisante/Opritoare</option>
+
+                                <option value="Feronerie Porti/Porti Batante/Balamale cu Rulment">Porti Batante/Balamale cu Rulment</option>
+                                <option value="Feronerie Porti/Porti Batante/Balamale Clasice">Porti Batante/Balamale Clasice</option>
+                                <option value="Feronerie Porti/Porti Batante/Balamale Speciale">Porti Batante/Balamale Speciale</option>
+                                <option value="Feronerie Porti/Porti Batante/Opritoare">Porti Batante/Opritoare</option>
+
+                                <option value="Feronerie Porti/Usi Glisante/Role Glisare">Usi Glisante/Role Glisare</option>
+                                <option value="Feronerie Porti/Usi Glisante/Sina Glisare">Usi Glisante/Sina Glisare</option>
+                                <option value="Feronerie Porti/Usi Glisante/Opritoare">Usi Glisante/Opritoare</option>
+                            </optgroup>
+                            <optgroup label="Automatizari Porti">
+                                <option value="Automatizari Porti/Porti Batante">Porti Batante</option>
+                                <option value="Automatizari Porti/Porti Culisante">Porti Culisante</option>
+                                <option value="Automatizari Porti/Usi de Garaj Industriale">Usi de Garaj Industriale</option>
+                                <option value="Automatizari Porti/Usi de Garaj Rezidentiale">Usi de Garaj Rezidentiale</option>
+                                <option value="Automatizari Porti/Accesorii Automatizari">Accesorii Automatizari</option>
+                                <option value="Automatizari Porti/Telecomenzi">Telecomenzi</option>
+                                <option value="Automatizari Porti/Receptoare">Receptoare</option>
+                            </optgroup>
+                            <optgroup label="Porti Autoportante">
+                                <option value="Porti Autoportante/Kit-uri Porti Autoportante">Kit-uri Porti Autoportante</option>
+                                <option value="Porti Autoportante/Accesorii">Accesorii</option>
+                            </optgroup>
+                            <optgroup label="Control Acces">
+                                <option value="Control Acces/Cititoare de Proximitate Stand Alone">Cititoare de Proximitate Stand Alone</option>
+                                <option value="Control Acces/Broaste Electromagnetice">Broaste Electromagnetice</option>
+                                <option value="Control Acces/Butoane Acces">Butoane Acces</option>
+                                <option value="Control Acces/Cartele Taguri">Cartele Taguri</option>
+                                <option value="Control Acces/Manere">Manere</option>
+                                <option value="Control Acces/Amortizoare">Amortizoare</option>
+                                <option value="Control Acces/Accesorii">Accesorii</option>
+                                <option value="Control Acces/Interfoane">Interfoane</option>
+                                <option value="Control Acces/Videointerfoane">Videointerfoane</option>
+                            </optgroup>
+                            <optgroup label="Bariere Auto">
+                                <option value="Bariere Auto/Bariere">Bariere</option>
+                                <option value="Bariere Auto/Accesorii bariere">Accesorii bariere</option>
+                            </optgroup>
                         </select>
                     </div>
 
@@ -53,8 +92,9 @@
                     <div data-content="attribute">
                         <select name="attr_k[]" style="padding: 20px; width: 480px; font-size: 18px";>
                             <option value="">Select Attribute</option>
-                            <option value="lungime_m">Lungime M</option>
-                            <option value="greutate_kg">Greutate</option>
+                            <?php foreach ($attributes as $k => $v) { ?>
+                                <option value="<?=$k?>"><?=$v?></option>
+                            <?php } ?>
                         </select>
                         <input type="text" name="attr_v[]" placeholder="Attribute Value"
                                style="padding: 10px; margin-left: 10px; width: 305px; font-size: 18px"; value="" />

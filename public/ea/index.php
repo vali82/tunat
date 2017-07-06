@@ -160,6 +160,17 @@ class Spider
 
 class Project
 {
+    private $attributesCustom = [
+        "alimentare_motor" => "Alimentare motor - alimentare_motor",
+        "brand" => "Brand",
+        "diametru_mm" => "Diametru(mm) - diametru_mm",
+        "dimensiune_diametru" => "Dimensiune Ø - dimensiune_diametru",
+        "greutate_max_poarta" => "Greutate Poarta - greutate_max_poarta",
+        "grosime_mm" => "Grosime(mm) - grosime_mm",
+        "lungime_m" => "Lungime(m) - lungime_m",
+        "latime_mm" => "Latime(mm) - latime_mm",
+        "inaltime_mm" => "Inaltime(mm) - inaltime_mm"
+    ];
     private $attributesMagento = [
         'sku',
         'name',
@@ -169,9 +180,7 @@ class Project
         'image',
         'media_gallery',
         'qty',
-        'type',
-        'lungime_m',
-        'greutate_kg'
+        'type'
     ];
 
     private function fputcsv2 ($fh, array $fields, $delimiter = ',', $enclosure = '"', $mysql_null = false) {
@@ -210,6 +219,8 @@ class Project
             $error = $data['error'];
         }
 
+        $attributes = $this->attributesCustom;
+
         require_once("index.phtml");
     }
 
@@ -234,10 +245,14 @@ class Project
         try {
             $message = 'Product successfully saved!';
 
+            $allAttributes = $this->attributesMagento;
+            foreach ($this->attributesCustom as $attr => $value) {
+                $allAttributes[] = $attr;
+            }
             if (!file_exists($file)) {
                 // add to csv
                 $fp = fopen($file, 'a');
-                $this->fputcsv2($fp, $this->attributesMagento);
+                $this->fputcsv2($fp, $allAttributes);
                 ///
             }
 
@@ -256,7 +271,7 @@ class Project
                 }
 
                 // add to csv
-                $csvRow = array_flip($this->attributesMagento);
+                $csvRow = array_flip($allAttributes);
                 foreach($csvRow as $k=>$v) {
                     $csvRow[$k] = '';
                 }
