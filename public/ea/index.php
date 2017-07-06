@@ -175,11 +175,13 @@ class Project
         "brand" => "Brand",
         "diametru_mm" => "Diametru(mm) - diametru_mm",
         "dimensiune_diametru" => "Dimensiune Ø - dimensiune_diametru",
-        "greutate_max_poarta" => "Greutate Poarta - greutate_max_poarta",
+        "greutate_max_poarta" => "Greutate Max Poarta - greutate_max_poarta",
         "grosime_mm" => "Grosime(mm) - grosime_mm",
         "lungime_m" => "Lungime(m) - lungime_m",
         "latime_mm" => "Latime(mm) - latime_mm",
-        "inaltime_mm" => "Inaltime(mm) - inaltime_mm"
+        "inaltime_mm" => "Inaltime(mm) - inaltime_mm",
+        "lungime_mm" => "Lungime(mm) - lungime_mm",
+        "lungime_poarta_m" => "Lungime Poarta(m) - lungime_poarta_m",
     ];
     private $attributesMagento = [
         'sku',
