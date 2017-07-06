@@ -9,18 +9,16 @@ class Spider
     private $skuSuffix = '';
 
     private $resolvedHosts = [
-        'www.trutzi.ro',
-        'www.facsrl.com'
+        'www.trutzi.ro' => 'TRT',
+        'www.facsrl.com' => 'FAC'
     ];
-    public function __construct($url)
+
+    public function __construct()
     {
-        $this->url = $url;
-        $this->host = explode('/', str_replace(['http://', 'https://'], ['', ''], $url))[0];
     }
 
     private function trutzi($url)
     {
-        $this->skuSuffix = 'TRT';
         $error = '';
         $data = [
             'sku' => '',
@@ -139,8 +137,14 @@ class Spider
         return $data;
     }
 
-    public function grabByHost()
+    public function grabByHost($url)
     {
+        $this->url = $url;
+        $this->host = explode('/', str_replace(['http://', 'https://'], ['', ''], $url))[0];
+        if (isset($this->resolvedHosts[$this->host])) {
+            $this->skuSuffix = $this->resolvedHosts[$this->host];
+        }
+
         switch ($this->host) {
             case "www.trutzi.ro":
                 $data = $this->trutzi($this->url);
@@ -155,6 +159,12 @@ class Spider
 
         return $data;
     }
+
+    public function getResolvedHosts()
+    {
+        return $this->resolvedHosts;
+    }
+
 
 }
 
@@ -202,6 +212,20 @@ class Project
         fwrite($fh, join($delimiter, $output) . "\n");
     }
 
+    private function recursiveDelFolder($dir) {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (is_dir($dir."/".$object))
+                        $this->recursiveDelFolder($dir."/".$object);
+                    else
+                        unlink($dir."/".$object);
+                }
+            }
+            rmdir($dir);
+        }
+    }
 
     public function index()
     {
@@ -213,14 +237,13 @@ class Project
     {
         $mode = 'process';
 
-        $spider = new Spider($url);
-        $data = $spider->grabByHost();
+        $spider = new Spider();
+        $data = $spider->grabByHost($url);
         if ($data['error'] != '') {
             $error = $data['error'];
         }
 
         $attributes = $this->attributesCustom;
-
         require_once("index.phtml");
     }
 
@@ -308,6 +331,18 @@ class Project
 
         require_once("index.phtml");
     }
+
+    public function resetFurnizor($furnizor)
+    {
+        $spider = new Spider();
+        if (in_array($furnizor, $spider->getResolvedHosts())) {
+            $this->recursiveDelFolder(__DIR__ . '/import/' . $furnizor);
+            $message = 'CSV generated for: '.$furnizor . ', has been deleted!';
+        } else {
+            $error = "Furnizor not found";
+        }
+        require_once 'index.phtml';
+    }
 }
 
 $project = new Project();
@@ -319,6 +354,9 @@ switch ($_GET['p']) {
         break;
     case "saveprod":
         $project->saveProduct($_POST);
+        break;
+    case "reset":
+        $project->resetFurnizor($_GET['furnizor']);
         break;
     default:
         $project->index();
