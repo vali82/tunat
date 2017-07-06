@@ -174,7 +174,7 @@ class Project
         "alimentare_motor" => "Alimentare motor - alimentare_motor",
         "brand" => "Brand",
         "diametru_mm" => "Diametru(mm) - diametru_mm",
-        "dimensiune_diametru" => "Dimensiune Ø - dimensiune_diametru",
+        "dimensiune_diamentru" => "Diametru Ø - dimensiune_diamentru",
         "greutate_max_poarta" => "Greutate Max Poarta - greutate_max_poarta",
         "grosime_mm" => "Grosime(mm) - grosime_mm",
         "lungime_m" => "Lungime(m) - lungime_m",
