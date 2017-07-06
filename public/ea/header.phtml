@@ -7,7 +7,7 @@
     </div>
     <div style="float: left; width: 200px; padding-left: 20px; border-left: 1px solid #999999;">
         <a href="<?=(file_exists(__DIR__ .'/import/TRT/new_products.csv') ? 'import/TRT/new_products.csv' : '#')?>">dowload TRT .csv</a> -
-        <a href="index.php?p=reset&furnizor=TRT">reset</a>
+        <a href="javascript:;" onclick="if (confirm('Esti sigur?\nCSV-ul cu produse se va goli pentru acest furnizor')) { self.location.href='index.php?p=reset&furnizor=TRT'; }">reset</a>
         <br>
         <a href="#">dowload FAC .csv</a>
         <br>

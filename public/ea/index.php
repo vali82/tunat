@@ -332,6 +332,19 @@ class Project
         require_once("index.phtml");
     }
 
+    public function login()
+    {
+        if (isset($_POST['pass'])) {
+            if ($_POST['pass'] == 'vali11spider') {
+                setcookie('passpider', 'uyfsb98342h839thfoibq9r4r3ht34t89hfn89wf', time() + (1 * 24 * 3600), '/');
+            }
+            header('Location: index.php');
+        } else {
+            require_once 'login.phtml';
+        }
+    }
+
+
     public function resetFurnizor($furnizor)
     {
         $spider = new Spider();
@@ -347,18 +360,27 @@ class Project
 
 $project = new Project();
 
-switch ($_GET['p']) {
-    case "process":
-        $url = $_POST['url'];
-        $project->processUrl($url);
-        break;
-    case "saveprod":
-        $project->saveProduct($_POST);
-        break;
-    case "reset":
-        $project->resetFurnizor($_GET['furnizor']);
-        break;
-    default:
-        $project->index();
-        break;
+if (
+    (isset($_COOKIE['passpider']) && $_COOKIE['passpider'] = 'uyfsb98342h839thfoibq9r4r3ht34t89hfn89wf')
+) {
+    switch ($_GET['p']) {
+        case "process":
+            $url = $_POST['url'];
+            $project->processUrl($url);
+            break;
+        case "saveprod":
+            $project->saveProduct($_POST);
+            break;
+        case "reset":
+            $project->resetFurnizor($_GET['furnizor']);
+            break;
+        case "login":
+            $project->login();
+            break;
+        default:
+            $project->index();
+            break;
+    }
+} else {
+    $project->login();
 }
