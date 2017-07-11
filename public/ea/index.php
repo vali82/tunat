@@ -2,7 +2,7 @@
 
 class Spider
 {
-    private $mode = 'LIVE';
+    private $mode = 'TEST';
     private $pathTest = 'http://tirbox.local/ea/';
     private $host;
     private $url;
@@ -10,14 +10,15 @@ class Spider
 
     private $resolvedHosts = [
         'www.trutzi.ro' => 'TRT',
-        'www.facsrl.com' => 'FAC'
+        'www.facsrl.com' => 'FAC',
+        'www.ultramaster.ro' => 'ULM'
     ];
 
     public function __construct()
     {
     }
 
-    private function trutzi($url)
+    private function trutzi($page)
     {
         $error = '';
         $data = [
@@ -29,19 +30,6 @@ class Spider
         ];
 
         $html = new DOMDocument();
-        if ($this->mode == 'TEST') {
-            if (file_exists('file.html') && 1==1) {
-                $content = file_get_contents('file.html');
-            } else {
-                $content = file_get_contents($url);
-                $fp = fopen('file.html', 'w');
-                fwrite($fp, $content);
-                fclose($fp);
-            }
-            $page = $this->pathTest . 'file.html';
-        } else {
-            $page = $url;
-        }
         @$html->loadHtmlFile($page);
         $xpath = new DOMXPath($html);
 
@@ -68,7 +56,7 @@ class Spider
                     if ($table->getAttribute('class') == 'table-data-sheet') {
                         $data['descr'] = trim(str_replace("\n", "", $table->C14N()));
                     }
-                    $data['name'] = $h1->nodeValue;
+//                    $data['name'] = $h1->nodeValue;
                 }
             }
         }
@@ -137,6 +125,142 @@ class Spider
         return $data;
     }
 
+    private function ultramaster($page)
+    {
+        $error = '';
+        $data = [
+            'sku' => '',
+            'name' => '',
+            'descr' => '',
+            'price' => '',
+            'images' => [],
+            'docs' => [],
+            'brand' => ''
+        ];
+        $imageContent = null;
+
+        $html = new DOMDocument();
+        @$html->loadHtmlFile($page);
+        $xpath = new DOMXPath($html);
+
+        // get name
+        $nodelist = $xpath->query("//h1[@class='ty-product-block-title']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                $data['name'] = $n->nodeValue;
+            }
+        }
+        if ($data['name'] == '') {
+            $error = "name not found";
+        }
+
+        // get description
+        $nodelist = $xpath->query("//div[@id='tabs_content']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('div') as $div) {
+                    if ($div->getAttribute('id') == 'content_description') {
+                        $descr = str_replace(
+                            [
+                                'ty-wysiwyg-content content-description',
+                                ' id="content_description"'
+                            ],
+                            ['description-ulm', ''],
+                            trim(str_replace("\n", "", $div->C14N()))
+                        );
+                        $images = strip_tags($descr, '<img>');
+                        if (strpos($images, '<img') !== false) {
+                            $imageContent = explode('"', explode('src="', $images, 2)[1])[0];
+                        }
+                        $descr = strip_tags($descr, '<div><p><ul><li><h1><h2><h3><h4><h5><h6><span><strong><i><em>');
+
+                        $data['descr'] = $descr;
+                    } elseif ($div->getAttribute('id') == 'content_attachments' && $div->getAttribute('class') == 'attachments') {
+                        foreach ($div->getElementsByTagName('p') as $p) {
+                            if ($p->getAttribute('class') == 'attachment__item') {
+                                $fileName = explode(',', explode(' (', $p->nodeValue, 2)[1], 2)[0];
+                                $dlink = $p->getElementsByTagName('a');
+                                if ($dlink->length > 0) {
+                                    $data['docs'][] = [
+                                        'name' => $fileName,
+                                        'url' => $dlink[0]->getAttribute('href')
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ($data['descr'] == '') {
+            $error = "descr not found";
+        }
+
+        // get price
+        $nodelist = $xpath->query("//span[@class='ty-price']");
+        if ($nodelist->length > 0) {
+            $prc = null;
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('span') as $span) {
+                    if ($span->getAttribute('class') == 'ty-price-num' && $prc == null) {
+                        $prc = $span->nodeValue;
+                        $data['price'] = str_replace([',', ' '], ['', ''], explode(' lei', $prc)[0]);
+                    }
+                }
+            }
+        }
+        if ($data['price'] == '') {
+            $error = "price not found";
+        }
+
+        // get sku
+        $nodelist = $xpath->query("//div[@class='ty-control-group ty-sku-item cm-hidden-wrapper']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('span') as $span) {
+                    $data['sku'] = $span->nodeValue;
+//                    $data['name'] = str_replace(' '.$span->nodeValue, '', $data['name']);
+                }
+            }
+        }
+        if ($data['sku'] == '') {
+            $error = "sku not found";
+        }
+
+        // get pictures
+        $nodelist = $xpath->query("//div[@class='ty-product-img cm-preview-wrapper']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('a') as $a) {
+                    if ($a->getAttribute('class') == 'jqzoom' || 1==1) {
+                        $data['images'][] = $a->getAttribute('href');
+                    }
+                }
+            }
+        }
+        if ($imageContent !== null) {
+            $data['images'][] = $imageContent;
+        }
+        if (count($data['images']) == 0) {
+            $error = "images not found";
+        }
+
+        // brand
+        $nodelist = $xpath->query("//div[@class='brand']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                $data['brand'] = trim($n->nodeValue);
+            }
+        }
+        /*if ($data['brand'] == '') {
+            $error = "brand not found";
+        }*/
+
+        $data['error'] = $error;
+
+        return $data;
+    }
+
     public function grabByHost($url)
     {
         $this->url = $url;
@@ -145,10 +269,28 @@ class Spider
             $this->skuSuffix = $this->resolvedHosts[$this->host];
         }
 
+        if ($this->mode == 'TEST') {
+            if (file_exists('file.html') && 1==1) {
+                $content = file_get_contents('file.html');
+            } else {
+                $content = file_get_contents($url);
+                $fp = fopen('file.html', 'w');
+                fwrite($fp, $content);
+                fclose($fp);
+            }
+            $page = $this->pathTest . 'file.html';
+        } else {
+            $page = $url;
+        }
+
         switch ($this->host) {
             case "www.trutzi.ro":
-                $data = $this->trutzi($this->url);
+                $data = $this->trutzi($page);
                 break;
+            case "www.ultramaster.ro":
+                $data = $this->ultramaster($page);
+                break;
+
             default:
                 $data = ['error' => 'no valid url found'];
                 break;
@@ -254,8 +396,6 @@ class Project
     {
         $mode = 'init';
 
-        $now = new \DateTime();
-
         $structure = __DIR__ . '/import/' . $data['skuSuffix'];
         if (!is_dir($structure)) {
             mkdir($structure, 0777, true);
@@ -264,6 +404,10 @@ class Project
         if (!is_dir($structure.'/images')) {
             mkdir($structure.'/images', 0777, true);
             chmod($structure.'/images', 0777);
+        }
+        if (!is_dir($structure.'/docs')) {
+            mkdir($structure.'/docs', 0777, true);
+            chmod($structure.'/docs', 0777);
         }
 
         $file = $structure . '/new_products.csv';
@@ -296,6 +440,24 @@ class Project
                     }
                 }
 
+                if (count($data['docs']) > 0) {
+                    $docsHtml = [];
+                    foreach ($data['docs']['name'] as $k => $fileName) {
+                        $content = file_get_contents($data['docs']['url'][$k]);
+                        $imageFileName = $fileName;
+                        file_put_contents($structure . '/docs/' . $imageFileName, $content);
+                        $docsHtml[] = ''.
+                            '<p>Descarca manual instructiuni: '.
+                            '<a class="product-brosure-download" href="/media/wysiwyg/'.$fileName.'">'.
+                            $fileName.
+                            '</a></p>';
+                    }
+                    if (count($docsHtml)) {
+                        $data['descr'] = '<div class="brosure-container">'.implode('', $docsHtml).'</div>' .
+                            $data['descr'];
+                    }
+                }
+
                 // add to csv
                 $csvRow = array_flip($allAttributes);
                 foreach($csvRow as $k=>$v) {
@@ -308,7 +470,7 @@ class Project
                 $csvRow['description'] = $data['descr'];
                 $csvRow['image'] = $firstImage;
                 $csvRow['price'] = $data['price'];
-                $csvRow['categories'] = $data['category'];
+                $csvRow['categories'] = 'Categorii/'.$data['category'];
                 $csvRow['qty'] = $data['qty'];
                 if (count($imageGallery)) {
                     $csvRow['media_gallery'] = implode(',', $imageGallery);

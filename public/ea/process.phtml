@@ -89,6 +89,18 @@
 
                 <div style="overflow: hidden; width: 800px">
                     Attribute<br>
+                    <?php if ($data['brand'] != '') { ?>
+                        <div>
+                            <select name="attr_k[]" style="padding: 20px; width: 480px; font-size: 18px";>
+                                <option value="">Select Attribute</option>
+                                <?php foreach ($attributes as $k => $v) { ?>
+                                    <option value="<?=$k?>" <?=($k == 'brand' ? 'selected' : '')?>><?=$v?></option>
+                                <?php } ?>
+                            </select>
+                            <input type="text" name="attr_v[]" placeholder="Attribute Value"
+                                   style="padding: 10px; margin-left: 10px; width: 305px; font-size: 18px"; value="<?=$data['brand']?>" />
+                        </div>
+                    <?php } ?>
                     <div data-content="attribute">
                         <select name="attr_k[]" style="padding: 20px; width: 480px; font-size: 18px";>
                             <option value="">Select Attribute</option>
@@ -104,15 +116,27 @@
 
             </div>
             <div style="width: 500px; float: left; padding-left: 20px">
+                <?php if (count($data['docs'])) { ?>
+                Docs:<br />
+                <?php foreach ($data['docs'] as $doc) { ?>
+                    <div style="width: 500px; margin: 20px 0 ; border: 1px solid #999999; overflow: hidden">
+                        <input type="text" name="docs[name][]" value="<?=$doc['name']?>" style="width: 100%; padding: 5px">
+                        <input type="hidden" name="docs[url][]" value="<?=$doc['url']?>" style="width: 47%; padding: 5px">
+                    </div>
+                <?php } ?>
+                <?php } ?>
+
+                Images:<br />
                 <?php foreach ($data['images'] as $image) { ?>
-                    <div style="width: 200px; height: 250px; margin: 20px; border: 1px solid #999999; float: left; overflow: hidden">
-                        <img src="<?=$image?>" style="width: 100%; height: 230px;" />
+                    <div style="width: 220px; height: 200px; margin: 20px 10px; border: 1px solid #999999; float: left; overflow: hidden">
+                        <a href="<?=$image?>" target="_blank"><img src="<?=$image?>" style="max-height: 180px" /></a>
                         <br>
                         <input type="text" name="images[]" value="<?=$image?>" style="width: 100%">
                     </div>
+
                 <?php } ?>
                 <div style="clear: both"></div>
-                <button type="submit" value="GO" style="padding: 10px; width: 100%; font-size: 24px; background-color: #3c763d; color: white">Save the Product</button>
+                <button type="submit" value="GO" style="padding: 10px; width: 100%; font-size: 24px; background-color: #3c763d; color: white" onclick="$(this).html('loading...');">Save the Product</button>
             </div>
         </div>
     </form>

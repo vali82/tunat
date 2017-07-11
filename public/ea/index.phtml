@@ -7,14 +7,16 @@
     <div style="float: left; width: 1000px;">
         <form method="post" action="index.php?p=process" name="ea">
             <input type="text" name="url" value="<?=$url?>" style="padding: 15px; width: 900px; font-size: 12px"; />
-            <button type="submit" value="GO" style="padding: 10px; width: 80px; font-size: 12px";>GO</button>
+            <button type="submit" value="GO" style="padding: 10px; width: 80px; font-size: 12px"; onclick="$(this).html('loading...');">GO</button>
         </form>
     </div>
     <div style="float: left; width: 200px; padding-left: 20px; border-left: 1px solid #999999;">
         <a href="<?=(file_exists(__DIR__ .'/import/TRT/new_products.csv') ? 'index.php?p=download&f=TRT&t='.time() : '#')?>">dowload TRT .csv</a> -
         <a href="javascript:;" onclick="if (confirm('Esti sigur?\nCSV-ul cu produse se va goli pentru acest furnizor')) { self.location.href='index.php?p=reset&furnizor=TRT'; }">reset</a>
         <br>
-        <a href="#">dowload FAC .csv</a>
+        <a href="<?=(file_exists(__DIR__ .'/import/ULM/new_products.csv') ? 'index.php?p=download&f=ULM&t='.time() : '#')?>">dowload ULM .csv</a> -
+        <a href="javascript:;" onclick="if (confirm('Esti sigur?\nCSV-ul cu produse se va goli pentru acest furnizor')) { self.location.href='index.php?p=reset&furnizor=ULM'; }">reset</a>
+
         <br>
         <a href="#">dowload HNG .csv</a>
 
