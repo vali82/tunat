@@ -2,7 +2,7 @@
 
 class Spider
 {
-    private $mode = 'TEST';
+    private $mode = 'LIVE';
     private $pathTest = 'http://tirbox.local/ea/';
     private $host;
     private $url;
