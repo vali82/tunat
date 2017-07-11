@@ -325,6 +325,9 @@ class Project
         "inaltime_mm" => "Inaltime(mm) - inaltime_mm",
         "lungime_mm" => "Lungime(mm) - lungime_mm",
         "lungime_poarta_m" => "Lungime Poarta(m) - lungime_poarta_m",
+        "deschidere_max_poarta_m" => "Deschidere Max Poarta (m) - deschidere_max_poarta_m",
+        "kit_automatizare" => "Kit Automatizare",
+        "lungime_bariera_m" => "Lungime Bariera (m) - lungime_bariera_m",
     ];
     private $attributesMagento = [
         'sku',
