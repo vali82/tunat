@@ -181,10 +181,12 @@ class Spider
                                 $fileName = explode(',', explode(' (', $p->nodeValue, 2)[1], 2)[0];
                                 $dlink = $p->getElementsByTagName('a');
                                 if ($dlink->length > 0) {
-                                    $data['docs'][] = [
-                                        'name' => $fileName,
-                                        'url' => $dlink[0]->getAttribute('href')
-                                    ];
+                                    foreach ($dlink as $elem) {
+                                        $data['docs'][] = [
+                                            'name' => $fileName,
+                                            'url' => $elem->getAttribute('href')
+                                        ];
+                                    }
                                 }
                             }
                         }
