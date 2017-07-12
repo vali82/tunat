@@ -172,7 +172,7 @@ class Spider
                         if (strpos($images, '<img') !== false) {
                             $imageContent = explode('"', explode('src="', $images, 2)[1])[0];
                         }
-                        $descr = strip_tags($descr, '<div><p><ul><li><h1><h2><h3><h4><h5><h6><span><strong><i><em>');
+                        $descr = strip_tags($descr, '<div><p><ul><li><h1><h2><h3><h4><h5><h6><span><strong><i><em><table><tr><td>');
 
                         $data['descr'] = $descr;
                     } elseif ($div->getAttribute('id') == 'content_attachments' && $div->getAttribute('class') == 'attachments') {
