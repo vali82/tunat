@@ -453,7 +453,7 @@ class Project
                         file_put_contents($structure . '/docs/' . $imageFileName, $content);
                         $docsHtml[] = ''.
                             '<p>Descarca manual instructiuni: '.
-                            '<a class="product-brosure-download" href="/media/wysiwyg/'.$fileName.'">'.
+                            '<a class="product-brosure-download" target="_blank" href="/media/wysiwyg/'.$fileName.'">'.
                             $fileName.
                             '</a></p>';
                     }
