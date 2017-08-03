@@ -18,6 +18,12 @@ class Spider
     {
     }
 
+    private function normalizeSKU($sku)
+    {
+        $result = preg_replace("/[^a-zA-Z0-9]+/", "-", $sku);
+        return $result;
+    }
+
     private function trutzi($page)
     {
         $error = '';
@@ -87,7 +93,7 @@ class Spider
                     if ($p->getAttribute('id') == 'product_reference') {
                         foreach ($p->getElementsByTagName('span') as $span) {
                             if ($span->getAttribute('itemprop') == 'sku') {
-                                $data['sku'] = str_replace('/', '-', $span->nodeValue).$this->skuSuffix;
+                                $data['sku'] = $this->normalizeSKU($span->nodeValue).$this->skuSuffix;
                                 $data['name'] = str_replace(' '.$span->nodeValue, '', $data['name']);
                             }
                         }
@@ -220,8 +226,7 @@ class Spider
         if ($nodelist->length > 0) {
             foreach ($nodelist as $n) {
                 foreach ($n->getElementsByTagName('span') as $span) {
-                    $data['sku'] = str_replace('/', '-', $span->nodeValue);
-//                    $data['name'] = str_replace(' '.$span->nodeValue, '', $data['name']);
+                    $data['sku'] = $this->normalizeSKU($span->nodeValue);
                 }
             }
         }
@@ -434,28 +439,34 @@ class Project
             if (count($data)) {
                 $imageGallery = [];
                 $firstImage = '';
-                foreach ($data['images'] as $k=>$image) {
-                    $content = file_get_contents($image);
-                    $imageFileName = $data['sku'].($k > 0 ? '_'.$k : '').'.jpg';
-                    file_put_contents($structure.'/images/'.$imageFileName, $content);
-                    if ($k > 0) {
-                        $imageGallery[] = $imageFileName;
-                    } else {
-                        $firstImage = $data['sku'].'.jpg';
+                $imgCnt = 0;
+                foreach ($data['images'] as $image) {
+                    if ($image != '') {
+                        $content = file_get_contents($image);
+                        $imageFileName = $data['sku'] . ($imgCnt > 0 ? '_' . $imgCnt : '') . '.jpg';
+                        file_put_contents($structure . '/images/' . $imageFileName, $content);
+                        if ($imgCnt > 0) {
+                            $imageGallery[] = $imageFileName;
+                        } else {
+                            $firstImage = $data['sku'] . '.jpg';
+                        }
+                        $imgCnt++;
                     }
                 }
 
                 if (count($data['docs']) > 0) {
                     $docsHtml = [];
                     foreach ($data['docs']['name'] as $k => $fileName) {
-                        $content = file_get_contents($data['docs']['url'][$k]);
-                        $imageFileName = $fileName;
-                        file_put_contents($structure . '/docs/' . $imageFileName, $content);
-                        $docsHtml[] = ''.
-                            '<p>Descarca manual instructiuni: '.
-                            '<a class="product-brosure-download" target="_blank" href="/media/wysiwyg/'.$fileName.'">'.
-                            $fileName.
-                            '</a></p>';
+                        if ($fileName != '') {
+                            $content = file_get_contents($data['docs']['url'][$k]);
+                            $imageFileName = $fileName;
+                            file_put_contents($structure . '/docs/' . $imageFileName, $content);
+                            $docsHtml[] = '' .
+                                '<p>Descarca manual instructiuni: ' .
+                                '<a class="product-brosure-download" target="_blank" href="/media/wysiwyg/' . $fileName . '">' .
+                                $fileName .
+                                '</a></p>';
+                        }
                     }
                     if (count($docsHtml)) {
                         $data['descr'] = '<div class="brosure-container">'.implode('', $docsHtml).'</div>' .
