@@ -11,7 +11,8 @@ class Spider
     private $resolvedHosts = [
         'www.trutzi.ro' => 'TRT',
         'www.facsrl.com' => 'FAC',
-        'www.ultramaster.ro' => 'ULM'
+        'www.ultramaster.ro' => 'ULM',
+        'www.vonmag.ro' => 'VMG'
     ];
 
     public function __construct()
@@ -268,6 +269,127 @@ class Spider
         return $data;
     }
 
+    private function vonmag($page)
+    {
+        $error = '';
+        $data = [
+            'sku' => '',
+            'name' => '',
+            'descr' => '',
+            'price' => '',
+            'images' => [],
+            'docs' => [],
+            'brand' => ''
+        ];
+        $imageContent = null;
+
+        $html = new DOMDocument();
+        @$html->loadHtmlFile($page);
+        $xpath = new DOMXPath($html);
+
+        // get name
+        $nodelist = $xpath->query("//h1[@class='pagetitle']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                $data['name'] = $n->nodeValue;
+            }
+        }
+        if ($data['name'] == '') {
+            $error = "name not found";
+        }
+
+        // get description
+        $nodelist = $xpath->query("//div[@id='descriere']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('div') as $div) {
+                    if ($div->getAttribute('class') == 'product_info_h') {
+                        $descr = str_replace(
+                            ['product_info_h'],
+                            ['description-vmg'],
+                            trim(str_replace("\n", "", $div->C14N()))
+                        );
+//                        $descr = trim(str_replace("\n", "", $div->C14N()));
+                        $descr = strip_tags($descr, '<div><p><ul><li><h1><h2><h3><h4><h5><h6><span><strong><b><i><em><table><tr><td><br>');
+                        $data['descr'] = $descr;
+                    }
+                }
+            }
+        }
+        if ($data['descr'] == '') {
+            $error = "descr not found";
+        }
+
+        // get price
+        $nodelist = $xpath->query("//div[@class='pricerow']");
+        if ($nodelist->length > 0) {
+            $prc = null;
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('span') as $span) {
+                    if ($prc == null) {
+                        $prc = $span->nodeValue;
+                        $data['price'] = (float)str_replace(['.', ' '], ['', ''], explode(' lei', $prc)[0]);
+                    }
+                }
+            }
+        }
+        if ($data['price'] == '') {
+            $error = "price not found";
+        }
+
+        // get sku
+        $nodelist = $xpath->query("//div[@class='p-model']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('span') as $span) {
+                    $data['sku'] = $this->skuSuffix . '-' .$this->normalizeSKU($span->nodeValue);
+                }
+            }
+        }
+        if ($data['sku'] == '') {
+            $error = "sku not found";
+        }
+
+        // get pictures
+        $nodelist = $xpath->query("//div[@class='imgdetails']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('a') as $a) {
+                    if ($a->getAttribute('class') == 'jqzoom' || 1==1) {
+                        $data['images'][] = 'https://www.vonmag.ro'.$a->getAttribute('href');
+                    }
+                }
+            }
+        }
+        if ($imageContent !== null) {
+            $data['images'][] = $imageContent;
+        }
+        if (count($data['images']) == 0) {
+            $error = "images not found";
+        }
+
+        // brand
+        $nodelist = $xpath->query("//div[@class='p-related']");
+        if ($nodelist->length > 0) {
+            $brand = null;
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('img') as $img) {
+                    if ($brand == null) {
+                        $brand = $img->getAttribute('alt');
+                        $data['brand'] = $brand;
+                    }
+                }
+            }
+        }
+        /*if ($data['brand'] == '') {
+            $error = "brand not found";
+        }*/
+
+        $data['error'] = $error;
+
+        return $data;
+    }
+
     public function grabByHost($url)
     {
         $this->url = $url;
@@ -296,6 +418,9 @@ class Spider
                 break;
             case "www.ultramaster.ro":
                 $data = $this->ultramaster($page);
+                break;
+            case "www.vonmag.ro":
+                $data = $this->vonmag($page);
                 break;
 
             default:
