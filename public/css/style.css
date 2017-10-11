@@ -470,7 +470,7 @@ h3.new{
     -o-transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
-    filter: FlipH;
+    filter: "FlipH";
     -ms-filter: "FlipH";
 }
 
@@ -690,7 +690,7 @@ input#globalLoginFieldRemember{
     display: block;
     padding: 10px 20px;
     color: #fff;
-    font: 500 14px/22px "Ubuntu",sans-serif
+    font: 500 14px/22px "Ubuntu",sans-serif;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }
 #loginOptionFacebook:hover{
@@ -1124,7 +1124,7 @@ ul.dropdown-menu li a {
         display: block;
     }
     .nav > li.__hideMobileMenu__ {
-        display: show;
+        display: none;
     }
     .navbar-header {
         height: 50px;
