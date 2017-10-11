@@ -50,7 +50,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     <?php echo $this->headScript()
         ->appendFile($this->basePath() . '/assets/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js', 'text/javascript')
         ->prependFile($this->basePath() . '/js/nprogress-master/nprogress.js')
-        ->prependFile($this->basePath() . '/js/general.jsv'.TBVER)
+        ->prependFile($this->basePath() . '/js/general.js?v'.TBVER)
         ->prependFile($this->basePath() . '/js/bootbox/bootbox.min.js')
 //            ->prependFile($this->basePath() . '/js/select2/select2.full.js')
         ->prependFile($this->basePath() . '/js/bootstrap.min.js')
