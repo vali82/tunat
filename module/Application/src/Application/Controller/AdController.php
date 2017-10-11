@@ -137,6 +137,8 @@ class AdController extends MyAbstractController
             if ($form->isValid()) {
                 $images = [];
 
+
+
                 if (is_dir($file_path)) {
                     foreach (glob($file_path . "*") as $filefound) {
                         $x = explode('/', $filefound);
