@@ -18,7 +18,7 @@
         <p class="about"><?=$this->description?></p>
         <p class="model">
             <span class="category-icon">
-                <img src="<?=$this->basePath()?>/img/categ_<?=$this->carCategory?>.png" />
+                <img src="<?=$this->basePath()?>/img/categ_<?=$this->carCategory?>.png?t=<?=time()?>" />
             </span>
             <a href="<?=$this->urlFilter1?>" title="Piese <?=$this->car?>">
                 <?=$this->car?>
