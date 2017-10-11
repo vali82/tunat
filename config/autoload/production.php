@@ -12,7 +12,6 @@
  */
 
 return array(
-
     'timezone' => 'Europe/Bucharest',
     'consts' => [
         'carburant' => [

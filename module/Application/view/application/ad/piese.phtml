@@ -106,7 +106,7 @@
         ?>
         <div class="change-categories col-sm-4 col-md-3">
             <a href="<?= $this->carCollection->urlizeCarClass($this->carcategoriesId, $this->class) ?>" class="panel card card-1" id="changeCarMakeButton">
-                <img src="<?=$this->basePath()?>/img/categ_<?=$this->carcategoriesId?>.png?t=<?=time()?>" />
+                <img src="<?=$this->basePath()?>/img/categ_<?=$this->carcategoriesId?>.png?v=<?=TBVER?>" />
                 <?=$this->class?>
                 <span class="arrow"></span>
             </a>
@@ -119,7 +119,7 @@
                         <a class="panel card card-1"
                            title = "Piese <?=$cars['categories'][$categoriesId]?>"
                            href="<?=$this->carCollection->urlizeCarcategories($categoriesId)?>">
-                            <img src="<?=$this->basePath()?>/img/categ_<?=$categoriesId?>.png?t=<?=time()?>" />
+                            <img src="<?=$this->basePath()?>/img/categ_<?=$categoriesId?>.png?v=<?=TBVER?>" />
                             <?=$categories?>
                         </a>
                     </div>

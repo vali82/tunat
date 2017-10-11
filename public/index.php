@@ -12,8 +12,9 @@ defined('APPLICATION_ENV')
 || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 define('PUBLIC_IMG_PATH', __DIR__ . '/images/');
+define('TBVER', '1.1');
 
-if (APPLICATION_ENV !== 'production' || 1==1) {
+if (APPLICATION_ENV !== 'production' || 1==2) {
     error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
     ini_set('display_errors', 'On');
 } else {

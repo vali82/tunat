@@ -87,7 +87,7 @@ if ($this->status !== 'ok') { ?>
         <div class="info-details">
             <p>
                 <span class="category-icon">
-                    <img src="<?=$this->basePath()?>/img/categ_<?=$this->car['categoryID']?>.png?t=<?=time()?>" />
+                    <img src="<?=$this->basePath()?>/img/categ_<?=$this->car['categoryID']?>.png?v=<?=TBVER?>" />
                 </span>
                 <span><?=$this->car['category']?></span>
             </p>
@@ -97,7 +97,7 @@ if ($this->status !== 'ok') { ?>
                     <?php if (is_file(PUBLIC_IMG_PATH.'/../img/brand/'.$this->car['classUrlized'].'.jpg')) { ?>
                         <img src="<?=$this->basePath() . '/img/brand/'.$this->car['classUrlized'].'.jpg'?>"/></a>
                     <?php } else { ?>
-                        <img src="<?=$this->basePath()?>/img/categ_<?=$this->car['categoryID']?>.png?t=<?=time()?>" />
+                        <img src="<?=$this->basePath()?>/img/categ_<?=$this->car['categoryID']?>.png?v=<?=TBVER?>" />
                     <?php } ?>
 
                 </span>
