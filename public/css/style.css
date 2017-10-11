@@ -921,6 +921,10 @@ span.no-results-found {
     width: 100%;
     height: auto;
 }
+.product-images .big-image {
+    max-height: 370px;
+    overflow: hidden;
+}
 .product-images .big-image img {
     -max-height: 370px;
 }

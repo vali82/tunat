@@ -43,11 +43,28 @@ if ($this->status !== 'ok') { ?>
             </a>
         </div>
 
-        <div class="row tumb-img">
+        <div class="row tumb-img hidden-xs">
+            <div class="col-sm-2 col-xs-3" style="padding-top: 15px;">
+                <a href="<?=
+                \Application\libs\General::getSimpleAvatar(
+                    $this->folder,
+                    $this->images[0],
+                    '9999x9999',
+                    $this->titleUrlized . '-1.jpg'
+                ) ?>" type="" title="" download="" data-image-lib="popup">
+                    <img class="img-responsive card card-1" style="max-width:80px" src="<?=
+                    \Application\libs\General::getSimpleAvatar(
+                        $this->folder,
+                        $this->images[0],
+                        '130x130',
+                        $this->titleUrlized . '-1.jpg'
+                    ) ?>">
+                </a>
+            </div>
         <?php
         if (count ($this->images) > 0) {
             foreach ($this->images as $k=>$img) { if ($k>0) { ?>
-            <div class="col-xs-2" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
+            <div class="col-sm-2 col-xs-3" style="padding-top: 15px;<?=($k>4 ? ' display:none; ' : '')?>">
                 <a href="<?=
                 \Application\libs\General::getSimpleAvatar(
                     $this->folder,
@@ -68,7 +85,7 @@ if ($this->status !== 'ok') { ?>
         </div>
 
         <p class="description">
-            <?= $this->description ?>
+
         </p>
 
     </div>
