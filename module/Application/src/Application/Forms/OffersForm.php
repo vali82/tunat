@@ -248,7 +248,7 @@ class OffersForm extends AbstractForm
                 'label' => '',
             ],
             'attributes' => array(
-                'maxFileSize' => '5MB',
+                'maxFileSize' => '10MB',
                 'maxNumberOfFiles' => 5,
                 'acceptedFileType' => 'jpeg, png, gif'
 //                'noLabel' => true,
