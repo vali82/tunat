@@ -14,12 +14,33 @@ $.general = function() {
 
     var _uploadImages = function (uploadUrl)
     {
+        /*$('#fileupload').fileupload({
+            disableImageResize:false,
+            autoUpload:true,
+            prependFiles:true,
+            singleFileUploads: true,
+            // Uncomment the following to send cross-domain cookies:
+            //xhrFields: {withCredentials: true},
+            url:uploadUrl
+        });
+
+        // Enable iframe cross-domain access via redirect option:
+        $('#fileupload').fileupload(
+            'option',
+            'redirect',
+            window.location.href.replace(
+                /\/[^\/]*$/,
+                '/cors/result.html?%s'
+            )
+        );*/
+
         // Initialize the jQuery File Upload widget:
         $('#fileupload').fileupload({
+            // action: 'resizeImage',
             disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-            autoUpload:true,
-            imageMaxWidth: 2000,
-            imageMaxHeight: 2000,
+            autoUpload:false,
+            // imageMaxWidth: 2000,
+            // imageMaxHeight: 2000,
             maxFileSize:5*1024*1024,
             maxFileCount:5,
             acceptFileTypes:/(\.|\/)(jpe?g|png|gif)$/i,

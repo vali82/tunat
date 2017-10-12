@@ -39,7 +39,7 @@ class AdController extends MyAbstractController
                 $advId > 0 ? $advId : $this->myAdvertiserObj->getId(),
                 ['ads', General::getFromSession('adTmpId')],
                 ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
-                2*1024*1024
+                10*1024*1024
             );
         }
         if ($this->getRequest()->isGet()) {
