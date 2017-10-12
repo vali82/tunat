@@ -66,7 +66,7 @@ class AdCollection
                     'car_category' => $param['category']
                 ],
                 ['id' => 'DESC'],
-                [1, 5]
+                [1, 10]
             );
 
         } elseif ($param['place'] == 'related') {
@@ -244,7 +244,7 @@ class AdCollection
             /** @var $ads \Application\Models\Ads\Ad[]|null*/
             $adDM->setPaginateValues(array(
                 'page' => $page,
-                'items_per_page' => 10,
+                'items_per_page' => 12,
             ));
             $ads = $adDM->fetchAllDefault(
                 [
