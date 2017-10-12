@@ -46,7 +46,7 @@ class AdCollection
             $ads = $adDM->fetchAllDefault(
                 ['status' => 'ok'],
                 ['id' => 'DESC'],
-                [1, 5]
+                [1, 10]
             );
 
         } elseif ($param['place'] == 'categoryPage') {
