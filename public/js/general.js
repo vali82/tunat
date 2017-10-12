@@ -38,7 +38,7 @@ $.general = function() {
         $('#fileupload').fileupload({
             // action: 'resizeImage',
             disableImageResize:/Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-            autoUpload:false,
+            autoUpload:true,
             // imageMaxWidth: 2000,
             // imageMaxHeight: 2000,
             maxFileSize:5*1024*1024,
