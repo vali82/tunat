@@ -20,7 +20,7 @@ $.general = function() {
             autoUpload:true,
             imageMaxWidth: 2000,
             imageMaxHeight: 2000,
-            maxFileSize:2*1024*1024,
+            maxFileSize:5*1024*1024,
             maxFileCount:5,
             acceptFileTypes:/(\.|\/)(jpe?g|png|gif)$/i,
             messages:{
