@@ -5,13 +5,6 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
 
 ?><html lang="ro-RO">
 <head>
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-5117034394906066",
-            enable_page_level_ads: true
-        });
-    </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <?php
     $this->headTitle()->append($this->headTitle)->setSeparator(' - ')->append('Tirbox.ro');
@@ -65,6 +58,27 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     </script>
 </head>
 <body>
+    <?php if (APPLICATION_ENV != 'development') { ?>
+        <div id="fb-root"></div>
+        <script>
+            window.fbAsyncInit = function() {
+                FB.init({
+                    appId      : '839888486066952',
+                    xfbml      : true,
+                    version    : 'v2.10'
+                });
+                FB.AppEvents.logPageView();
+            };
+
+            (function(d, s, id){
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {return;}
+                js = d.createElement(s); js.id = id;
+                js.src = "//connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+    <?php } ?>
     <script>
         NProgress.set(0.5);
         NProgress.inc(0.2);
@@ -276,15 +290,15 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         <li class="rss"><a href="#"></a></li>
                         <li class="google"><a href="#"></a></li>
                     </ul>-->
-                    <div class="fb-page" data-href="https://www.facebook.com/tirbox.ro"
-                         data-height="130" data-small-header="false" data-adapt-container-width="true"
-                         data-hide-cover="false" data-show-facepile="false" data-show-posts="false">
-                        <div class="fb-xfbml-parse-ignore">
-                            <blockquote cite="https://www.facebook.com/facebook">
-                                <a href="https://www.facebook.com/www.tirbox.ro">Tirbox</a>
-                            </blockquote>
-                        </div>
-                    </div>
+                    <div class="fb-page" data-href="https://www.facebook.com/tirbox.ro/"
+                         data-tabs="timeline"
+                         data-height="130"
+                         data-small-header="false"
+                         data-adapt-container-width="true"
+                         data-hide-cover="false"
+                         data-show-facepile="true"
+                    ></div>
+
                 </div>
             </div>
         </div>
@@ -311,19 +325,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         <script type="text/javascript" src="/js/slider/jssor.slider.mini.js"></script>
     <?php } ?>
 
-    <?php if (APPLICATION_ENV != 'development') { ?>
-        <div id="fb-root"></div>
-        <script>
-            setTimeout(
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/ro_RO/sdk.js#xfbml=1&version=v2.3&appId=839888486066952";
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk')), 2000);
-        </script>
-    <?php } ?>
+
 
     <?php // ADNOW ADV?>
     <script type="text/javascript">
