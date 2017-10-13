@@ -128,7 +128,7 @@ $.general = function() {
                     if ($('#pageTitleElement').length > 0) {
                         document.title = $('#pageTitleElement').html() + ' - Tirbox.ro';
                     } else {
-                        document.title = 'Dezmembrari camioane, utilaje contructii si agricole, utilitare, autobuze, remorci - Tirbox.ro';
+                        document.title = 'Dezmembrari autoturisme, camioane, utilaje contructii si agricole, utilitare, autobuze, remorci - Tirbox.ro';
                     }
                 } else {
                     //alert('asdad');
