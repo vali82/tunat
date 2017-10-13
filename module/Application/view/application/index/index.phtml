@@ -18,12 +18,10 @@ $this->partial(
 <div class="row __hideOnMobile__" style="opacity: 0.5">
     <div class="col-md-12" style="padding: 10px 15px 40px 15px">
         <span class="glyphicon glyphicon-info-sign" style="color: #636e7e; font-size: 65px;"></span>
-        <h2 style="float: right; font: 300 18px 'Ubuntu',sans-serif; margin-top: 0; padding-top: 0; width: calc(100% - 80px);">
-
-            Tirbox.ro este un site ce ofera utilizatorilor inregistrati, fie ei persoane fizice, fie parcuri auto, spatiu de
-            expunere a anunturilor.
-            Prin intermediul platformei noastre de anunturi puteti gasi piese din categoriile urmatoare:
-            autoturisme, camioane, utilitare si remorci, utilaje agricole, utilaje constructii sau autobuze.</h2>
+        <h2 style="float: right; font: 300 18px 'Ubuntu',sans-serif; margin-top: 10px; padding-top: 0; width: calc(100% - 80px);">
+            Tirbox.ro este platforma de anunturi gratuita, prin intermediul careia puteti gasi piese din urmatoarele categorii:
+            autoturisme, camioane, utilitare, remorci, utilaje agricole, utilaje constructii sau autobuze.
+        </h2>
     </div>
 </div>
 
@@ -33,17 +31,17 @@ $this->partial(
         <span>Vrei sa primesti o oferta personaliazata completa? Cere-o acum!</span>
         <a href="<?=$this->url('home/offers/create')?>" class="btn-red button">Cere oferta</a>
     </div> -->
-    <div class="col-xs-12 col-sm-12 col-md-9">
+    <div class="col-xs-12 col-sm-12 col-md-9 __hideOnMobile__">
         <h3 class="new">Cele mai noi anunturi din dezmembrari</h3>
         <?= $this->adList ?>
     </div>
 
-    <div class="col-xs-12 col-sm-12 col-md-3">
+    <div class="col-xs-12 col-sm-12 col-md-3 __hideOnMobile__">
         <h3 class="new">Parteneri Tirbox</h3>
         <?=$this->partial('application/ad/partials/partners.phtml', [])?>
     </div>
 
-    <div class="col-xs-12 col-sm-12 col-md-3">
+    <div class="col-xs-12 col-sm-12 col-md-3 __hideOnMobile__">
         <div id="SC_TBlock_421237" class="SC_TBlock">loading...</div>
     </div>
 </div>

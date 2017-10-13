@@ -61,7 +61,7 @@
                 foreach ($cars['model'][$this->carcategoriesId] as $modelId=>$model) {
                     if ($model['popular'] <= 0) {
                         if ($cnt % $splitVal == 0) {
-                            ?><div class="col-md-2 col-sm-6 col-xs-12"><?php
+                            ?><div class="col-md-2 col-sm-4 col-xs-6"><?php
                         }
                         ?>
                         <span></span>
@@ -70,7 +70,7 @@
                             <?= $model['categ'] ?>
                         </a><br>
                         <?php
-                        if ($cnt % $splitVal == $splitVal - 1) {
+                        if ($cnt % $splitVal == ($splitVal - 1)) {
                             ?></div><?php
                         }
                         $cnt++;
@@ -96,7 +96,7 @@
         </div>
         <!--end Listing Anunturi-->
 
-        <div class="col-sm-4 col-md-3">
+        <div class="col-sm-4 col-md-3" style="overflow: hidden">
             <?= $this->partial('application/ad/partials/partners.phtml', [])?>
             <div id="SC_TBlock_421237" class="SC_TBlock">loading...</div>
         </div>
@@ -165,7 +165,7 @@
     <!--Filtrare Anunturi-->
         <form class="panel col-md-12 card card-1" id="searchAnnnouncement" method="get" action="<?=$this->carCollection->urlizeSearchAds($this->carcategoriesId, $this->carModelId)?>">
             <div class="key-words">
-                <label>Cuvinte cheie</label>
+                <label>Model, detalii piesa, orice... (ex: parbriz Audi A6)</label>
                 <input id ="searchInput" value="<?=$this->searchValues['input']?>"  maxlength="50"  type="text">
             </div>
             <div class="row">
@@ -254,6 +254,8 @@
         <div class="col-md-3">
             <h3 class="new">Parteneri Tirbox</h3>
             <?=$this->partial('application/ad/partials/partners.phtml', [])?>
+
+            <div id="SC_TBlock_421237" class="SC_TBlock">loading...</div>
         </div>
     </div>
     <!-- end anunturi related -->

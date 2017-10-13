@@ -124,7 +124,7 @@ class MyAbstractController extends AbstractActionController
             'googleAnalitics' => $googleAnalitics,
             'cars' => $cars,
             'headTitle' => 'Dezmembrari Auto',
-            'metaDescription' => 'Tirbox.ro este platforma de anunturi gratuita, prin intermediul careia puteti gasi piese din urmatoarele categorii: autoturisme, camioane, utilitare, remorci, utilaje agricole, utilaje constructii sau autobuze. Anunturi gratuite, anunturi piese noi, piese din dezmembrari, piese, second hand.',
+            'metaDescription' => 'Tirbox.ro este platforma de anunturi gratuita, prin intermediul careia puteti gasi piese din urmatoarele categorii: autoturisme, camioane, utilitare, remorci, utilaje agricole, utilaje constructii sau autobuze. Anunturi gratuite, anunturi piese noi, piese din dezmembrari, piese, second-hand.',
             'metaKeywords' => 'piese auto, second-hand, dezmembrari, piese camioane, utilitare, remorci, utilaje constructii, autobuze'
         ]);
         ////

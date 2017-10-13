@@ -502,7 +502,8 @@ class AdController extends MyAbstractController
                 $relatedAds = $adCollection->adListHTML([
                     'place' => 'related',
                     'carModelId' => $carModelId,
-                    'notThisID' => $adId
+                    'notThisID' => $adId,
+                    'search' => $adObj->getPartName()
                 ]);
             }
         }

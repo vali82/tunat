@@ -355,7 +355,7 @@ $.general = function() {
         if ($('#searchAnnouncementsContainer').length > 0 && $(window).width() < 768) {
             $('#showSearchAnnouncements').show();
             $('#searchAnnouncementsContainer').hide();
-            $('.parts-main-container').hide();
+            // $('.parts-main-container').hide();
             $('#announcement-listing').show();
 
             $('#showSearchAnnouncements').on('click', function (e) {
@@ -364,11 +364,11 @@ $.general = function() {
 
                 if ($('#searchAnnouncementsContainer').is(':visible')) {
                     $('#searchAnnouncementsContainer').slideUp();
-                    $('.parts-main-container').hide();
+                    // $('.parts-main-container').hide();
                     $('#announcement-listing').show();
                 } else {
                     $('#searchAnnouncementsContainer').slideDown();
-                    $('.parts-main-container').show();
+                    // $('.parts-main-container').show();
                     $('#announcement-listing').hide();
                 }
             });

@@ -216,26 +216,26 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
         <?php } else { ?>
             <div id ="generalContainer">
                 <?php echo $this->content; ?>
+                <?php if (!$this->mobileApp) { ?>
+                    <div class="row __hideOnMobile__" style="opacity: 0.5">
+                        <div class="col-md-12" style="padding: 20px 15px 20px 15px">
+                            <span class="glyphicon glyphicon-question-sign" style="color: #636e7e; font-size: 50px;"></span>
+                            <h2 style="float: right; font: 300 18px 'Ubuntu',sans-serif; margin-top: 5px; padding-top: 0; width: calc(100% - 60px);">
+                                Pentru orice fel de intrebari sau sugestii, nu ezitati sa ne <a href="/contact">contactati</a>.<br>
+                                Sau puteti sa intrati pe blogul
+                                nostru <a href="http://blog.tirbox.ro">blog.tirbox.ro</a>, pentru a fi in pas cu noile tendinte in materie de masini si
+                                utilaje.
+                            </h2>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
-            <?php if (!$this->mobileApp) { ?>
-            <div class="row" style="opacity: 0.5">
-                <div class="col-md-12" style="padding: 20px 15px 20px 15px">
-                    <span class="glyphicon glyphicon-question-sign" style="color: #636e7e; font-size: 50px;"></span>
-                    <h2 style="float: right; font: 300 18px 'Ubuntu',sans-serif; margin-top: 5px; padding-top: 0; width: calc(100% - 60px);">
-                        Pentru orice fel de intrebari sau sugestii, nu ezitati sa ne <a href="/contact">contactati</a>.<br>
-                        Sau puteti sa intrati pe blogul
-                        nostru <a href="http://blog.tirbox.ro">blog.tirbox.ro</a>, pentru a fi in pas cu noile tendinte in materie de masini si
-                        utilaje.
-                    </h2>
-                </div>
-            </div>
-            <?php } ?>
         <?php } ?>
     </div>
 
 
     <?php if (!$this->mobileApp) { ?>
-    <footer>
+    <footer class="hidden-xs">
         <div class="newsletter">
             <p>
                 <span>Aboneaza-te la newsletter</span>
@@ -255,8 +255,8 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                     <a href="<?php echo $this->url('home') ?>"><img src="<?=$this->basePath() . '/img/logo-footer.png'?>" />
                     </a>
                 </div>
-                <div class="col-md-2 col-sm-4 col-xs-6 info">
-                    <h3>Informatii</h3>
+                <div class="col-md-2 col-sm-4 col-xs-6 info hidden-xs">
+                    <h3 class="">Informatii</h3>
                     <ul>
                         <li><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')">Aplicatii mobile</a></li>
                         <li><a href="#">Cautari frecvente</a></li>
@@ -265,8 +265,8 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         <li><a href="<?=$this->url('home/pages/partners')?>">Parteneri </a></li>
                     </ul>
                 </div>
-                <div class="col-md-2 col-sm-4 col-xs-6 info2">
-                    <h3> &nbsp; </h3>
+                <div class="col-md-2 col-sm-4 col-xs-6 info2 hidden-xs">
+                    <h3 class=""> &nbsp; </h3>
                     <ul>
                         <li><a href="<?=$this->url('home/contact')?>">Ajutor 24/7</a></li>
                         <li><a href="<?=$this->url('home/contact')?>">Contact</a></li>
@@ -275,14 +275,14 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         <li><a href="<?=$this->url('home/terms')?>">Termeni si Conditii</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 col-sm-6 col-xs-12 mobile-app">
+                <div class="col-md-3 col-sm-6 col-xs-12 mobile-app hidden-xs">
                     <h3>Descarca aplicatia</h3>
                     <ul>
                         <li class="ggl-play"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
                         <li class="app-store"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 col-sm-6 col-xs-12 social-media">
+                <div class="col-md-3 col-sm-6 col-xs-12 social-media hidden">
                     <!--<h3>Facebook</h3>-->
                     <!--<ul>
                         <li class="fb"><a href="#"></a></li>

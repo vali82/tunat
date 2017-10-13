@@ -71,7 +71,7 @@ class AdCollection
 
         } elseif ($param['place'] == 'related') {
             // HOME PAGE ADS
-            $param['search'] = General::generateQueryWords('pompa de circulare');
+            $param['search'] = General::generateQueryWords($param['search']);
 
             $adDM->setColumns(array(
                 '*',
@@ -87,7 +87,7 @@ class AdCollection
             ));
             $order = array(
                 new Expression(
-                    'RAND() DESC'
+                    '(part_name * 7 + car_model * 5  + description_match) DESC'
                 )
             );
             $sql_where = DataMapper::expression(
@@ -112,7 +112,7 @@ class AdCollection
                     'notThisId' => DataMapper::expression(' ads.id <> '.$param['notThisID'])
                 ],
                 $order,
-                [1, 3]
+                [1, 10]
             );
 
         } elseif ($param['place'] == 'myAds') {
