@@ -72,23 +72,14 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     <?php } ?>
 </head>
 <body>
-    <?php if (APPLICATION_ENV != 'development') { // not working - it sais is depricated ... dont know how ?>
+    <?php if (APPLICATION_ENV != 'development') { ?>
         <div id="fb-root"></div>
         <script>
-            window.fbAsyncInit = function() {
-                FB.init({
-                    appId      : '839888486066952',
-                    xfbml      : true,
-                    version    : 'v2.10'
-                });
-                FB.AppEvents.logPageView();
-            };
-
             (function(d, s, id){
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) {return;}
                 js = d.createElement(s); js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js";
+                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=839888486066952";
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         </script>
@@ -296,7 +287,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         <li class="app-store"><a href="javascript:;" onclick="alert('Momentan aplicatiile mobile sunt in dezvoltare!')"></a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 col-sm-6 col-xs-12 social-media hidden">
+                <div class="col-md-3 col-sm-6 col-xs-12 social-media">
                     <!--<h3>Facebook</h3>-->
                     <!--<ul>
                         <li class="fb"><a href="#"></a></li>
@@ -304,15 +295,7 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
                         <li class="rss"><a href="#"></a></li>
                         <li class="google"><a href="#"></a></li>
                     </ul>-->
-                    <div class="fb-page" data-href="https://www.facebook.com/tirbox.ro/"
-                         data-tabs="timeline"
-                         data-height="130"
-                         data-small-header="false"
-                         data-adapt-container-width="true"
-                         data-hide-cover="false"
-                         data-show-facepile="true"
-                    ></div>
-
+                    <iframe allowtransparency="true" frameborder="0" height="214" scrolling="no" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftirbox.ro&amp;tabs&amp;width=300&amp;height=214&amp;small_header=false&amp;adapt_container_width=true&amp;hide_cover=false&amp;show_facepile=true&amp;appId" style="border:none;overflow:hidden" width="300"></iframe>
                 </div>
             </div>
         </div>
