@@ -56,9 +56,23 @@ $user = $this->zfcUserIdentity() ? $this->zfcUserIdentity() : null;
     <script>
         <?=$this->layout()->googleAnalitics?>
     </script>
+
+    <?php if (APPLICATION_ENV != 'development') { ?>
+    <!-- Hotjar Tracking Code for www.tirbox.ro -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:660581,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+    <?php } ?>
 </head>
 <body>
-    <?php if (APPLICATION_ENV != 'development') { ?>
+    <?php if (APPLICATION_ENV != 'development') { // not working - it sais is depricated ... dont know how ?>
         <div id="fb-root"></div>
         <script>
             window.fbAsyncInit = function() {
