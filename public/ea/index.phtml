@@ -19,6 +19,9 @@
         <br>
         <a href="<?=(file_exists(__DIR__ .'/import/VMG/new_products.csv') ? 'index.php?p=download&f=VMG&t='.time() : '#')?>">dowload VMG .csv</a> -
         <a href="javascript:;" onclick="if (confirm('Esti sigur?\nCSV-ul cu produse se va goli pentru acest furnizor')) { self.location.href='index.php?p=reset&furnizor=VMG'; }">reset</a>
+        <br>
+        <a href="<?=(file_exists(__DIR__ .'/import/GRD/new_products.csv') ? 'index.php?p=download&f=GRD&t='.time() : '#')?>">dowload GRD .csv</a> -
+        <a href="javascript:;" onclick="if (confirm('Esti sigur?\nCSV-ul cu produse se va goli pentru acest furnizor')) { self.location.href='index.php?p=reset&furnizor=GRD'; }">reset</a>
 
         <br>
         <a href="#">dowload HNG .csv</a>
