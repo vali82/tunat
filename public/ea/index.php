@@ -2,7 +2,7 @@
 
 class Spider
 {
-    private $mode = 'LIVE';
+    private $mode = 'TEST';
     private $pathTest = 'http://tirbox.local/ea/';
     private $host;
     private $url;
@@ -12,7 +12,8 @@ class Spider
         'www.trutzi.ro' => 'TRT',
         'www.facsrl.com' => 'FAC',
         'www.ultramaster.ro' => 'ULM',
-        'www.vonmag.ro' => 'VMG'
+        'www.vonmag.ro' => 'VMG',
+        'gardurimoderne.ro' => 'GRD'
     ];
 
     public function __construct()
@@ -390,6 +391,123 @@ class Spider
         return $data;
     }
 
+    private function gardurimoderne($page)
+    {
+        $error = '';
+        $data = [
+            'sku' => '',
+            'name' => '',
+            'descr' => '',
+            'price' => '',
+            'images' => [],
+            'docs' => [],
+            'brand' => ''
+        ];
+        $imageContent = null;
+
+        $html = new DOMDocument();
+        @$html->loadHtmlFile($page);
+        $xpath = new DOMXPath($html);
+
+        // get name
+        $nodelist = $xpath->query("//h1[@itemprop='name']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                $data['name'] = $n->nodeValue;
+            }
+        }
+        if ($data['name'] == '') {
+            $error = "name not found";
+        }
+
+        // get description
+        $nodelist = $xpath->query("//div[@id='product-tabs']");
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('div') as $div) {
+                    if ($div->getAttribute('class') == 'std') {
+                        $descr = str_replace(
+                            ['class="std"'],
+                            ['class="description-grd"'],
+                            trim(str_replace("\n", "", $div->C14N()))
+                        );
+//                        $descr = trim(str_replace("\n", "", $div->C14N()));
+                        $descr = strip_tags($descr, '<div><p><ul><li><h1><h2><h3><h4><h5><h6><span><strong><b><i><em><table><tr><td><br>');
+                        $data['descr'] = $descr;
+                    }
+                }
+            }
+        }
+        if ($data['descr'] == '') {
+            $error = "descr not found";
+        }
+
+
+
+        // get price
+        $nodelist = $xpath->query("//div[@class='price-box']");
+        if ($nodelist->length > 0) {
+            $prc = null;
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('span') as $span) {
+                    if ($prc == null) {
+                        $prc = $span->nodeValue;
+                        $data['price'] = (float)str_replace(['.', ' '], ['', ''], explode(' lei', $prc)[0]);
+                    }
+                }
+            }
+        }
+        if ($data['price'] == '') {
+            $error = "price not found";
+        }
+
+        // get sku
+        $data['sku'] = $this->skuSuffix . '-' .array_reverse(explode(' ', $data['name']))[0];
+        if ($data['sku'] == '') {
+            $error = "sku not found";
+        }
+
+        // get pictures
+        $classname = 'product-img-box';
+        $nodelist = $xpath->query('//div[contains(@class,"product-img-box")]');
+        if ($nodelist->length > 0) {
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('a') as $a) {
+                    if ($a->getAttribute('class') == 'main-image') {
+                        $data['images'][] = $a->getAttribute('href');
+                    }
+                }
+            }
+        }
+        if ($imageContent !== null) {
+            $data['images'][] = $imageContent;
+        }
+        if (count($data['images']) == 0) {
+            $error = "images not found";
+        }
+
+        // brand
+        $nodelist = $xpath->query("//div[@class='p-related']");
+        if ($nodelist->length > 0) {
+            $brand = null;
+            foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('img') as $img) {
+                    if ($brand == null) {
+                        $brand = $img->getAttribute('alt');
+                        $data['brand'] = $brand;
+                    }
+                }
+            }
+        }
+        /*if ($data['brand'] == '') {
+            $error = "brand not found";
+        }*/
+
+        $data['error'] = $error;
+
+        return $data;
+    }
+
     public function grabByHost($url)
     {
         $this->url = $url;
@@ -421,6 +539,9 @@ class Spider
                 break;
             case "www.vonmag.ro":
                 $data = $this->vonmag($page);
+                break;
+            case "gardurimoderne.ro":
+                $data = $this->gardurimoderne($page);
                 break;
 
             default:
