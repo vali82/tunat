@@ -422,8 +422,24 @@ class Spider
 
         // get description
         $nodelist = $xpath->query("//div[@id='product-tabs']");
+        $nodelist2 = $xpath->query("//div[@id='product_tabs_description_contents']");
         if ($nodelist->length > 0) {
             foreach ($nodelist as $n) {
+                foreach ($n->getElementsByTagName('div') as $div) {
+                    if ($div->getAttribute('class') == 'std') {
+                        $descr = str_replace(
+                            ['class="std"'],
+                            ['class="description-grd"'],
+                            trim(str_replace("\n", "", $div->C14N()))
+                        );
+//                        $descr = trim(str_replace("\n", "", $div->C14N()));
+                        $descr = strip_tags($descr, '<div><p><ul><li><h1><h2><h3><h4><h5><h6><span><strong><b><i><em><table><tr><td><br>');
+                        $data['descr'] = $descr;
+                    }
+                }
+            }
+        } elseif ($nodelist2->length > 0) {
+            foreach ($nodelist2 as $n) {
                 foreach ($n->getElementsByTagName('div') as $div) {
                     if ($div->getAttribute('class') == 'std') {
                         $descr = str_replace(
